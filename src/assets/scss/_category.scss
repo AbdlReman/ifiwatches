@@ -1,0 +1,50 @@
+/* Category Page Styles */
+
+.category-header {
+    margin-bottom: 30px;
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 8px;
+
+    .category-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 10px;
+        text-transform: capitalize;
+    }
+
+    .category-description {
+        font-size: 16px;
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+}
+
+.search-results-summary {
+    .alert {
+        border-radius: 8px;
+        border: none;
+
+        &.alert-info {
+            background-color: #e3f2fd;
+            color: #0d47a1;
+        }
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .category-header {
+        padding: 20px;
+
+        .category-title {
+            font-size: 24px;
+        }
+
+        .category-description {
+            font-size: 14px;
+        }
+    }
+}

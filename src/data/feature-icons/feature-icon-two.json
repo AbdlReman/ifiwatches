@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "image": "/assets/img/icon-img/support-1.png",
+    "title": "Free Shipping",
+    "subtitle": "Free shipping on all orders above Rs. 2000 across Pakistan"
+  },
+  {
+    "id": 2,
+    "image": "/assets/img/icon-img/support-2.png",
+    "title": "Discreet Packaging",
+    "subtitle": "All orders are delivered in plain, discreet packaging for your privacy"
+  },
+  {
+    "id": 3,
+    "image": "/assets/img/icon-img/support-3.png",
+    "title": "Easy Returns",
+    "subtitle": "30-day return policy for all unused items in original packaging"
+  }
+]

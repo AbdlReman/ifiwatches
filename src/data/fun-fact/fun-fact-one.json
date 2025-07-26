@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "iconClass": "pe-7s-portfolio",
+    "countNum": 5000,
+    "title": "Happy Customers"
+  },
+  {
+    "id": "2",
+    "iconClass": "pe-7s-cup",
+    "countNum": 500,
+    "title": "Product Varieties"
+  },
+  {
+    "id": "3",
+    "iconClass": "pe-7s-light",
+    "countNum": 5,
+    "title": "Years Experience"
+  },
+  {
+    "id": "4",
+    "iconClass": "pe-7s-smile",
+    "countNum": 98,
+    "title": "Customer Satisfaction"
+  }
+]

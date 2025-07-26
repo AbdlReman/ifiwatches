@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "image": "/assets/img/banner/banner-1.jpg",
+    "title": "Premium AC Units",
+    "subtitle": "Starting at",
+    "price": "Rs. 85,000",
+    "link": "/shop-grid-standard"
+  },
+  {
+    "id": 2,
+    "image": "/assets/img/banner/banner-2.jpg",
+    "title": "Quality Freezers",
+    "subtitle": "Starting at",
+    "price": "Rs. 45,000",
+    "link": "/shop-grid-standard"
+  },
+  {
+    "id": 3,
+    "image": "/assets/img/banner/banner-3.jpg",
+    "title": "Electronic Appliances",
+    "subtitle": "Starting at",
+    "price": "Rs. 15,000",
+    "link": "/shop-grid-standard"
+  }
+]
