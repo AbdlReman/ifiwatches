@@ -23,6 +23,12 @@
           max-width: 50%;
         }
 
+        @media #{$sm-layout} {
+          flex: 1 0 50% !important;
+
+          max-width: 50% !important;
+        }
+
         @media #{$xs-layout} {
           flex: 1 0 100%;
 
@@ -51,6 +57,12 @@
           max-width: 50%;
         }
 
+        @media #{$sm-layout} {
+          flex: 1 0 50% !important;
+
+          max-width: 50% !important;
+        }
+
         @media #{$xs-layout} {
           flex: 1 0 100%;
 
@@ -77,6 +89,12 @@
           flex: 1 0 50%;
 
           max-width: 50%;
+        }
+
+        @media #{$sm-layout} {
+          flex: 1 0 50% !important;
+
+          max-width: 50% !important;
         }
 
         @media #{$xs-layout} {
@@ -145,6 +163,65 @@
 
         text-align: center;
       }
+    }
+  }
+
+  // Additional responsive rules to ensure 2 products per row on small screens
+  .row.four-column {
+    .col-xl-3.col-sm-6 {
+      @media #{$sm-layout} {
+        flex: 1 0 50% !important;
+        max-width: 50% !important;
+        width: 50% !important;
+      }
+    }
+  }
+
+  // Specific rules for LatestProductSection to ensure 2 products per row on mobile
+  .product-area .row.four-column {
+    .col-xl-3 {
+      @media #{$sm-layout} {
+        flex: 1 0 50% !important;
+        max-width: 50% !important;
+        width: 50% !important;
+      }
+
+      @media #{$xs-layout} {
+        flex: 1 0 50% !important;
+        max-width: 50% !important;
+        width: 50% !important;
+      }
+    }
+  }
+
+  // Force 2 products per row on all mobile devices for product sections
+  .product-area {
+    .row.four-column {
+      .col-xl-3.col-lg-3.col-md-6.col-sm-6 {
+        @media (max-width: 767px) {
+          flex: 1 0 50% !important;
+          max-width: 50% !important;
+          width: 50% !important;
+        }
+      }
+    }
+  }
+
+  // Additional mobile-specific rules for LatestProductSection
+  @media (max-width: 767px) {
+    .product-area .row.four-column .col-xl-3 {
+      flex: 1 0 50% !important;
+      max-width: 50% !important;
+      width: 50% !important;
+    }
+  }
+
+  // Override any conflicting rules for mobile devices
+  @media only screen and (max-width: 767px) {
+    .product-area .row.four-column .col-xl-3 {
+      flex: 1 0 50% !important;
+      max-width: 50% !important;
+      width: 50% !important;
     }
   }
 }
@@ -311,12 +388,28 @@
 .product-list-image-wrap {
   position: relative;
 
+  @media #{$xs-layout} {
+    padding: 0 5px;
+  }
+
+  @media #{$sm-layout} {
+    padding: 0 5px;
+  }
+
   .product-img {
     position: relative;
 
     overflow: hidden;
     height: 300px;
     /* Fixed height for consistent appearance */
+
+    @media #{$xs-layout} {
+      height: 200px;
+    }
+
+    @media #{$sm-layout} {
+      height: 220px;
+    }
 
     img {
       width: 100%;
@@ -331,6 +424,16 @@
       top: 12px;
       right: 12px;
 
+      @media #{$xs-layout} {
+        top: 8px;
+        right: 8px;
+      }
+
+      @media #{$sm-layout} {
+        top: 8px;
+        right: 8px;
+      }
+
       span {
         font-size: 13px;
         font-weight: 500;
@@ -343,6 +446,18 @@
 
         color: #fff;
         border-radius: 3px;
+
+        @media #{$xs-layout} {
+          font-size: 11px;
+          padding: 2px 8px;
+          margin-bottom: 5px;
+        }
+
+        @media #{$sm-layout} {
+          font-size: 11px;
+          padding: 2px 8px;
+          margin-bottom: 5px;
+        }
 
         &.pink {
           color: $theme-color-light;
@@ -464,10 +579,28 @@
   .product-content {
     margin: 20px 0 0;
 
+    @media #{$xs-layout} {
+      margin: 15px 0 0;
+    }
+
+    @media #{$sm-layout} {
+      margin: 15px 0 0;
+    }
+
     h3 {
       font-size: 16px;
 
       margin: 0;
+
+      @media #{$xs-layout} {
+        font-size: 14px;
+        line-height: 1.2;
+      }
+
+      @media #{$sm-layout} {
+        font-size: 14px;
+        line-height: 1.2;
+      }
     }
 
     .product-rating {
@@ -479,6 +612,14 @@
         margin: 0 3px;
 
         color: #5f5d5d;
+
+        @media #{$xs-layout} {
+          font-size: 14px;
+        }
+
+        @media #{$sm-layout} {
+          font-size: 14px;
+        }
 
         &.yellow {
           color: #ffa900;
@@ -497,6 +638,16 @@
 
         color: $theme-color;
 
+        @media #{$xs-layout} {
+          font-size: 13px;
+          margin: 0 5px;
+        }
+
+        @media #{$sm-layout} {
+          font-size: 13px;
+          margin: 0 5px;
+        }
+
         &::before {
           position: absolute;
           top: 10px;
@@ -508,6 +659,20 @@
           content: "";
 
           background-color: $theme-color;
+
+          @media #{$xs-layout} {
+            top: 8px;
+            right: -10px;
+            width: 5px;
+            height: 1px;
+          }
+
+          @media #{$sm-layout} {
+            top: 8px;
+            right: -10px;
+            width: 5px;
+            height: 1px;
+          }
         }
 
         &:last-child:before {

@@ -155,16 +155,9 @@ const ProductGridSingleTwo = ({
             </h3>
             <div className="price-2">
               {discountedPrice !== null ? (
-                <Fragment>
-                  <span>
-                                  {"Rs " + finalDiscountedPrice}
-            </span>{" "}
-            <span className="old">
-              {"Rs " + finalProductPrice}
-            </span>
-          </Fragment>
-        ) : (
-          <span>{"Rs " + finalProductPrice} </span>
+                <span>{"Rs " + finalDiscountedPrice}</span>
+              ) : (
+                <span>{"Rs " + finalProductPrice} </span>
               )}
             </div>
           </div>
