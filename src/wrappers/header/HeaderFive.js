@@ -8,7 +8,7 @@ const HeaderFive = () => {
     <div>
       <div className="home-sidebar-left">
         {/* header logo */}
-        <Logo imageUrl="/assets/img/logo/logo.png" logoClass="logo" />
+        <Logo imageUrl="/assets/img/logo/nav-logo.png" logoClass="logo" />
         {/* Icon group */}
         <IconGroup />
         {/* sidebar nav menu */}
@@ -31,7 +31,7 @@ const HeaderFive = () => {
           <div className="row">
             <div className="col-xl-2 col-lg-2 col-md-6 col-4">
               {/* header logo */}
-              <Logo imageUrl="/assets/img/logo/logo.png" logoClass="logo" />
+              <Logo imageUrl="/assets/img/logo/nav-logo.png" logoClass="logo" />
             </div>
             <div className="col-xl-10 col-lg-102 col-md-6 col-8">
               {/* Icon group */}

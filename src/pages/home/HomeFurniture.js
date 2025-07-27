@@ -29,8 +29,8 @@ const HomeFurniture = () => {
         {/* luxury watches section */}
         <ProductSection
           spaceBottomClass="pb-100"
-          category="luxury"
-          title="LUXURY WATCHES"
+          category="classic"
+          title="CLASSIC WATCHES"
         />
 
         {/* sports watches section */}

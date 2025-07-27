@@ -57,7 +57,7 @@ const HeaderOne = ({
           <div className="row">
             <div className="col-xl-3 col-lg-3 col-md-6 col-4">
               {/* header logo */}
-              <Logo imageUrl="/assets/img/logo/logo.png" logoClass="logo" />
+              <Logo imageUrl="/assets/img/logo/nav-logo.png" logoClass="logo" />
             </div>
             <div className="col-xl-6 col-lg-6 d-none d-lg-block">
               {/* Nav menu */}

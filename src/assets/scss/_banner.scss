@@ -11,11 +11,11 @@
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     padding: 40px;
-    border: 1px solid rgba(3, 5, 91, 0.05);
+    border: 1px solid rgba(218, 170, 88, 0.1);
 
     &:hover {
       transform: translateY(-15px) scale(1.02);
-      box-shadow: 0 25px 60px rgba(3, 5, 91, 0.25);
+      box-shadow: 0 25px 60px rgba(218, 170, 88, 0.2);
     }
 
     .category-header {
@@ -27,7 +27,7 @@
       h2 {
         font-size: 2.5rem;
         font-weight: 700;
-        color: #03055b;
+        color: #daaa58;
         margin-bottom: 15px;
         text-transform: uppercase;
         letter-spacing: 2px;
@@ -57,7 +57,7 @@
 
         &:hover {
           transform: translateY(-8px);
-          box-shadow: 0 15px 40px rgba(3, 5, 91, 0.2);
+          box-shadow: 0 15px 40px rgba(218, 170, 88, 0.2);
         }
 
         .product-image {
@@ -79,6 +79,20 @@
             transition: all 0.4s ease;
           }
 
+          .discount-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #daaa58 0%, #f4ca68 100%);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(218, 170, 88, 0.3);
+          }
+
           &::after {
             content: '';
             position: absolute;
@@ -86,7 +100,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(3, 5, 91, 0.05) 0%, rgba(255, 105, 180, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(218, 170, 88, 0.05) 0%, rgba(244, 202, 104, 0.05) 100%);
             opacity: 0;
             transition: opacity 0.3s ease;
           }
@@ -109,7 +123,7 @@
           h4 {
             font-size: 1.1rem;
             font-weight: 600;
-            color: #03055b;
+            color: #daaa58;
             margin-bottom: 10px;
             line-height: 1.4;
             height: 2.8em;
@@ -120,24 +134,45 @@
             max-width: 100%;
             white-space: nowrap;
             text-overflow: ellipsis;
+
+            a {
+              color: #daaa58;
+              text-decoration: none;
+              transition: color 0.3s ease;
+
+              &:hover {
+                color: #f4ca68;
+              }
+            }
           }
 
-          .price {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #111;
-            margin: 0;
-            text-shadow: none;
-            display: inline-block;
-          }
+          .product-price {
+            .new-price {
+              font-size: 1.2rem;
+              font-weight: 700;
+              color: #daaa58;
+              margin: 0;
+              text-shadow: none;
+              display: inline-block;
+            }
 
-          .old-price {
-            color: #888;
-            text-decoration: line-through;
-            font-size: 1rem;
-            margin-right: 8px;
-            font-weight: 400;
-            display: inline-block;
+            .old-price {
+              color: #888;
+              text-decoration: line-through;
+              font-size: 1rem;
+              margin-right: 8px;
+              font-weight: 400;
+              display: inline-block;
+            }
+
+            .price {
+              font-size: 1.2rem;
+              font-weight: 700;
+              color: #daaa58;
+              margin: 0;
+              text-shadow: none;
+              display: inline-block;
+            }
           }
         }
       }
@@ -146,26 +181,49 @@
         text-align: center;
         margin-top: 25px;
         width: 100%;
+
+        .category-link {
+          display: inline-block;
+          padding: 12px 30px;
+          background: linear-gradient(135deg, #daaa58 0%, #f4ca68 100%);
+          color: black;
+          text-decoration: none;
+          border-radius: 25px;
+          font-weight: 600;
+          font-size: 14px;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 15px rgba(218, 170, 88, 0.3);
+
+          &:hover {
+            background: linear-gradient(135deg, #f4ca68 0%, #daaa58 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(218, 170, 88, 0.4);
+            color: black;
+            text-decoration: none;
+          }
+        }
       }
     }
   }
 
-  .lingerie-category {
+  .luxury-category {
     background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
 
     .category-header h2 {
-      background: linear-gradient(135deg, #03055b 0%, #1a1f7a 100%);
+      background: linear-gradient(135deg, #daaa58 0%, #f4ca68 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
   }
 
-  .nightwear-category {
+  .smart-category {
     background: linear-gradient(135deg, #ffffff 0%, #f4f7fa 100%);
 
     .category-header h2 {
-      color: #03055b;
+      color: #daaa58;
       background: none;
       -webkit-background-clip: initial;
       -webkit-text-fill-color: initial;

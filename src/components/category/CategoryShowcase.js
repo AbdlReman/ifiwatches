@@ -97,7 +97,7 @@ const CategoryShowcase = () => {
           </Link>
           {product.discount > 0 && (
             <div className="discount-badge">
-              -{product.discount}%
+              
             </div>
           )}
         </div>
@@ -111,10 +111,10 @@ const CategoryShowcase = () => {
             {product.discount > 0 ? (
               <>
                 <span className="new-price">Rs. {discountedPrice.toFixed(2)}</span>
-                <span className="old-price">Rs. {product.price.toFixed(2)}</span>
+
               </>
             ) : (
-              <span className="price">Rs. {product.price.toFixed(2)}</span>
+             <></>
             )}
           </div>
         </div>

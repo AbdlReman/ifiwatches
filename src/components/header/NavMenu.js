@@ -101,6 +101,9 @@ const NavMenu = ({ menuWhiteClass, sidebarMenu }) => {
               </li>
             </ul>
           </li>
+          <li>
+            <Link to={process.env.PUBLIC_URL + "/contact"}>Contact</Link>
+          </li>
         </ul>
       </nav>
     </div>
