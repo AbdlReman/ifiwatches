@@ -8,6 +8,7 @@ import RecurringCountDown from "../../wrappers/countdown/RecurringCountDown";
 import FeatureIconTwo from "../../wrappers/feature-icon/FeatureIconTwo";
 import LatestProductSection from "../../wrappers/product/LatestProductSection";
 import CategoryShowcase from "../../components/category/CategoryShowcase";
+import HeroBanner from "../../components/hero/HeroBanner";
 
 const HomeFurniture = () => {
   return (
@@ -18,7 +19,12 @@ const HomeFurniture = () => {
       />
       <LayoutOne headerTop="visible">
         {/* hero slider */}
-        <HeroSliderTwentySeven />
+        {/* <HeroSliderTwentySeven /> */}
+
+        {/* hero banner section */}
+        <div>
+          <HeroBanner />
+        </div>
 
         {/* banner */}
         <BannerTwentySeven spaceTopClass="pt-80" spaceBottomClass="pb-60" />
