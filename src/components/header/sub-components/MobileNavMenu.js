@@ -13,194 +13,213 @@ const MobileNavMenu = () => {
           </Link>
         </li>
        
-        {/* Watches */}
+        <li>
+          <Link to={process.env.PUBLIC_URL + "/shop"}>
+            Shop
+          </Link>
+        </li>
+
+        {/* Top Categories */}
         <li className="menu-item-has-children">
-          <Link to={process.env.PUBLIC_URL + "/watches"}>
-            🕰️ Watches
+          <Link to={process.env.PUBLIC_URL + "/top-categories"}>
+            Top Categories
           </Link>
           <ul className="sub-menu">
+            {/* Watches */}
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/watches"}>
+                Watches
+              </Link>
+            </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/watches/mens"}>
-                Men's Watches
+                • Men's Watches
               </Link>
             </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/watches/womens"}>
-                Women's Watches
+                • Women's Watches
               </Link>
             </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/watches/unisex"}>
-                Unisex Watches
+                • Unisex Watches
               </Link>
             </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/watches/luxury"}>
-                Luxury Collection
+                • Luxury Collection
               </Link>
             </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/watches/formal"}>
-                Formal Watches
+                • Formal Watches
               </Link>
             </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/watches/casual"}>
-                Casual Watches
+                • Casual Watches
               </Link>
             </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/watches/sports"}>
-                Sports & Digital Watches
+                • Sports & Digital Watches
               </Link>
             </li>
-          </ul>
-        </li>
-
-        {/* Watch Straps */}
-        <li className="menu-item-has-children">
-          <Link to={process.env.PUBLIC_URL + "/watch-straps"}>
-            🔗 Watch Straps
-          </Link>
-          <ul className="sub-menu">
+            
+            {/* Watch Straps */}
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/watch-straps"}>
+                Watch Straps
+              </Link>
+            </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/watch-straps/leather"}>
-                Leather Straps
+                • Leather Straps
               </Link>
             </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/watch-straps/metal"}>
-                Metal/Chain Straps
+                • Metal/Chain Straps
               </Link>
             </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/watch-straps/silicone"}>
-                Silicone/Rubber Straps
+                • Silicone/Rubber Straps
               </Link>
             </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/watch-straps/nylon"}>
-                Nylon/Fabric Straps
+                • Nylon/Fabric Straps
               </Link>
             </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/watch-straps/magnetic"}>
-                Magnetic/Loop Straps
+                • Magnetic/Loop Straps
               </Link>
             </li>
-          </ul>
-        </li>
-
-        {/* Eyewear */}
-        <li className="menu-item-has-children">
-          <Link to={process.env.PUBLIC_URL + "/eyewear"}>
-            🕶️ Eyewear
-          </Link>
-          <ul className="sub-menu">
+            
+            {/* Perfumes */}
             <li>
-              <Link to={process.env.PUBLIC_URL + "/eyewear/sunglasses"}>
-                Sunglasses
+              <Link to={process.env.PUBLIC_URL + "/perfumes"}>
+                Perfumes
               </Link>
             </li>
-            <li>
-              <Link to={process.env.PUBLIC_URL + "/eyewear/optical"}>
-                Optical Frames
-              </Link>
-            </li>
-          </ul>
-        </li>
-
-        {/* Rings & Accessories */}
-        <li className="menu-item-has-children">
-          <Link to={process.env.PUBLIC_URL + "/rings-accessories"}>
-            💍 Rings & Accessories
-          </Link>
-          <ul className="sub-menu">
-            <li>
-              <Link to={process.env.PUBLIC_URL + "/rings-accessories/fashion-rings"}>
-                Fashion Rings
-              </Link>
-            </li>
-            <li>
-              <Link to={process.env.PUBLIC_URL + "/rings-accessories/chains-bracelets"}>
-                Chains & Bracelets
-              </Link>
-            </li>
-          </ul>
-        </li>
-
-        {/* Perfumes */}
-        <li className="menu-item-has-children">
-          <Link to={process.env.PUBLIC_URL + "/perfumes"}>
-            🌸 Perfumes
-          </Link>
-          <ul className="sub-menu">
             <li>
               <Link to={process.env.PUBLIC_URL + "/perfumes/mens"}>
-                Men's Fragrances
+                • Men's Fragrances
               </Link>
             </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/perfumes/womens"}>
-                Women's Fragrances
+                • Women's Fragrances
               </Link>
             </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/perfumes/unisex"}>
-                Unisex Scents
+                • Unisex Scents
               </Link>
             </li>
           </ul>
         </li>
 
-        {/* Mobile Gadgets */}
+        {/* Other Categories */}
         <li className="menu-item-has-children">
-          <Link to={process.env.PUBLIC_URL + "/mobile-gadgets"}>
-            📱 Mobile Gadgets
+          <Link to={process.env.PUBLIC_URL + "/"}>
+            Categories
           </Link>
           <ul className="sub-menu">
+            {/* Eyewear */}
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/eyewear"}>
+                Eyewear
+              </Link>
+            </li>
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/eyewear/sunglasses"}>
+                • Sunglasses
+              </Link>
+            </li>
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/eyewear/optical"}>
+                • Optical Frames
+              </Link>
+            </li>
+            
+            {/* Rings & Accessories */}
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/rings-accessories"}>
+                Rings & Accessories
+              </Link>
+            </li>
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/rings-accessories/fashion-rings"}>
+                • Fashion Rings
+              </Link>
+            </li>
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/rings-accessories/chains-bracelets"}>
+                • Chains & Bracelets
+              </Link>
+            </li>
+            
+            {/* Mobile Gadgets */}
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/mobile-gadgets"}>
+                Mobile Gadgets
+              </Link>
+            </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/mobile-gadgets/used-mobiles"}>
-                Trusted Used Mobiles
+                • Trusted Used Mobiles
               </Link>
             </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/mobile-gadgets/accessories"}>
-                Mobile Accessories
+                • Mobile Accessories
+              </Link>
+            </li>
+            
+            {/* Fashion */}
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/fashion"}>
+                Fashion
+              </Link>
+            </li>
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/fashion/tshirt"}>
+                • T-Shirt
+              </Link>
+            </li>
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/fashion/pant-jeans"}>
+                • Pant/Jeans
+              </Link>
+            </li>
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/fashion/shalwar-kameez"}>
+                • Shalwar Kameez Fabric
               </Link>
             </li>
           </ul>
         </li>
 
-        {/* Fashion Buttons */}
+        {/* Other Pages */}
         <li className="menu-item-has-children">
-          <Link to={process.env.PUBLIC_URL + "/fashion-buttons"}>
-            👕 Fashion Buttons
-          </Link>
-          <ul className="sub-menu">
-            <li>
-              <Link to={process.env.PUBLIC_URL + "/fashion-buttons/tshirt"}>
-                T-Shirt
-              </Link>
-            </li>
-            <li>
-              <Link to={process.env.PUBLIC_URL + "/fashion-buttons/pant-jeans"}>
-                Pant/Jeans
-              </Link>
-            </li>
-            <li>
-              <Link to={process.env.PUBLIC_URL + "/fashion-buttons/shalwar-kameez"}>
-                Shalwar Kameez Fabric (Unstitched only)
-              </Link>
-            </li>
-          </ul>
-        </li>
-        
-        <li>
           <Link to={process.env.PUBLIC_URL + "/"}>
-            {t("pages")}
+            Pages
           </Link>
           <ul className="sub-menu">
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/about"}>
+                {t("about_us")}
+              </Link>
+            </li>
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/contact"}>
+                {t("contact_us")}
+              </Link>
+            </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/cart"}>
                 {t("cart")}
@@ -221,23 +240,7 @@ const MobileNavMenu = () => {
                 {t("compare")}
               </Link>
             </li>
-            <li>
-              <Link to={process.env.PUBLIC_URL + "/about"}>
-                {t("about_us")}
-              </Link>
-            </li>
-            <li>
-              <Link to={process.env.PUBLIC_URL + "/contact"}>
-                {t("contact_us")}
-              </Link>
-            </li>
           </ul>
-        </li>
-        
-        <li>
-          <Link to={process.env.PUBLIC_URL + "/contact"}>
-            {t("contact_us")}
-          </Link>
         </li>
       </ul>
     </nav>

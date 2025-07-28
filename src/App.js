@@ -12,6 +12,7 @@ const ShopGridStandard = lazy(() => import("./pages/shop/ShopGridStandard"));
 const Product = lazy(() => import("./pages/shop-product/Product"));
 
 // category pages - Main categories
+const TopCategoriesPage = lazy(() => import("./pages/category/TopCategoriesPage"));
 const WatchesPage = lazy(() => import("./pages/category/WatchesPage"));
 const WatchStrapsPage = lazy(() => import("./pages/category/WatchStrapsPage"));
 const EyewearPage = lazy(() => import("./pages/category/EyewearPage"));
@@ -111,6 +112,10 @@ const App = () => {
             />
 
             {/* Category pages - Main categories */}
+            <Route
+              path={process.env.PUBLIC_URL + "/top-categories"}
+              element={<TopCategoriesPage />}
+            />
             <Route
               path={process.env.PUBLIC_URL + "/watches"}
               element={<WatchesPage />}
