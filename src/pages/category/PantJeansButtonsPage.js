@@ -7,7 +7,7 @@ import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import ShopTopbarFilter from "../../wrappers/product/ShopTopbarFilter";
 import ShopProducts from "../../wrappers/product/ShopProducts";
 
-const MobileAccessoriesPage = () => {
+const PantJeansPage = () => {
   const { t } = useTranslation();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -53,14 +53,14 @@ const MobileAccessoriesPage = () => {
           };
         });
 
-        // Filter for mobile accessories category
-        const mobileAccessoriesProducts = items.filter(product =>
-          product.category && product.category.includes("mobileaccessories")
+        // Filter for Pant/Jeans category
+        const pantJeansProducts = items.filter(product =>
+          product.category && product.category.includes("pantjeans")
         );
 
-        setProducts(mobileAccessoriesProducts);
-        setSortedProducts(mobileAccessoriesProducts);
-        setCurrentData(mobileAccessoriesProducts.slice(0, pageLimit));
+        setProducts(pantJeansProducts);
+        setSortedProducts(pantJeansProducts);
+        setCurrentData(pantJeansProducts.slice(0, pageLimit));
       } catch (error) {
         console.error("Failed to fetch products from Contentful", error);
       } finally {
@@ -95,34 +95,32 @@ const MobileAccessoriesPage = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate="Mobile Accessories - IFIwatches"
-        description="Shop mobile accessories at IFIwatches. Essential gadgets and accessories for your mobile devices."
+        titleTemplate="Pant/Jeans - IFIwatches"
+        description="Shop pants and jeans at IFIwatches. Quality pants and jeans for every style and occasion."
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb
           pages={[
             { label: "Home", path: process.env.PUBLIC_URL + "/" },
-            { label: "Mobile Gadgets", path: process.env.PUBLIC_URL + "/mobile-gadgets" },
-            { label: "Mobile Accessories", path: process.env.PUBLIC_URL + "/mobile-gadgets/accessories" },
+            { label: "Fashion", path: process.env.PUBLIC_URL + "/fashion" },
+            { label: "Pant/Jeans", path: process.env.PUBLIC_URL + "/fashion/pant-jeans" },
           ]}
         />
         <div className="shop-area pt-95 pb-100">
           <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
-                <ShopTopbarFilter
-                  getLayout={setSortedProducts}
-                  getFilterSortParams={setSortedProducts}
-                  productCount={products.length}
-                  sortedProductCount={currentData.length}
-                  products={products}
-                  searchTerm={searchTerm}
-                  setSearchTerm={setSearchTerm}
-                  selectedColors={selectedColors}
-                  setSelectedColors={setSelectedColors}
-                />
-                <ShopProducts layout={sortedProducts} products={currentData} loading={loading} />
-              </div>
+            <div className="col-lg-12">
+              <ShopTopbarFilter
+                getLayout={setSortedProducts}
+                getFilterSortParams={setSortedProducts}
+                productCount={products.length}
+                sortedProductCount={currentData.length}
+                products={products}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                selectedColors={selectedColors}
+                setSelectedColors={setSelectedColors}
+              />
+              <ShopProducts layout={sortedProducts} products={currentData} loading={loading} />
             </div>
           </div>
         </div>
@@ -131,4 +129,4 @@ const MobileAccessoriesPage = () => {
   );
 };
 
-export default MobileAccessoriesPage; 
+export default PantJeansPage; 

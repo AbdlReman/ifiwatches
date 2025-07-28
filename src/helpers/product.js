@@ -136,21 +136,50 @@ const getIndividualItemArray = array => {
 // get individual categories
 export const getIndividualCategories = products => {
   let productCategories = [];
+  console.log("getIndividualCategories called with products:", products?.length || 0);
+  
   products &&
     products.map(product => {
       if (product.category) {
+        console.log(`Product ${product.name}: category =`, product.category);
         if (Array.isArray(product.category)) {
           product.category.forEach(single => {
-            productCategories.push(single);
+            if (single && single.trim()) {
+              productCategories.push(single.trim());
+            }
           });
         } else {
           // If category is a single string
-          productCategories.push(product.category);
+          if (product.category && product.category.trim()) {
+            productCategories.push(product.category.trim());
+          }
         }
+      } else {
+        console.log(`Product ${product.name}: no category found`);
       }
     });
+  
   const individualProductCategories = getIndividualItemArray(productCategories);
-  return individualProductCategories;
+  console.log("All unique categories found:", individualProductCategories);
+  
+  // Filter out categories with 0 products
+  const categoriesWithProducts = individualProductCategories.filter(category => {
+    const categoryCount = products.filter(product => {
+      if (!product.category) return false;
+      if (Array.isArray(product.category)) {
+        return product.category.some(cat => 
+          cat.toLowerCase() === category.toLowerCase()
+        );
+      }
+      return product.category.toLowerCase() === category.toLowerCase();
+    }).length;
+    
+    console.log(`Category "${category}" has ${categoryCount} products`);
+    return categoryCount > 0;
+  });
+  
+  console.log("Categories with products (filtered):", categoriesWithProducts);
+  return categoriesWithProducts;
 };
 
 // get individual tags
@@ -182,7 +211,19 @@ export const getIndividualColors = products => {
       );
     });
   const individualProductColors = getIndividualItemArray(productColors);
-  return individualProductColors;
+  
+  // Filter out colors with 0 products
+  const colorsWithProducts = individualProductColors.filter(color => {
+    const colorCount = products.filter(product => 
+      product.color && product.color.includes(color)
+    ).length;
+    
+    console.log(`Color "${color}" has ${colorCount} products`);
+    return colorCount > 0;
+  });
+  
+  console.log("Colors with products (filtered):", colorsWithProducts);
+  return colorsWithProducts;
 };
 
 // get individual sizes

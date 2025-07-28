@@ -27,8 +27,15 @@ const ShopSidebar = ({
   const uniqueColors = getIndividualColors(products);
   
   // Debug: Log categories and colors
-  console.log("Unique Categories:", uniqueCategories);
-  console.log("Unique Colors:", uniqueColors);
+  console.log("ShopSidebar render:", {
+    productsCount: products?.length || 0,
+    uniqueCategories,
+    uniqueColors,
+    selectedCategory,
+    selectedColor,
+    searchTerm,
+    hasHandleCategoryFilter: !!handleCategoryFilter
+  });
 
   return (
     <div className={clsx("sidebar-style", sideSpaceClass)}>
@@ -44,6 +51,7 @@ const ShopSidebar = ({
           categories={uniqueCategories}
           handleCategoryFilter={handleCategoryFilter}
           selectedCategory={selectedCategory}
+          products={products}
         />
       )}
 
@@ -52,6 +60,7 @@ const ShopSidebar = ({
         colors={uniqueColors} 
         handleColorFilter={handleColorFilter}
         selectedColor={selectedColor}
+        products={products}
       />
       
       {/* Clear filters button */}

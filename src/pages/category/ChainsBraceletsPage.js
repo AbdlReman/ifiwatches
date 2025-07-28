@@ -7,7 +7,7 @@ import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import ShopTopbarFilter from "../../wrappers/product/ShopTopbarFilter";
 import ShopProducts from "../../wrappers/product/ShopProducts";
 
-const MobileAccessoriesPage = () => {
+const ChainsBraceletsPage = () => {
   const { t } = useTranslation();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -53,14 +53,14 @@ const MobileAccessoriesPage = () => {
           };
         });
 
-        // Filter for mobile accessories category
-        const mobileAccessoriesProducts = items.filter(product =>
-          product.category && product.category.includes("mobileaccessories")
+        // Filter for chains and bracelets category
+        const chainsBraceletsProducts = items.filter(product =>
+          product.category && product.category.includes("chainsbracelets")
         );
 
-        setProducts(mobileAccessoriesProducts);
-        setSortedProducts(mobileAccessoriesProducts);
-        setCurrentData(mobileAccessoriesProducts.slice(0, pageLimit));
+        setProducts(chainsBraceletsProducts);
+        setSortedProducts(chainsBraceletsProducts);
+        setCurrentData(chainsBraceletsProducts.slice(0, pageLimit));
       } catch (error) {
         console.error("Failed to fetch products from Contentful", error);
       } finally {
@@ -95,15 +95,15 @@ const MobileAccessoriesPage = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate="Mobile Accessories - IFIwatches"
-        description="Shop mobile accessories at IFIwatches. Essential gadgets and accessories for your mobile devices."
+        titleTemplate="Chains & Bracelets - IFIwatches"
+        description="Shop elegant chains and bracelets at IFIwatches. Beautiful jewelry to enhance your style."
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb
           pages={[
             { label: "Home", path: process.env.PUBLIC_URL + "/" },
-            { label: "Mobile Gadgets", path: process.env.PUBLIC_URL + "/mobile-gadgets" },
-            { label: "Mobile Accessories", path: process.env.PUBLIC_URL + "/mobile-gadgets/accessories" },
+            { label: "Rings & Accessories", path: process.env.PUBLIC_URL + "/rings-accessories" },
+            { label: "Chains & Bracelets", path: process.env.PUBLIC_URL + "/rings-accessories/chains-bracelets" },
           ]}
         />
         <div className="shop-area pt-95 pb-100">
@@ -131,4 +131,4 @@ const MobileAccessoriesPage = () => {
   );
 };
 
-export default MobileAccessoriesPage; 
+export default ChainsBraceletsPage; 

@@ -7,7 +7,7 @@ import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import ShopTopbarFilter from "../../wrappers/product/ShopTopbarFilter";
 import ShopProducts from "../../wrappers/product/ShopProducts";
 
-const MobileAccessoriesPage = () => {
+const FashionPage = () => {
   const { t } = useTranslation();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -53,14 +53,14 @@ const MobileAccessoriesPage = () => {
           };
         });
 
-        // Filter for mobile accessories category
-        const mobileAccessoriesProducts = items.filter(product =>
-          product.category && product.category.includes("mobileaccessories")
+        // Filter for fashion category
+        const fashionProducts = items.filter(product =>
+          product.category && product.category.includes("fashion")
         );
 
-        setProducts(mobileAccessoriesProducts);
-        setSortedProducts(mobileAccessoriesProducts);
-        setCurrentData(mobileAccessoriesProducts.slice(0, pageLimit));
+        setProducts(fashionProducts);
+        setSortedProducts(fashionProducts);
+        setCurrentData(fashionProducts.slice(0, pageLimit));
       } catch (error) {
         console.error("Failed to fetch products from Contentful", error);
       } finally {
@@ -95,15 +95,14 @@ const MobileAccessoriesPage = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate="Mobile Accessories - IFIwatches"
-        description="Shop mobile accessories at IFIwatches. Essential gadgets and accessories for your mobile devices."
+        titleTemplate="Fashion - IFIwatches"
+        description="Shop fashion items at IFIwatches. T-shirts, pants, jeans, and Shalwar Kameez fabric for all your fashion needs."
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb
           pages={[
             { label: "Home", path: process.env.PUBLIC_URL + "/" },
-            { label: "Mobile Gadgets", path: process.env.PUBLIC_URL + "/mobile-gadgets" },
-            { label: "Mobile Accessories", path: process.env.PUBLIC_URL + "/mobile-gadgets/accessories" },
+            { label: "Fashion", path: process.env.PUBLIC_URL + "/fashion" },
           ]}
         />
         <div className="shop-area pt-95 pb-100">
@@ -131,4 +130,4 @@ const MobileAccessoriesPage = () => {
   );
 };
 
-export default MobileAccessoriesPage; 
+export default FashionPage; 

@@ -1,0 +1,59 @@
+/* Filter Message Styles */
+.filter-message-container {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #495057;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.filter-message-container .filter-message-item {
+  display: inline-block;
+  margin-right: 15px;
+}
+
+.filter-message-container .filter-message-item strong {
+  color: #007bff;
+  font-weight: 600;
+}
+
+/* Category and Color Count Styles */
+.category-count,
+.color-count {
+  margin-left: 8px;
+  font-size: 12px;
+  color: #6c757d;
+  font-weight: normal;
+  background-color: #e9ecef;
+  padding: 2px 6px;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.sidebar-widget-list-left button.active .category-count,
+.sidebar-widget-list-left button.active .color-count {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .filter-message-container {
+    padding: 12px;
+    font-size: 13px;
+  }
+  
+  .filter-message-container .filter-message-item {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .category-count,
+  .color-count {
+    font-size: 11px;
+    padding: 1px 4px;
+  }
+} 

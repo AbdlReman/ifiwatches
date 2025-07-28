@@ -6,8 +6,10 @@ import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import ShopTopbarFilter from "../../wrappers/product/ShopTopbarFilter";
 import ShopProducts from "../../wrappers/product/ShopProducts";
+import { hasCategory } from "../../helpers/categoryMapper";
+import DebugCategoryInfo from "../../components/DebugCategoryInfo";
 
-const MobileAccessoriesPage = () => {
+const LeatherStrapsPage = () => {
   const { t } = useTranslation();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -53,14 +55,14 @@ const MobileAccessoriesPage = () => {
           };
         });
 
-        // Filter for mobile accessories category
-        const mobileAccessoriesProducts = items.filter(product =>
-          product.category && product.category.includes("mobileaccessories")
+        // Filter for leather straps category using the category mapper
+        const leatherStrapsProducts = items.filter(product =>
+          hasCategory(product, "leatherstraps")
         );
 
-        setProducts(mobileAccessoriesProducts);
-        setSortedProducts(mobileAccessoriesProducts);
-        setCurrentData(mobileAccessoriesProducts.slice(0, pageLimit));
+        setProducts(leatherStrapsProducts);
+        setSortedProducts(leatherStrapsProducts);
+        setCurrentData(leatherStrapsProducts.slice(0, pageLimit));
       } catch (error) {
         console.error("Failed to fetch products from Contentful", error);
       } finally {
@@ -95,19 +97,25 @@ const MobileAccessoriesPage = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate="Mobile Accessories - IFIwatches"
-        description="Shop mobile accessories at IFIwatches. Essential gadgets and accessories for your mobile devices."
+        titleTemplate="Leather Straps - IFIwatches"
+        description="Shop premium leather watch straps at IFIwatches. Elegant and durable straps for your timepiece."
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb
           pages={[
             { label: "Home", path: process.env.PUBLIC_URL + "/" },
-            { label: "Mobile Gadgets", path: process.env.PUBLIC_URL + "/mobile-gadgets" },
-            { label: "Mobile Accessories", path: process.env.PUBLIC_URL + "/mobile-gadgets/accessories" },
+            { label: "Watch Straps", path: process.env.PUBLIC_URL + "/watch-straps" },
+            { label: "Leather Straps", path: process.env.PUBLIC_URL + "/watch-straps/leather" },
           ]}
         />
         <div className="shop-area pt-95 pb-100">
           <div className="container">
+            {/* Debug Info - Remove this after debugging */}
+            <DebugCategoryInfo 
+              products={products} 
+              categoryName="leatherstraps" 
+              loading={loading} 
+            />
             <div className="row">
               <div className="col-lg-12">
                 <ShopTopbarFilter
@@ -131,4 +139,4 @@ const MobileAccessoriesPage = () => {
   );
 };
 
-export default MobileAccessoriesPage; 
+export default LeatherStrapsPage; 

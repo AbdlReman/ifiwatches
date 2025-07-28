@@ -7,7 +7,7 @@ import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import ShopTopbarFilter from "../../wrappers/product/ShopTopbarFilter";
 import ShopProducts from "../../wrappers/product/ShopProducts";
 
-const MobileAccessoriesPage = () => {
+const SiliconeStrapsPage = () => {
   const { t } = useTranslation();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -53,14 +53,14 @@ const MobileAccessoriesPage = () => {
           };
         });
 
-        // Filter for mobile accessories category
-        const mobileAccessoriesProducts = items.filter(product =>
-          product.category && product.category.includes("mobileaccessories")
+        // Filter for silicone straps category
+        const siliconeStrapsProducts = items.filter(product =>
+          product.category && product.category.includes("siliconestraps")
         );
 
-        setProducts(mobileAccessoriesProducts);
-        setSortedProducts(mobileAccessoriesProducts);
-        setCurrentData(mobileAccessoriesProducts.slice(0, pageLimit));
+        setProducts(siliconeStrapsProducts);
+        setSortedProducts(siliconeStrapsProducts);
+        setCurrentData(siliconeStrapsProducts.slice(0, pageLimit));
       } catch (error) {
         console.error("Failed to fetch products from Contentful", error);
       } finally {
@@ -95,15 +95,15 @@ const MobileAccessoriesPage = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate="Mobile Accessories - IFIwatches"
-        description="Shop mobile accessories at IFIwatches. Essential gadgets and accessories for your mobile devices."
+        titleTemplate="Silicone/Rubber Straps - IFIwatches"
+        description="Shop comfortable silicone and rubber watch straps at IFIwatches. Perfect for sports and casual wear."
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb
           pages={[
             { label: "Home", path: process.env.PUBLIC_URL + "/" },
-            { label: "Mobile Gadgets", path: process.env.PUBLIC_URL + "/mobile-gadgets" },
-            { label: "Mobile Accessories", path: process.env.PUBLIC_URL + "/mobile-gadgets/accessories" },
+            { label: "Watch Straps", path: process.env.PUBLIC_URL + "/watch-straps" },
+            { label: "Silicone/Rubber Straps", path: process.env.PUBLIC_URL + "/watch-straps/silicone" },
           ]}
         />
         <div className="shop-area pt-95 pb-100">
@@ -131,4 +131,4 @@ const MobileAccessoriesPage = () => {
   );
 };
 
-export default MobileAccessoriesPage; 
+export default SiliconeStrapsPage; 

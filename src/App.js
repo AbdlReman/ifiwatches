@@ -3,7 +3,6 @@ import ScrollToTop from "./helpers/scroll-top";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // home pages
-
 const HomeFurniture = lazy(() => import("./pages/home/HomeFurniture"));
 
 // shop pages
@@ -12,16 +11,52 @@ const ShopGridStandard = lazy(() => import("./pages/shop/ShopGridStandard"));
 // product pages
 const Product = lazy(() => import("./pages/shop-product/Product"));
 
-// category pages
-// const CosmeticPage = lazy(() => import("./pages/category/CosmeticPage"));
-// const MobileAccessoriesPage = lazy(() =>
-//   import("./pages/category/MobileAccessoriesPage")
-// );
-// const ElectronicPage = lazy(() => import("./pages/category/ElectronicPage"));
-const LuxuryPage = lazy(() => import("./pages/category/BrasPage"));
-const SportsPage = lazy(() => import("./pages/category/PantiesPage"));
-const ClassicPage = lazy(() => import("./pages/category/LingeriePage"));
-const SmartPage = lazy(() => import("./pages/category/NightwearPage"));
+// category pages - Main categories
+const WatchesPage = lazy(() => import("./pages/category/WatchesPage"));
+const WatchStrapsPage = lazy(() => import("./pages/category/WatchStrapsPage"));
+const EyewearPage = lazy(() => import("./pages/category/EyewearPage"));
+const RingsAccessoriesPage = lazy(() => import("./pages/category/RingsAccessoriesPage"));
+const PerfumesPage = lazy(() => import("./pages/category/PerfumesPage"));
+const MobileGadgetsPage = lazy(() => import("./pages/category/MobileGadgetsPage"));
+const FashionPage = lazy(() => import("./pages/category/FashionButtonsPage"));
+
+// category pages - Watch subcategories
+const MensWatchesPage = lazy(() => import("./pages/category/MensWatchesPage"));
+const WomensWatchesPage = lazy(() => import("./pages/category/WomensWatchesPage"));
+const UnisexWatchesPage = lazy(() => import("./pages/category/UnisexWatchesPage"));
+const LuxuryWatchesPage = lazy(() => import("./pages/category/LuxuryWatchesPage"));
+const FormalWatchesPage = lazy(() => import("./pages/category/FormalWatchesPage"));
+const CasualWatchesPage = lazy(() => import("./pages/category/CasualWatchesPage"));
+const SportsWatchesPage = lazy(() => import("./pages/category/SportsWatchesPage"));
+
+// category pages - Watch Straps subcategories
+const LeatherStrapsPage = lazy(() => import("./pages/category/LeatherStrapsPage"));
+const MetalStrapsPage = lazy(() => import("./pages/category/MetalStrapsPage"));
+const SiliconeStrapsPage = lazy(() => import("./pages/category/SiliconeStrapsPage"));
+const NylonStrapsPage = lazy(() => import("./pages/category/NylonStrapsPage"));
+const MagneticStrapsPage = lazy(() => import("./pages/category/MagneticStrapsPage"));
+
+// category pages - Eyewear subcategories
+const SunglassesPage = lazy(() => import("./pages/category/SunglassesPage"));
+const OpticalFramesPage = lazy(() => import("./pages/category/OpticalFramesPage"));
+
+// category pages - Rings & Accessories subcategories
+const FashionRingsPage = lazy(() => import("./pages/category/FashionRingsPage"));
+const ChainsBraceletsPage = lazy(() => import("./pages/category/ChainsBraceletsPage"));
+
+// category pages - Perfumes subcategories
+const MensPerfumesPage = lazy(() => import("./pages/category/MensPerfumesPage"));
+const WomensPerfumesPage = lazy(() => import("./pages/category/WomensPerfumesPage"));
+const UnisexPerfumesPage = lazy(() => import("./pages/category/UnisexPerfumesPage"));
+
+// category pages - Mobile Gadgets subcategories
+const UsedMobilesPage = lazy(() => import("./pages/category/UsedMobilesPage"));
+const MobileAccessoriesPage = lazy(() => import("./pages/category/MobileAccessoriesPage"));
+
+// category pages - Fashion subcategories
+const TshirtPage = lazy(() => import("./pages/category/TshirtButtonsPage"));
+const PantJeansPage = lazy(() => import("./pages/category/PantJeansButtonsPage"));
+const ShalwarKameezPage = lazy(() => import("./pages/category/ShalwarKameezButtonsPage"));
 
 // blog pages
 const BlogStandard = lazy(() => import("./pages/blog/BlogStandard"));
@@ -61,7 +96,6 @@ const App = () => {
         >
           <Routes>
             {/* Homepages */}
-
             <Route path="/" element={<HomeFurniture />} />
 
             {/* Shop pages */}
@@ -76,22 +110,144 @@ const App = () => {
               element={<Product />}
             />
 
-            {/* Category pages */}
+            {/* Category pages - Main categories */}
             <Route
-              path={process.env.PUBLIC_URL + "/luxury"}
-              element={<LuxuryPage />}
+              path={process.env.PUBLIC_URL + "/watches"}
+              element={<WatchesPage />}
             />
             <Route
-              path={process.env.PUBLIC_URL + "/sports"}
-              element={<SportsPage />}
+              path={process.env.PUBLIC_URL + "/watch-straps"}
+              element={<WatchStrapsPage />}
             />
             <Route
-              path={process.env.PUBLIC_URL + "/classic"}
-              element={<ClassicPage />}
+              path={process.env.PUBLIC_URL + "/eyewear"}
+              element={<EyewearPage />}
             />
             <Route
-              path={process.env.PUBLIC_URL + "/smart"}
-              element={<SmartPage />}
+              path={process.env.PUBLIC_URL + "/rings-accessories"}
+              element={<RingsAccessoriesPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/perfumes"}
+              element={<PerfumesPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/mobile-gadgets"}
+              element={<MobileGadgetsPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/fashion"}
+              element={<FashionPage />}
+            />
+
+            {/* Category pages - Watch subcategories */}
+            <Route
+              path={process.env.PUBLIC_URL + "/watches/mens"}
+              element={<MensWatchesPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/watches/womens"}
+              element={<WomensWatchesPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/watches/unisex"}
+              element={<UnisexWatchesPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/watches/luxury"}
+              element={<LuxuryWatchesPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/watches/formal"}
+              element={<FormalWatchesPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/watches/casual"}
+              element={<CasualWatchesPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/watches/sports"}
+              element={<SportsWatchesPage />}
+            />
+
+            {/* Category pages - Watch Straps subcategories */}
+            <Route
+              path={process.env.PUBLIC_URL + "/watch-straps/leather"}
+              element={<LeatherStrapsPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/watch-straps/metal"}
+              element={<MetalStrapsPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/watch-straps/silicone"}
+              element={<SiliconeStrapsPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/watch-straps/nylon"}
+              element={<NylonStrapsPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/watch-straps/magnetic"}
+              element={<MagneticStrapsPage />}
+            />
+
+            {/* Category pages - Eyewear subcategories */}
+            <Route
+              path={process.env.PUBLIC_URL + "/eyewear/sunglasses"}
+              element={<SunglassesPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/eyewear/optical"}
+              element={<OpticalFramesPage />}
+            />
+
+            {/* Category pages - Rings & Accessories subcategories */}
+            <Route
+              path={process.env.PUBLIC_URL + "/rings-accessories/fashion-rings"}
+              element={<FashionRingsPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/rings-accessories/chains-bracelets"}
+              element={<ChainsBraceletsPage />}
+            />
+
+            {/* Category pages - Perfumes subcategories */}
+            <Route
+              path={process.env.PUBLIC_URL + "/perfumes/mens"}
+              element={<MensPerfumesPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/perfumes/womens"}
+              element={<WomensPerfumesPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/perfumes/unisex"}
+              element={<UnisexPerfumesPage />}
+            />
+
+            {/* Category pages - Mobile Gadgets subcategories */}
+            <Route
+              path={process.env.PUBLIC_URL + "/mobile-gadgets/used-mobiles"}
+              element={<UsedMobilesPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/mobile-gadgets/accessories"}
+              element={<MobileAccessoriesPage />}
+            />
+
+            {/* Category pages - Fashion subcategories */}
+            <Route
+              path={process.env.PUBLIC_URL + "/fashion/tshirt"}
+              element={<TshirtPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/fashion/pant-jeans"}
+              element={<PantJeansPage />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/fashion/shalwar-kameez"}
+              element={<ShalwarKameezPage />}
             />
 
             {/* Blog pages */}

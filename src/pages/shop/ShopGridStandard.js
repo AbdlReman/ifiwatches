@@ -8,6 +8,7 @@ import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import ShopSidebar from "../../wrappers/product/ShopSidebar";
 import ShopTopbar from "../../wrappers/product/ShopTopbar";
 import ShopProducts from "../../wrappers/product/ShopProducts";
+import FilterMessage from "../../components/product/FilterMessage";
 import client from "../../data/contentful";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 
@@ -187,12 +188,26 @@ const ShopGridStandard = () => {
     
     // Apply category filter
     if (selectedCategory) {
-      filtered = filtered.filter(product =>
-        product.category && 
-        (Array.isArray(product.category) ? 
-          product.category.includes(selectedCategory) : 
-          product.category === selectedCategory)
-      );
+      console.log("Filtering by category:", selectedCategory);
+      console.log("Products before category filter:", filtered.length);
+      filtered = filtered.filter(product => {
+        if (!product.category) return false;
+        
+        // Handle array of categories
+        if (Array.isArray(product.category)) {
+          const hasCategory = product.category.some(cat => 
+            cat.toLowerCase() === selectedCategory.toLowerCase()
+          );
+          console.log(`Product ${product.name}: categories [${product.category}], has ${selectedCategory}: ${hasCategory}`);
+          return hasCategory;
+        }
+        
+        // Handle single category string
+        const hasCategory = product.category.toLowerCase() === selectedCategory.toLowerCase();
+        console.log(`Product ${product.name}: category "${product.category}", matches "${selectedCategory}": ${hasCategory}`);
+        return hasCategory;
+      });
+      console.log("Products after category filter:", filtered.length);
     }
     
     // Apply color filter
@@ -247,14 +262,13 @@ const ShopGridStandard = () => {
                 <div className="col-lg-3 order-2 order-lg-1">
                   <ShopSidebar
                     products={products}
-                    handleSearch={setSearchTerm}
-                    handleColorFilter={setSelectedColor}
+                    handleSearch={handleSearch}
+                    handleCategoryFilter={handleCategoryFilter}
+                    handleColorFilter={handleColorFilter}
+                    selectedCategory={selectedCategory}
                     selectedColor={selectedColor}
                     searchTerm={searchTerm}
-                    clearAllFilters={() => {
-                      setSearchTerm("");
-                      setSelectedColor("");
-                    }}
+                    clearAllFilters={clearAllFilters}
                     sideSpaceClass="mr-30"
                   />
                 </div>
@@ -262,6 +276,14 @@ const ShopGridStandard = () => {
                   <ShopTopbar
                     productCount={products.length}
                     sortedProductCount={sortedProducts.length}
+                  />
+                  <FilterMessage
+                    selectedCategory={selectedCategory}
+                    selectedColor={selectedColor}
+                    searchTerm={searchTerm}
+                    totalProducts={products.length}
+                    filteredProducts={sortedProducts.length}
+                    products={products}
                   />
                   <ShopProducts layout="grid three-column" products={currentData} />
                   <div className="pro-pagination-style text-center mt-30">
