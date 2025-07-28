@@ -7,7 +7,7 @@ import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import ShopTopbarFilter from "../../wrappers/product/ShopTopbarFilter";
 import ShopProducts from "../../wrappers/product/ShopProducts";
 import { hasCategory } from "../../helpers/categoryMapper";
-import DebugCategoryInfo from "../../components/DebugCategoryInfo";
+
 
 const LeatherStrapsPage = () => {
   const { t } = useTranslation();
@@ -110,12 +110,6 @@ const LeatherStrapsPage = () => {
         />
         <div className="shop-area pt-95 pb-100">
           <div className="container">
-            {/* Debug Info - Remove this after debugging */}
-            <DebugCategoryInfo 
-              products={products} 
-              categoryName="leatherstraps" 
-              loading={loading} 
-            />
             <div className="row">
               <div className="col-lg-12">
                 <ShopTopbarFilter

@@ -8,7 +8,6 @@ import ShopTopbar from "../../wrappers/product/ShopTopbar";
 import ShopProducts from "../../wrappers/product/ShopProducts";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import { hasCategory } from "../../helpers/categoryMapper";
-import SimpleDebugInfo from "../../components/SimpleDebugInfo";
 
 const MensWatchesPage = () => {
   const [products, setProducts] = useState([]);
@@ -129,12 +128,6 @@ const MensWatchesPage = () => {
         />
         <div className="shop-area pt-95 pb-100">
           <div className="container">
-            {/* Debug Info - Remove this after debugging */}
-            <SimpleDebugInfo 
-              products={products} 
-              categoryName="menwatches" 
-              loading={loading} 
-            />
             <div className="row">
               <div className="col-lg-3 order-2 order-lg-1">
                 <ShopSidebar
