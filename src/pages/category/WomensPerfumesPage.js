@@ -1,21 +1,22 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import client from "../../data/contentful";
+import React, { Fragment, useState, useEffect } from "react";
 import SEO from "../../components/seo";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
-import ShopTopbarFilter from "../../wrappers/product/ShopTopbarFilter";
+import client from "../../data/contentful";
+import ShopSidebar from "../../wrappers/product/ShopSidebar";
+import ShopTopbar from "../../wrappers/product/ShopTopbar";
 import ShopProducts from "../../wrappers/product/ShopProducts";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import { hasCategory } from "../../helpers/categoryMapper";
 
 const WomensPerfumesPage = () => {
-  const { t } = useTranslation();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sortedProducts, setSortedProducts] = useState([]);
   const [currentData, setCurrentData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedColors, setSelectedColors] = useState([]);
-  const [pageLimit] = useState(12);
+  const [selectedColor, setSelectedColor] = useState("");
+  const pageLimit = 15;
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -23,41 +24,46 @@ const WomensPerfumesPage = () => {
         setLoading(true);
         const entries = await client.getEntries({ content_type: "product" });
         const items = entries.items.map((item) => {
-          const { fields } = item;
+          const fields = item.fields;
           return {
             id: item.sys.id,
-            title: fields.title,
-            price: fields.price,
-            comparePrice: fields.comparePrice,
-            images: fields.images,
-            category: fields.category,
-            colors: fields.colors,
-            sizes: fields.sizes,
-            description: fields.description,
+            name: fields.name,
             slug: fields.slug,
-            rating: fields.rating,
-            reviews: fields.reviews,
-            availability: fields.availability,
-            tags: fields.tags,
-            brand: fields.brand,
-            model: fields.model,
-            material: fields.material,
-            warranty: fields.warranty,
-            shipping: fields.shipping,
-            returnPolicy: fields.returnPolicy,
-            features: fields.features,
-            specifications: fields.specifications,
-            careInstructions: fields.careInstructions,
-            createdAt: item.sys.createdAt,
-            updatedAt: item.sys.updatedAt,
+            price: parseFloat(fields.price) || 0,
+            discount: parseFloat(fields.discount) || 0,
+            shortDescription: fields.shortDescription,
+            fullDescription: fields.fullDescription ? documentToHtmlString(fields.fullDescription) : "",
+            category: fields.category || [],
+            tag: fields.tag || [],
+            images: Array.isArray(fields.images)
+              ? fields.images.filter(img => img && img.fields && img.fields.file && img.fields.file.url).map(img => img.fields.file.url)
+              : [],
+            color: fields.color || [],
+            size: fields.size || [],
+            metaTitle: fields.metaTitle || "",
+            metaDescription: fields.metaDescription || "",
+            stock: fields.stock || 0,
+            image: Array.isArray(fields.images)
+              ? fields.images.filter(img => img && img.fields && img.fields.file && img.fields.file.url).map(img => img.fields.file.url)
+              : [],
+            title: fields.name,
+            description: fields.shortDescription,
+            variation: fields.color && fields.color.length > 0 ?
+              fields.color.map(color => ({
+                color: color,
+                size: fields.size ? fields.size.map(size => ({
+                  name: size,
+                  stock: fields.stock || 0
+                })) : []
+              })) : null
           };
         });
 
-        // Filter for women's perfumes category
-        const womensPerfumesProducts = items.filter(product =>
-          product.category && product.category.includes("womensperfumes")
+        // Filter for women's perfumes category using the category mapper
+        const womensPerfumesProducts = items.filter(product => 
+          hasCategory(product, "womensperfumes")
         );
-
+        
         setProducts(womensPerfumesProducts);
         setSortedProducts(womensPerfumesProducts);
         setCurrentData(womensPerfumesProducts.slice(0, pageLimit));
@@ -71,32 +77,46 @@ const WomensPerfumesPage = () => {
   }, []);
 
   useEffect(() => {
-    let filteredProducts = sortedProducts;
+    let filtered = products;
 
-    // Filter by search term
+    // Apply search filter
     if (searchTerm) {
-      filteredProducts = filteredProducts.filter(product =>
-        product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.category.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(product =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // Filter by selected colors
-    if (selectedColors.length > 0) {
-      filteredProducts = filteredProducts.filter(product =>
-        product.colors && product.colors.some(color => selectedColors.includes(color))
+    // Apply color filter
+    if (selectedColor) {
+      filtered = filtered.filter(product =>
+        product.color && product.color.includes(selectedColor)
       );
     }
 
-    setCurrentData(filteredProducts.slice(0, pageLimit));
-  }, [searchTerm, selectedColors, sortedProducts, pageLimit]);
+    setSortedProducts(filtered);
+    setCurrentData(filtered.slice(0, pageLimit));
+  }, [products, searchTerm, selectedColor]);
+
+  if (loading) {
+    return (
+      <div className="shop-area pt-95 pb-100">
+        <div className="container">
+          <div className="row">
+            <div className="col-12 text-center">
+              <p>Loading products...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Fragment>
-      <SEO
-        titleTemplate="Women's Fragrances - IFIwatches"
-        description="Shop elegant women's fragrances at IFIwatches. Beautiful scents for the sophisticated woman."
+      <SEO 
+        titleTemplate="Women's Fragrances - IFIwatches" 
+        description="Shop elegant women's fragrances at IFIwatches. Beautiful scents for the sophisticated woman." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb
@@ -109,19 +129,27 @@ const WomensPerfumesPage = () => {
         <div className="shop-area pt-95 pb-100">
           <div className="container">
             <div className="row">
-              <div className="col-lg-12">
-                <ShopTopbarFilter
-                  getLayout={setSortedProducts}
-                  getFilterSortParams={setSortedProducts}
-                  productCount={products.length}
-                  sortedProductCount={currentData.length}
+              <div className="col-lg-3 order-2 order-lg-1">
+                <ShopSidebar
                   products={products}
+                  handleSearch={setSearchTerm}
+                  handleColorFilter={setSelectedColor}
+                  selectedColor={selectedColor}
                   searchTerm={searchTerm}
-                  setSearchTerm={setSearchTerm}
-                  selectedColors={selectedColors}
-                  setSelectedColors={setSelectedColors}
+                  clearAllFilters={() => {
+                    setSearchTerm("");
+                    setSelectedColor("");
+                  }}
+                  sideSpaceClass="mr-30"
+                  hideCategoryFilter={true}
                 />
-                <ShopProducts layout={sortedProducts} products={currentData} loading={loading} />
+              </div>
+              <div className="col-lg-9 order-1 order-lg-2">
+                <ShopTopbar
+                  productCount={products.length}
+                  sortedProductCount={sortedProducts.length}
+                />
+                <ShopProducts layout="grid three-column" products={currentData} />
               </div>
             </div>
           </div>
