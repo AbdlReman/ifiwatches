@@ -7,6 +7,7 @@ import ShopSidebar from "../../wrappers/product/ShopSidebar";
 import ShopTopbar from "../../wrappers/product/ShopTopbar";
 import ShopProducts from "../../wrappers/product/ShopProducts";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import ChildCategoryButtons from "../../components/category/ChildCategoryButtons";
 
 const PerfumesPage = () => {
   const [products, setProducts] = useState([]);
@@ -126,6 +127,7 @@ const PerfumesPage = () => {
         />
         <div className="shop-area pt-95 pb-100">
           <div className="container">
+            <ChildCategoryButtons parentCategory="perfumes" />
             <div className="row">
               <div className="col-lg-3 order-2 order-lg-1">
                 <ShopSidebar

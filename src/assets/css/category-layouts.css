@@ -867,3 +867,56 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+/* Child Category Buttons Styles */
+.child-categories-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.child-categories-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.05) 0%, transparent 50%);
+  animation: gradient-shift 20s ease-in-out infinite;
+}
+
+.child-categories-grid {
+  position: relative;
+  z-index: 2;
+}
+
+.category-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.category-icon {
+  transition: transform 0.3s ease;
+}
+
+/* Responsive adjustments for child category buttons */
+@media (max-width: 768px) {
+  .child-categories-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;
+    gap: 15px !important;
+  }
+  
+  .category-button {
+    padding: 15px !important;
+  }
+  
+  .category-icon {
+    font-size: 2rem !important;
+  }
+  
+  .category-name {
+    font-size: 0.9rem !important;
+  }
+}

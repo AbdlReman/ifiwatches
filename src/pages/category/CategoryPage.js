@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import SEO from "../../components/seo";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
+import ChildCategoryButtons from "../../components/category/ChildCategoryButtons";
 import client from "../../data/contentful";
 import ShopSidebar from "../../wrappers/product/ShopSidebar";
 import ShopTopbar from "../../wrappers/product/ShopTopbar";
@@ -227,6 +228,12 @@ const CategoryPage = () => {
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb pages={getBreadcrumb()} />
+        
+        {/* Show Child Category Buttons only on parent category pages (not subcategory pages) */}
+        {!subcategory && (
+          <ChildCategoryButtons parentCategory={category} />
+        )}
+        
         <div className="shop-area pt-95 pb-100">
           <div className="container">
             <div className="row">
