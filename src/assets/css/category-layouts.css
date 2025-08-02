@@ -1,0 +1,869 @@
+/* Category Section Styles for Home Page - Enhanced with Modern Effects */
+
+/* 1. WATCHES - Hero Style with Side Banner */
+.watches-hero-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  min-height: 90vh;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.watches-hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+  animation: gradient-shift 15s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.1) rotate(1deg); }
+}
+
+.watches-hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 80px 0;
+}
+
+.watches-hero-text {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 40px;
+  transform: translateY(30px);
+  opacity: 0;
+  animation: slide-up 1s ease-out 0.3s forwards;
+}
+
+@keyframes slide-up {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.watches-hero-text h2 {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #2c3e50, #495057);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+}
+
+.watches-hero-text h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #667eea, transparent);
+  animation: expand-width 2s ease-out 1s forwards;
+}
+
+@keyframes expand-width {
+  from { width: 0; }
+  to { width: 100px; }
+}
+
+.watches-hero-text p {
+  font-size: 1.3rem;
+  margin-bottom: 30px;
+  opacity: 0.8;
+  color: #495057;
+  line-height: 1.6;
+}
+
+.watches-hero-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  transform: translateY(30px);
+  opacity: 0;
+  animation: slide-up 1s ease-out 0.6s forwards;
+}
+
+.watches-hero-btn {
+  padding: 18px 36px;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.watches-hero-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
+}
+
+.watches-hero-btn:hover::before {
+  left: 100%;
+}
+
+.watches-hero-btn.primary {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.watches-hero-btn.secondary {
+  background: rgba(255, 255, 255, 0.9);
+  color: #2c3e50;
+  border: 2px solid #667eea;
+  backdrop-filter: blur(10px);
+}
+
+.watches-hero-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.watches-products-container {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 40px;
+  margin-top: 40px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  transform: translateY(30px);
+  opacity: 0;
+  animation: slide-up 1s ease-out 0.9s forwards;
+}
+
+/* 2. WATCH STRAPS - Masonry Grid Style */
+.watchstraps-masonry-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 100px 0;
+  margin-bottom: 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.watchstraps-masonry-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(0,0,0,0.03)"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+  animation: float-slow 20s ease-in-out infinite;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.watchstraps-header {
+  text-align: center;
+  margin-bottom: 80px;
+  position: relative;
+  z-index: 2;
+}
+
+.watchstraps-header h2 {
+  font-size: 4rem;
+  font-weight: 800;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #2c3e50, #495057);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.watchstraps-header p {
+  font-size: 1.2rem;
+  color: #6c757d;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+.watchstraps-grid {
+  background: white;
+  border-radius: 25px;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.1);
+  padding: 50px;
+  margin-top: 40px;
+  position: relative;
+  z-index: 2;
+  transform: translateY(30px);
+  opacity: 0;
+  animation: slide-up 1s ease-out 0.3s forwards;
+}
+
+/* 3. EYEWEAR - Split Layout with Diagonal Design */
+.eyewear-split-section {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  min-height: 90vh;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.eyewear-split-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.4) 50%, transparent 70%),
+    radial-gradient(circle at 30% 70%, rgba(120, 119, 198, 0.1) 0%, transparent 50%);
+  animation: diagonal-shift 12s ease-in-out infinite;
+}
+
+@keyframes diagonal-shift {
+  0%, 100% { 
+    transform: translateX(-100%) translateY(-100%) rotate(0deg); 
+    opacity: 0.3;
+  }
+  50% { 
+    transform: translateX(100%) translateY(100%) rotate(5deg); 
+    opacity: 0.7;
+  }
+}
+
+.eyewear-content {
+  position: relative;
+  z-index: 2;
+  padding: 80px 0;
+}
+
+.eyewear-products-section {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 40px;
+  margin-bottom: 30px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  transform: translateX(-30px);
+  opacity: 0;
+  animation: slide-right 1s ease-out 0.3s forwards;
+}
+
+@keyframes slide-right {
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.eyewear-info-panel {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(25px);
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 50px;
+  color: #2c3e50;
+  height: fit-content;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.1);
+  transform: translateX(30px);
+  opacity: 0;
+  animation: slide-left 1s ease-out 0.6s forwards;
+}
+
+@keyframes slide-left {
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.eyewear-info-panel h3 {
+  font-size: 3rem;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: linear-gradient(135deg, #2c3e50, #495057);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.eyewear-info-panel .emoji {
+  font-size: 3.5rem;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+.eyewear-info-panel p {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  margin-bottom: 30px;
+  opacity: 0.8;
+  color: #495057;
+}
+
+/* 4. ACCESSORIES - Card Grid with Floating Elements */
+.accessories-floating-section {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  min-height: 90vh;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.accessories-floating-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(255, 193, 7, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255, 152, 0, 0.1) 0%, transparent 50%);
+  animation: float 8s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(2deg); }
+}
+
+.accessories-content {
+  position: relative;
+  z-index: 2;
+  padding: 80px 0;
+}
+
+.accessories-products-section {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 40px;
+  margin-bottom: 30px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  transform: translateX(-30px);
+  opacity: 0;
+  animation: slide-right 1s ease-out 0.3s forwards;
+}
+
+.accessories-info-panel {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(25px);
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 50px;
+  color: #2c3e50;
+  height: fit-content;
+  position: relative;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.1);
+  transform: translateX(30px);
+  opacity: 0;
+  animation: slide-left 1s ease-out 0.6s forwards;
+}
+
+.accessories-info-panel::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: linear-gradient(45deg, #ff9800, #ffc107, #ff9800);
+  border-radius: 30px;
+  z-index: -1;
+  opacity: 0.1;
+  animation: border-glow 3s ease-in-out infinite;
+}
+
+@keyframes border-glow {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.3; }
+}
+
+.accessories-info-panel h3 {
+  font-size: 3rem;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: linear-gradient(135deg, #2c3e50, #495057);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.accessories-info-panel .emoji {
+  font-size: 3.5rem;
+  animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.accessories-info-panel p {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  margin-bottom: 30px;
+  opacity: 0.8;
+  color: #495057;
+}
+
+/* 5. PERFUMES - Elegant Minimalist Design */
+.perfumes-elegant-section {
+  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+  padding: 100px 0;
+  margin-bottom: 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.perfumes-elegant-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="elegant" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M30,30 Q35,25 40,30 Q35,35 30,30" fill="rgba(0,0,0,0.02)"/></pattern></defs><rect width="100" height="100" fill="url(%23elegant)"/></svg>');
+  animation: elegant-float 25s ease-in-out infinite;
+}
+
+@keyframes elegant-float {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-15px) scale(1.05); }
+}
+
+.perfumes-banner {
+  background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+  color: #2c3e50;
+  text-align: center;
+  padding: 80px 0;
+  margin-bottom: 80px;
+  border-radius: 30px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.1);
+  transform: translateY(30px);
+  opacity: 0;
+  animation: slide-up 1s ease-out 0.3s forwards;
+}
+
+.perfumes-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 30% 30%, rgba(156, 39, 176, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(233, 30, 99, 0.1) 0%, transparent 50%);
+  animation: perfume-glow 8s ease-in-out infinite;
+}
+
+@keyframes perfume-glow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+.perfumes-banner-content {
+  position: relative;
+  z-index: 2;
+}
+
+.perfumes-banner h2 {
+  font-size: 4rem;
+  font-weight: 300;
+  margin-bottom: 25px;
+  letter-spacing: 3px;
+  background: linear-gradient(135deg, #2c3e50, #495057);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.perfumes-banner p {
+  font-size: 1.3rem;
+  opacity: 0.8;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+.perfumes-grid {
+  background: white;
+  border-radius: 25px;
+  padding: 50px;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.08);
+  transform: translateY(30px);
+  opacity: 0;
+  animation: slide-up 1s ease-out 0.6s forwards;
+}
+
+/* 6. MOBILE GADGETS - Tech-Inspired Grid */
+.mobilegadgets-tech-section {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+  color: #2c3e50;
+  padding: 100px 0;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 80px;
+}
+
+.mobilegadgets-tech-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.08) 0%, transparent 50%);
+  animation: tech-pulse 10s ease-in-out infinite;
+}
+
+@keyframes tech-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.mobilegadgets-content {
+  position: relative;
+  z-index: 2;
+}
+
+.mobilegadgets-header {
+  text-align: center;
+  margin-bottom: 80px;
+  transform: translateY(30px);
+  opacity: 0;
+  animation: slide-up 1s ease-out 0.3s forwards;
+}
+
+.mobilegadgets-header h2 {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 25px;
+  background: linear-gradient(135deg, #2c3e50, #495057);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+}
+
+.mobilegadgets-header h2::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 2px;
+  animation: expand-width 2s ease-out 1s forwards;
+}
+
+.mobilegadgets-header p {
+  font-size: 1.2rem;
+  color: #6c757d;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+.mobilegadgets-grid {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(25px);
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 50px;
+  margin-top: 40px;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.1);
+  transform: translateY(30px);
+  opacity: 0;
+  animation: slide-up 1s ease-out 0.6s forwards;
+}
+
+/* 7. FASHION - Magazine Style Layout */
+.fashion-magazine-section {
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+  min-height: 90vh;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.fashion-magazine-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="magazine" width="50" height="50" patternUnits="userSpaceOnUse"><rect width="50" height="50" fill="none" stroke="rgba(0,0,0,0.03)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23magazine)"/></svg>'),
+    radial-gradient(circle at 70% 30%, rgba(76, 175, 80, 0.1) 0%, transparent 50%);
+  animation: magazine-float 18s ease-in-out infinite;
+}
+
+@keyframes magazine-float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(1deg); }
+}
+
+.fashion-content {
+  position: relative;
+  z-index: 2;
+  padding: 80px 0;
+}
+
+.fashion-info-panel {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(25px);
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 50px;
+  color: #2c3e50;
+  height: fit-content;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.1);
+  transform: translateX(-30px);
+  opacity: 0;
+  animation: slide-right 1s ease-out 0.3s forwards;
+}
+
+.fashion-info-panel h3 {
+  font-size: 3rem;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: linear-gradient(135deg, #2c3e50, #495057);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.fashion-info-panel .emoji {
+  font-size: 3.5rem;
+  animation: fashion-wave 3s ease-in-out infinite;
+}
+
+@keyframes fashion-wave {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+
+.fashion-info-panel p {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  margin-bottom: 30px;
+  opacity: 0.8;
+  color: #495057;
+}
+
+.fashion-products-section {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 40px;
+  margin-bottom: 30px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  transform: translateX(30px);
+  opacity: 0;
+  animation: slide-left 1s ease-out 0.6s forwards;
+}
+
+/* Enhanced Responsive Design */
+@media (max-width: 768px) {
+  .watches-hero-text h2,
+  .watchstraps-header h2,
+  .perfumes-banner h2,
+  .mobilegadgets-header h2 {
+    font-size: 2.5rem;
+  }
+  
+  .eyewear-info-panel h3,
+  .accessories-info-panel h3,
+  .fashion-info-panel h3 {
+    font-size: 2rem;
+  }
+  
+  .watches-hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .watches-hero-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .watches-products-container,
+  .eyewear-products-section,
+  .accessories-products-section,
+  .fashion-products-section {
+    padding: 20px;
+  }
+  
+  .eyewear-info-panel,
+  .accessories-info-panel,
+  .fashion-info-panel {
+    padding: 30px;
+  }
+}
+
+/* Enhanced Product Grid Overrides */
+.category-section .product-grid {
+  display: grid;
+  gap: 25px;
+  animation: fade-in 1s ease-out 1.2s both;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.category-section .product-grid.three-column {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.category-section .product-grid.four-column {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.category-section .product-grid.six-column {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* Enhanced Glassmorphism Product Cards */
+.glassmorphism-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+.glassmorphism-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.6s;
+}
+
+.glassmorphism-card:hover::before {
+  left: 100%;
+}
+
+.glassmorphism-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+}
+
+/* Enhanced Section Buttons */
+.section-btn {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 30px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-decoration: none;
+  display: inline-block;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.section-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
+}
+
+.section-btn:hover::before {
+  left: 100%;
+}
+
+.section-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+  color: white;
+  text-decoration: none;
+}
+
+/* Loading Animation */
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(102, 126, 234, 0.3);
+  border-top: 3px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
