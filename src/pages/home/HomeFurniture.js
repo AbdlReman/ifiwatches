@@ -215,7 +215,7 @@ const HomeFurniture = () => {
                 {/* Products Showcase - Right Side */}
                 <div className="col-lg-6">
                   <HoverCard className="watches-products-container">
-                    <AnimatedText className="h3" type="h3" delay={0.8} style={{ color: 'white', marginBottom: '20px', textAlign: 'center' }}>
+                    <AnimatedText className="h3" type="h3" delay={0.8} style={{ color: '#2c3e50', marginBottom: '20px', textAlign: 'center' }}>
                       Featured Watches
                     </AnimatedText>
                     {watchesProducts.length > 0 ? (
@@ -223,7 +223,7 @@ const HomeFurniture = () => {
                         <ShopProducts layout="grid three-column" products={watchesProducts} />
                       </StaggeredGrid>
                     ) : (
-                      <div style={{ color: 'white', textAlign: 'center', padding: '40px' }}>
+                      <div style={{ color: '#2c3e50', textAlign: 'center', padding: '40px' }}>
                         <p>No watches found.</p>
                       </div>
                     )}
@@ -274,7 +274,7 @@ const HomeFurniture = () => {
                 <div className="col-lg-8">
                   <FadeInOnScroll direction="right" delay={0.7}>
                     <HoverCard className="eyewear-products-section">
-                      <AnimatedText className="h3" type="h3" delay={0.9} style={{ color: 'white', marginBottom: '20px', textAlign: 'center' }}>
+                      <AnimatedText className="h3" type="h3" delay={0.9} style={{ color: '#2c3e50', marginBottom: '20px', textAlign: 'center' }}>
                         Featured Eyewear
                       </AnimatedText>
                       {eyewearProducts.length > 0 ? (
@@ -282,7 +282,7 @@ const HomeFurniture = () => {
                           <ShopProducts layout="grid three-column" products={eyewearProducts} />
                         </StaggeredGrid>
                       ) : (
-                        <div style={{ color: 'white', textAlign: 'center', padding: '40px' }}>
+                        <div style={{ color: '#2c3e50', textAlign: 'center', padding: '40px' }}>
                           <p>No eyewear found.</p>
                         </div>
                       )}
@@ -304,7 +304,7 @@ const HomeFurniture = () => {
                       <AnimatedText className="eyewear-info-panel p" type="p" delay={1.5}>
                         Our eyewear collection features:
                       </AnimatedText>
-                      <ul style={{ color: 'white', opacity: 0.9, marginBottom: '30px' }}>
+                      <ul style={{ color: '#2c3e50', opacity: 0.9, marginBottom: '30px' }}>
                         <li>Premium quality materials</li>
                         <li>UV protection</li>
                         <li>Comfortable fit</li>
@@ -335,7 +335,7 @@ const HomeFurniture = () => {
                 <div className="col-lg-6">
                   <FadeInOnScroll direction="right" delay={0.8}>
                     <HoverCard className="accessories-products-section">
-                      <AnimatedText className="h3" type="h3" delay={1.0} style={{ color: 'white', marginBottom: '20px', textAlign: 'center' }}>
+                      <AnimatedText className="h3" type="h3" delay={1.0} style={{ color: '#2c3e50', marginBottom: '20px', textAlign: 'center' }}>
                         Featured Accessories
                       </AnimatedText>
                       {accessoriesProducts.length > 0 ? (
@@ -343,7 +343,7 @@ const HomeFurniture = () => {
                           <ShopProducts layout="grid three-column" products={accessoriesProducts} />
                         </StaggeredGrid>
                       ) : (
-                        <div style={{ color: 'white', textAlign: 'center', padding: '40px' }}>
+                        <div style={{ color: '#2c3e50', textAlign: 'center', padding: '40px' }}>
                           <p>No accessories found.</p>
                         </div>
                       )}
@@ -365,7 +365,7 @@ const HomeFurniture = () => {
                       <AnimatedText className="accessories-info-panel p" type="p" delay={1.6}>
                         Our accessories collection features:
                       </AnimatedText>
-                      <ul style={{ color: 'white', opacity: 0.9, marginBottom: '30px' }}>
+                      <ul style={{ color: '#2c3e50', opacity: 0.9, marginBottom: '30px' }}>
                         <li>Elegant ring designs</li>
                         <li>Stylish chains & bracelets</li>
                         <li>Premium materials</li>
@@ -413,7 +413,7 @@ const HomeFurniture = () => {
                 </StaggeredGrid>
               ) : (
                 <div style={{ textAlign: 'center', padding: '40px' }}>
-                  <p>No perfumes found.</p>
+                  <p style={{ color: '#2c3e50' }}>No perfumes found.</p>
                 </div>
               )}
             </HoverCard>
@@ -472,7 +472,7 @@ const HomeFurniture = () => {
                       <AnimatedText className="fashion-info-panel p" type="p" delay={1.7}>
                         Our fashion collection features:
                       </AnimatedText>
-                      <ul style={{ color: 'white', opacity: 0.9, marginBottom: '30px' }}>
+                      <ul style={{ color: '#2c3e50', opacity: 0.9, marginBottom: '30px' }}>
                         <li>Trendy designs</li>
                         <li>Quality fabrics</li>
                         <li>Comfortable fit</li>
@@ -494,7 +494,7 @@ const HomeFurniture = () => {
                 <div className="col-lg-8">
                   <FadeInOnScroll direction="left" delay={1.3}>
                     <HoverCard className="fashion-products-section">
-                      <AnimatedText className="h3" type="h3" delay={1.5} style={{ color: 'white', marginBottom: '20px', textAlign: 'center' }}>
+                      <AnimatedText className="h3" type="h3" delay={1.5} style={{ color: '#2c3e50', marginBottom: '20px', textAlign: 'center' }}>
                         Featured Fashion
                       </AnimatedText>
                       {fashionProducts.length > 0 ? (
@@ -502,7 +502,7 @@ const HomeFurniture = () => {
                           <ShopProducts layout="grid three-column" products={fashionProducts} />
                         </StaggeredGrid>
                       ) : (
-                        <div style={{ color: 'white', textAlign: 'center', padding: '40px' }}>
+                        <div style={{ color: '#2c3e50', textAlign: 'center', padding: '40px' }}>
                           <p>No fashion items found.</p>
                         </div>
                       )}
