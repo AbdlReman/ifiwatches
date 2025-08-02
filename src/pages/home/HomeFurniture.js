@@ -162,77 +162,14 @@ const HomeFurniture = () => {
         <FadeInOnScroll direction="up" delay={0.5}>
           <ProductSection
             spaceBottomClass="pb-100"
-            category="classic"
-            title="CLASSIC WATCHES"
+            category="watches"
+            title="WATCHES"
           />
         </FadeInOnScroll>
 
-        {/* sports watches section */}
-        <FadeInOnScroll direction="up" delay={0.6}>
-          <ProductSection
-            spaceBottomClass="pb-100"
-            category="sports"
-            title="SPORTS WATCHES"
-          />
-        </FadeInOnScroll>
+     
 
-        {/* 1. WATCHES - Hero Style with Side Banner */}
-        <AnimatedSection className="watches-hero-section" delay={0.3}>
-          <div className="container">
-            <div className="watches-hero-content">
-              <div className="row">
-                {/* Hero Content - Left Side */}
-                <div className="col-lg-6">
-                  <div className="watches-hero-text">
-                    <GradientText className="watches-hero-text h2" type="h2" delay={0.5}>
-                      WATCHES
-                    </GradientText>
-                    <AnimatedText className="watches-hero-text p" type="p" delay={0.7}>
-                      Premium Quality Timepieces
-                    </AnimatedText>
-                    <AnimatedText className="watches-hero-text p" type="p" delay={0.9}>
-                      Discover our exclusive collection of luxury watches. Quality, elegance, and affordability for every customer.
-                    </AnimatedText>
-                    <div className="watches-hero-buttons">
-                      <AnimatedButton
-                        className="watches-hero-btn primary"
-                        delay={1.1}
-                        onClick={() => window.location.href = '/watches'}
-                      >
-                        Shop Now
-                      </AnimatedButton>
-                      <AnimatedButton
-                        className="watches-hero-btn secondary"
-                        delay={1.3}
-                        onClick={() => window.location.href = '/about'}
-                      >
-                        Learn More
-                      </AnimatedButton>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Products Showcase - Right Side */}
-                <div className="col-lg-6">
-                  <HoverCard className="watches-products-container">
-                    <AnimatedText className="h3" type="h3" delay={0.8} style={{ color: '#2c3e50', marginBottom: '20px', textAlign: 'center' }}>
-                      Featured Watches
-                    </AnimatedText>
-                    {watchesProducts.length > 0 ? (
-                      <StaggeredGrid className="category-section" staggerDelay={0.2}>
-                        <ShopProducts layout="grid three-column" products={watchesProducts} />
-                      </StaggeredGrid>
-                    ) : (
-                      <div style={{ color: '#2c3e50', textAlign: 'center', padding: '40px' }}>
-                        <p>No watches found.</p>
-                      </div>
-                    )}
-                  </HoverCard>
-                </div>
-              </div>
-            </div>
-          </div>
-        </AnimatedSection>
+        
 
         {/* 2. WATCH STRAPS - Masonry Grid Style */}
         <AnimatedSection className="watchstraps-masonry-section" delay={0.4}>
@@ -298,19 +235,11 @@ const HomeFurniture = () => {
                         <span className="emoji">👓</span>
                         EYEWEAR
                       </GradientText>
-                      <AnimatedText className="eyewear-info-panel p" type="p" delay={1.3}>
-                        Discover our premium collection of eyewear. From stylish sunglasses to elegant optical frames, we offer quality and comfort for every vision need.
-                      </AnimatedText>
+                     
                       <AnimatedText className="eyewear-info-panel p" type="p" delay={1.5}>
-                        Our eyewear collection features:
+                        Our eyewear collection.
                       </AnimatedText>
-                      <ul style={{ color: '#2c3e50', opacity: 0.9, marginBottom: '30px' }}>
-                        <li>Premium quality materials</li>
-                        <li>UV protection</li>
-                        <li>Comfortable fit</li>
-                        <li>Trendy designs</li>
-                        <li>Affordable prices</li>
-                      </ul>
+                    
                       <AnimatedButton
                         className="section-btn"
                         delay={1.7}
@@ -360,18 +289,9 @@ const HomeFurniture = () => {
                         ACCESSORIES
                       </GradientText>
                       <AnimatedText className="accessories-info-panel p" type="p" delay={1.4}>
-                        Discover our elegant collection of rings and accessories. From fashion rings to stylish chains and bracelets, we offer premium quality jewelry for every occasion.
+                        Discover our elegant collection of rings and accessories. From fashion rings to stylish chains and bracelets, we offer premium quality jewelry.
                       </AnimatedText>
-                      <AnimatedText className="accessories-info-panel p" type="p" delay={1.6}>
-                        Our accessories collection features:
-                      </AnimatedText>
-                      <ul style={{ color: '#2c3e50', opacity: 0.9, marginBottom: '30px' }}>
-                        <li>Elegant ring designs</li>
-                        <li>Stylish chains & bracelets</li>
-                        <li>Premium materials</li>
-                        <li>Affordable luxury</li>
-                        <li>Perfect for gifting</li>
-                      </ul>
+                      
                       <AnimatedButton
                         className="section-btn"
                         delay={1.8}
@@ -391,18 +311,13 @@ const HomeFurniture = () => {
         <AnimatedSection className="perfumes-elegant-section" delay={0.7}>
           <div className="container">
             {/* Elegant Banner */}
-            <HoverCard className="perfumes-banner">
-              <div className="perfumes-banner-content">
+            
+            <HoverCard >
+            
                 <GradientText className="perfumes-banner h2" type="h2" delay={0.9}>
                   PERFUMES
                 </GradientText>
-                <AnimatedText className="perfumes-banner p" type="p" delay={1.1}>
-                  Premium Quality Fragrances
-                </AnimatedText>
-                <AnimatedText className="perfumes-banner p" type="p" delay={1.3}>
-                  Discover our exclusive collection of luxury perfumes. From classic scents to modern fragrances, find your signature scent.
-                </AnimatedText>
-              </div>
+             
             </HoverCard>
 
             {/* Products Grid */}
@@ -466,19 +381,11 @@ const HomeFurniture = () => {
                         <span className="emoji">👗</span>
                         FASHION
                       </GradientText>
-                      <AnimatedText className="fashion-info-panel p" type="p" delay={1.5}>
-                        Discover our trendy fashion collection. From casual wear to elegant outfits, we offer stylish clothing for every occasion and personality.
-                      </AnimatedText>
+                     
                       <AnimatedText className="fashion-info-panel p" type="p" delay={1.7}>
-                        Our fashion collection features:
+                        Our fashion collection:
                       </AnimatedText>
-                      <ul style={{ color: '#2c3e50', opacity: 0.9, marginBottom: '30px' }}>
-                        <li>Trendy designs</li>
-                        <li>Quality fabrics</li>
-                        <li>Comfortable fit</li>
-                        <li>Affordable prices</li>
-                        <li>Latest styles</li>
-                      </ul>
+                     
                       <AnimatedButton
                         className="section-btn"
                         delay={1.9}
