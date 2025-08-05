@@ -84,7 +84,7 @@ const ProductGridSingleTwo = ({
                style={{
                  width: '100%',
                  height: '250px',
-                 objectFit: 'cover',
+                 objectFit: 'contain',
                  transition: 'transform 0.3s ease'
                }}
                onError={(e) => {
@@ -103,7 +103,7 @@ const ProductGridSingleTwo = ({
                    left: 0,
                    width: '100%',
                    height: '250px',
-                   objectFit: 'cover',
+                   objectFit: 'contain',
                    opacity: 0,
                    transition: 'opacity 0.3s ease'
                  }}
@@ -143,11 +143,17 @@ const ProductGridSingleTwo = ({
              alignItems: 'center',
              marginTop: 'auto'
            }}>
-             <div className="price-2">
-               <span style={{ fontSize: '16px', fontWeight: '600', color: '#daaa58' }}>
-                 {"Rs " + (discountedPrice !== null ? finalDiscountedPrice : finalProductPrice)}
-               </span>
-             </div>
+                           <div className="price-2">
+                                 <span style={{ 
+                   fontSize: '16px', 
+                   fontWeight: '600', 
+                   color: '#daaa58',
+                   whiteSpace: 'nowrap',
+                   display: 'inline-block'
+                 }} className="product-price-text">
+                   {"Rs " + (discountedPrice !== null ? finalDiscountedPrice : finalProductPrice)}
+                 </span>
+              </div>
              
              {/* Inline Add to Cart Button */}
              <div className="inline-cart-button">
@@ -156,7 +162,7 @@ const ProductGridSingleTwo = ({
                    href={product.affiliateLink}
                    rel="noopener noreferrer"
                    target="_blank"
-                   style={{
+                                                          style={{
                      background: 'linear-gradient(135deg, #daaa58 0%, #f4ca68 100%)',
                      color: 'white',
                      border: 'none',
@@ -169,6 +175,7 @@ const ProductGridSingleTwo = ({
                      transition: 'all 0.3s ease',
                      boxShadow: '0 2px 8px rgba(218, 170, 88, 0.3)'
                    }}
+                   className="product-button"
                    onMouseOver={(e) => {
                      e.target.style.transform = 'scale(1.05)';
                      e.target.style.boxShadow = '0 4px 12px rgba(218, 170, 88, 0.4)';
@@ -180,26 +187,26 @@ const ProductGridSingleTwo = ({
                  >
                    Buy Now
                  </a>
-               ) : product.variation && product.variation.length >= 1 ? (
-                 <button
-                   onClick={handleAddToCart}
-                   className={cartItem && cartItem.quantity > 0 ? "active" : ""}
-                   disabled={cartItem && cartItem.quantity > 0}
-                   style={{
-                     background: cartItem && cartItem.quantity > 0 
-                       ? 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)'
-                       : 'linear-gradient(135deg, #daaa58 0%, #f4ca68 100%)',
-                     color: 'white',
-                     border: 'none',
-                     padding: '8px 16px',
-                     borderRadius: '20px',
-                     fontSize: '12px',
-                     fontWeight: '600',
-                     cursor: cartItem && cartItem.quantity > 0 ? 'default' : 'pointer',
-                     transition: 'all 0.3s ease',
-                     boxShadow: '0 2px 8px rgba(218, 170, 88, 0.3)',
-                     opacity: cartItem && cartItem.quantity > 0 ? 0.8 : 1
-                   }}
+                               ) : product.variation && product.variation.length >= 1 ? (
+                  <button
+                    onClick={handleAddToCart}
+                    className={cartItem && cartItem.quantity > 0 ? "active product-button" : "product-button"}
+                    disabled={cartItem && cartItem.quantity > 0}
+                    style={{
+                      background: cartItem && cartItem.quantity > 0 
+                        ? 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)'
+                        : 'linear-gradient(135deg, #daaa58 0%, #f4ca68 100%)',
+                      color: 'white',
+                      border: 'none',
+                      padding: '8px 16px',
+                      borderRadius: '20px',
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      cursor: cartItem && cartItem.quantity > 0 ? 'default' : 'pointer',
+                      transition: 'all 0.3s ease',
+                      boxShadow: '0 2px 8px rgba(218, 170, 88, 0.3)',
+                      opacity: cartItem && cartItem.quantity > 0 ? 0.8 : 1
+                    }}
                    onMouseOver={(e) => {
                      if (!cartItem || cartItem.quantity === 0) {
                        e.target.style.transform = 'scale(1.05)';
@@ -215,26 +222,26 @@ const ProductGridSingleTwo = ({
                  >
                    {cartItem && cartItem.quantity > 0 ? "✓ Added" : "Add to Cart"}
                  </button>
-               ) : product.stock && product.stock > 0 ? (
-                 <button
-                   onClick={handleAddToCart}
-                   className={cartItem && cartItem.quantity > 0 ? "active" : ""}
-                   disabled={cartItem && cartItem.quantity > 0}
-                   style={{
-                     background: cartItem && cartItem.quantity > 0 
-                       ? 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)'
-                       : 'linear-gradient(135deg, #daaa58 0%, #f4ca68 100%)',
-                     color: 'white',
-                     border: 'none',
-                     padding: '8px 16px',
-                     borderRadius: '20px',
-                     fontSize: '12px',
-                     fontWeight: '600',
-                     cursor: cartItem && cartItem.quantity > 0 ? 'default' : 'pointer',
-                     transition: 'all 0.3s ease',
-                     boxShadow: '0 2px 8px rgba(218, 170, 88, 0.3)',
-                     opacity: cartItem && cartItem.quantity > 0 ? 0.8 : 1
-                   }}
+                               ) : product.stock && product.stock > 0 ? (
+                  <button
+                    onClick={handleAddToCart}
+                    className={cartItem && cartItem.quantity > 0 ? "active product-button" : "product-button"}
+                    disabled={cartItem && cartItem.quantity > 0}
+                    style={{
+                      background: cartItem && cartItem.quantity > 0 
+                        ? 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)'
+                        : 'linear-gradient(135deg, #daaa58 0%, #f4ca68 100%)',
+                      color: 'white',
+                      border: 'none',
+                      padding: '8px 16px',
+                      borderRadius: '20px',
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      cursor: cartItem && cartItem.quantity > 0 ? 'default' : 'pointer',
+                      transition: 'all 0.3s ease',
+                      boxShadow: '0 2px 8px rgba(218, 170, 88, 0.3)',
+                      opacity: cartItem && cartItem.quantity > 0 ? 0.8 : 1
+                    }}
                    onMouseOver={(e) => {
                      if (!cartItem || cartItem.quantity === 0) {
                        e.target.style.transform = 'scale(1.05)';
@@ -251,19 +258,20 @@ const ProductGridSingleTwo = ({
                    {cartItem && cartItem.quantity > 0 ? "✓ Added" : "Add to Cart"}
                  </button>
                ) : (
-                 <button 
-                   disabled 
-                   style={{
-                     background: '#95a5a6',
-                     color: 'white',
-                     border: 'none',
-                     padding: '8px 16px',
-                     borderRadius: '20px',
-                     fontSize: '12px',
-                     fontWeight: '600',
-                     cursor: 'not-allowed',
-                     opacity: 0.6
-                   }}
+                                   <button 
+                    disabled 
+                    className="product-button"
+                    style={{
+                      background: '#95a5a6',
+                      color: 'white',
+                      border: 'none',
+                      padding: '8px 16px',
+                      borderRadius: '20px',
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      cursor: 'not-allowed',
+                      opacity: 0.6
+                    }}
                  >
                    Out of Stock
                  </button>

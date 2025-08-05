@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import SectionTitle from "../../components/section-title/SectionTitle";
 import ShopProducts from "./ShopProducts";
+import { StaggeredGrid } from "../../components/AnimatedSection";
 import client from "../../data/contentful";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 
@@ -80,7 +81,9 @@ const LatestProductSection = ({ spaceBottomClass }) => {
     <div className={clsx("product-area", spaceBottomClass)}>
       <div className="container">
         <SectionTitle titleText="Latest Products" positionClass="text-center" />
-        <ShopProducts layout="grid four-column" products={products} />
+        <StaggeredGrid className="category-section" staggerDelay={0.2}>
+          <ShopProducts layout="grid four-column" products={products} />
+        </StaggeredGrid>
         {/* View More Button */}
         <div style={{ textAlign: 'center', marginTop: '30px' }}>
           <button

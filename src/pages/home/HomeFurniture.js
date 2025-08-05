@@ -165,7 +165,9 @@ const HomeFurniture = () => {
             <div className="container">
               <SectionTitle titleText="WATCHES" positionClass="text-center" />
               {watchesProducts.length > 0 ? (
-                <ShopProducts layout="grid four-column" products={watchesProducts} />
+                <StaggeredGrid className="category-section" staggerDelay={0.2}>
+                  <ShopProducts layout="grid four-column" products={watchesProducts} />
+                </StaggeredGrid>
               ) : (
                 <div style={{ textAlign: 'center', padding: '40px' }}>
                   <p>No watches found.</p>
@@ -317,7 +319,9 @@ const HomeFurniture = () => {
             <div className="container">
               <SectionTitle titleText="Featured Accessories" positionClass="text-center" />
               {accessoriesProducts.length > 0 ? (
-                <ShopProducts layout="grid four-column" products={accessoriesProducts} />
+                <StaggeredGrid className="category-section" staggerDelay={0.2}>
+                  <ShopProducts layout="grid four-column" products={accessoriesProducts} />
+                </StaggeredGrid>
               ) : (
                 <div style={{ textAlign: 'center', padding: '40px' }}>
                   <p>No accessories found.</p>

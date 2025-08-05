@@ -80,7 +80,7 @@ const ProductGridListSingle = ({
               style={{
                 width: '100%',
                 height: '250px',
-                objectFit: 'cover',
+                objectFit: 'contain',
                 transition: 'transform 0.3s ease'
               }}
               onError={(e) => {
@@ -99,7 +99,7 @@ const ProductGridListSingle = ({
                   left: 0,
                   width: '100%',
                   height: '250px',
-                  objectFit: 'cover',
+                  objectFit: 'contain',
                   opacity: 0,
                   transition: 'opacity 0.3s ease'
                 }}
@@ -141,7 +141,13 @@ const ProductGridListSingle = ({
              marginTop: 'auto'
            }}>
                          <div className="product-price">
-               <span style={{ fontSize: '16px', fontWeight: '600', color: '#daaa58' }}>
+               <span style={{ 
+                 fontSize: '16px', 
+                 fontWeight: '600', 
+                 color: '#daaa58',
+                 whiteSpace: 'nowrap',
+                 display: 'inline-block'
+               }} className="product-price-text">
                  {"Rs " + (discountedPrice !== null ? finalDiscountedPrice : finalProductPrice)}
                </span>
             </div>
@@ -166,6 +172,7 @@ const ProductGridListSingle = ({
                      transition: 'all 0.3s ease',
                      boxShadow: '0 2px 8px rgba(218, 170, 88, 0.3)'
                    }}
+                   className="product-button"
                    onMouseOver={(e) => {
                      e.target.style.transform = 'scale(1.05)';
                      e.target.style.boxShadow = '0 4px 12px rgba(218, 170, 88, 0.4)';
@@ -188,9 +195,9 @@ const ProductGridListSingle = ({
                        : 'linear-gradient(135deg, #daaa58 0%, #f4ca68 100%)',
                      color: 'white',
                      border: 'none',
-                     padding: '8px 16px',
-                     borderRadius: '20px',
-                     fontSize: '12px',
+                     padding: window.innerWidth <= 768 ? '4px 8px' : '8px 16px',
+                     borderRadius: window.innerWidth <= 768 ? '10px' : '20px',
+                     fontSize: window.innerWidth <= 768 ? '8px' : '12px',
                      fontWeight: '600',
                      cursor: cartItem && cartItem.quantity > 0 ? 'default' : 'pointer',
                      transition: 'all 0.3s ease',
@@ -223,9 +230,9 @@ const ProductGridListSingle = ({
                        : 'linear-gradient(135deg, #daaa58 0%, #f4ca68 100%)',
                      color: 'white',
                      border: 'none',
-                     padding: '8px 16px',
-                     borderRadius: '20px',
-                     fontSize: '12px',
+                     padding: window.innerWidth <= 768 ? '4px 8px' : '8px 16px',
+                     borderRadius: window.innerWidth <= 768 ? '10px' : '20px',
+                     fontSize: window.innerWidth <= 768 ? '8px' : '12px',
                      fontWeight: '600',
                      cursor: cartItem && cartItem.quantity > 0 ? 'default' : 'pointer',
                      transition: 'all 0.3s ease',
@@ -254,9 +261,9 @@ const ProductGridListSingle = ({
                      background: '#95a5a6',
                      color: 'white',
                      border: 'none',
-                     padding: '8px 16px',
-                     borderRadius: '20px',
-                     fontSize: '12px',
+                     padding: window.innerWidth <= 768 ? '4px 8px' : '8px 16px',
+                     borderRadius: window.innerWidth <= 768 ? '10px' : '20px',
+                     fontSize: window.innerWidth <= 768 ? '8px' : '12px',
                      fontWeight: '600',
                      cursor: 'not-allowed',
                      opacity: 0.6

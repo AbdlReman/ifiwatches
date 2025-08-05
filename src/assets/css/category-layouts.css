@@ -782,50 +782,326 @@
 
 /* Ensure consistent product grid layout across all sections */
 .shop-bottom-area .row.three-column,
-.shop-bottom-area .row.four-column {
+.shop-bottom-area .row.four-column,
+.category-section .row.three-column,
+.category-section .row.four-column,
+.eyewear-products-section .row.three-column,
+.eyewear-products-section .row.four-column,
+.accessories-products-section .row.three-column,
+.accessories-products-section .row.four-column,
+.fashion-products-section .row.three-column,
+.fashion-products-section .row.four-column,
+.watchstraps-grid .row.three-column,
+.watchstraps-grid .row.four-column,
+.perfumes-grid .row.three-column,
+.perfumes-grid .row.four-column,
+.mobilegadgets-grid .row.three-column,
+.mobilegadgets-grid .row.four-column,
+.product-area .row.three-column,
+.product-area .row.four-column {
   display: flex;
   flex-wrap: wrap;
   margin: 0 -15px;
 }
 
 .shop-bottom-area .row.three-column > div,
-.shop-bottom-area .row.four-column > div {
+.shop-bottom-area .row.four-column > div,
+.category-section .row.three-column > div,
+.category-section .row.four-column > div,
+.eyewear-products-section .row.three-column > div,
+.eyewear-products-section .row.four-column > div,
+.accessories-products-section .row.three-column > div,
+.accessories-products-section .row.four-column > div,
+.fashion-products-section .row.three-column > div,
+.fashion-products-section .row.four-column > div,
+.watchstraps-grid .row.three-column > div,
+.watchstraps-grid .row.four-column > div,
+.perfumes-grid .row.three-column > div,
+.perfumes-grid .row.four-column > div,
+.mobilegadgets-grid .row.three-column > div,
+.mobilegadgets-grid .row.four-column > div,
+.product-area .row.three-column > div,
+.product-area .row.four-column > div {
   padding: 0 15px;
   margin-bottom: 30px;
 }
 
 /* Responsive grid adjustments */
 @media (max-width: 1200px) {
-  .shop-bottom-area .row.three-column > div {
+  .shop-bottom-area .row.three-column > div,
+  .category-section .row.three-column > div,
+  .eyewear-products-section .row.three-column > div,
+  .accessories-products-section .row.three-column > div,
+  .fashion-products-section .row.three-column > div,
+  .watchstraps-grid .row.three-column > div,
+  .perfumes-grid .row.three-column > div,
+  .mobilegadgets-grid .row.three-column > div,
+  .product-area .row.three-column > div {
     flex: 0 0 33.333%;
     max-width: 33.333%;
   }
-  .shop-bottom-area .row.four-column > div {
+  .shop-bottom-area .row.four-column > div,
+  .category-section .row.four-column > div,
+  .eyewear-products-section .row.four-column > div,
+  .accessories-products-section .row.four-column > div,
+  .fashion-products-section .row.four-column > div,
+  .watchstraps-grid .row.four-column > div,
+  .perfumes-grid .row.four-column > div,
+  .mobilegadgets-grid .row.four-column > div,
+  .product-area .row.four-column > div {
     flex: 0 0 25%;
     max-width: 25%;
   }
 }
 
 @media (max-width: 768px) {
+  /* Universal 2 products per row for ALL product grids on mobile */
+  .row.three-column > div,
+  .row.four-column > div,
+  .row.six-column > div,
   .shop-bottom-area .row.three-column > div,
-  .shop-bottom-area .row.four-column > div {
-    flex: 0 0 50%;
-    max-width: 50%;
+  .shop-bottom-area .row.four-column > div,
+  .category-section .row.three-column > div,
+  .category-section .row.four-column > div,
+  .eyewear-products-section .row.three-column > div,
+  .eyewear-products-section .row.four-column > div,
+  .accessories-products-section .row.three-column > div,
+  .accessories-products-section .row.four-column > div,
+  .fashion-products-section .row.three-column > div,
+  .fashion-products-section .row.four-column > div,
+  .watchstraps-grid .row.three-column > div,
+  .watchstraps-grid .row.four-column > div,
+  .perfumes-grid .row.three-column > div,
+  .perfumes-grid .row.four-column > div,
+  .mobilegadgets-grid .row.three-column > div,
+  .mobilegadgets-grid .row.four-column > div,
+  .product-area .row.three-column > div,
+  .product-area .row.four-column > div,
+  .shop-area .row.three-column > div,
+  .shop-area .row.four-column > div {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+  
+  /* Mobile: Reduce product card height by 50% */
+  .product-wrap,
+  .product-wrap-2,
+  .category-section .product-wrap,
+  .category-section .product-wrap-2,
+  .eyewear-products-section .product-wrap,
+  .eyewear-products-section .product-wrap-2,
+  .accessories-products-section .product-wrap,
+  .accessories-products-section .product-wrap-2,
+  .fashion-products-section .product-wrap,
+  .fashion-products-section .product-wrap-2,
+  .watchstraps-grid .product-wrap,
+  .watchstraps-grid .product-wrap-2,
+  .perfumes-grid .product-wrap,
+  .perfumes-grid .product-wrap-2,
+  .mobilegadgets-grid .product-wrap,
+  .mobilegadgets-grid .product-wrap-2,
+  .shop-bottom-area .product-wrap,
+  .shop-bottom-area .product-wrap-2,
+  .product-area .product-wrap,
+  .product-area .product-wrap-2 {
+    height: 175px !important; /* Reduced from 350px to 175px (50%) */
+  }
+  
+  /* Mobile: Reduce image height by 50% */
+  .product-img,
+  .category-section .product-img,
+  .eyewear-products-section .product-img,
+  .accessories-products-section .product-img,
+  .fashion-products-section .product-img,
+  .watchstraps-grid .product-img,
+  .perfumes-grid .product-img,
+  .mobilegadgets-grid .product-img,
+  .shop-bottom-area .product-img,
+  .product-area .product-img {
+    height: 100px !important; /* Reduced from 200px to 100px (50%) */
+  }
+  
+  /* Mobile: Reduce content padding by 50% */
+  .product-content,
+  .product-content-2,
+  .category-section .product-content,
+  .category-section .product-content-2,
+  .eyewear-products-section .product-content,
+  .eyewear-products-section .product-content-2,
+  .accessories-products-section .product-content,
+  .accessories-products-section .product-content-2,
+  .fashion-products-section .product-content,
+  .fashion-products-section .product-content-2,
+  .watchstraps-grid .product-content,
+  .watchstraps-grid .product-content-2,
+  .perfumes-grid .product-content,
+  .perfumes-grid .product-content-2,
+  .mobilegadgets-grid .product-content,
+  .mobilegadgets-grid .product-content-2,
+  .shop-bottom-area .product-content,
+  .shop-bottom-area .product-content-2,
+  .product-area .product-content,
+  .product-area .product-content-2 {
+    padding: 5px !important; /* Reduced from 10px to 5px (50%) */
+  }
+  
+  /* Mobile: Reduce title font size by 50% */
+  .product-content h5,
+  .product-content-2 h5,
+  .category-section .product-content h5,
+  .category-section .product-content-2 h5,
+  .eyewear-products-section .product-content h5,
+  .eyewear-products-section .product-content-2 h5,
+  .accessories-products-section .product-content h5,
+  .accessories-products-section .product-content-2 h5,
+  .fashion-products-section .product-content h5,
+  .fashion-products-section .product-content-2 h5,
+  .watchstraps-grid .product-content h5,
+  .watchstraps-grid .product-content-2 h5,
+  .perfumes-grid .product-content h5,
+  .perfumes-grid .product-content-2 h5,
+  .mobilegadgets-grid .product-content h5,
+  .mobilegadgets-grid .product-content-2 h5,
+  .shop-bottom-area .product-content h5,
+  .shop-bottom-area .product-content-2 h5,
+  .product-area .product-content h5,
+  .product-area .product-content-2 h5 {
+    font-size: 7px !important; /* Reduced from 14px to 7px (50%) */
+    line-height: 1.2 !important;
+    margin-bottom: 4px !important; /* Reduced from 8px to 4px (50%) */
+    max-height: 18px !important; /* Reduced from 36px to 18px (50%) */
+  }
+  
+  /* Mobile: Reduce price font size by 50% - Override inline styles */
+  .product-content .price,
+  .product-content-2 .price,
+  .category-section .product-content .price,
+  .category-section .product-content-2 .price,
+  .eyewear-products-section .product-content .price,
+  .eyewear-products-section .product-content-2 .price,
+  .accessories-products-section .product-content .price,
+  .accessories-products-section .product-content-2 .price,
+  .fashion-products-section .product-content .price,
+  .fashion-products-section .product-content-2 .price,
+  .watchstraps-grid .product-content .price,
+  .watchstraps-grid .product-content-2 .price,
+  .perfumes-grid .product-content .price,
+  .perfumes-grid .product-content-2 .price,
+  .mobilegadgets-grid .product-content .price,
+  .mobilegadgets-grid .product-content-2 .price,
+  .shop-bottom-area .product-content .price,
+  .shop-bottom-area .product-content-2 .price,
+  .product-area .product-content .price,
+  .product-area .product-content-2 .price,
+  .product-content .price span,
+  .product-content-2 .price span,
+  .category-section .product-content .price span,
+  .category-section .product-content-2 .price span,
+  .eyewear-products-section .product-content .price span,
+  .eyewear-products-section .product-content-2 .price span,
+  .accessories-products-section .product-content .price span,
+  .accessories-products-section .product-content-2 .price span,
+  .fashion-products-section .product-content .price span,
+  .fashion-products-section .product-content-2 .price span,
+  .watchstraps-grid .product-content .price span,
+  .watchstraps-grid .product-content-2 .price span,
+  .perfumes-grid .product-content .price span,
+  .perfumes-grid .product-content-2 .price span,
+  .mobilegadgets-grid .product-content .price span,
+  .mobilegadgets-grid .product-content-2 .price span,
+  .shop-bottom-area .product-content .price span,
+  .shop-bottom-area .product-content-2 .price span,
+  .product-area .product-content .price span,
+  .product-area .product-content-2 .price span {
+    font-size: 6px !important; /* Override inline styles */
+    font-weight: 600 !important;
+    margin-bottom: 2px !important;
+  }
+  
+  /* Ultra-specific override for inline styles */
+  .product-content .price span[style*="font-size"],
+  .product-content-2 .price span[style*="font-size"],
+  .category-section .product-content .price span[style*="font-size"],
+  .category-section .product-content-2 .price span[style*="font-size"],
+  .eyewear-products-section .product-content .price span[style*="font-size"],
+  .eyewear-products-section .product-content-2 .price span[style*="font-size"],
+  .accessories-products-section .product-content .price span[style*="font-size"],
+  .accessories-products-section .product-content-2 .price span[style*="font-size"],
+  .fashion-products-section .product-content .price span[style*="font-size"],
+  .fashion-products-section .product-content-2 .price span[style*="font-size"],
+  .watchstraps-grid .product-content .price span[style*="font-size"],
+  .watchstraps-grid .product-content-2 .price span[style*="font-size"],
+  .perfumes-grid .product-content .price span[style*="font-size"],
+  .perfumes-grid .product-content-2 .price span[style*="font-size"],
+  .mobilegadgets-grid .product-content .price span[style*="font-size"],
+  .mobilegadgets-grid .product-content-2 .price span[style*="font-size"],
+  .shop-bottom-area .product-content .price span[style*="font-size"],
+  .shop-bottom-area .product-content-2 .price span[style*="font-size"],
+  .product-area .product-content .price span[style*="font-size"],
+  .product-area .product-content-2 .price span[style*="font-size"] {
+    font-size: 6px !important; /* Force override of inline font-size */
+  }
+  
+  /* Mobile: Reduce button size by 50% */
+  .product-content button,
+  .product-content-2 button,
+  .category-section .product-content button,
+  .category-section .product-content-2 button,
+  .eyewear-products-section .product-content button,
+  .eyewear-products-section .product-content-2 button,
+  .accessories-products-section .product-content button,
+  .accessories-products-section .product-content-2 button,
+  .fashion-products-section .product-content button,
+  .fashion-products-section .product-content-2 button,
+  .watchstraps-grid .product-content button,
+  .watchstraps-grid .product-content-2 button,
+  .perfumes-grid .product-content button,
+  .perfumes-grid .product-content-2 button,
+  .mobilegadgets-grid .product-content button,
+  .mobilegadgets-grid .product-content-2 button,
+  .shop-bottom-area .product-content button,
+  .shop-bottom-area .product-content-2 button,
+  .product-area .product-content button,
+  .product-area .product-content-2 button {
+    padding: 2px 4px !important; /* Further reduced from 3px 6px to 2px 4px */
+    font-size: 4px !important; /* Further reduced from 6px to 4px */
+    border-radius: 1px !important; /* Further reduced from 2px to 1px */
+    margin-top: auto !important;
+    white-space: nowrap !important; /* Prevent text wrapping */
+    overflow: hidden !important; /* Hide overflow text */
+    text-overflow: ellipsis !important; /* Show ellipsis for overflow */
+    max-width: 100% !important; /* Ensure button doesn't exceed container width */
   }
 }
 
 @media (max-width: 576px) {
   .shop-bottom-area .row.three-column > div,
-  .shop-bottom-area .row.four-column > div {
-    flex: 0 0 100%;
-    max-width: 100%;
+  .shop-bottom-area .row.four-column > div,
+  .category-section .row.three-column > div,
+  .category-section .row.four-column > div,
+  .eyewear-products-section .row.three-column > div,
+  .eyewear-products-section .row.four-column > div,
+  .accessories-products-section .row.three-column > div,
+  .accessories-products-section .row.four-column > div,
+  .fashion-products-section .row.three-column > div,
+  .fashion-products-section .row.four-column > div,
+  .watchstraps-grid .row.three-column > div,
+  .watchstraps-grid .row.four-column > div,
+  .perfumes-grid .row.three-column > div,
+  .perfumes-grid .row.four-column > div,
+  .mobilegadgets-grid .row.three-column > div,
+  .mobilegadgets-grid .row.four-column > div,
+  .product-area .row.three-column > div,
+  .product-area .row.four-column > div {
+    flex: 0 0 50%;
+    max-width: 50%;
   }
 }
 
 /* Ensure product cards have consistent styling across all sections */
 .shop-bottom-area .product-wrap,
 .shop-bottom-area .product-wrap-2 {
-  height: 400px !important;
+  height: 350px !important;
   display: flex !important;
   flex-direction: column !important;
   background: white !important;
@@ -844,15 +1120,205 @@
 
 .shop-bottom-area .product-img {
   position: relative !important;
-  height: 250px !important;
+  height: 200px !important;
   overflow: hidden !important;
 }
 
 .shop-bottom-area .product-img img {
   width: 100% !important;
   height: 100% !important;
-  object-fit: cover !important;
+  object-fit: contain !important;
   transition: transform 0.3s ease !important;
+  background-color: transparent !important;
+  margin: 0 -15px !important;
+  width: calc(100% + 30px) !important;
+}
+
+/* Universal rule to make ALL product images work like Featured Eyewear */
+img[src*="product"], 
+img[src*="default-product"],
+.product-img img,
+.product-wrap .product-img img,
+.product-wrap-2 .product-img img,
+.category-section .product-img img,
+.eyewear-products-section .product-img img,
+.accessories-products-section .product-img img,
+.fashion-products-section .product-img img,
+.watchstraps-grid .product-img img,
+.perfumes-grid .product-img img,
+.mobilegadgets-grid .product-img img,
+.shop-bottom-area img,
+.product-area img,
+.default-img,
+.hover-img {
+  width: calc(100% + 30px) !important;
+  margin: 0 -15px !important;
+  object-fit: contain !important;
+  background-color: transparent !important;
+  max-width: none !important;
+}
+
+/* Universal rule to ensure ALL product containers have consistent width and structure */
+.product-wrap,
+.product-wrap-2,
+.category-section .product-wrap,
+.category-section .product-wrap-2,
+.eyewear-products-section .product-wrap,
+.eyewear-products-section .product-wrap-2,
+.accessories-products-section .product-wrap,
+.accessories-products-section .product-wrap-2,
+.fashion-products-section .product-wrap,
+.fashion-products-section .product-wrap-2,
+.watchstraps-grid .product-wrap,
+.watchstraps-grid .product-wrap-2,
+.perfumes-grid .product-wrap,
+.perfumes-grid .product-wrap-2,
+.mobilegadgets-grid .product-wrap,
+.mobilegadgets-grid .product-wrap-2,
+.shop-bottom-area .product-wrap,
+.shop-bottom-area .product-wrap-2,
+.product-area .product-wrap,
+.product-area .product-wrap-2 {
+  height: 350px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: white !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+  transition: all 0.3s ease !important;
+  margin-bottom: 0 !important;
+  width: 100% !important;
+}
+
+/* Universal rule for product image containers */
+.product-img,
+.category-section .product-img,
+.eyewear-products-section .product-img,
+.accessories-products-section .product-img,
+.fashion-products-section .product-img,
+.watchstraps-grid .product-img,
+.perfumes-grid .product-img,
+.mobilegadgets-grid .product-img,
+.shop-bottom-area .product-img,
+.product-area .product-img {
+  position: relative !important;
+  height: 200px !important;
+  overflow: hidden !important;
+  width: 100% !important;
+}
+
+/* Universal rule for product content */
+.product-content,
+.product-content-2,
+.category-section .product-content,
+.category-section .product-content-2,
+.eyewear-products-section .product-content,
+.eyewear-products-section .product-content-2,
+.accessories-products-section .product-content,
+.accessories-products-section .product-content-2,
+.fashion-products-section .product-content,
+.fashion-products-section .product-content-2,
+.watchstraps-grid .product-content,
+.watchstraps-grid .product-content-2,
+.perfumes-grid .product-content,
+.perfumes-grid .product-content-2,
+.mobilegadgets-grid .product-content,
+.mobilegadgets-grid .product-content-2,
+.shop-bottom-area .product-content,
+.shop-bottom-area .product-content-2,
+.product-area .product-content,
+.product-area .product-content-2 {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  padding: 10px !important;
+}
+
+/* Reduce text size in product cards */
+.product-content h5,
+.product-content-2 h5,
+.category-section .product-content h5,
+.category-section .product-content-2 h5,
+.eyewear-products-section .product-content h5,
+.eyewear-products-section .product-content-2 h5,
+.accessories-products-section .product-content h5,
+.accessories-products-section .product-content-2 h5,
+.fashion-products-section .product-content h5,
+.fashion-products-section .product-content-2 h5,
+.watchstraps-grid .product-content h5,
+.watchstraps-grid .product-content-2 h5,
+.perfumes-grid .product-content h5,
+.perfumes-grid .product-content-2 h5,
+.mobilegadgets-grid .product-content h5,
+.mobilegadgets-grid .product-content-2 h5,
+.shop-bottom-area .product-content h5,
+.shop-bottom-area .product-content-2 h5,
+.product-area .product-content h5,
+.product-area .product-content-2 h5 {
+  font-size: 14px !important;
+  line-height: 1.3 !important;
+  margin-bottom: 8px !important;
+  max-height: 36px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+}
+
+/* Reduce price text size */
+.product-content .price,
+.product-content-2 .price,
+.category-section .product-content .price,
+.category-section .product-content-2 .price,
+.eyewear-products-section .product-content .price,
+.eyewear-products-section .product-content-2 .price,
+.accessories-products-section .product-content .price,
+.accessories-products-section .product-content-2 .price,
+.fashion-products-section .product-content .price,
+.fashion-products-section .product-content-2 .price,
+.watchstraps-grid .product-content .price,
+.watchstraps-grid .product-content-2 .price,
+.perfumes-grid .product-content .price,
+.perfumes-grid .product-content-2 .price,
+.mobilegadgets-grid .product-content .price,
+.mobilegadgets-grid .product-content-2 .price,
+.shop-bottom-area .product-content .price,
+.shop-bottom-area .product-content-2 .price,
+.product-area .product-content .price,
+.product-area .product-content-2 .price {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  margin-bottom: 8px !important;
+}
+
+/* Reduce button size */
+.product-content button,
+.product-content-2 button,
+.category-section .product-content button,
+.category-section .product-content-2 button,
+.eyewear-products-section .product-content button,
+.eyewear-products-section .product-content-2 button,
+.accessories-products-section .product-content button,
+.accessories-products-section .product-content-2 button,
+.fashion-products-section .product-content button,
+.fashion-products-section .product-content-2 button,
+.watchstraps-grid .product-content button,
+.watchstraps-grid .product-content-2 button,
+.perfumes-grid .product-content button,
+.perfumes-grid .product-content-2 button,
+.mobilegadgets-grid .product-content button,
+.mobilegadgets-grid .product-content-2 button,
+.shop-bottom-area .product-content button,
+.shop-bottom-area .product-content-2 button,
+.product-area .product-content button,
+.product-area .product-content-2 button {
+  padding: 6px 12px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  margin-top: auto !important;
 }
 
 .shop-bottom-area .product-content,
@@ -1002,5 +1468,116 @@
   
   .category-name {
     font-size: 0.9rem !important;
+  }
+}
+
+/* Mobile responsive styles for product buttons and prices */
+@media (max-width: 768px) {
+  .product-button {
+    padding: 3px 6px !important;
+    font-size: 6px !important;
+    border-radius: 2px !important;
+  }
+  
+  .product-price-text {
+    font-size: 9px !important;
+  }
+  
+  /* 2 products per row ONLY for product grids (excluding shop page layout) */
+  .product-area .row > div[class*="col-"],
+  .shop-bottom-area .row > div[class*="col-"],
+  .category-section .row > div[class*="col-"] {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+  
+  /* Override Bootstrap column classes ONLY for product grids (excluding shop page layout) */
+  .product-area .col-xl-3,
+  .product-area .col-xl-4,
+  .product-area .col-lg-3,
+  .product-area .col-lg-4,
+  .product-area .col-md-6,
+  .product-area .col-sm-6,
+  .shop-bottom-area .col-xl-3,
+  .shop-bottom-area .col-xl-4,
+  .shop-bottom-area .col-lg-3,
+  .shop-bottom-area .col-lg-4,
+  .shop-bottom-area .col-md-6,
+  .shop-bottom-area .col-sm-6,
+  .category-section .col-xl-3,
+  .category-section .col-xl-4,
+  .category-section .col-lg-3,
+  .category-section .col-lg-4,
+  .category-section .col-md-6,
+  .category-section .col-sm-6 {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+  
+  /* Override for any specific grid layouts */
+  .row.three-column > div,
+  .row.four-column > div,
+  .row.six-column > div {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+  
+  /* Home page specific sections */
+  .eyewear-products-section .row > div[class*="col-"],
+  .accessories-products-section .row > div[class*="col-"],
+  .fashion-products-section .row > div[class*="col-"],
+  .watchstraps-grid .row > div[class*="col-"],
+  .perfumes-grid .row > div[class*="col-"],
+  .mobilegadgets-grid .row > div[class*="col-"] {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+  
+  /* Bootstrap column classes for home page sections */
+  .eyewear-products-section .col-xl-3,
+  .eyewear-products-section .col-xl-4,
+  .eyewear-products-section .col-lg-3,
+  .eyewear-products-section .col-lg-4,
+  .eyewear-products-section .col-md-6,
+  .eyewear-products-section .col-sm-6,
+  .accessories-products-section .col-xl-3,
+  .accessories-products-section .col-xl-4,
+  .accessories-products-section .col-lg-3,
+  .accessories-products-section .col-lg-4,
+  .accessories-products-section .col-md-6,
+  .accessories-products-section .col-sm-6,
+  .fashion-products-section .col-xl-3,
+  .fashion-products-section .col-xl-4,
+  .fashion-products-section .col-lg-3,
+  .fashion-products-section .col-lg-4,
+  .fashion-products-section .col-md-6,
+  .fashion-products-section .col-sm-6,
+  .watchstraps-grid .col-xl-3,
+  .watchstraps-grid .col-xl-4,
+  .watchstraps-grid .col-lg-3,
+  .watchstraps-grid .col-lg-4,
+  .watchstraps-grid .col-md-6,
+  .watchstraps-grid .col-sm-6,
+  .perfumes-grid .col-xl-3,
+  .perfumes-grid .col-xl-4,
+  .perfumes-grid .col-lg-3,
+  .perfumes-grid .col-lg-4,
+  .perfumes-grid .col-md-6,
+  .perfumes-grid .col-sm-6,
+  .mobilegadgets-grid .col-xl-3,
+  .mobilegadgets-grid .col-xl-4,
+  .mobilegadgets-grid .col-lg-3,
+  .mobilegadgets-grid .col-lg-4,
+  .mobilegadgets-grid .col-md-6,
+  .mobilegadgets-grid .col-sm-6 {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+  
+  /* Shop page layout - ensure sidebar and products stack on mobile */
+  .shop-area .row .col-lg-3,
+  .shop-area .row .col-lg-9 {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
   }
 }
