@@ -27,16 +27,13 @@
   font-size: 12px;
   color: #6c757d;
   font-weight: normal;
-  background-color: #e9ecef;
-  padding: 2px 6px;
-  border-radius: 12px;
   display: inline-block;
 }
 
 .sidebar-widget-list-left button.active .category-count,
 .sidebar-widget-list-left button.active .color-count {
-  background-color: #007bff;
-  color: white;
+  color: #007bff;
+  font-weight: 600;
 }
 
 /* Responsive adjustments */
