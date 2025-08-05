@@ -101,6 +101,202 @@ const Contact = () => {
             { label: "Contact", path: process.env.PUBLIC_URL + pathname },
           ]}
         />
+        
+        {/* City-wise Contact Representatives Section */}
+        <div className="contact-area pt-50 pb-50">
+          <div className="container">
+            <div className="row">
+              <div className="col-12">
+                <div className="section-title text-center mb-50">
+                  <h2>📞 Contact Our Nearest Representative for Assistance</h2>
+                  <p>If you face any problem, please feel free to reach out to the nearest ambassador in your area:</p>
+                </div>
+              </div>
+            </div>
+                         <div className="row">
+               {/* Karachi - Idrees Khan */}
+               <div className="col-lg-4 col-md-6 col-sm-12 mb-30">
+                 <div className="contact-info-wrap">
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-map-marker" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <h4>Karachi – Idrees Khan</h4>
+                     </div>
+                   </div>
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-phone" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <p>0341-0435017</p>
+                     </div>
+                   </div>
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-home" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <p>Metroville Site, near Bab-e-Khyber Road, Karachi</p>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+               
+               {/* Islamabad - Abdul Hannan */}
+               <div className="col-lg-4 col-md-6 col-sm-12 mb-30">
+                 <div className="contact-info-wrap">
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-map-marker" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <h4>Islamabad – Abdul Hannan</h4>
+                     </div>
+                   </div>
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-phone" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <p>0318-0977696</p>
+                     </div>
+                   </div>
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-home" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <p>G-9/4, Islamabad</p>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+               
+               {/* Karachi - Fahad Hussain */}
+               <div className="col-lg-4 col-md-6 col-sm-12 mb-30">
+                 <div className="contact-info-wrap">
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-map-marker" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <h4>Karachi – Fahad Hussain</h4>
+                     </div>
+                   </div>
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-phone" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <p>+92 340-0534185</p>
+                     </div>
+                   </div>
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-home" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <p>Site Town, Banaras, Main Sarafa Bazar, near Shahi Masjid, Karachi</p>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+               
+               {/* Swat - Ibrar Khan */}
+               <div className="col-lg-4 col-md-6 col-sm-12 mb-30">
+                 <div className="contact-info-wrap">
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-map-marker" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <h4>Swat – Ibrar Khan</h4>
+                     </div>
+                   </div>
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-home" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <p>Tehsil Matta, District Swat, Khyber Pakhtunkhwa</p>
+                     </div>
+                   </div>
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-phone" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <p>03448935702</p>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+               
+               {/* Islamabad - Abdul Moiz Paracha */}
+               <div className="col-lg-4 col-md-6 col-sm-12 mb-30">
+                 <div className="contact-info-wrap">
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-map-marker" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <h4>Islamabad – A.Moiz Paracha</h4>
+                     </div>
+                   </div>
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-phone" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <p>+92 328-5315636</p>
+                     </div>
+                   </div>
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-home" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <p>House 108, Street 85, G-8/1, Islamabad</p>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+               
+               {/* Kohat - Abdul Moiz */}
+               <div className="col-lg-4 col-md-6 col-sm-12 mb-30">
+                 <div className="contact-info-wrap">
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-map-marker" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <h4>Kohat – Abdul Moiz</h4>
+                     </div>
+                   </div>
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-phone" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <p>0332-9779996</p>
+                     </div>
+                   </div>
+                   <div className="single-contact-info">
+                     <div className="contact-icon">
+                       <i className="fa fa-home" />
+                     </div>
+                     <div className="contact-info-dec">
+                       <p>House 122, Street 3, Post Office Street, KDA, Kohat</p>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+          </div>
+        </div>
+
         <div className="contact-area pt-100 pb-100">
           <div className="container">
             <div className="custom-row-2">
@@ -111,7 +307,7 @@ const Contact = () => {
                       <i className="fa fa-phone" />
                     </div>
                     <div className="contact-info-dec">
-                      <p>+923020058237</p>
+                      <p>03448935702</p>
                     </div>
                   </div>
                   <div className="single-contact-info">
@@ -235,3 +431,4 @@ const Contact = () => {
 };
 
 export default Contact;
+
