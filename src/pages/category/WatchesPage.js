@@ -8,6 +8,8 @@ import ShopTopbar from "../../wrappers/product/ShopTopbar";
 import ShopProducts from "../../wrappers/product/ShopProducts";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import ChildCategoryButtons from "../../components/category/ChildCategoryButtons";
+import { AnimatedSection } from "../../components/AnimatedSection";
+import { Link } from "react-router-dom";
 
 const WatchesPage = () => {
   const [products, setProducts] = useState([]);
@@ -119,12 +121,40 @@ const WatchesPage = () => {
         description="Shop premium watches at IFIwatches. Quality, elegance, and affordability for every customer." 
       />
       <LayoutOne headerTop="visible">
-        <Breadcrumb
-          pages={[
-            { label: "Home", path: process.env.PUBLIC_URL + "/" },
-            { label: "Watches", path: process.env.PUBLIC_URL + "/watches" },
-          ]}
-        />
+             <AnimatedSection delay={0.2}>
+           <div>
+           <div className="hero-banner-section">
+       <Link to={process.env.PUBLIC_URL + "/shop"}>
+                   <video 
+            src={process.env.PUBLIC_URL + "/assets/img/banner/watches.mp4"}
+            alt="Shop Now"
+            className="img-fluid w-100"
+            autoPlay
+            muted
+            playsInline
+            style={{
+              cursor: 'pointer',
+              transition: 'all 0.4s ease',
+              boxShadow: '0 15px 40px rgba(0, 0, 0, 0.15)',
+              borderRadius: '8px'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.transform = "scale(1.02)";
+              e.target.style.boxShadow = "0 25px 60px rgba(0, 0, 0, 0.25)";
+            }}
+            onMouseOut={(e) => {
+              e.target.style.transform = "scale(1)";
+              e.target.style.boxShadow = "0 15px 40px rgba(0, 0, 0, 0.15)";
+            }}
+            onEnded={(e) => {
+              // Video has ended, it will stay on the last frame
+              console.log("Video playback ended");
+            }}
+          />
+       </Link>
+     </div>
+           </div>
+         </AnimatedSection>
         <div className="shop-area pt-95 pb-100">
           <div className="container">
             <ChildCategoryButtons parentCategory="watches" />

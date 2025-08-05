@@ -8,6 +8,8 @@ import ShopTopbar from "../../wrappers/product/ShopTopbar";
 import ShopProducts from "../../wrappers/product/ShopProducts";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import { hasCategory } from "../../helpers/categoryMapper";
+import { AnimatedSection } from "../../components/AnimatedSection";
+import { Link } from "react-router-dom";
 
 const WomensWatchesPage = () => {
   const [products, setProducts] = useState([]);
@@ -119,13 +121,32 @@ const WomensWatchesPage = () => {
         description="Shop premium women's watches at IFIwatches. Quality, elegance, and affordability for every lady." 
       />
       <LayoutOne headerTop="visible">
-        <Breadcrumb
-          pages={[
-            { label: "Home", path: process.env.PUBLIC_URL + "/" },
-            { label: "Watches", path: process.env.PUBLIC_URL + "/watches" },
-            { label: "Women's Watches", path: process.env.PUBLIC_URL + "/watches/womens" },
-          ]}
+      <AnimatedSection delay={0.2}>
+          <div>
+          <div className="hero-banner-section">
+      <Link to={process.env.PUBLIC_URL + "/shop"}>
+        <img 
+          src={process.env.PUBLIC_URL + "/assets/img/banner/womenwatches.jpeg"}
+          alt="Shop Now"
+          className="img-fluid w-100"
+          style={{
+            cursor: 'pointer',
+            transition: 'all 0.4s ease',
+            boxShadow: '0 15px 40px rgba(0, 0, 0, 0.15)'
+          }}
+          onMouseOver={(e) => {
+            e.target.style.transform = "scale(1.02)";
+            e.target.style.boxShadow = "0 25px 60px rgba(0, 0, 0, 0.25)";
+          }}
+          onMouseOut={(e) => {
+            e.target.style.transform = "scale(1)";
+            e.target.style.boxShadow = "0 15px 40px rgba(0, 0, 0, 0.15)";
+          }}
         />
+      </Link>
+    </div>
+          </div>
+        </AnimatedSection>
         <div className="shop-area pt-95 pb-100">
           <div className="container">
             <div className="row">
