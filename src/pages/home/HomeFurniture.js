@@ -3,13 +3,14 @@ import SEO from "../../components/seo";
 import LayoutOne from "../../layouts/LayoutOne";
 import HeroSliderTwentySeven from "../../wrappers/hero-slider/HeroSliderTwentySeven";
 import BannerTwentySeven from "../../wrappers/banner/BannerTwentySeven";
-import ProductSection from "../../wrappers/product/ProductSection";
+
 import RecurringCountDown from "../../wrappers/countdown/RecurringCountDown";
 import FeatureIconTwo from "../../wrappers/feature-icon/FeatureIconTwo";
 import LatestProductSection from "../../wrappers/product/LatestProductSection";
 import CategoryShowcase from "../../components/category/CategoryShowcase";
 import HeroBanner from "../../components/hero/HeroBanner";
 import ShopProducts from "../../wrappers/product/ShopProducts";
+import SectionTitle from "../../components/section-title/SectionTitle";
 import client from "../../data/contentful";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import "../../assets/css/category-layouts.css";
@@ -160,11 +161,37 @@ const HomeFurniture = () => {
 
         {/* luxury watches section */}
         <FadeInOnScroll direction="up" delay={0.5}>
-          <ProductSection
-            spaceBottomClass="pb-100"
-            category="watches"
-            title="WATCHES"
-          />
+          <div className="product-area">
+            <div className="container">
+              <SectionTitle titleText="WATCHES" positionClass="text-center" />
+              {watchesProducts.length > 0 ? (
+                <ShopProducts layout="grid four-column" products={watchesProducts} />
+              ) : (
+                <div style={{ textAlign: 'center', padding: '40px' }}>
+                  <p>No watches found.</p>
+                </div>
+              )}
+              {/* View More Button */}
+              <div style={{ textAlign: 'center', marginTop: '30px' }}>
+                <button
+                  onClick={() => window.location.href = '/watches'}
+                  style={{
+                    color: '#daaa58',
+                    border: '2px solid #daaa58',
+                    padding: '12px 30px',
+                    borderRadius: '25px',
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    background: 'transparent'
+                  }}
+                >
+                  View More Watches
+                </button>
+              </div>
+            </div>
+          </div>
         </FadeInOnScroll>
 
      
@@ -199,6 +226,26 @@ const HomeFurniture = () => {
                 </div>
               )}
             </HoverCard>
+
+            {/* View More Button */}
+            <div style={{ textAlign: 'center', marginTop: '30px' }}>
+              <button
+                onClick={() => window.location.href = '/watch-straps'}
+                style={{
+                  color: '#daaa58',
+                  border: '2px solid #daaa58',
+                  padding: '12px 30px',
+                  borderRadius: '25px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  background: 'transparent'
+                }}
+              >
+                View More Watch Straps
+              </button>
+            </div>
           </div>
         </AnimatedSection>
 
@@ -240,13 +287,22 @@ const HomeFurniture = () => {
                         Our eyewear collection.
                       </AnimatedText>
                     
-                      <AnimatedButton
-                        className="section-btn"
-                        delay={1.7}
+                      <button
                         onClick={() => window.location.href = '/eyewear'}
+                        style={{
+                          color: '#daaa58',
+                          border: '2px solid #daaa58',
+                          padding: '12px 30px',
+                          borderRadius: '25px',
+                          fontSize: '16px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
+                          background: 'transparent'
+                        }}
                       >
                         Shop All Eyewear
-                      </AnimatedButton>
+                      </button>
                     </HoverCard>
                   </FadeInOnScroll>
                 </div>
@@ -256,56 +312,39 @@ const HomeFurniture = () => {
         </AnimatedSection>
 
         {/* 4. ACCESSORIES - Card Grid with Floating Elements */}
-        <AnimatedSection className="accessories-floating-section" delay={0.6}>
-          <div className="container">
-            <div className="accessories-content">
-              <div className="row">
-                {/* Products Section - Left Side (6 columns) */}
-                <div className="col-lg-6">
-                  <FadeInOnScroll direction="right" delay={0.8}>
-                    <HoverCard className="accessories-products-section">
-                      <AnimatedText className="h3" type="h3" delay={1.0} style={{ color: '#2c3e50', marginBottom: '20px', textAlign: 'center' }}>
-                        Featured Accessories
-                      </AnimatedText>
-                      {accessoriesProducts.length > 0 ? (
-                        <StaggeredGrid className="category-section" staggerDelay={0.2}>
-                          <ShopProducts layout="grid three-column" products={accessoriesProducts} />
-                        </StaggeredGrid>
-                      ) : (
-                        <div style={{ color: '#2c3e50', textAlign: 'center', padding: '40px' }}>
-                          <p>No accessories found.</p>
-                        </div>
-                      )}
-                    </HoverCard>
-                  </FadeInOnScroll>
+        <FadeInOnScroll direction="up" delay={0.6}>
+          <div className="product-area">
+            <div className="container">
+              <SectionTitle titleText="Featured Accessories" positionClass="text-center" />
+              {accessoriesProducts.length > 0 ? (
+                <ShopProducts layout="grid four-column" products={accessoriesProducts} />
+              ) : (
+                <div style={{ textAlign: 'center', padding: '40px' }}>
+                  <p>No accessories found.</p>
                 </div>
-
-                {/* Floating Info Panel - Right Side (6 columns) */}
-                <div className="col-lg-6">
-                  <FadeInOnScroll direction="left" delay={1.0}>
-                    <HoverCard className="accessories-info-panel">
-                      <GradientText className="accessories-info-panel h3" type="h3" delay={1.2}>
-                        <span className="emoji">💍</span>
-                        ACCESSORIES
-                      </GradientText>
-                      <AnimatedText className="accessories-info-panel p" type="p" delay={1.4}>
-                        Discover our elegant collection of rings and accessories. From fashion rings to stylish chains and bracelets, we offer premium quality jewelry.
-                      </AnimatedText>
-                      
-                      <AnimatedButton
-                        className="section-btn"
-                        delay={1.8}
-                        onClick={() => window.location.href = '/rings-accessories'}
-                      >
-                        Shop All Accessories
-                      </AnimatedButton>
-                    </HoverCard>
-                  </FadeInOnScroll>
-                </div>
+              )}
+              {/* View More Button */}
+              <div style={{ textAlign: 'center', marginTop: '30px' }}>
+                <button
+                  onClick={() => window.location.href = '/rings-accessories'}
+                  style={{
+                    color: '#daaa58',
+                    border: '2px solid #daaa58',
+                    padding: '12px 30px',
+                    borderRadius: '25px',
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    background: 'transparent'
+                  }}
+                >
+                  View More Accessories
+                </button>
               </div>
             </div>
           </div>
-        </AnimatedSection>
+        </FadeInOnScroll>
 
         {/* 5. PERFUMES - Elegant Minimalist Design */}
         <AnimatedSection className="perfumes-elegant-section" delay={0.7}>
@@ -332,6 +371,26 @@ const HomeFurniture = () => {
                 </div>
               )}
             </HoverCard>
+
+            {/* View More Button */}
+            <div style={{ textAlign: 'center', marginTop: '30px' }}>
+              <button
+                onClick={() => window.location.href = '/perfumes'}
+                style={{
+                  color: '#daaa58',
+                  border: '2px solid #daaa58',
+                  padding: '12px 30px',
+                  borderRadius: '25px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  background: 'transparent'
+                }}
+              >
+                View More Perfumes
+              </button>
+            </div>
           </div>
         </AnimatedSection>
 
@@ -364,6 +423,26 @@ const HomeFurniture = () => {
                   </div>
                 )}
               </HoverCard>
+
+              {/* View More Button */}
+              <div style={{ textAlign: 'center', marginTop: '30px' }}>
+                <button
+                  onClick={() => window.location.href = '/mobile-gadgets'}
+                  style={{
+                    color: '#daaa58',
+                    border: '2px solid #daaa58',
+                    padding: '12px 30px',
+                    borderRadius: '25px',
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    background: 'transparent'
+                  }}
+                >
+                  View More Mobile Gadgets
+                </button>
+              </div>
             </div>
           </div>
         </AnimatedSection>
@@ -386,13 +465,22 @@ const HomeFurniture = () => {
                         Our fashion collection:
                       </AnimatedText>
                      
-                      <AnimatedButton
-                        className="section-btn"
-                        delay={1.9}
+                      <button
                         onClick={() => window.location.href = '/fashion'}
+                        style={{
+                          color: '#daaa58',
+                          border: '2px solid #daaa58',
+                          padding: '12px 30px',
+                          borderRadius: '25px',
+                          fontSize: '16px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
+                          background: 'transparent'
+                        }}
                       >
                         Shop All Fashion
-                      </AnimatedButton>
+                      </button>
                     </HoverCard>
                   </FadeInOnScroll>
                 </div>

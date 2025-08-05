@@ -780,6 +780,90 @@
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
+/* Ensure consistent product grid layout across all sections */
+.shop-bottom-area .row.three-column,
+.shop-bottom-area .row.four-column {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px;
+}
+
+.shop-bottom-area .row.three-column > div,
+.shop-bottom-area .row.four-column > div {
+  padding: 0 15px;
+  margin-bottom: 30px;
+}
+
+/* Responsive grid adjustments */
+@media (max-width: 1200px) {
+  .shop-bottom-area .row.three-column > div {
+    flex: 0 0 33.333%;
+    max-width: 33.333%;
+  }
+  .shop-bottom-area .row.four-column > div {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+}
+
+@media (max-width: 768px) {
+  .shop-bottom-area .row.three-column > div,
+  .shop-bottom-area .row.four-column > div {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 576px) {
+  .shop-bottom-area .row.three-column > div,
+  .shop-bottom-area .row.four-column > div {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+/* Ensure product cards have consistent styling across all sections */
+.shop-bottom-area .product-wrap,
+.shop-bottom-area .product-wrap-2 {
+  height: 400px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: white !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+  transition: all 0.3s ease !important;
+  margin-bottom: 0 !important;
+}
+
+.shop-bottom-area .product-wrap:hover,
+.shop-bottom-area .product-wrap-2:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+.shop-bottom-area .product-img {
+  position: relative !important;
+  height: 250px !important;
+  overflow: hidden !important;
+}
+
+.shop-bottom-area .product-img img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transition: transform 0.3s ease !important;
+}
+
+.shop-bottom-area .product-content,
+.shop-bottom-area .product-content-2 {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  padding: 15px !important;
+}
+
 /* Enhanced Glassmorphism Product Cards */
 .glassmorphism-card {
   background: rgba(255, 255, 255, 0.1);

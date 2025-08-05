@@ -3,7 +3,7 @@ import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
 import ProductGridListSingle from "../../components/product/ProductGridListSingle";
 
-const ProductGridList = ({ products, spaceBottomClass }) => {
+const ProductGridList = ({ products, spaceBottomClass, layout }) => {
   const currency = useSelector((state) => state.currency);
   const { cartItems } = useSelector((state) => state.cart);
   const { wishlistItems } = useSelector((state) => state.wishlist);
@@ -13,7 +13,7 @@ const ProductGridList = ({ products, spaceBottomClass }) => {
     <Fragment>
       {products?.map((product) => {
         return (
-          <div className="col-xl-4 col-sm-6" key={product.slug}>
+          <div className={layout === "grid four-column" ? "col-xl-3 col-lg-3 col-md-6 col-sm-6" : "col-xl-4 col-lg-4 col-md-6 col-sm-6"} key={product.slug}>
             <ProductGridListSingle
               spaceBottomClass={spaceBottomClass}
               product={product}
@@ -38,6 +38,7 @@ const ProductGridList = ({ products, spaceBottomClass }) => {
 ProductGridList.propTypes = {
   products: PropTypes.array,
   spaceBottomClass: PropTypes.string,
+  layout: PropTypes.string,
 };
 
 export default ProductGridList;

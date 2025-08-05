@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import SectionTitle from "../../components/section-title/SectionTitle";
-import ProductGridTwo from "./ProductGridTwo";
+import ShopProducts from "./ShopProducts";
 import client from "../../data/contentful";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 
@@ -80,11 +80,25 @@ const LatestProductSection = ({ spaceBottomClass }) => {
     <div className={clsx("product-area", spaceBottomClass)}>
       <div className="container">
         <SectionTitle titleText="Latest Products" positionClass="text-center" />
-        <div className="row four-column">
-          <ProductGridTwo
-            products={products}
-            spaceBottomClass="mb-25"
-          />
+        <ShopProducts layout="grid four-column" products={products} />
+        {/* View More Button */}
+        <div style={{ textAlign: 'center', marginTop: '30px' }}>
+          <button
+            onClick={() => window.location.href = '/shop'}
+            style={{
+              color: '#daaa58',
+              border: '2px solid #daaa58',
+              padding: '12px 30px',
+              borderRadius: '25px',
+              fontSize: '16px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              background: 'transparent'
+            }}
+          >
+            View More Products
+          </button>
         </div>
       </div>
     </div>
