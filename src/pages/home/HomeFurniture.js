@@ -196,7 +196,7 @@ const HomeFurniture = () => {
           </div>
         </FadeInOnScroll>
 
-     
+     <br/>
 
         
 
@@ -225,7 +225,7 @@ const HomeFurniture = () => {
                 </StaggeredGrid>
               ) : (
                 <div style={{ textAlign: 'center', padding: '40px' }}>
-                  <p>No watches found.</p>
+                  <p>No watches Straps found.</p>
                 </div>
               )}
               {/* View More Button */}
@@ -244,7 +244,7 @@ const HomeFurniture = () => {
                     background: 'transparent'
                   }}
                 >
-                  View More Watches
+                  View More Straps
                 </button>
               </div>
             </div>
