@@ -262,7 +262,7 @@ const HomeFurniture = () => {
               <div className="row">
                 {/* Products Section - Left Side (8 columns) */}
                 <div className="col-lg-8">
-                  <FadeInOnScroll direction="right" delay={0.7}>
+                  {/* <FadeInOnScroll direction="right" delay={0.7}>
                     <HoverCard className="eyewear-products-section">
                       <AnimatedText className="h3" type="h3" delay={0.9} style={{ color: '#2c3e50', marginBottom: '20px', textAlign: 'center' }}>
                         Featured Eyewear
@@ -277,20 +277,30 @@ const HomeFurniture = () => {
                         </div>
                       )}
                     </HoverCard>
-                  </FadeInOnScroll>
+                  </FadeInOnScroll> */}
+                   <div>
+             <FadeInOnScroll direction="right" delay={0.7}>
+              {eyewearProducts.length > 0 ? (
+                <StaggeredGrid className="category-section" staggerDelay={0.2}>
+                  <ShopProducts layout="grid three-column" products={eyewearProducts} />
+                </StaggeredGrid>
+              ) : (
+                <div style={{ textAlign: 'center', padding: '40px' }}>
+                  <p>No Eyewear found.</p>
+                </div>
+              )}
+             </FadeInOnScroll>
+            </div>
                 </div>
 
                 {/* Info Panel - Right Side (4 columns) */}
                 <div className="col-lg-4">
                   <FadeInOnScroll direction="left" delay={0.9}>
                     <HoverCard className="eyewear-info-panel">
-                      <GradientText className="eyewear-info-panel h3" type="h3" delay={1.1}>
-                        <span className="emoji">👓</span>
-                        EYEWEAR
-                      </GradientText>
+                      
                      
                       <AnimatedText className="eyewear-info-panel p" type="p" delay={1.5}>
-                        Our eyewear collection.
+                       Our Premium Eyewear Collection.
                       </AnimatedText>
                     
                       <button
@@ -353,7 +363,7 @@ const HomeFurniture = () => {
             </div>
           </div>
         </FadeInOnScroll>
-
+<br/>
         {/* 5. PERFUMES - Elegant Minimalist Design */}
         <AnimatedSection className="perfumes-elegant-section" delay={0.7}>
           <div className="container">
@@ -368,7 +378,7 @@ const HomeFurniture = () => {
             </HoverCard>
 
             {/* Products Grid */}
-            <HoverCard className="perfumes-grid">
+            
               {/* {perfumesProducts.length > 0 ? (
                 <StaggeredGrid className="category-section" staggerDelay={0.2}>
                   <ShopProducts layout="grid three-column" products={perfumesProducts} />
@@ -380,7 +390,7 @@ const HomeFurniture = () => {
               )} */}
 
               <div className="product-area">
-            <div className="container">
+            <div >
              
               {perfumesProducts.length > 0 ? (
                 <StaggeredGrid className="category-section" staggerDelay={0.2}>
@@ -394,7 +404,7 @@ const HomeFurniture = () => {
             
             </div>
           </div>
-            </HoverCard>
+          
 
             {/* View More Button */}
             <div style={{ textAlign: 'center', marginTop: '30px' }}>
@@ -436,17 +446,17 @@ const HomeFurniture = () => {
               </div>
 
               {/* Products Grid */}
-              <HoverCard className="mobilegadgets-grid">
+             
                 {mobileGadgetsProducts.length > 0 ? (
                   <StaggeredGrid className="category-section" staggerDelay={0.15}>
-                    <ShopProducts layout="grid three-column" products={mobileGadgetsProducts} />
+                    <ShopProducts layout="grid four-column" products={mobileGadgetsProducts} />
                   </StaggeredGrid>
                 ) : (
                   <div style={{ color: 'white', textAlign: 'center', padding: '40px' }}>
                     <p>No mobile gadgets found.</p>
                   </div>
                 )}
-              </HoverCard>
+             
 
               {/* View More Button */}
               <div style={{ textAlign: 'center', marginTop: '30px' }}>
@@ -480,10 +490,7 @@ const HomeFurniture = () => {
                 <div className="col-lg-4">
                   <FadeInOnScroll direction="right" delay={1.1}>
                     <HoverCard className="fashion-info-panel">
-                      <GradientText className="fashion-info-panel h3" type="h3" delay={1.3}>
-                        <span className="emoji">👗</span>
-                        FASHION
-                      </GradientText>
+                      
                      
                       <AnimatedText className="fashion-info-panel p" type="p" delay={1.7}>
                         Our fashion collection:
@@ -512,7 +519,7 @@ const HomeFurniture = () => {
                 {/* Products Section - Right Side (8 columns) */}
                 <div className="col-lg-8">
                   <FadeInOnScroll direction="left" delay={1.3}>
-                    <HoverCard className="fashion-products-section">
+                    
                       <AnimatedText className="h3" type="h3" delay={1.5} style={{ color: '#2c3e50', marginBottom: '20px', textAlign: 'center' }}>
                         Featured Fashion
                       </AnimatedText>
@@ -525,7 +532,7 @@ const HomeFurniture = () => {
                           <p>No fashion items found.</p>
                         </div>
                       )}
-                    </HoverCard>
+                  
                   </FadeInOnScroll>
                 </div>
               </div>
