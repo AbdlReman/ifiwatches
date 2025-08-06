@@ -1315,7 +1315,7 @@ img[src*="default-product"],
 .shop-bottom-area .product-content-2 button,
 .product-area .product-content button,
 .product-area .product-content-2 button {
-  padding: 6px 12px !important;
+  padding: 4px 8px !important;
   font-size: 12px !important;
   border-radius: 4px !important;
   margin-top: auto !important;

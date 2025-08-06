@@ -216,40 +216,44 @@ const HomeFurniture = () => {
               </AnimatedText>
             </div>
 
-            {/* Products Grid */}
-            <HoverCard className="watchstraps-grid">
+          <div className="product-area">
+            <div>
+             
               {watchStrapsProducts.length > 0 ? (
-                <StaggeredGrid className="category-section" staggerDelay={0.15}>
-                  <ShopProducts layout="grid three-column" products={watchStrapsProducts} />
+                <StaggeredGrid className="category-section" staggerDelay={0.2}>
+                  <ShopProducts layout="grid four-column" products={watchStrapsProducts} />
                 </StaggeredGrid>
               ) : (
                 <div style={{ textAlign: 'center', padding: '40px' }}>
-                  <p>No watch straps found.</p>
+                  <p>No watches found.</p>
                 </div>
               )}
-            </HoverCard>
-
-            {/* View More Button */}
-            <div style={{ textAlign: 'center', marginTop: '30px' }}>
-              <button
-                onClick={() => window.location.href = '/watch-straps'}
-                style={{
-                  color: '#daaa58',
-                  border: '2px solid #daaa58',
-                  padding: '12px 30px',
-                  borderRadius: '25px',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  background: 'transparent'
-                }}
-              >
-                View More Watch Straps
-              </button>
+              {/* View More Button */}
+              <div style={{ textAlign: 'center', marginTop: '30px' }}>
+                <button
+                  onClick={() => window.location.href = '/watch-straps'}
+                  style={{
+                    color: '#daaa58',
+                    border: '2px solid #daaa58',
+                    padding: '12px 30px',
+                    borderRadius: '25px',
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    background: 'transparent'
+                  }}
+                >
+                  View More Watches
+                </button>
+              </div>
             </div>
           </div>
+        
+            
+          </div>
         </AnimatedSection>
+          
 
         {/* 3. EYEWEAR - Split Layout with Diagonal Design */}
         <AnimatedSection className="eyewear-split-section" delay={0.5}>
@@ -365,7 +369,7 @@ const HomeFurniture = () => {
 
             {/* Products Grid */}
             <HoverCard className="perfumes-grid">
-              {perfumesProducts.length > 0 ? (
+              {/* {perfumesProducts.length > 0 ? (
                 <StaggeredGrid className="category-section" staggerDelay={0.2}>
                   <ShopProducts layout="grid three-column" products={perfumesProducts} />
                 </StaggeredGrid>
@@ -373,7 +377,23 @@ const HomeFurniture = () => {
                 <div style={{ textAlign: 'center', padding: '40px' }}>
                   <p style={{ color: '#2c3e50' }}>No perfumes found.</p>
                 </div>
+              )} */}
+
+              <div className="product-area">
+            <div className="container">
+             
+              {perfumesProducts.length > 0 ? (
+                <StaggeredGrid className="category-section" staggerDelay={0.2}>
+                  <ShopProducts layout="grid four-column" products={perfumesProducts} />
+                </StaggeredGrid>
+              ) : (
+                <div style={{ textAlign: 'center', padding: '40px' }}>
+                  <p>No Perfumes found.</p>
+                </div>
               )}
+            
+            </div>
+          </div>
             </HoverCard>
 
             {/* View More Button */}
