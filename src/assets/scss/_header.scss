@@ -282,30 +282,14 @@
                 color: $theme-color;
               }
 
+              // Remove dots from all submenu items
               &::before {
-                position: absolute;
-                z-index: 999;
-                top: 13px;
-                left: 15px;
-
-                width: 7px;
-                height: 7px;
-
-                content: "";
-                transition: all 0.3s ease-in-out 0s;
-
-                opacity: 0;
-                border-radius: 50%;
-                background: $theme-color none repeat scroll 0 0;
+                display: none !important;
               }
             }
 
-            &:hover a::before {
-              opacity: 1;
-            }
-
             &:hover a {
-              padding-left: 12px;
+              padding-left: 0; // Remove left padding since no dots
             }
           }
         }
@@ -452,6 +436,106 @@
           visibility: visible;
 
           transform: rotateX(0deg);
+        }
+
+        // Nested submenu behavior for menu-item-has-children
+        ul.submenu {
+          li.menu-item-has-children {
+            position: relative;
+
+            > a {
+              position: relative;
+              padding-right: 30px; // Make room for the arrow icon
+              
+              // Remove the dot for parent category items
+              &::before {
+                display: none !important;
+              }
+              
+              i.fa-angle-right {
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 12px;
+                transition: all 0.3s ease;
+                color: #999;
+              }
+            }
+
+            ul.sub-menu {
+              position: absolute;
+              z-index: 999;
+              top: 0;
+              left: 100%;
+
+              display: block;
+              visibility: hidden;
+
+              width: 200px;
+              padding: 20px 0 22px;
+
+              transition: all 0.5s ease 0s;
+              transform: rotateX(90deg);
+              transform-origin: center top 0;
+
+              background: #fff none repeat scroll 0 0;
+              box-shadow: 0 0 7px 0.5px rgba(0, 0, 0, 0.15);
+
+              // Ensure submenu doesn't go off-screen on the right
+              @media #{$lg-layout} {
+                left: auto;
+                right: 100%;
+              }
+
+              li {
+                display: block;
+                margin-left: 0;
+                padding: 0 20px;
+
+                a {
+                  font-size: 13px;
+                  font-weight: 400;
+                  line-height: 32px;
+                  display: block;
+                  padding-top: 0;
+                  text-align: left;
+                  text-transform: capitalize;
+                  color: #333;
+
+                  &:hover {
+                    color: $theme-color;
+                  }
+
+                  // Remove dots from child category items
+                  &::before {
+                    display: none !important;
+                  }
+                }
+
+                &:hover a {
+                  padding-left: 0; // Remove left padding since no dots
+                }
+              }
+            }
+
+            &:hover {
+              > ul.sub-menu {
+                visibility: visible;
+                transform: rotateX(0deg);
+              }
+
+              > a i.fa-angle-right {
+                transform: translateY(-50%) rotate(90deg);
+                color: $theme-color;
+              }
+            }
+
+            // Ensure proper spacing and alignment
+            &:not(:last-child) {
+              margin-bottom: 5px;
+            }
+          }
         }
 
         @media #{$lg-layout} {
