@@ -116,7 +116,7 @@ const NavMenu = ({ menuWhiteClass, sidebarMenu }) => {
 
           {/* Other Categories */}
           <li className="mega-menu-title">
-            <Link to={process.env.PUBLIC_URL + "/"}>
+            <Link to={process.env.PUBLIC_URL + "/categories"}>
               Categories
               {sidebarMenu ? (
                 <span>

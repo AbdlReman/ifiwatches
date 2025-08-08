@@ -10,7 +10,7 @@ import ShopProducts from "../../wrappers/product/ShopProducts";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import ChildCategoryButtons from "../../components/category/ChildCategoryButtons";
 
-const TopCategoriesPage = () => {
+const CategoriesPage = () => {
   const { t } = useTranslation();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -61,29 +61,46 @@ const TopCategoriesPage = () => {
           };
         });
 
-        // Filter for top categories: Watches, Watch Straps, and Perfumes
-        const topCategoriesProducts = items.filter(product => {
+        // Filter for other categories: Eyewear, Rings & Accessories, Mobile Gadgets, Fashion
+        const categoriesProducts = items.filter(product => {
           if (!product.category || !Array.isArray(product.category)) return false;
           
           // Check if any category includes the keywords
-          const hasWatch = product.category.some(cat => 
-            cat && cat.toLowerCase().includes('watches') || cat.toLowerCase().includes('watch')
+          const hasEyewear = product.category.some(cat => 
+            cat && (cat.toLowerCase().includes('eyewear') || 
+                   cat.toLowerCase().includes('sunglasses') || 
+                   cat.toLowerCase().includes('optical'))
           );
           
-          const hasStrap = product.category.some(cat => 
-            cat && cat.toLowerCase().includes('straps') || cat.toLowerCase().includes('strap')
+          const hasRingsAccessories = product.category.some(cat => 
+            cat && (cat.toLowerCase().includes('rings') || 
+                   cat.toLowerCase().includes('accessories') || 
+                   cat.toLowerCase().includes('bracelets') || 
+                   cat.toLowerCase().includes('chains'))
           );
           
-          const hasPerfume = product.category.some(cat => 
-            cat && cat.toLowerCase().includes('perfume') || cat.toLowerCase().includes('fragrance')
+          const hasMobileGadgets = product.category.some(cat => 
+            cat && (cat.toLowerCase().includes('mobile') || 
+                   cat.toLowerCase().includes('gadgets') || 
+                   cat.toLowerCase().includes('phones'))
           );
           
-          return hasWatch || hasStrap || hasPerfume;
+          const hasFashion = product.category.some(cat => 
+            cat && (cat.toLowerCase().includes('fashion') || 
+                   cat.toLowerCase().includes('clothing') || 
+                   cat.toLowerCase().includes('tshirt') || 
+                   cat.toLowerCase().includes('pant') || 
+                   cat.toLowerCase().includes('jeans') || 
+                   cat.toLowerCase().includes('shalwar') || 
+                   cat.toLowerCase().includes('kameez'))
+          );
+          
+          return hasEyewear || hasRingsAccessories || hasMobileGadgets || hasFashion;
         });
 
-        setProducts(topCategoriesProducts);
-        setSortedProducts(topCategoriesProducts);
-        setCurrentData(topCategoriesProducts.slice(0, pageLimit));
+        setProducts(categoriesProducts);
+        setSortedProducts(categoriesProducts);
+        setCurrentData(categoriesProducts.slice(0, pageLimit));
       } catch (error) {
         console.error("Failed to fetch products from Contentful", error);
       } finally {
@@ -132,19 +149,19 @@ const TopCategoriesPage = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate="Top Categories - IFIwatches"
-        description="Discover our premium watches, watch straps, and perfumes at IFIwatches. Shop the best in luxury timepieces and fragrances."
+        titleTemplate="Categories - IFIwatches"
+        description="Explore our diverse collection of eyewear, accessories, mobile gadgets, and fashion items at IFIwatches."
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb
           pages={[
             { label: "Home", path: process.env.PUBLIC_URL + "/" },
-            { label: "Top Categories", path: process.env.PUBLIC_URL + "/top-categories" },
+            { label: "Categories", path: process.env.PUBLIC_URL + "/categories" },
           ]}
         />
         <div className="shop-area pt-95 pb-100">
           <div className="container">
-            <ChildCategoryButtons parentCategory="top-categories" />
+            <ChildCategoryButtons parentCategory="categories" />
             <div className="row">
               <div className="col-lg-3 order-2 order-lg-1">
                 <ShopSidebar
@@ -176,4 +193,4 @@ const TopCategoriesPage = () => {
   );
 };
 
-export default TopCategoriesPage; 
+export default CategoriesPage;
