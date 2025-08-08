@@ -18,6 +18,7 @@ const CategoriesPage = () => {
   const [currentData, setCurrentData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const pageLimit = 15;
 
   useEffect(() => {
@@ -121,6 +122,67 @@ const CategoriesPage = () => {
       );
     }
 
+    // Apply category filter
+    if (selectedCategory) {
+      filtered = filtered.filter(product => {
+        if (!product.category || !Array.isArray(product.category)) return false;
+        
+        // Filter based on parent category logic
+        switch (selectedCategory) {
+          case "Watches":
+            return product.category.some(cat => 
+              cat && (cat.toLowerCase().includes('watches') || cat.toLowerCase().includes('watch'))
+            );
+          
+          case "Watch Straps":
+            return product.category.some(cat => 
+              cat && (cat.toLowerCase().includes('straps') || cat.toLowerCase().includes('strap'))
+            );
+          
+          case "Perfumes":
+            return product.category.some(cat => 
+              cat && (cat.toLowerCase().includes('perfume') || cat.toLowerCase().includes('fragrance'))
+            );
+          
+          case "Eyewear":
+            return product.category.some(cat => 
+              cat && (cat.toLowerCase().includes('eyewear') || 
+                     cat.toLowerCase().includes('sunglasses') || 
+                     cat.toLowerCase().includes('optical'))
+            );
+          
+          case "Rings & Accessories":
+            return product.category.some(cat => 
+              cat && (cat.toLowerCase().includes('rings') || 
+                     cat.toLowerCase().includes('accessories') || 
+                     cat.toLowerCase().includes('bracelets') || 
+                     cat.toLowerCase().includes('chains'))
+            );
+          
+          case "Mobile Gadgets":
+            return product.category.some(cat => 
+              cat && (cat.toLowerCase().includes('mobile') || 
+                     cat.toLowerCase().includes('gadgets') || 
+                     cat.toLowerCase().includes('phones'))
+            );
+          
+          case "Fashion":
+            return product.category.some(cat => 
+              cat && (cat.toLowerCase().includes('fashion') || 
+                     cat.toLowerCase().includes('clothing') || 
+                     cat.toLowerCase().includes('tshirt') || 
+                     cat.toLowerCase().includes('pant') || 
+                     cat.toLowerCase().includes('jeans') || 
+                     cat.toLowerCase().includes('shalwar') || 
+                     cat.toLowerCase().includes('kameez'))
+            );
+          
+          default:
+            return false;
+        }
+      });
+    }
+
     // Apply color filter
     if (selectedColor) {
       filtered = filtered.filter(product =>
@@ -130,7 +192,7 @@ const CategoriesPage = () => {
 
     setSortedProducts(filtered);
     setCurrentData(filtered.slice(0, pageLimit));
-  }, [products, searchTerm, selectedColor]);
+  }, [products, searchTerm, selectedCategory, selectedColor]);
 
   if (loading) {
     return (
@@ -167,15 +229,18 @@ const CategoriesPage = () => {
                 <ShopSidebar
                   products={products}
                   handleSearch={setSearchTerm}
+                  handleCategoryFilter={setSelectedCategory}
                   handleColorFilter={setSelectedColor}
+                  selectedCategory={selectedCategory}
                   selectedColor={selectedColor}
                   searchTerm={searchTerm}
                   clearAllFilters={() => {
                     setSearchTerm("");
+                    setSelectedCategory("");
                     setSelectedColor("");
                   }}
                   sideSpaceClass="mr-30"
-                  hideCategoryFilter={true}
+                  pageType="categories"
                 />
               </div>
               <div className="col-lg-9 order-1 order-lg-2">

@@ -21,7 +21,8 @@ const ShopSidebar = ({
   searchTerm, 
   clearAllFilters,
   sideSpaceClass,
-  hideCategoryFilter = false
+  hideCategoryFilter = false,
+  pageType = "shop"
 }) => {
   const uniqueCategories = getIndividualCategories(products);
   const uniqueColors = getIndividualColors(products);
@@ -34,7 +35,8 @@ const ShopSidebar = ({
     selectedCategory,
     selectedColor,
     searchTerm,
-    hasHandleCategoryFilter: !!handleCategoryFilter
+    hasHandleCategoryFilter: !!handleCategoryFilter,
+    pageType
   });
 
   return (
@@ -52,6 +54,7 @@ const ShopSidebar = ({
           handleCategoryFilter={handleCategoryFilter}
           selectedCategory={selectedCategory}
           products={products}
+          pageType={pageType}
         />
       )}
 
@@ -89,7 +92,9 @@ ShopSidebar.propTypes = {
   searchTerm: PropTypes.string,
   clearAllFilters: PropTypes.func,
   products: PropTypes.array,
-  sideSpaceClass: PropTypes.string
+  sideSpaceClass: PropTypes.string,
+  hideCategoryFilter: PropTypes.bool,
+  pageType: PropTypes.string
 };
 
 export default ShopSidebar;
