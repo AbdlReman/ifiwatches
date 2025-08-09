@@ -242,7 +242,7 @@ const Contact = () => {
                        <i className="fa fa-map-marker" />
                      </div>
                      <div className="contact-info-dec">
-                       <h4>Islamabad – A.Moiz Paracha</h4>
+                       <h4>Islamabad – Abdul Moiz</h4>
                      </div>
                    </div>
                    <div className="single-contact-info">
