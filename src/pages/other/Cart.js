@@ -95,12 +95,19 @@ const Cart = () => {
                           ? (discountedPrice * currency.currencyRate).toFixed(2)
                           : null;
 
-                        const price = discountedPrice
-                          ? finalDiscountedPrice
-                          : finalProductPrice;
-                        const subtotal = (price * item.quantity).toFixed(2);
+                        const giftBoxPerUnit =
+                          item.includeGiftBox && item.giftBoxPrice > 0
+                            ? (item.giftBoxPrice * currency.currencyRate).toFixed(2)
+                            : 0;
 
-                        cartTotalPrice += parseFloat(price) * item.quantity;
+                        const baseUnitPrice = parseFloat(
+                          (discountedPrice ? finalDiscountedPrice : finalProductPrice)
+                        );
+                        const unitPriceWithGift = (baseUnitPrice + parseFloat(giftBoxPerUnit || 0)).toFixed(2);
+
+                        const subtotal = (parseFloat(unitPriceWithGift) * item.quantity).toFixed(2);
+
+                        cartTotalPrice += parseFloat(unitPriceWithGift) * item.quantity;
 
                         return (
                           <tr key={key}>
@@ -136,17 +143,15 @@ const Cart = () => {
                               {discountedPrice ? (
                                 <Fragment>
                                   <span className="amount old">
-                                    {"Rs " +
-                                      finalProductPrice}
+                                    {"Rs " + (parseFloat(finalProductPrice) + parseFloat(giftBoxPerUnit || 0)).toFixed(2)}
                                   </span>
                                   <span className="amount">
-                                    {"Rs " +
-                                      finalDiscountedPrice}
+                                    {"Rs " + (parseFloat(finalDiscountedPrice) + parseFloat(giftBoxPerUnit || 0)).toFixed(2)}
                                   </span>
                                 </Fragment>
                               ) : (
                                 <span className="amount">
-                                  {"Rs " + finalProductPrice}
+                                  {"Rs " + (parseFloat(finalProductPrice) + parseFloat(giftBoxPerUnit || 0)).toFixed(2)}
                                 </span>
                               )}
                             </td>

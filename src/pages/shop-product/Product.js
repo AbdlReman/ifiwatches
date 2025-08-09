@@ -44,6 +44,7 @@ const Product = () => {
             slug: fields.slug,
             price: parseFloat(fields.price) || 0,
             discount: parseFloat(fields.discount) || 0,
+            giftBoxPrice: parseFloat(fields.giftBoxPrice) || 0,
             shortDescription: fields.shortDescription || "",
             fullDescription: fields.fullDescription ? documentToHtmlString(fields.fullDescription) : "",
             category: fields.category || [],

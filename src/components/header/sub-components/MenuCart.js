@@ -11,8 +11,11 @@ const MenuCart = () => {
   
   const cartTotalPrice = cartItems.reduce((total, item) => {
     const discountedPrice = getDiscountPrice(item.price, item.discount);
-    const price = discountedPrice || item.price;
-    return total + (price * item.quantity);
+    const baseUnit = (discountedPrice != null ? discountedPrice : item.price) * (currency?.currencyRate || 1);
+    const giftUnit = item.includeGiftBox && item.giftBoxPrice > 0
+      ? item.giftBoxPrice * (currency?.currencyRate || 1)
+      : 0;
+    return total + (baseUnit + giftUnit) * item.quantity;
   }, 0);
 
   return (
@@ -26,13 +29,21 @@ const MenuCart = () => {
                 item.discount
               );
               const finalProductPrice = (
-                item.price * currency.currencyRate
+                item.price * (currency?.currencyRate || 1)
               ).toFixed(2);
-              const finalDiscountedPrice = discountedPrice ? 
-                (discountedPrice * currency.currencyRate).toFixed(2) : 
-                finalProductPrice;
+              const finalDiscountedPrice = discountedPrice
+                ? (discountedPrice * (currency?.currencyRate || 1)).toFixed(2)
+                : finalProductPrice;
 
-              const itemPrice = discountedPrice ? finalDiscountedPrice : finalProductPrice;
+              const giftBoxPerUnit =
+                item.includeGiftBox && item.giftBoxPrice > 0
+                  ? (item.giftBoxPrice * (currency?.currencyRate || 1)).toFixed(2)
+                  : 0;
+
+              const baseUnitPrice = parseFloat(
+                discountedPrice ? finalDiscountedPrice : finalProductPrice
+              );
+              const itemUnitPrice = baseUnitPrice.toFixed(2);
 
               return (
                 <li className="single-shopping-cart" key={item.cartItemId}>
@@ -57,9 +68,12 @@ const MenuCart = () => {
                       </Link>
                     </h4>
                     <h6>Qty: {item.quantity}</h6>
-                    <span>
-                                                    {"Rs "+ itemPrice}
-                    </span>
+                    <span>{"Rs " + itemUnitPrice}</span>
+                    {item.includeGiftBox && item.giftBoxPrice > 0 && (
+                      <div className="cart-item-variation">
+                        <span>Gift box: + Rs {parseFloat(giftBoxPerUnit).toFixed(2)}</span>
+                      </div>
+                    )}
                     {item.selectedProductColor && (
                       <div className="cart-item-variation">
                         <span>Color: {item.selectedProductColor}</span>

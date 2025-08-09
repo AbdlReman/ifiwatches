@@ -9,6 +9,7 @@ import emailjs from "emailjs-com";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import { deleteAllFromCart } from "../../store/slices/cart-slice";
 import { EMAILJS_CONFIG } from "../../config/emailjs";
+import contentfulClient from "../../data/contentful";
 
 // Initialize EmailJS with your brand configuration
 emailjs.init("uOGdgPbVqeIsG8gD8");
@@ -18,9 +19,10 @@ const Checkout = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    companyName: "",
+    whatsappNumber: "",
     country: "Pakistan",
     streetAddress: "",
+    streetAddress2: "",
     city: "",
     state: "",
     postcode: "",
@@ -31,11 +33,53 @@ const Checkout = () => {
     transactionId: "",
   });
 
+  // Coupon state
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState(null); // { code, type: 'percent' | 'amount', value }
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [couponError, setCouponError] = useState("");
+
   const { pathname } = useLocation();
   const currency = useSelector((state) => state.currency);
   const { cartItems } = useSelector((state) => state.cart);
 
   let cartTotalPrice = 0;
+
+  // Helpers to calculate prices (shared by UI and submission)
+  const calculateItemFinalUnitPrice = (item) => {
+    const discountedPrice = getDiscountPrice(item.price, item.discount);
+    const base =
+      (discountedPrice != null ? discountedPrice : item.price) *
+      currency.currencyRate;
+    return parseFloat(Number(base).toFixed(2));
+  };
+
+  const calculateSubtotal = () => {
+    if (!cartItems || cartItems.length === 0) return 0;
+    return cartItems.reduce((sum, item) => {
+      const giftBoxPerUnit =
+        item.includeGiftBox && item.giftBoxPrice > 0
+          ? item.giftBoxPrice * currency.currencyRate
+          : 0;
+      return (
+        sum + (calculateItemFinalUnitPrice(item) + giftBoxPerUnit) * item.quantity
+      );
+    }, 0);
+  };
+
+  const subtotalDisplay = parseFloat(calculateSubtotal().toFixed(2));
+  const discountDisplay = appliedCoupon
+    ? parseFloat(
+        (
+          appliedCoupon.type === "percent"
+            ? (subtotalDisplay * appliedCoupon.value) / 100
+            : appliedCoupon.value
+        ).toFixed(2)
+      )
+    : 0;
+  const grandTotalDisplay = parseFloat(
+    Math.max(subtotalDisplay - discountDisplay, 0).toFixed(2)
+  );
 
   // Show welcome toast when component mounts (only once)
   useEffect(() => {
@@ -88,7 +132,8 @@ const Checkout = () => {
     // Show loading toast
     const loadingToast = toast.loading("Processing your order...");
 
-    // Create order summary with proper discount calculation
+    // Create order summary with proper discount calculation (include gift box)
+    let giftBoxTotalAccumulator = 0;
     const orderSummary = cartItems.map((item) => {
       const finalProductPrice = (item.price * currency.currencyRate).toFixed(2);
       const discountedPrice = getDiscountPrice(item.price, item.discount);
@@ -96,7 +141,18 @@ const Checkout = () => {
         ? (discountedPrice * currency.currencyRate).toFixed(2)
         : finalProductPrice;
       
-      const itemTotal = (finalDiscountedPrice * item.quantity).toFixed(2);
+      const giftBoxPerUnit =
+        item.includeGiftBox && item.giftBoxPrice > 0
+          ? (item.giftBoxPrice * currency.currencyRate).toFixed(2)
+          : 0;
+      if (giftBoxPerUnit > 0) {
+        giftBoxTotalAccumulator += parseFloat(giftBoxPerUnit) * item.quantity;
+      }
+      
+      const itemTotal = (
+        parseFloat(finalDiscountedPrice) * item.quantity +
+        parseFloat(giftBoxPerUnit) * item.quantity
+      ).toFixed(2);
       
       return {
         productName: item.name,
@@ -109,6 +165,21 @@ const Checkout = () => {
     const total = orderSummary
       .reduce((sum, item) => sum + parseFloat(item.total), 0)
       .toFixed(2);
+
+    const giftBoxTotal = parseFloat(giftBoxTotalAccumulator.toFixed(2));
+
+    // Compute discount and grand total based on applied coupon
+    const numericTotal = parseFloat(total);
+    const discountAmount = appliedCoupon
+      ? parseFloat(
+          (
+            appliedCoupon.type === "percent"
+              ? (numericTotal * appliedCoupon.value) / 100
+              : appliedCoupon.value
+          ).toFixed(2)
+        )
+      : 0;
+    const grandTotal = parseFloat(Math.max(numericTotal - discountAmount, 0).toFixed(2));
 
     // Create separate arrays for each column
     const productNames = orderSummary.map((item) => {
@@ -148,7 +219,10 @@ const Checkout = () => {
       quantities: formattedQuantities,
       prices: formattedPrices,
       totals: formattedTotals,
-      total,
+      subtotal: total,
+      discount: discountAmount.toFixed(2),
+      grandTotal: grandTotal.toFixed(2),
+      giftBoxTotal: giftBoxTotal.toFixed(2),
       paymentMethod: getPaymentMethodName(formData.paymentMethod),
     });
 
@@ -160,7 +234,7 @@ const Checkout = () => {
           brandName: "IFIwatches",
           firstName: formData.firstName,
           lastName: formData.lastName,
-          companyName: formData.companyName,
+          whatsappNumber: formData.whatsappNumber,
           country: formData.country,
           streetAddress: formData.streetAddress,
           streetAddress2: formData.streetAddress2,
@@ -176,7 +250,14 @@ const Checkout = () => {
           quantities: formattedQuantities,
           prices: formattedPrices,
           totals: formattedTotals,
-          total: total,
+          subtotal: total, // subtotal before coupon
+          total: grandTotal.toFixed(2), // for template compatibility, send final total here
+          giftBoxTotal: giftBoxTotal.toFixed(2),
+          couponCode: appliedCoupon?.code || "",
+          couponType: appliedCoupon?.type || "",
+          couponValue: appliedCoupon?.value != null ? String(appliedCoupon.value) : "",
+          discount: discountAmount.toFixed(2),
+          grandTotal: grandTotal.toFixed(2),
         },
         EMAILJS_CONFIG.PUBLIC_KEY // Your user ID
       );
@@ -192,9 +273,10 @@ const Checkout = () => {
       setFormData({
         firstName: "",
         lastName: "",
-        companyName: "",
+        whatsappNumber: "",
         country: "",
         streetAddress: "",
+        streetAddress2: "",
         city: "",
         state: "",
         postcode: "",
@@ -204,6 +286,11 @@ const Checkout = () => {
         paymentMethod: "cash_on_delivery",
         transactionId: "",
       });
+
+      // Reset coupon state after successful order
+      setAppliedCoupon(null);
+      setCouponCode("");
+      setCouponError("");
 
       // Show single success notification
       toast.success("Order completed successfully!", {
@@ -221,6 +308,57 @@ const Checkout = () => {
       toast.dismiss(loadingToast);
       toast.error("Failed to place order. Please try again.");
     }
+  };
+
+  const handleApplyCoupon = async () => {
+    const rawCode = couponCode.trim();
+    if (!rawCode) {
+      setCouponError("Please enter a coupon code");
+      return;
+    }
+    setCouponError("");
+    setCouponLoading(true);
+    try {
+      const normalizedCode = rawCode.toUpperCase();
+      const res = await contentfulClient.getEntries({
+        content_type: "coupon",
+        "fields.code": normalizedCode,
+        limit: 1,
+      });
+
+      const entry = res?.items?.[0];
+      if (!entry) {
+        setAppliedCoupon(null);
+        setCouponError("Invalid or inactive coupon code");
+        return;
+      }
+
+      const fields = entry.fields || {};
+      const code = (fields.code || "").toUpperCase();
+      const type = "percent";
+      const value = Number(fields.percentage || 0);
+      if (value <= 0 || value > 100) {
+        setAppliedCoupon(null);
+        setCouponError("Coupon percent must be between 1 and 100");
+        return;
+      }
+
+      setAppliedCoupon({ code, type, value });
+      toast.success(`Coupon applied: ${value}% off`);
+    } catch (err) {
+      console.error("Coupon apply error", err);
+      setCouponError("Failed to validate coupon. Please try again");
+      setAppliedCoupon(null);
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode("");
+    setCouponError("");
+    toast.info("Coupon removed");
   };
 
   return (
@@ -271,11 +409,11 @@ const Checkout = () => {
                         </div>
                         <div className="col-lg-12">
                           <div className="billing-info mb-20">
-                            <label>Company Name</label>
+                            <label>WhatsApp Number</label>
                             <input
                               type="text"
-                              name="companyName"
-                              value={formData.companyName}
+                              name="whatsappNumber"
+                              value={formData.whatsappNumber}
                               onChange={handleChange}
                             />
                           </div>
@@ -438,16 +576,72 @@ const Checkout = () => {
                               })}
                             </ul>
                           </div>
+                          {/* Coupon input */}
+                          <div className="coupon-area">
+                            <label htmlFor="coupon">Coupon code</label>
+                            <div className="coupon-controls">
+                              <input
+                                id="coupon"
+                                type="text"
+                                value={couponCode}
+                                onChange={(e) => setCouponCode(e.target.value)}
+                                placeholder="Enter coupon code"
+                              />
+                              {!appliedCoupon ? (
+                                <button
+                                  type="button"
+                                  className="btn-hover coupon-apply"
+                                  onClick={handleApplyCoupon}
+                                  disabled={couponLoading || !couponCode.trim()}
+                                >
+                                  {couponLoading ? "Applying..." : "Apply"}
+                                </button>
+                              ) : (
+                                <button
+                                  type="button"
+                                  className="btn-hover coupon-remove"
+                                  onClick={handleRemoveCoupon}
+                                >
+                                  Remove
+                                </button>
+                              )}
+                            </div>
+                            {couponError && (
+                              <p className="coupon-error">{couponError}</p>
+                            )}
+                            {appliedCoupon && (
+                              <p className="coupon-success">
+                                Applied {appliedCoupon.code}: {" "}
+                                {appliedCoupon.type === "percent"
+                                  ? `${appliedCoupon.value}% off`
+                                  : `Rs ${appliedCoupon.value} off`}
+                              </p>
+                            )}
+                          </div>
                           <div className="your-order-bottom">
                             <ul>
                               <li className="your-order-shipping">Shipping</li>
                               <li>Free shipping</li>
                             </ul>
                           </div>
+                          <div className="your-order-subtotal">
+                            <ul>
+                              <li className="order-subtotal">Subtotal</li>
+                              <li>{"Rs " + subtotalDisplay.toFixed(2)}</li>
+                            </ul>
+                          </div>
+                          {discountDisplay > 0 && (
+                            <div className="your-order-discount">
+                              <ul>
+                                <li className="order-discount">Discount</li>
+                                <li>{"- Rs " + discountDisplay.toFixed(2)}</li>
+                              </ul>
+                            </div>
+                          )}
                           <div className="your-order-total">
                             <ul>
                               <li className="order-total">Total</li>
-                              <li>{"Rs " + cartTotalPrice.toFixed(2)}</li>
+                              <li>{"Rs " + grandTotalDisplay.toFixed(2)}</li>
                             </ul>
                           </div>
                         </div>
@@ -721,6 +915,46 @@ const Checkout = () => {
             outline: none;
             border-color: #f7941d;
             box-shadow: 0 0 0 1px rgba(247, 148, 29, 0.1);
+          }
+
+          /* Coupon */
+          .coupon-area {
+            margin: 15px 0 0 0;
+            padding: 10px 0 0 0;
+            border-top: 1px dashed #e8e8e8;
+          }
+          .coupon-area label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 6px;
+          }
+          .coupon-controls {
+            display: flex;
+            gap: 10px;
+          }
+          .coupon-controls input[type="text"] {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+          }
+          .coupon-controls .coupon-apply,
+          .coupon-controls .coupon-remove {
+            padding: 8px 14px;
+            font-size: 14px;
+          }
+          .coupon-error {
+            color: #d9534f;
+            font-size: 12px;
+            margin-top: 6px;
+          }
+          .coupon-success {
+            color: #28a745;
+            font-size: 12px;
+            margin-top: 6px;
           }
         `}</style>
       </LayoutOne>

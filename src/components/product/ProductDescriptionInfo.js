@@ -25,6 +25,7 @@ const ProductDescriptionInfo = ({
   const [selectedProductSize, setSelectedProductSize] = useState("");
   const [productStock, setProductStock] = useState(0);
   const [quantityCount, setQuantityCount] = useState(1);
+  const [includeGiftBox, setIncludeGiftBox] = useState(false);
   
   // Use useEffect to set initial values when product changes
   useEffect(() => {
@@ -53,6 +54,9 @@ const ProductDescriptionInfo = ({
     );
   }
 
+  const giftBoxUnitPrice = Number(product.giftBoxPrice || 0);
+  const showGiftBoxOption = Number.isFinite(giftBoxUnitPrice) && giftBoxUnitPrice > 0;
+
   const productCartQty = getProductCartQuantity(
     cartItems,
     product,
@@ -65,7 +69,9 @@ const ProductDescriptionInfo = ({
       ...product,
       quantity: quantityCount,
       selectedProductColor: selectedProductColor ? selectedProductColor : product.selectedProductColor ? product.selectedProductColor : null,
-      selectedProductSize: selectedProductSize ? selectedProductSize : product.selectedProductSize ? product.selectedProductSize : null
+      selectedProductSize: selectedProductSize ? selectedProductSize : product.selectedProductSize ? product.selectedProductSize : null,
+      includeGiftBox: showGiftBoxOption ? includeGiftBox : false,
+      giftBoxPrice: showGiftBoxOption ? giftBoxUnitPrice : 0
     }));
   };
 
@@ -76,6 +82,8 @@ const ProductDescriptionInfo = ({
       quantity: quantityCount,
       selectedProductColor: selectedProductColor ? selectedProductColor : product.selectedProductColor ? product.selectedProductColor : null,
       selectedProductSize: selectedProductSize ? selectedProductSize : product.selectedProductSize ? product.selectedProductSize : null,
+      includeGiftBox: showGiftBoxOption ? includeGiftBox : false,
+      giftBoxPrice: showGiftBoxOption ? giftBoxUnitPrice : 0,
       suppressToast: true
     }));
     
@@ -110,6 +118,23 @@ const ProductDescriptionInfo = ({
       <div className="pro-details-list">
         <p>{product.shortDescription}</p>
       </div>
+
+      {/* Gift box option (only if configured and > 0) */}
+      {showGiftBoxOption && (
+        <div className="pro-details-giftbox" style={{ marginTop: 10 }}>
+          <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+            <input
+              type="checkbox"
+              checked={includeGiftBox}
+              onChange={(e) => setIncludeGiftBox(e.target.checked)}
+              style={{ width: 16, height: 16 }}
+            />
+            <span>
+              Do you want gift box? (+ Rs {(giftBoxUnitPrice * (currency?.currencyRate || 1)).toFixed(2)})
+            </span>
+          </label>
+        </div>
+      )}
 
       {/* Display colors if available */}
       {product.color && product.color.length > 0 && (
