@@ -64,7 +64,7 @@ const About = () => {
               <p>
                 At IFI, we’re creating more than a store — we’re building a brand you can trust for years to come. Whether you’re searching for timeless elegance, modern style, or innovative accessories, you’ll find it here.
               </p>
-              <p className="mt-20"><strong>Iconic Futures Innovations – Where Quality Meets Trust.</strong></p>
+              
             </div>
           </div>
         </div>

@@ -6,10 +6,10 @@ const SectionTitleWithText = ({ spaceTopClass, spaceBottomClass }) => {
     <div className={clsx("welcome-area", spaceTopClass, spaceBottomClass)}>
       <div className="container">
         <div className="welcome-content text-center">
-          <h5>Who Are We</h5>
-          <h1>Welcome To IFIwatches</h1>
+          <h5>About Us</h5>
+          <h1>Welcome to IFI – Iconic Futures Innovations</h1>
           <p>
-            IFIwatches is Pakistan's premier destination for premium quality watches. We believe every customer deserves to own a luxury timepiece that combines elegance with affordability. Our carefully curated collection of watches ensures fast delivery throughout Pakistan.
+            IFI (ifilifestyle) is a trusted multi-brand destination where style meets innovation. We curate premium quality products — luxury watches, signature perfumes, men’s fabrics, and fashion accessories — bringing affordability and value together with fast nationwide delivery.
           </p>
         </div>
       </div>
