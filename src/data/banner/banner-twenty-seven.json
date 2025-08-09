@@ -2,17 +2,17 @@
   {
     "id": 1,
     "image": "/assets/img/banner/banner-39.jpg",
-    "title": "Featured Products",
+    "title": "Top Watches",
     "subtitle": "Choose Your Products Here",
-    "link": "/shop",
+    "link": "/watches",
     "textAlign": "right"
   },
   {
     "id": 2,
     "image": "/assets/img/banner/banner-40.jpg",
-    "title": "New Products",
+    "title": "AM Perfume",
     "subtitle": "Choose Your Products Here",
-    "link": "/shop",
+    "link": "/perfumes",
     "textAlign": "left"
   }
 ]
