@@ -138,8 +138,8 @@ const HomeFurniture = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate="IFIwatches - Premium Quality Watches"
-        description="Discover premium quality watches at IFIwatches. Luxury timepieces with a focus on affordability and fast delivery throughout Pakistan."
+        titleTemplate="IFI – Iconic Futures Innovations (ifilifestyle)"
+        description="Discover premium watches, signature perfumes, men’s fabrics, and fashion accessories at IFI – Iconic Futures Innovations. Quality, value, and fast nationwide delivery."
       />
       <LayoutOne headerTop="visible">
         {/* hero banner section */}

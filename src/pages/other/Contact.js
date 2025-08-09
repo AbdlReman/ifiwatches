@@ -92,7 +92,7 @@ const Contact = () => {
         pauseOnHover
         theme="light"
       />
-      <SEO titleTemplate="Contact IFIwatches" description="Get in touch with IFIwatches for any questions about our premium quality watches, orders, or customer support. Visit https://www.ifiwatches.pk/" />
+      <SEO titleTemplate="Contact – IFI (Iconic Futures Innovations)" description="Get in touch with IFI – Iconic Futures Innovations (ifilifestyle). We're here to help with orders, product questions, and customer support." />
       <LayoutOne headerTop="visible">
         {/* breadcrumb */}
         <Breadcrumb

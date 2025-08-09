@@ -17,7 +17,7 @@ const Cart = () => {
   if (!currency) {
     return (
       <Fragment>
-        <SEO titleTemplate="Shopping Cart - IFIwatches" description="Review your cart items at IFIwatches. Premium quality watches with secure checkout and fast delivery. Visit https://www.ifiwatches.pk/" />
+        <SEO titleTemplate="Shopping Cart – IFI (Iconic Futures Innovations)" description="Review your cart at IFI – Iconic Futures Innovations (ifilifestyle). Premium watches, perfumes, men’s fabrics, and accessories with fast nationwide delivery." />
         <LayoutOne headerTop="visible">
           <div className="cart-main-area pt-90 pb-100">
             <div className="container">
@@ -47,7 +47,7 @@ const Cart = () => {
 
   return (
     <Fragment>
-                <SEO titleTemplate="Shopping Cart - IFIwatches" description="Review your cart items at IFIwatches. Premium quality watches with secure checkout and fast delivery. Visit https://www.ifiwatches.pk/" />
+                <SEO titleTemplate="Shopping Cart – IFI (Iconic Futures Innovations)" description="Review your cart at IFI – Iconic Futures Innovations (ifilifestyle). Premium watches, perfumes, men’s fabrics, and accessories with fast nationwide delivery." />
       <LayoutOne headerTop="visible">
         <Breadcrumb
           pages={[

@@ -194,8 +194,8 @@ const TopCategoriesPage = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate="Top Categories - IFIwatches"
-        description="Discover our premium watches, watch straps, and perfumes at IFIwatches. Shop the best in luxury timepieces and fragrances."
+        titleTemplate="Top Categories – IFI (Iconic Futures Innovations)"
+        description="Discover premium watches, straps, perfumes, and more at IFI – Iconic Futures Innovations (ifilifestyle)."
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

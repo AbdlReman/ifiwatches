@@ -20,8 +20,8 @@ const Compare = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate="Compare"
-        description="Compare page of flone react minimalist eCommerce template."
+        titleTemplate="Compare – IFI (Iconic Futures Innovations)"
+        description="Compare products at IFI – Iconic Futures Innovations (ifilifestyle)."
       />
       <LayoutOne headerTop="visible">
         {/* breadcrumb */}

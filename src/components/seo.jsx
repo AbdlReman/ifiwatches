@@ -3,8 +3,8 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 
 const SEO = ({ title, titleTemplate, description }) => {
     // Ensure title and titleTemplate are strings with fallbacks
-    const safeTitle = title || "IFIwatches";
-    const safeTitleTemplate = titleTemplate || "Premium Quality Watches | https://www.ifiwatches.pk/";
+    const safeTitle = title || "IFI – Iconic Futures Innovations";
+    const safeTitleTemplate = titleTemplate || "Iconic Futures Innovations | ifilifestyle";
     
     return (
         <HelmetProvider>
@@ -26,9 +26,9 @@ SEO.propTypes = {
 }
 
 SEO.defaultProps = {
-    title: "IFIwatches",
-    titleTemplate: "Premium Quality Watches",
-    description: "IFIwatches - Pakistan's premier destination for premium quality watches. Shop our curated collection of luxury timepieces with a focus on affordability and fast delivery throughout Pakistan.",
+    title: "IFI – Iconic Futures Innovations",
+    titleTemplate: "Iconic Futures Innovations | ifilifestyle",
+    description: "IFI (Iconic Futures Innovations) is a multi-brand lifestyle destination offering premium watches, signature perfumes, men’s fabrics, and fashion accessories—quality, value, and fast nationwide delivery.",
 };
 
 export default SEO;

@@ -114,8 +114,10 @@ const Product = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate={`${product.metaTitle || product.name} - IFIwatches`}
-        description={product.metaDescription || `Shop ${product.name} at IFIwatches. Pakistan's premier destination for premium quality watches with fast delivery. Visit https://www.ifiwatches.pk/`}
+        titleTemplate={`${product.metaTitle || product.name} – IFI (Iconic Futures Innovations)`}
+        description={
+          product.metaDescription || `Shop ${product.name} at IFI (Iconic Futures Innovations) – ifilifestyle. Premium watches, perfumes, men’s fabrics, and fashion accessories with fast nationwide delivery across Pakistan.`
+        }
       />
 
       <LayoutOne headerTop="visible">

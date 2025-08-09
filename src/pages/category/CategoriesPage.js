@@ -211,8 +211,8 @@ const CategoriesPage = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate="Categories - IFIwatches"
-        description="Explore our diverse collection of eyewear, accessories, mobile gadgets, and fashion items at IFIwatches."
+        titleTemplate="Categories – IFI (Iconic Futures Innovations)"
+        description="Explore watches, perfumes, men’s fabrics, fashion accessories, and more at IFI – Iconic Futures Innovations (ifilifestyle)."
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

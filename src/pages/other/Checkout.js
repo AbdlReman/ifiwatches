@@ -364,8 +364,8 @@ const Checkout = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate="Checkout - IFIwatches"
-        description="Complete your purchase at IFIwatches. Secure checkout for premium quality watches with reliable delivery. Visit https://www.ifiwatches.pk/"
+        titleTemplate="Checkout – IFI (Iconic Futures Innovations)"
+        description="Complete your purchase at IFI – Iconic Futures Innovations (ifilifestyle). Secure checkout for premium watches, perfumes, men’s fabrics, and accessories with fast nationwide delivery."
       />
       <LayoutOne headerTop="visible">
         {/* breadcrumb */}
