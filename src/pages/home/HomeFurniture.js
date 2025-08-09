@@ -372,7 +372,7 @@ const HomeFurniture = () => {
             <HoverCard >
             
                 <GradientText className="perfumes-banner h2" type="h2" delay={0.9}>
-                  PERFUMES
+                  AM PERFUMES
                 </GradientText>
              
             </HoverCard>
