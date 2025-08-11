@@ -695,10 +695,10 @@ const Checkout = () => {
                               {formData.paymentMethod === "easypaisa" && (
                                 <div className="payment-details">
                                   <p>
-                                    <strong>Account:</strong> 03108111554
+                                    <strong>Account:</strong> 03448935702
                                   </p>
                                   <p>
-                                    <strong>Account Holder:</strong> Asiya bibi
+                                    <strong>Account Holder:</strong> Ibrar Ullah
                                   </p>
                                 </div>
                               )}
@@ -727,11 +727,10 @@ const Checkout = () => {
                               {formData.paymentMethod === "jazzcash" && (
                                 <div className="payment-details">
                                   <p>
-                                    <strong>Account:</strong> 03287818894
+                                    <strong>Account:</strong> 03448935702
                                   </p>
                                   <p>
-                                    <strong>Account Holder:</strong> Iqra
-                                    siddique
+                                    <strong>Account Holder:</strong> Ibrar Ullah
                                   </p>
                                 </div>
                               )}
@@ -755,19 +754,15 @@ const Checkout = () => {
                               {formData.paymentMethod === "bank" && (
                                 <div className="payment-details">
                                   <p>
-                                    <strong>Account Holder:</strong> ASIA BIBI
-                                  </p>
-                                  <p>
-                                    <strong>Bank:</strong> Meezan
-                                    Bank-MAMUKANJAN BRANCH
+                                    <strong>Account Holder:</strong> Ibrar Ullah
                                   </p>
                                   <p>
                                     <strong>Account Number:</strong>{" "}
-                                    98980106494041
+                                    03448935702
                                   </p>
                                   <p>
                                     <strong>IBAN:</strong>{" "}
-                                    PK73MEZN0098980106494041
+                                    PK47TMB0000000082782492
                                   </p>
                                 </div>
                               )}
