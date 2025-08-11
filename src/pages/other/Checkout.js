@@ -9,7 +9,9 @@ import emailjs from "emailjs-com";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import { deleteAllFromCart } from "../../store/slices/cart-slice";
 import { EMAILJS_CONFIG } from "../../config/emailjs";
+import { CLOUDINARY_UPLOAD_URL } from "../../config/cloudinary";
 import contentfulClient from "../../data/contentful";
+import "../../assets/css/payment-upload.css";
 
 // Initialize EmailJS with your brand configuration
 emailjs.init("uOGdgPbVqeIsG8gD8");
@@ -31,6 +33,7 @@ const Checkout = () => {
     orderNotes: "",
     paymentMethod: "cash_on_delivery",
     transactionId: "",
+    paymentScreenshot: "",
   });
 
   // Coupon state
@@ -38,6 +41,10 @@ const Checkout = () => {
   const [appliedCoupon, setAppliedCoupon] = useState(null); // { code, type: 'percent' | 'amount', value }
   const [couponLoading, setCouponLoading] = useState(false);
   const [couponError, setCouponError] = useState("");
+
+  // Image upload state
+  const [imageUploading, setImageUploading] = useState(false);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
 
   const { pathname } = useLocation();
   const currency = useSelector((state) => state.currency);
@@ -120,12 +127,13 @@ const Checkout = () => {
       return;
     }
 
-    // Validate transaction ID for online payments
+    // Validate either transaction ID OR payment screenshot for online payments
     if (
       formData.paymentMethod !== "cash_on_delivery" &&
-      !formData.transactionId
+      !formData.transactionId &&
+      !formData.paymentScreenshot
     ) {
-      toast.error("Please enter your transaction ID for online payment");
+      toast.error("Please provide either Transaction ID OR Payment Screenshot for online payment");
       return;
     }
 
@@ -246,6 +254,7 @@ const Checkout = () => {
           orderNotes: formData.orderNotes,
           paymentMethod: getPaymentMethodName(formData.paymentMethod),
           transactionId: formData.transactionId,
+          paymentScreenshot: formData.paymentScreenshot,
           productNames: formattedProductNames,
           quantities: formattedQuantities,
           prices: formattedPrices,
@@ -285,7 +294,11 @@ const Checkout = () => {
         orderNotes: "",
         paymentMethod: "cash_on_delivery",
         transactionId: "",
+        paymentScreenshot: "",
       });
+
+      // Clear uploaded image
+      setUploadedImageUrl("");
 
       // Reset coupon state after successful order
       setAppliedCoupon(null);
@@ -359,6 +372,75 @@ const Checkout = () => {
     setCouponCode("");
     setCouponError("");
     toast.info("Coupon removed");
+  };
+
+  // Handle image upload - Convert to data URL instead of Cloudinary
+  const handleImageUpload = async (file) => {
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error("Please upload a valid image file (JPEG, PNG, or GIF)");
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      toast.error("Image size should be less than 5MB");
+      return;
+    }
+
+    setImageUploading(true);
+    const loadingToast = toast.loading("Processing payment screenshot...");
+
+    try {
+      // Convert file to data URL
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      
+      reader.onload = () => {
+        const dataUrl = reader.result;
+        
+        setUploadedImageUrl(dataUrl);
+        setFormData(prev => ({
+          ...prev,
+          paymentScreenshot: dataUrl
+        }));
+        
+        toast.dismiss(loadingToast);
+        toast.success("Payment screenshot processed successfully!");
+        setImageUploading(false);
+      };
+
+      reader.onerror = () => {
+        toast.dismiss(loadingToast);
+        toast.error("Failed to process image file. Please try again.");
+        setImageUploading(false);
+      };
+    } catch (error) {
+      console.error('Image processing error:', error);
+      toast.dismiss(loadingToast);
+      toast.error("Failed to process image. Please try again.");
+      setImageUploading(false);
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      handleImageUpload(file);
+    }
+  };
+
+  const removeUploadedImage = () => {
+    setUploadedImageUrl("");
+    setFormData(prev => ({
+      ...prev,
+      paymentScreenshot: ""
+    }));
+    toast.info("Payment screenshot removed");
   };
 
   return (
@@ -772,7 +854,7 @@ const Checkout = () => {
                           {/* Transaction ID Field for Online Payments */}
                           {formData.paymentMethod !== "cash_on_delivery" && (
                             <div className="transaction-id-field mt-20">
-                              <label>Transaction ID / TRX ID *</label>
+                              <label>Transaction ID / TRX ID (Optional)</label>
                               <input
                                 type="text"
                                 name="transactionId"
@@ -781,6 +863,59 @@ const Checkout = () => {
                                 placeholder="Enter your transaction ID"
                                 className="w-100"
                               />
+                            </div>
+                          )}
+
+                          {/* Payment Screenshot Upload for Online Payments */}
+                          {formData.paymentMethod !== "cash_on_delivery" && (
+                            <div className="payment-screenshot-field mt-20">
+                              <label>Payment Screenshot (Optional)</label>
+                              <p className="field-note">
+                                <strong>Note:</strong> Please provide either Transaction ID OR Payment Screenshot (at least one is required)
+                              </p>
+                              <div className="screenshot-upload-container">
+                                {!uploadedImageUrl ? (
+                                  <div className="upload-area">
+                                    <input
+                                      type="file"
+                                      id="payment-screenshot"
+                                      accept="image/*"
+                                      onChange={handleImageChange}
+                                      disabled={imageUploading}
+                                      style={{ display: 'none' }}
+                                    />
+                                    <label htmlFor="payment-screenshot" className="upload-button">
+                                      {imageUploading ? (
+                                        <span>Processing...</span>
+                                      ) : (
+                                        <span>
+                                          <i className="pe-7s-upload"></i>
+                                          Click to upload payment screenshot
+                                        </span>
+                                      )}
+                                    </label>
+                                    <p className="upload-hint">
+                                      Upload a screenshot of your payment confirmation (JPEG, PNG, GIF - Max 5MB)
+                                    </p>
+                                  </div>
+                                ) : (
+                                  <div className="uploaded-image-container">
+                                    <img 
+                                      src={uploadedImageUrl} 
+                                      alt="Payment Screenshot" 
+                                      className="uploaded-screenshot"
+                                    />
+                                    <button
+                                      type="button"
+                                      className="remove-image-btn"
+                                      onClick={removeUploadedImage}
+                                    >
+                                      <i className="pe-7s-close"></i>
+                                      Remove
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           )}
                         </div>
@@ -814,143 +949,7 @@ const Checkout = () => {
           </div>
         </div>
 
-        {/* Custom CSS for Payment Method Styling */}
-        <style jsx>{`
-          .payment-method {
-            margin-top: 20px;
-            padding: 20px;
-            border-top: 1px solid #e8e8e8;
-          }
 
-          .payment-method h4 {
-            margin-bottom: 15px;
-            font-size: 16px;
-            font-weight: 600;
-            color: #333;
-          }
-
-          .payment-options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-          }
-
-          .payment-option {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-          }
-
-          .radio-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 5px;
-          }
-
-          .custom-radio {
-            width: 16px;
-            height: 16px;
-            margin: 0;
-            cursor: pointer;
-            // accent-color: #f7941d;
-          }
-
-          .radio-label {
-            font-size: 14px;
-            font-weight: 500;
-            color: #333;
-            cursor: pointer;
-            margin: 0;
-            line-height: 1.2;
-          }
-
-          .payment-details {
-            margin-left: 24px;
-            margin-top: 8px;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border-radius: 4px;
-            border-left: 3px solid #f7941d;
-          }
-
-          .payment-details p {
-            margin: 0 0 5px 0;
-            font-size: 12px;
-            color: #666;
-            line-height: 1.4;
-          }
-
-          .payment-details p:last-child {
-            margin-bottom: 0;
-          }
-
-          .transaction-id-field {
-            margin-top: 15px;
-          }
-
-          .transaction-id-field label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
-            font-weight: 500;
-            color: #333;
-          }
-
-          .transaction-id-field input {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-          }
-
-          .transaction-id-field input:focus {
-            outline: none;
-            border-color: #f7941d;
-            box-shadow: 0 0 0 1px rgba(247, 148, 29, 0.1);
-          }
-
-          /* Coupon */
-          .coupon-area {
-            margin: 15px 0 0 0;
-            padding: 10px 0 0 0;
-            border-top: 1px dashed #e8e8e8;
-          }
-          .coupon-area label {
-            display: block;
-            font-size: 14px;
-            font-weight: 500;
-            color: #333;
-            margin-bottom: 6px;
-          }
-          .coupon-controls {
-            display: flex;
-            gap: 10px;
-          }
-          .coupon-controls input[type="text"] {
-            flex: 1;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-          }
-          .coupon-controls .coupon-apply,
-          .coupon-controls .coupon-remove {
-            padding: 8px 14px;
-            font-size: 14px;
-          }
-          .coupon-error {
-            color: #d9534f;
-            font-size: 12px;
-            margin-top: 6px;
-          }
-          .coupon-success {
-            color: #28a745;
-            font-size: 12px;
-            margin-top: 6px;
-          }
-        `}</style>
       </LayoutOne>
     </Fragment>
   );
