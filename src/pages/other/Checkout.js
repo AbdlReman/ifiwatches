@@ -383,11 +383,11 @@ const Checkout = () => {
                 <div className="row">
                   <div className="col-lg-7">
                     <div className="billing-info-wrap">
-                      <h3>Billing Details</h3>
+                      <h3>Billing Details | Billing ki Tafseel</h3>
                       <div className="row">
                         <div className="col-lg-6 col-md-6">
                           <div className="billing-info mb-20">
-                            <label>First Name *</label>
+                            <label>First Name (Pehla Naam) *</label>
                             <input
                               type="text"
                               name="firstName"
@@ -398,7 +398,7 @@ const Checkout = () => {
                         </div>
                         <div className="col-lg-6 col-md-6">
                           <div className="billing-info mb-20">
-                            <label>Last Name *</label>
+                            <label>Last Name (Aakhri Naam) *</label>
                             <input
                               type="text"
                               name="lastName"
@@ -409,7 +409,7 @@ const Checkout = () => {
                         </div>
                         <div className="col-lg-12">
                           <div className="billing-info mb-20">
-                            <label>WhatsApp Number</label>
+                            <label>WhatsApp Number (WhatsApp Number)</label>
                             <input
                               type="text"
                               name="whatsappNumber"
@@ -420,20 +420,20 @@ const Checkout = () => {
                         </div>
                         <div className="col-lg-12">
                           <div className="billing-select mb-20">
-                            <label>Country *</label>
+                            <label>Country (Mulk) *</label>
                             <select
                               name="country"
                               value={formData.country}
                               onChange={handleChange}
                             >
                               <option value="">Select a country</option>
-                              <option value="Pakistan">Pakistan</option>
+                              <option value="Pakistan">Pakistan (Pakistan)</option>
                             </select>
                           </div>
                         </div>
                         <div className="col-lg-12">
                           <div className="billing-info mb-20">
-                            <label>Street Address *</label>
+                            <label>Delivery Address (Delivery ka Pata)</label>
                             <input
                               className="billing-address"
                               placeholder="House number and street name"
@@ -453,7 +453,7 @@ const Checkout = () => {
                         </div>
                         <div className="col-lg-12">
                           <div className="billing-info mb-20">
-                            <label>City *</label>
+                            <label>City (Shehar) *</label>
                             <input
                               type="text"
                               name="city"
@@ -464,7 +464,7 @@ const Checkout = () => {
                         </div>
                         <div className="col-lg-6 col-md-6">
                           <div className="billing-info mb-20">
-                            <label>State</label>
+                            <label>State/Province (Sooba)</label>
                             <input
                               type="text"
                               name="state"
@@ -475,7 +475,7 @@ const Checkout = () => {
                         </div>
                         <div className="col-lg-6 col-md-6">
                           <div className="billing-info mb-20">
-                            <label>Postcode / ZIP</label>
+                            <label>Postal Code (Postal Code)</label>
                             <input
                               type="text"
                               name="postcode"
@@ -486,7 +486,7 @@ const Checkout = () => {
                         </div>
                         <div className="col-lg-6 col-md-6">
                           <div className="billing-info mb-20">
-                            <label>Phone *</label>
+                            <label>Phone (Phone Number) *</label>
                             <input
                               type="text"
                               name="phone"
@@ -497,7 +497,7 @@ const Checkout = () => {
                         </div>
                         <div className="col-lg-6 col-md-6">
                           <div className="billing-info mb-20">
-                            <label>Email Address *</label>
+                            <label>Email Address (Email) *</label>
                             <input
                               type="text"
                               name="email"
@@ -509,9 +509,9 @@ const Checkout = () => {
                       </div>
 
                       <div className="additional-info-wrap">
-                        <h4>Additional information</h4>
+                        <h4>Additional Information (Izafi Maloomat)</h4>
                         <div className="additional-info">
-                          <label>Order notes</label>
+                          <label>Order Notes (Order se Mutaliq Notes)</label>
                           <textarea
                             placeholder="Notes about your order, e.g. special notes for delivery."
                             name="orderNotes"
@@ -525,13 +525,13 @@ const Checkout = () => {
 
                   <div className="col-lg-5">
                     <div className="your-order-area">
-                      <h3>Your order</h3>
+                      <h3>Your Order | Apka Order</h3>
                       <div className="your-order-wrap gray-bg-4">
                         <div className="your-order-product-info">
                           <div className="your-order-top">
                             <ul>
-                              <li>Product</li>
-                              <li>Total</li>
+                              <li>Product (Product)</li>
+                              <li>Total (Kul)</li>
                             </ul>
                           </div>
                           <div className="your-order-middle">
@@ -620,27 +620,27 @@ const Checkout = () => {
                           </div>
                           <div className="your-order-bottom">
                             <ul>
-                              <li className="your-order-shipping">Shipping</li>
-                              <li>Free shipping</li>
+                              <li className="your-order-shipping">Shipping (Shipping)</li>
+                              <li>Free shipping (Muft shipping)</li>
                             </ul>
                           </div>
                           <div className="your-order-subtotal">
                             <ul>
-                              <li className="order-subtotal">Subtotal</li>
+                              <li className="order-subtotal">Subtotal (Subtotal)</li>
                               <li>{"Rs " + subtotalDisplay.toFixed(2)}</li>
                             </ul>
                           </div>
                           {discountDisplay > 0 && (
                             <div className="your-order-discount">
                               <ul>
-                                <li className="order-discount">Discount</li>
+                                <li className="order-discount">Discount (Chhoot)</li>
                                 <li>{"- Rs " + discountDisplay.toFixed(2)}</li>
                               </ul>
                             </div>
                           )}
                           <div className="your-order-total">
                             <ul>
-                              <li className="order-total">Total</li>
+                              <li className="order-total">Total (Kul)</li>
                               <li>{"Rs " + grandTotalDisplay.toFixed(2)}</li>
                             </ul>
                           </div>
