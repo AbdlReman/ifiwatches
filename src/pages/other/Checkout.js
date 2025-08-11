@@ -453,7 +453,7 @@ const Checkout = () => {
                         </div>
                         <div className="col-lg-12">
                           <div className="billing-info mb-20">
-                            <label>Town / City *</label>
+                            <label>City *</label>
                             <input
                               type="text"
                               name="city"
@@ -464,7 +464,7 @@ const Checkout = () => {
                         </div>
                         <div className="col-lg-6 col-md-6">
                           <div className="billing-info mb-20">
-                            <label>State / County</label>
+                            <label>State</label>
                             <input
                               type="text"
                               name="state"
