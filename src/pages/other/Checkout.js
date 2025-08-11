@@ -531,7 +531,7 @@ const Checkout = () => {
                           <div className="your-order-top">
                             <ul>
                               <li>Product (Product)</li>
-                              <li>Total (Kul)</li>
+                              <li>Total</li>
                             </ul>
                           </div>
                           <div className="your-order-middle">
@@ -620,27 +620,26 @@ const Checkout = () => {
                           </div>
                           <div className="your-order-bottom">
                             <ul>
-                              <li className="your-order-shipping">Shipping (Shipping)</li>
-                              <li>Free shipping (Muft shipping)</li>
+                              
                             </ul>
                           </div>
                           <div className="your-order-subtotal">
                             <ul>
-                              <li className="order-subtotal">Subtotal (Subtotal)</li>
+                              <li className="order-subtotal">Subtotal </li>
                               <li>{"Rs " + subtotalDisplay.toFixed(2)}</li>
                             </ul>
                           </div>
                           {discountDisplay > 0 && (
                             <div className="your-order-discount">
                               <ul>
-                                <li className="order-discount">Discount (Chhoot)</li>
+                                <li className="order-discount">Discount </li>
                                 <li>{"- Rs " + discountDisplay.toFixed(2)}</li>
                               </ul>
                             </div>
                           )}
                           <div className="your-order-total">
                             <ul>
-                              <li className="order-total">Total (Kul)</li>
+                              <li className="order-total">Total </li>
                               <li>{"Rs " + grandTotalDisplay.toFixed(2)}</li>
                             </ul>
                           </div>
