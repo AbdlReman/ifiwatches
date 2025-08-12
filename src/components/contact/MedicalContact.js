@@ -41,7 +41,7 @@ const MedicalContact = () => {
                     />
                   </div>
                   <div className="medical-contact-number">
-                    <h2>+923020058237</h2>
+                    <h2>03180977696</h2>
                   </div>
                 </div>
               </div>
