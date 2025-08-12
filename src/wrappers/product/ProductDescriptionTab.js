@@ -48,6 +48,7 @@ const ProductDescriptionTab = ({ spaceBottomClass, productFullDesc, product }) =
               </Tab.Pane>
               <Tab.Pane eventKey="productDescription">
                 <div className="product-description">
+                  {console.log("ProductDescriptionTab - productFullDesc:", productFullDesc)}
                   {productFullDesc ? (
                     <div dangerouslySetInnerHTML={{ __html: productFullDesc }} />
                   ) : (

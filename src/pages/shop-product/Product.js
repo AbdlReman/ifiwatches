@@ -38,6 +38,7 @@ const Product = () => {
           const fields = item.fields;
           
           // Transform Contentful data to match our product structure
+          console.log("Raw fullDescription:", fields.fullDescription);
           const transformedProduct = {
             id: item.sys.id,
             name: fields.name || "Product",
@@ -46,12 +47,14 @@ const Product = () => {
             discount: parseFloat(fields.discount) || 0,
             giftBoxPrice: parseFloat(fields.giftBoxPrice) || 0,
             shortDescription: fields.shortDescription || "",
-            fullDescription: fields.fullDescription ? documentToHtmlString(fields.fullDescription) : "",
+            fullDescription: fields.fullDescription ? 
+              (typeof fields.fullDescription === 'string' ? fields.fullDescription : 
+               fields.fullDescription.content ? documentToHtmlString(fields.fullDescription) : "") : "",
             category: fields.category || [],
             tag: fields.tag || [],
             images: fields.images?.map(img => img.fields.file.url) || [],
             color: fields.color || [],
-            size: fields.size || [],
+            size: [],
             metaTitle: fields.metaTitle || fields.name || "Product",
             metaDescription: fields.metaDescription || fields.shortDescription || "",
             stock: fields.stock || 0,
@@ -59,17 +62,14 @@ const Product = () => {
             image: fields.images?.[0]?.fields?.file?.url,
             title: fields.name || "Product",
             description: fields.fullDescription ? documentToHtmlString(fields.fullDescription) : "",
-            // Add variation structure if colors/sizes exist
+            // Add variation structure if colors exist
             variation: fields.color && fields.color.length > 0 ? 
               fields.color.map(color => ({
-                color: color,
-                size: fields.size ? fields.size.map(size => ({
-                  name: size,
-                  stock: fields.stock || 0
-                })) : []
+                color: color
               })) : null
           };
 
+          console.log("Transformed fullDescription:", transformedProduct.fullDescription);
           setProduct(transformedProduct);
         } else {
           setError("Product not found");

@@ -22,7 +22,6 @@ const ProductDescriptionInfo = ({
   const navigate = useNavigate();
   
   const [selectedProductColor, setSelectedProductColor] = useState("");
-  const [selectedProductSize, setSelectedProductSize] = useState("");
   const [productStock, setProductStock] = useState(0);
   const [quantityCount, setQuantityCount] = useState(1);
   const [includeGiftBox, setIncludeGiftBox] = useState(false);
@@ -34,13 +33,7 @@ const ProductDescriptionInfo = ({
         setSelectedProductColor(product.variation[0].color || "");
       }
       
-      if (product.variation && product.variation[0] && product.variation[0].size && product.variation[0].size[0]) {
-        setSelectedProductSize(product.variation[0].size[0].name || "");
-      }
-      
-      const stock = product.variation && product.variation[0] && product.variation[0].size && product.variation[0].size[0] 
-        ? product.variation[0].size[0].stock 
-        : product.stock || 0;
+      const stock = product.stock || 0;
       setProductStock(stock);
     }
   }, [product]);
@@ -61,7 +54,7 @@ const ProductDescriptionInfo = ({
     cartItems,
     product,
     selectedProductColor,
-    selectedProductSize
+    ""
   );
 
   const handleAddToCart = () => {
@@ -69,7 +62,6 @@ const ProductDescriptionInfo = ({
       ...product,
       quantity: quantityCount,
       selectedProductColor: selectedProductColor ? selectedProductColor : product.selectedProductColor ? product.selectedProductColor : null,
-      selectedProductSize: selectedProductSize ? selectedProductSize : product.selectedProductSize ? product.selectedProductSize : null,
       includeGiftBox: showGiftBoxOption ? includeGiftBox : false,
       giftBoxPrice: showGiftBoxOption ? giftBoxUnitPrice : 0
     }));
@@ -81,7 +73,6 @@ const ProductDescriptionInfo = ({
       ...product,
       quantity: quantityCount,
       selectedProductColor: selectedProductColor ? selectedProductColor : product.selectedProductColor ? product.selectedProductColor : null,
-      selectedProductSize: selectedProductSize ? selectedProductSize : product.selectedProductSize ? product.selectedProductSize : null,
       includeGiftBox: showGiftBoxOption ? includeGiftBox : false,
       giftBoxPrice: showGiftBoxOption ? giftBoxUnitPrice : 0,
       suppressToast: true
@@ -169,37 +160,7 @@ const ProductDescriptionInfo = ({
         </div>
       )}
 
-      {/* Display sizes if available */}
-      {product.size && product.size.length > 0 && (
-        <div className="pro-details-size">
-          <span>Size</span>
-          <div className="pro-details-size-content">
-            {product.size.map((size, key) => {
-              return (
-                <label
-                  className={`pro-details-size-content--single`}
-                  key={key}
-                >
-                  <input
-                    type="radio"
-                    value={size}
-                    checked={
-                      size === selectedProductSize
-                        ? "checked"
-                        : ""
-                    }
-                    onChange={() => {
-                      setSelectedProductSize(size);
-                      setQuantityCount(1);
-                    }}
-                  />
-                  <span className="size-name">{size}</span>
-                </label>
-              );
-            })}
-          </div>
-        </div>
-      )}
+
 
       {/* Display categories if available */}
       {product.category && product.category.length > 0 && (
