@@ -79,9 +79,11 @@ const ProductGridListSingle = ({
               alt={product.name}
               style={{
                 width: '100%',
-                height: '250px',
-                objectFit: 'contain',
-                transition: 'transform 0.3s ease'
+                height: '200px',
+                objectFit: 'cover',
+                transition: 'transform 0.3s ease',
+                margin: 0,
+                padding: 0
               }}
               onError={(e) => {
                 e.target.src = '/assets/img/product/default-product.jpg';
@@ -98,10 +100,12 @@ const ProductGridListSingle = ({
                   top: 0,
                   left: 0,
                   width: '100%',
-                  height: '250px',
-                  objectFit: 'contain',
+                  height: '200px',
+                  objectFit: 'cover',
                   opacity: 0,
-                  transition: 'opacity 0.3s ease'
+                  transition: 'opacity 0.3s ease',
+                  margin: 0,
+                  padding: 0
                 }}
                 onError={(e) => {
                   e.target.src = '/assets/img/product/default-product.jpg';

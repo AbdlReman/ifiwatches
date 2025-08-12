@@ -1122,6 +1122,8 @@
   position: relative !important;
   height: 200px !important;
   overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .shop-bottom-area .product-img img {
@@ -1151,11 +1153,28 @@ img[src*="default-product"],
 .product-area img,
 .default-img,
 .hover-img {
-  width: calc(100% + 30px) !important;
-  margin: 0 -15px !important;
-  object-fit: contain !important;
+  width: 100% !important;
+  height: 200px !important;
+  object-fit: cover !important;
   background-color: transparent !important;
-  max-width: none !important;
+  transition: transform 0.3s ease !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+/* Specific rule for shop page product images */
+.shop-bottom-area .product-img img,
+.shop-bottom-area .default-img,
+.shop-bottom-area .hover-img {
+  width: 100% !important;
+  height: 200px !important;
+  object-fit: cover !important;
+  background-color: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: 100% !important;
+  border: none !important;
 }
 
 /* Universal rule to ensure ALL product containers have consistent width and structure */
@@ -1179,7 +1198,7 @@ img[src*="default-product"],
 .shop-bottom-area .product-wrap-2,
 .product-area .product-wrap,
 .product-area .product-wrap-2 {
-  height: 350px !important;
+  height: 320px !important;
   display: flex !important;
   flex-direction: column !important;
   background: white !important;
@@ -1187,7 +1206,8 @@ img[src*="default-product"],
   overflow: hidden !important;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
   transition: all 0.3s ease !important;
-  margin-bottom: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
   width: 100% !important;
 }
 
@@ -1206,6 +1226,8 @@ img[src*="default-product"],
   height: 200px !important;
   overflow: hidden !important;
   width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* Universal rule for product content */
@@ -1233,7 +1255,30 @@ img[src*="default-product"],
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
-  padding: 10px !important;
+  padding: 8px !important;
+  margin: 0 !important;
+}
+
+/* Force all product images to be exactly the same size with no spacing */
+.product-img img,
+.default-img,
+.hover-img {
+  width: 100% !important;
+  height: 200px !important;
+  object-fit: cover !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Remove any spacing from product image containers */
+.product-img {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
 }
 
 /* Reduce text size in product cards */

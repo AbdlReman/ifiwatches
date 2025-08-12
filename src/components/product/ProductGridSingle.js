@@ -39,24 +39,46 @@ const ProductGridSingle = ({
   return (
     <Fragment>
       <div className={clsx("product-wrap", spaceBottomClass)}>
-        <div className="product-img">
+        <div className="product-img" style={{ position: 'relative' }}>
           <Link to={process.env.PUBLIC_URL + "/product/" + product.slug}>
             <img
               className="default-img"
               src={mainImage}
               alt={product.name}
+              style={{
+                width: '100%',
+                height: '200px',
+                objectFit: 'cover',
+                transition: 'transform 0.3s ease',
+                margin: 0,
+                padding: 0
+              }}
               onError={(e) => {
                 e.target.src = '/assets/img/product/default-product.jpg';
               }}
+              loading="lazy"
             />
             {displayImages.length > 1 ? (
               <img
                 className="hover-img"
                 src={hoverImage}
                 alt={product.name}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '200px',
+                  objectFit: 'cover',
+                  opacity: 0,
+                  transition: 'opacity 0.3s ease',
+                  margin: 0,
+                  padding: 0
+                }}
                 onError={(e) => {
                   e.target.src = '/assets/img/product/default-product.jpg';
                 }}
+                loading="lazy"
               />
             ) : (
               ""
