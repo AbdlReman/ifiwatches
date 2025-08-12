@@ -854,7 +854,7 @@ const Checkout = () => {
                           {/* Transaction ID Field for Online Payments */}
                           {formData.paymentMethod !== "cash_on_delivery" && (
                             <div className="transaction-id-field mt-20">
-                              <label>Transaction ID / TRX ID (Optional)</label>
+                              <label>Transaction ID / TRX ID </label>
                               <input
                                 type="text"
                                 name="transactionId"
@@ -869,7 +869,7 @@ const Checkout = () => {
                           {/* Payment Screenshot Upload for Online Payments */}
                           {formData.paymentMethod !== "cash_on_delivery" && (
                             <div className="payment-screenshot-field mt-20">
-                              <label>Payment Screenshot (Optional)</label>
+                              <label>Payment Screenshot</label>
                               <p className="field-note">
                                 <strong>Note:</strong> Please provide either Transaction ID OR Payment Screenshot (at least one is required)
                               </p>
