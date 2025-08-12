@@ -42,7 +42,7 @@ const ProductGridSingle = ({
         <div className="product-img" style={{ position: 'relative' }}>
           <Link to={process.env.PUBLIC_URL + "/product/" + product.slug}>
             <img
-              className="default-img"
+              className="default-img responsive-product-image"
               src={mainImage}
               alt={product.name}
               style={{
@@ -60,7 +60,7 @@ const ProductGridSingle = ({
             />
             {displayImages.length > 1 ? (
               <img
-                className="hover-img"
+                className="hover-img responsive-product-image"
                 src={hoverImage}
                 alt={product.name}
                 style={{

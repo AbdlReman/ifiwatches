@@ -1177,6 +1177,31 @@ img[src*="default-product"],
   border: none !important;
 }
 
+/* Increase image height by 10% on large screens and up */
+@media (min-width: 992px) {
+  img[src*="product"], 
+  img[src*="default-product"],
+  .product-img img,
+  .product-wrap .product-img img,
+  .product-wrap-2 .product-img img,
+  .category-section .product-img img,
+  .eyewear-products-section .product-img img,
+  .accessories-products-section .product-img img,
+  .fashion-products-section .product-img img,
+  .watchstraps-grid .product-img img,
+  .perfumes-grid .product-img img,
+  .mobilegadgets-grid .product-img img,
+  .shop-bottom-area img,
+  .product-area img,
+  .default-img,
+  .hover-img,
+  .shop-bottom-area .product-img img,
+  .shop-bottom-area .default-img,
+  .shop-bottom-area .hover-img {
+    height: 220px !important;
+  }
+}
+
 /* Universal rule to ensure ALL product containers have consistent width and structure */
 .product-wrap,
 .product-wrap-2,
@@ -1230,6 +1255,22 @@ img[src*="default-product"],
   padding: 0 !important;
 }
 
+/* Increase container height by 10% on large screens and up */
+@media (min-width: 992px) {
+  .product-img,
+  .category-section .product-img,
+  .eyewear-products-section .product-img,
+  .accessories-products-section .product-img,
+  .fashion-products-section .product-img,
+  .watchstraps-grid .product-img,
+  .perfumes-grid .product-img,
+  .mobilegadgets-grid .product-img,
+  .shop-bottom-area .product-img,
+  .product-area .product-img {
+    height: 220px !important;
+  }
+}
+
 /* Universal rule for product content */
 .product-content,
 .product-content-2,
@@ -1271,6 +1312,16 @@ img[src*="default-product"],
   border: none !important;
   border-radius: 0 !important;
   box-sizing: border-box !important;
+}
+
+/* Increase image height by 10% on large screens and up */
+@media (min-width: 992px) {
+  .product-img img,
+  .default-img,
+  .hover-img,
+  .responsive-product-image {
+    height: 220px !important;
+  }
 }
 
 /* Remove any spacing from product image containers */
