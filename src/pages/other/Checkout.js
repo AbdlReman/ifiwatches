@@ -830,7 +830,7 @@ const Checkout = () => {
                                   className="custom-radio"
                                 />
                                 <label htmlFor="bank" className="radio-label">
-                                  Bank Transfer
+                                Raast Payment
                                 </label>
                               </div>
                               {formData.paymentMethod === "bank" && (
