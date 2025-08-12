@@ -60,6 +60,7 @@ const HomeFurniture = () => {
             metaTitle: fields.metaTitle || "",
             metaDescription: fields.metaDescription || "",
             stock: fields.stock || 0,
+            createdAt: item.sys.createdAt,
             image: Array.isArray(fields.images)
               ? fields.images.filter(img => img && img.fields && img.fields.file && img.fields.file.url).map(img => img.fields.file.url)
               : [],
@@ -76,34 +77,34 @@ const HomeFurniture = () => {
           };
         });
 
-        // Filter products by category
+        // Filter products by category and sort by creation date (latest first)
         const watches = items.filter(product =>
           product.category && product.category.includes("watches")
-        ).slice(0, 3); // Limited to 3 for showcase
+        ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
 
         const watchStraps = items.filter(product =>
           product.category && product.category.includes("watchstraps")
-        );
+        ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
 
         const eyewear = items.filter(product =>
           product.category && product.category.includes("eyewear")
-        ).slice(0, 6); // Limited to 6 for balanced layout
+        ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
 
         const accessories = items.filter(product =>
           product.category && product.category.includes("ringsaccessories")
-        ).slice(0, 4); // Limited to 4 for showcase
+        ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
 
         const perfumes = items.filter(product =>
           product.category && product.category.includes("perfumes")
-        );
+        ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
 
         const mobileGadgets = items.filter(product =>
           product.category && product.category.includes("mobilegadgets")
-        );
+        ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
 
         const fashion = items.filter(product =>
           product.category && product.category.includes("fashion")
-        ).slice(0, 6); // Limited to 6 for balanced layout
+        ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
 
         setWatchesProducts(watches);
         setWatchStrapsProducts(watchStraps);
