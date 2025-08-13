@@ -136,12 +136,10 @@ const getIndividualItemArray = array => {
 // get individual categories
 export const getIndividualCategories = products => {
   let productCategories = [];
-  console.log("getIndividualCategories called with products:", products?.length || 0);
   
   products &&
     products.map(product => {
       if (product.category) {
-        console.log(`Product ${product.name}: category =`, product.category);
         if (Array.isArray(product.category)) {
           product.category.forEach(single => {
             if (single && single.trim()) {
@@ -154,13 +152,10 @@ export const getIndividualCategories = products => {
             productCategories.push(product.category.trim());
           }
         }
-      } else {
-        console.log(`Product ${product.name}: no category found`);
       }
     });
   
   const individualProductCategories = getIndividualItemArray(productCategories);
-  console.log("All unique categories found:", individualProductCategories);
   
   // Filter out categories with 0 products
   const categoriesWithProducts = individualProductCategories.filter(category => {
@@ -174,11 +169,9 @@ export const getIndividualCategories = products => {
       return product.category.toLowerCase() === category.toLowerCase();
     }).length;
     
-    console.log(`Category "${category}" has ${categoryCount} products`);
     return categoryCount > 0;
   });
   
-  console.log("Categories with products (filtered):", categoriesWithProducts);
   return categoriesWithProducts;
 };
 
@@ -218,11 +211,9 @@ export const getIndividualColors = products => {
       product.color && product.color.includes(color)
     ).length;
     
-    console.log(`Color "${color}" has ${colorCount} products`);
     return colorCount > 0;
   });
   
-  console.log("Colors with products (filtered):", colorsWithProducts);
   return colorsWithProducts;
 };
 

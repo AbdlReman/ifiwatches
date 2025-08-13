@@ -2,32 +2,13 @@ import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import clsx from "clsx";
-import Swiper, { SwiperSlide } from "../../components/swiper";
+
 import SectionTitle from "../../components/section-title/SectionTitle";
-import ProductGridSingle from "../../components/product/ProductGridSingle";
+import ProductGridListSingle from "../../components/product/ProductGridListSingle";
 import client from "../../data/contentful";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 
-const settings = {
-  loop: false,
-  slidesPerView: 4,
-  grabCursor: true,
-  spaceBetween: 30,
-  breakpoints: {
-    320: {
-      slidesPerView: 1
-    },
-    576: {
-      slidesPerView: 2
-    },
-    768: {
-      slidesPerView: 3
-    },
-    1024: {
-      slidesPerView: 4
-    }
-  }
-};
+
 
 const RelatedProductSlider = ({ spaceBottomClass, category }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -80,12 +61,29 @@ const RelatedProductSlider = ({ spaceBottomClass, category }) => {
           };
         });
 
-        // Filter by category if provided
-        const filteredProducts = category 
-          ? items.filter(product => 
-              product.category && product.category.includes(category)
+        // Filter by category if provided, but also include some other products if not enough
+        let filteredProducts = items;
+        
+        if (category) {
+          const categoryProducts = items.filter(product => 
+            product.category && product.category.some(cat => 
+              cat && cat.toLowerCase().includes(category.toLowerCase())
             )
-          : items;
+          );
+          
+          // If we have enough category products, use them
+          if (categoryProducts.length >= 3) {
+            filteredProducts = categoryProducts;
+          } else {
+            // If not enough category products, mix with other products
+            const otherProducts = items.filter(product => 
+              !product.category || !product.category.some(cat => 
+                cat && cat.toLowerCase().includes(category.toLowerCase())
+              )
+            );
+            filteredProducts = [...categoryProducts, ...otherProducts];
+          }
+        }
 
         setRelatedProducts(filteredProducts.slice(0, 6));
       } catch (error) {
@@ -111,29 +109,32 @@ const RelatedProductSlider = ({ spaceBottomClass, category }) => {
             <p>Loading related products...</p>
           </div>
         ) : relatedProducts?.length ? (
-          <Swiper options={settings}>
-              {relatedProducts.map(product => (
-                <SwiperSlide key={product.id}>
-                  <ProductGridSingle
+                     <div className="shop-bottom-area mt-35">
+             <div className="row grid four-column">
+               {relatedProducts.map(product => (
+                 <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6" key={product.slug}>
+                  <ProductGridListSingle
                     product={product}
                     currency={currency}
                     cartItem={
-                      cartItems.find((cartItem) => cartItem.id === product.id)
+                      cartItems.find((cartItem) => cartItem.slug === product.slug)
                     }
                     wishlistItem={
                       wishlistItems.find(
-                        (wishlistItem) => wishlistItem.id === product.id
+                        (wishlistItem) => wishlistItem.slug === product.slug
                       )
                     }
                     compareItem={
                       compareItems.find(
-                        (compareItem) => compareItem.id === product.id
+                        (compareItem) => compareItem.slug === product.slug
                       )
                     }
+                    spaceBottomClass="mb-25"
                   />
-                </SwiperSlide>
+                </div>
               ))}
-          </Swiper>
+            </div>
+          </div>
         ) : (
           <div className="text-center py-5">
             <p>No related products found</p>

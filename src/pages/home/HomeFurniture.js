@@ -542,9 +542,9 @@ const HomeFurniture = () => {
         </AnimatedSection>
 
         {/* category showcase section */}
-        <FadeInOnScroll direction="up" delay={1.0}>
+        {/* <FadeInOnScroll direction="up" delay={1.0}>
           <CategoryShowcase />
-        </FadeInOnScroll>
+        </FadeInOnScroll> */}
 
         {/* countdown */}
         <FadeInOnScroll direction="up" delay={1.1}>

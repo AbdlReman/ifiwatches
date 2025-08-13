@@ -17,29 +17,105 @@ const FilterMessage = ({
   const getCategoryProductCount = (category) => {
     if (!products || !category) return 0;
     return products.filter(product => {
-      if (!product.category) return false;
-      if (Array.isArray(product.category)) {
-        return product.category.some(cat => 
-          cat.toLowerCase() === category.toLowerCase()
-        );
+      if (!product.category || !Array.isArray(product.category)) return false;
+      
+      // Use the same filtering logic as ShopGridStandard.js
+      switch (category) {
+        case "Watches":
+          return product.category.some(cat => 
+            cat && (cat.toLowerCase().includes('watches') || 
+                   cat.toLowerCase().includes('watch') ||
+                   cat.toLowerCase().includes('timepiece') ||
+                   cat.toLowerCase().includes('chronograph'))
+          );
+        
+        case "Watch Straps":
+          return product.category.some(cat => 
+            cat && (cat.toLowerCase().includes('straps') || 
+                   cat.toLowerCase().includes('strap') ||
+                   cat.toLowerCase().includes('band') ||
+                   cat.toLowerCase().includes('bracelet'))
+          );
+        
+        case "Perfumes":
+          return product.category.some(cat => 
+            cat && (cat.toLowerCase().includes('perfume') || 
+                   cat.toLowerCase().includes('fragrance') ||
+                   cat.toLowerCase().includes('cologne') ||
+                   cat.toLowerCase().includes('scent'))
+          );
+        
+        case "Eyewear":
+          return product.category.some(cat => 
+            cat && (cat.toLowerCase().includes('eyewear') || 
+                   cat.toLowerCase().includes('sunglasses') || 
+                   cat.toLowerCase().includes('optical') ||
+                   cat.toLowerCase().includes('glasses') ||
+                   cat.toLowerCase().includes('lens'))
+          );
+        
+        case "Rings & Accessories":
+          return product.category.some(cat => 
+            cat && (cat.toLowerCase().includes('rings') || 
+                   cat.toLowerCase().includes('accessories') || 
+                   cat.toLowerCase().includes('bracelets') || 
+                   cat.toLowerCase().includes('chains') ||
+                   cat.toLowerCase().includes('necklace') ||
+                   cat.toLowerCase().includes('earrings') ||
+                   cat.toLowerCase().includes('jewelry'))
+          );
+        
+        case "Mobile Gadgets":
+          return product.category.some(cat => 
+            cat && (cat.toLowerCase().includes('mobile') || 
+                   cat.toLowerCase().includes('gadgets') || 
+                   cat.toLowerCase().includes('phones') ||
+                   cat.toLowerCase().includes('smartphone') ||
+                   cat.toLowerCase().includes('electronics'))
+          );
+        
+        case "Fashion":
+          return product.category.some(cat => 
+            cat && (cat.toLowerCase().includes('fashion') || 
+                   cat.toLowerCase().includes('clothing') || 
+                   cat.toLowerCase().includes('tshirt') || 
+                   cat.toLowerCase().includes('pant') || 
+                   cat.toLowerCase().includes('jeans') || 
+                   cat.toLowerCase().includes('shalwar') || 
+                   cat.toLowerCase().includes('kameez') ||
+                   cat.toLowerCase().includes('dress') ||
+                   cat.toLowerCase().includes('shirt') ||
+                   cat.toLowerCase().includes('trouser'))
+          );
+        
+        default:
+          // Try exact match for specific categories
+          return product.category.some(cat => 
+            cat && cat.toLowerCase() === category.toLowerCase()
+          );
       }
-      return product.category.toLowerCase() === category.toLowerCase();
     }).length;
   };
 
   const getColorProductCount = (color) => {
     if (!products || !color) return 0;
-    return products.filter(product => 
-      product.color && product.color.includes(color)
-    ).length;
+    return products.filter(product => {
+      if (!product.color || !Array.isArray(product.color)) return false;
+      return product.color.some(c => 
+        c && c.toLowerCase() === color.toLowerCase()
+      );
+    }).length;
   };
 
   const getSearchProductCount = (term) => {
     if (!products || !term) return 0;
     return products.filter(product => {
-      const nameMatch = product.name.toLowerCase().includes(term.toLowerCase());
-      const descMatch = product.shortDescription?.toLowerCase().includes(term.toLowerCase());
-      return nameMatch || descMatch;
+      const nameMatch = product.name && product.name.toLowerCase().includes(term.toLowerCase());
+      const descMatch = product.shortDescription && product.shortDescription.toLowerCase().includes(term.toLowerCase());
+      const categoryMatch = product.category && product.category.some(cat => 
+        cat && cat.toLowerCase().includes(term.toLowerCase())
+      );
+      return nameMatch || descMatch || categoryMatch;
     }).length;
   };
 

@@ -3,7 +3,7 @@ import { setActiveSort } from "../../helpers/product";
 import "../../assets/css/filter-message.css";
 
 const ShopCategories = ({ categories, handleCategoryFilter, selectedCategory, products, pageType }) => {
-  console.log("ShopCategories render:", { categories, selectedCategory, pageType });
+
   
   // Define parent categories based on page type
   const getParentCategories = () => {
@@ -28,39 +28,47 @@ const ShopCategories = ({ categories, handleCategoryFilter, selectedCategory, pr
   const parentCategories = getParentCategories();
 
   const handleCategoryClick = (category) => {
-    console.log("Category clicked:", category);
     handleCategoryFilter(category);
   };
 
   const getCategoryProductCount = (parentCategory) => {
     if (!products || !parentCategory) return 0;
     
-    return products.filter(product => {
+    const count = products.filter(product => {
       if (!product.category || !Array.isArray(product.category)) return false;
-      
-      const categoryLower = parentCategory.toLowerCase();
       
       switch (parentCategory) {
         case "Watches":
           return product.category.some(cat => 
-            cat && (cat.toLowerCase().includes('watches') || cat.toLowerCase().includes('watch'))
+            cat && (cat.toLowerCase().includes('watches') || 
+                   cat.toLowerCase().includes('watch') ||
+                   cat.toLowerCase().includes('timepiece') ||
+                   cat.toLowerCase().includes('chronograph'))
           );
         
         case "Watch Straps":
           return product.category.some(cat => 
-            cat && (cat.toLowerCase().includes('straps') || cat.toLowerCase().includes('strap'))
+            cat && (cat.toLowerCase().includes('straps') || 
+                   cat.toLowerCase().includes('strap') ||
+                   cat.toLowerCase().includes('band') ||
+                   cat.toLowerCase().includes('bracelet'))
           );
         
         case "Perfumes":
           return product.category.some(cat => 
-            cat && (cat.toLowerCase().includes('perfume') || cat.toLowerCase().includes('fragrance'))
+            cat && (cat.toLowerCase().includes('perfume') || 
+                   cat.toLowerCase().includes('fragrance') ||
+                   cat.toLowerCase().includes('cologne') ||
+                   cat.toLowerCase().includes('scent'))
           );
         
         case "Eyewear":
           return product.category.some(cat => 
             cat && (cat.toLowerCase().includes('eyewear') || 
                    cat.toLowerCase().includes('sunglasses') || 
-                   cat.toLowerCase().includes('optical'))
+                   cat.toLowerCase().includes('optical') ||
+                   cat.toLowerCase().includes('glasses') ||
+                   cat.toLowerCase().includes('lens'))
           );
         
         case "Rings & Accessories":
@@ -68,14 +76,19 @@ const ShopCategories = ({ categories, handleCategoryFilter, selectedCategory, pr
             cat && (cat.toLowerCase().includes('rings') || 
                    cat.toLowerCase().includes('accessories') || 
                    cat.toLowerCase().includes('bracelets') || 
-                   cat.toLowerCase().includes('chains'))
+                   cat.toLowerCase().includes('chains') ||
+                   cat.toLowerCase().includes('necklace') ||
+                   cat.toLowerCase().includes('earrings') ||
+                   cat.toLowerCase().includes('jewelry'))
           );
         
         case "Mobile Gadgets":
           return product.category.some(cat => 
             cat && (cat.toLowerCase().includes('mobile') || 
                    cat.toLowerCase().includes('gadgets') || 
-                   cat.toLowerCase().includes('phones'))
+                   cat.toLowerCase().includes('phones') ||
+                   cat.toLowerCase().includes('smartphone') ||
+                   cat.toLowerCase().includes('electronics'))
           );
         
         case "Fashion":
@@ -86,13 +99,21 @@ const ShopCategories = ({ categories, handleCategoryFilter, selectedCategory, pr
                    cat.toLowerCase().includes('pant') || 
                    cat.toLowerCase().includes('jeans') || 
                    cat.toLowerCase().includes('shalwar') || 
-                   cat.toLowerCase().includes('kameez'))
+                   cat.toLowerCase().includes('kameez') ||
+                   cat.toLowerCase().includes('dress') ||
+                   cat.toLowerCase().includes('shirt') ||
+                   cat.toLowerCase().includes('trouser'))
           );
         
         default:
-          return false;
+          // Try exact match for specific categories
+          return product.category.some(cat => 
+            cat && cat.toLowerCase() === parentCategory.toLowerCase()
+          );
       }
     }).length;
+    
+    return count;
   };
 
   return (

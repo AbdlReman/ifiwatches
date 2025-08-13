@@ -27,17 +27,7 @@ const ShopSidebar = ({
   const uniqueCategories = getIndividualCategories(products);
   const uniqueColors = getIndividualColors(products);
   
-  // Debug: Log categories and colors
-  console.log("ShopSidebar render:", {
-    productsCount: products?.length || 0,
-    uniqueCategories,
-    uniqueColors,
-    selectedCategory,
-    selectedColor,
-    searchTerm,
-    hasHandleCategoryFilter: !!handleCategoryFilter,
-    pageType
-  });
+
 
   return (
     <div className={clsx("sidebar-style", sideSpaceClass)}>
