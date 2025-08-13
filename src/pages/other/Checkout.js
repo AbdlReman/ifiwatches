@@ -239,7 +239,7 @@ const Checkout = () => {
         EMAILJS_CONFIG.SERVICE_ID, // Your service ID
         EMAILJS_CONFIG.ORDER_TEMPLATE_ID, // Your template ID
         {
-          brandName: "IFIwatches",
+          brandName: "IFI lifestyle",
           firstName: formData.firstName,
           lastName: formData.lastName,
           whatsappNumber: formData.whatsappNumber,

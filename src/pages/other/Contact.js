@@ -315,14 +315,14 @@ const Contact = () => {
                       <i className="fa fa-globe" />
                     </div>
                     <div className="contact-info-dec">
-                      <p>
-                                                                <a href="mailto:info@ifiwatches.pk">
-                          info@ifiwatches.pk
+                                            <p>
+                        <a href="mailto:info@ifilifestyle.com">
+                          info@ifilifestyle.com
                         </a>
                       </p>
                       <p>
-                                                                <a href="mailto:support@ifiwatches.pk">
-                          support@ifiwatches.pk
+                        <a href="mailto:support@ifilifestyle.com">
+                          support@ifilifestyle.com
                         </a>
                       </p>
                     </div>

@@ -101,11 +101,11 @@ const FooterOne = ({
                   </li>
                   <li>
                     <i className="fa fa-envelope"></i>{" "}
-                    <a href="mailto:info@ifiwatches.pk">info@ifiwatches.pk</a>
+                    <a href="mailto:info@ifilifestyle.com">info@ifilifestyle.com</a>
                   </li>
                   <li>
                     <i className="fa fa-envelope"></i>{" "}
-                    <a href="mailto:support@ifiwatches.pk">support@ifiwatches.pk</a>
+                    <a href="mailto:support@ifilifestyle.com">support@ifilifestyle.com</a>
                   </li>
                 </ul>
               </div>
