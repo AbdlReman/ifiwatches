@@ -62,17 +62,23 @@ const ProductGridSingleTwo = ({
        onMouseEnter={(e) => {
          e.currentTarget.style.transform = 'translateY(-5px)';
          e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
-         const hoverImg = e.currentTarget.querySelector('.hover-img');
-         if (hoverImg) {
-           hoverImg.style.opacity = '1';
+         // Only apply hover image effect if there are multiple images
+         if (displayImages.length > 1) {
+           const hoverImg = e.currentTarget.querySelector('.hover-img');
+           if (hoverImg) {
+             hoverImg.style.opacity = '1';
+           }
          }
        }}
        onMouseLeave={(e) => {
          e.currentTarget.style.transform = 'translateY(0)';
          e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)';
-         const hoverImg = e.currentTarget.querySelector('.hover-img');
-         if (hoverImg) {
-           hoverImg.style.opacity = '0';
+         // Only apply hover image effect if there are multiple images
+         if (displayImages.length > 1) {
+           const hoverImg = e.currentTarget.querySelector('.hover-img');
+           if (hoverImg) {
+             hoverImg.style.opacity = '0';
+           }
          }
        }}>
                  <div className="product-img" style={{ position: 'relative' }}>

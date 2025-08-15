@@ -12,7 +12,7 @@ const HeaderTop = ({ borderStyle }) => {
         <p>
           Free delivery on order over{" "}
           <span>
-            {"Rs "+ (200 * currency.currencyRate).toFixed(2)}
+            {"Rs "+ (20000 * currency.currencyRate).toFixed(2)}
           </span>
         </p>
       </div>

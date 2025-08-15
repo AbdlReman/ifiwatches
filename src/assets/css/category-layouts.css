@@ -1677,3 +1677,225 @@ img[src*="default-product"],
     max-width: 100% !important;
   }
 }
+
+/* Fix for product image hover behavior - prevent 50% split effect */
+.product-wrap:hover .hover-img,
+.product-wrap-2:hover .hover-img,
+.category-section .product-wrap:hover .hover-img,
+.category-section .product-wrap-2:hover .hover-img,
+.eyewear-products-section .product-wrap:hover .hover-img,
+.eyewear-products-section .product-wrap-2:hover .hover-img,
+.accessories-products-section .product-wrap:hover .hover-img,
+.accessories-products-section .product-wrap-2:hover .hover-img,
+.fashion-products-section .product-wrap:hover .hover-img,
+.fashion-products-section .product-wrap-2:hover .hover-img,
+.watchstraps-grid .product-wrap:hover .hover-img,
+.watchstraps-grid .product-wrap-2:hover .hover-img,
+.perfumes-grid .product-wrap:hover .hover-img,
+.perfumes-grid .product-wrap-2:hover .hover-img,
+.mobilegadgets-grid .product-wrap:hover .hover-img,
+.mobilegadgets-grid .product-wrap-2:hover .hover-img,
+.shop-bottom-area .product-wrap:hover .hover-img,
+.shop-bottom-area .product-wrap-2:hover .hover-img,
+.product-area .product-wrap:hover .hover-img,
+.product-area .product-wrap-2:hover .hover-img {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.product-wrap:hover .default-img,
+.product-wrap-2:hover .default-img,
+.category-section .product-wrap:hover .default-img,
+.category-section .product-wrap-2:hover .default-img,
+.eyewear-products-section .product-wrap:hover .default-img,
+.eyewear-products-section .product-wrap-2:hover .default-img,
+.accessories-products-section .product-wrap:hover .default-img,
+.accessories-products-section .product-wrap-2:hover .default-img,
+.fashion-products-section .product-wrap:hover .default-img,
+.fashion-products-section .product-wrap-2:hover .default-img,
+.watchstraps-grid .product-wrap:hover .default-img,
+.watchstraps-grid .product-wrap-2:hover .default-img,
+.perfumes-grid .product-wrap:hover .default-img,
+.perfumes-grid .product-wrap-2:hover .default-img,
+.mobilegadgets-grid .product-wrap:hover .default-img,
+.mobilegadgets-grid .product-wrap-2:hover .default-img,
+.shop-bottom-area .product-wrap:hover .default-img,
+.shop-bottom-area .product-wrap-2:hover .default-img,
+.product-area .product-wrap:hover .default-img,
+.product-area .product-wrap-2:hover .default-img {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: none !important;
+  transition: opacity 0.3s ease !important;
+}
+
+/* Ensure hover images start with opacity 0 and no transform */
+.hover-img {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: none !important;
+  transition: opacity 0.3s ease !important;
+}
+
+/* Ensure default images start with opacity 1 */
+.default-img {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  transition: opacity 0.3s ease !important;
+}
+
+/* Override SCSS slide behaviors with smooth opacity transitions */
+.product-wrap:hover .hover-img,
+.product-wrap-2:hover .hover-img,
+.shop-list-wrap .product-wrap:hover .hover-img {
+  visibility: visible !important;
+  transform: none !important;
+  opacity: 1 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.product-wrap:hover .default-img,
+.product-wrap-2:hover .default-img,
+.shop-list-wrap .product-wrap:hover .default-img {
+  visibility: hidden !important;
+  transform: none !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+/* Override any remaining slide transforms */
+.product-img .hover-img {
+  transform: none !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.product-img .default-img {
+  transform: none !important;
+  transition: opacity 0.3s ease !important;
+}
+
+/* Additional rules to ensure smooth hover transitions */
+.product-img {
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+.product-img img {
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  transform: translateZ(0) !important;
+  -webkit-transform: translateZ(0) !important;
+}
+
+/* Ensure no transform conflicts during hover */
+.product-wrap:hover .product-img img,
+.product-wrap-2:hover .product-img img {
+  transform: none !important;
+  -webkit-transform: none !important;
+}
+
+/* Smooth transition for all product hover states */
+.product-wrap,
+.product-wrap-2 {
+  transition: all 0.3s ease !important;
+}
+
+.product-wrap .product-img,
+.product-wrap-2 .product-img {
+  transition: none !important;
+}
+
+.product-wrap .product-img img,
+.product-wrap-2 .product-img img {
+  transition: opacity 0.3s ease !important;
+}
+
+/* Ensure single image products don't get affected by hover effects */
+.product-wrap:not(:has(.hover-img)) .default-img,
+.product-wrap-2:not(:has(.hover-img)) .default-img,
+.category-section .product-wrap:not(:has(.hover-img)) .default-img,
+.category-section .product-wrap-2:not(:has(.hover-img)) .default-img,
+.eyewear-products-section .product-wrap:not(:has(.hover-img)) .default-img,
+.eyewear-products-section .product-wrap-2:not(:has(.hover-img)) .default-img,
+.accessories-products-section .product-wrap:not(:has(.hover-img)) .default-img,
+.accessories-products-section .product-wrap-2:not(:has(.hover-img)) .default-img,
+.fashion-products-section .product-wrap:not(:has(.hover-img)) .default-img,
+.fashion-products-section .product-wrap-2:not(:has(.hover-img)) .default-img,
+.watchstraps-grid .product-wrap:not(:has(.hover-img)) .default-img,
+.watchstraps-grid .product-wrap-2:not(:has(.hover-img)) .default-img,
+.perfumes-grid .product-wrap:not(:has(.hover-img)) .default-img,
+.perfumes-grid .product-wrap-2:not(:has(.hover-img)) .default-img,
+.mobilegadgets-grid .product-wrap:not(:has(.hover-img)) .default-img,
+.mobilegadgets-grid .product-wrap-2:not(:has(.hover-img)) .default-img,
+.shop-bottom-area .product-wrap:not(:has(.hover-img)) .default-img,
+.shop-bottom-area .product-wrap-2:not(:has(.hover-img)) .default-img,
+.product-area .product-wrap:not(:has(.hover-img)) .default-img,
+.product-area .product-wrap-2:not(:has(.hover-img)) .default-img {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+/* Ensure single image products don't get hover effects applied */
+.product-wrap:not(:has(.hover-img)):hover .default-img,
+.product-wrap-2:not(:has(.hover-img)):hover .default-img,
+.category-section .product-wrap:not(:has(.hover-img)):hover .default-img,
+.category-section .product-wrap-2:not(:has(.hover-img)):hover .default-img,
+.eyewear-products-section .product-wrap:not(:has(.hover-img)):hover .default-img,
+.eyewear-products-section .product-wrap-2:not(:has(.hover-img)):hover .default-img,
+.accessories-products-section .product-wrap:not(:has(.hover-img)):hover .default-img,
+.accessories-products-section .product-wrap-2:not(:has(.hover-img)):hover .default-img,
+.fashion-products-section .product-wrap:not(:has(.hover-img)):hover .default-img,
+.fashion-products-section .product-wrap-2:not(:has(.hover-img)):hover .default-img,
+.watchstraps-grid .product-wrap:not(:has(.hover-img)):hover .default-img,
+.watchstraps-grid .product-wrap-2:not(:has(.hover-img)):hover .default-img,
+.perfumes-grid .product-wrap:not(:has(.hover-img)):hover .default-img,
+.perfumes-grid .product-wrap-2:not(:has(.hover-img)):hover .default-img,
+.mobilegadgets-grid .product-wrap:not(:has(.hover-img)):hover .default-img,
+.mobilegadgets-grid .product-wrap-2:not(:has(.hover-img)):hover .default-img,
+.shop-bottom-area .product-wrap:not(:has(.hover-img)):hover .default-img,
+.shop-bottom-area .product-wrap-2:not(:has(.hover-img)):hover .default-img,
+.product-area .product-wrap:not(:has(.hover-img)):hover .default-img,
+.product-area .product-wrap-2:not(:has(.hover-img)):hover .default-img {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+/* Fallback for browsers that don't support :has() - ensure default images always stay visible */
+.default-img {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  transition: opacity 0.3s ease !important;
+}
+
+/* Only apply hover effects when hover image exists */
+.product-wrap:has(.hover-img):hover .default-img,
+.product-wrap-2:has(.hover-img):hover .default-img,
+.category-section .product-wrap:has(.hover-img):hover .default-img,
+.category-section .product-wrap-2:has(.hover-img):hover .default-img,
+.eyewear-products-section .product-wrap:has(.hover-img):hover .default-img,
+.eyewear-products-section .product-wrap-2:has(.hover-img):hover .default-img,
+.accessories-products-section .product-wrap:has(.hover-img):hover .default-img,
+.accessories-products-section .product-wrap-2:has(.hover-img):hover .default-img,
+.fashion-products-section .product-wrap:has(.hover-img):hover .default-img,
+.fashion-products-section .product-wrap-2:has(.hover-img):hover .default-img,
+.watchstraps-grid .product-wrap:has(.hover-img):hover .default-img,
+.watchstraps-grid .product-wrap-2:has(.hover-img):hover .default-img,
+.perfumes-grid .product-wrap:has(.hover-img):hover .default-img,
+.perfumes-grid .product-wrap-2:has(.hover-img):hover .default-img,
+.mobilegadgets-grid .product-wrap:has(.hover-img):hover .default-img,
+.mobilegadgets-grid .product-wrap-2:has(.hover-img):hover .default-img,
+.shop-bottom-area .product-wrap:has(.hover-img):hover .default-img,
+.shop-bottom-area .product-wrap-2:has(.hover-img):hover .default-img,
+.product-area .product-wrap:has(.hover-img):hover .default-img,
+.product-area .product-wrap-2:has(.hover-img):hover .default-img {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: none !important;
+  transition: opacity 0.3s ease !important;
+}

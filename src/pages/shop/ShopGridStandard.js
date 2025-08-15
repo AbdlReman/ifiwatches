@@ -155,6 +155,22 @@ const ShopGridStandard = () => {
         
 
         
+        // Debug: Log all categories to understand the data structure
+        const allCategories = items.reduce((acc, product) => {
+          if (product.category && Array.isArray(product.category)) {
+            product.category.forEach(cat => {
+              if (cat && cat.trim()) {
+                acc.add(cat.trim());
+              }
+            });
+          }
+          return acc;
+        }, new Set());
+        
+        console.log("=== ALL CATEGORIES IN PRODUCTS ===");
+        console.log(Array.from(allCategories).sort());
+        console.log("=== END CATEGORIES ===");
+        
         setProducts(items);
       } catch (error) {
         console.error("Failed to fetch products from Contentful", error);
@@ -183,10 +199,17 @@ const ShopGridStandard = () => {
     
     // Apply category filter
     if (selectedCategory) {
+      console.log("=== CATEGORY FILTER DEBUG ===");
+      console.log("Selected Category:", selectedCategory);
+      console.log("Products before filter:", filtered.length);
+      
       filtered = filtered.filter(product => {
         if (!product.category || !Array.isArray(product.category)) {
+          console.log(`Product ${product.name} has no category array:`, product.category);
           return false;
         }
+        
+        console.log(`Checking product ${product.name} with categories:`, product.category);
         
         // Simple keyword matching for categories
         const categoryKeywords = {
@@ -200,13 +223,20 @@ const ShopGridStandard = () => {
         };
         
         const keywords = categoryKeywords[selectedCategory] || [selectedCategory.toLowerCase()];
+        console.log(`Keywords for "${selectedCategory}":`, keywords);
         
-        return product.category.some(cat => 
+        const match = product.category.some(cat => 
           cat && keywords.some(keyword => 
             cat.toLowerCase().includes(keyword)
           )
         );
+        
+        console.log(`Product ${product.name} match:`, match);
+        return match;
       });
+      
+      console.log("Products after filter:", filtered.length);
+      console.log("=== END CATEGORY FILTER DEBUG ===");
     }
     
     // Apply color filter
@@ -286,6 +316,32 @@ const ShopGridStandard = () => {
                      filteredProducts={sortedProducts.length}
                      products={products}
                    />
+                   
+                   {/* Temporary Debug Display */}
+                   {selectedCategory && (
+                     <div style={{ 
+                       background: '#f8f9fa', 
+                       padding: '15px', 
+                       margin: '15px 0', 
+                       border: '1px solid #dee2e6',
+                       borderRadius: '8px',
+                       fontSize: '14px',
+                       fontFamily: 'monospace'
+                     }}>
+                       <strong>🔍 FILTER DEBUG:</strong><br/>
+                       <strong>Selected Category:</strong> {selectedCategory}<br/>
+                       <strong>Total Products:</strong> {products.length}<br/>
+                       <strong>Filtered Products:</strong> {sortedProducts.length}<br/>
+                       <strong>Products with this category:</strong> {products.filter(p => 
+                         p.category && Array.isArray(p.category) && 
+                         p.category.some(cat => 
+                           cat && (cat.toLowerCase().includes(selectedCategory.toLowerCase()) ||
+                                  cat.toLowerCase() === selectedCategory.toLowerCase())
+                         )
+                       ).length}<br/>
+                       <strong>All Categories in Products:</strong> {Array.from(new Set(products.flatMap(p => p.category || []))).slice(0, 10).join(', ')}...
+                     </div>
+                   )}
                    
                    
                   <ShopProducts layout="grid three-column" products={currentData} />
