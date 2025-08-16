@@ -117,8 +117,20 @@ const WatchesPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="Watches - IFIwatches" 
-        description="Shop premium watches at IFIwatches. Quality, elegance, and affordability for every customer." 
+        title="Premium Watches Collection - IFI Lifestyle"
+        titleTemplate="Watches | IFI Lifestyle"
+        description="Discover our premium watches collection at IFI Lifestyle. Luxury timepieces, elegant designs, and affordable prices. Shop men's, women's, and unisex watches with fast delivery across Pakistan."
+        keywords="premium watches, luxury watches, men's watches, women's watches, unisex watches, formal watches, casual watches, sports watches, Pakistan watches, IFI Lifestyle watches"
+        ogTitle="Premium Watches Collection - IFI Lifestyle"
+        ogDescription="Discover our premium watches collection at IFI Lifestyle. Luxury timepieces, elegant designs, and affordable prices."
+        ogType="website"
+        ogUrl="https://www.ifilifestyle.com/watches"
+        ogImage="https://www.ifilifestyle.com/logo.png"
+        twitterCard="summary_large_image"
+        twitterTitle="Premium Watches Collection - IFI Lifestyle"
+        twitterDescription="Discover our premium watches collection at IFI Lifestyle. Luxury timepieces, elegant designs, and affordable prices."
+        canonical="https://www.ifilifestyle.com/watches"
+        robots="index, follow"
       />
       <LayoutOne headerTop="visible">
              <AnimatedSection delay={0.2}>

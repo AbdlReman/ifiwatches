@@ -139,8 +139,20 @@ const HomeFurniture = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate="IFI – Iconic Futures Innovations (ifilifestyle)"
-        description="Discover premium watches, signature perfumes, men’s fabrics, and fashion accessories at IFI – Iconic Futures Innovations. Quality, value, and fast nationwide delivery."
+        title="IFI Lifestyle - Premium Watches, Perfumes & Fashion Accessories"
+        titleTemplate="IFI Lifestyle | ifilifestyle.com"
+        description="IFI Lifestyle (Iconic Futures Innovations) - Pakistan's premier destination for premium watches, signature perfumes, men's fabrics, and fashion accessories. Quality products with fast nationwide delivery."
+        keywords="IFI Lifestyle, ifilifestyle, premium watches, luxury watches, perfumes, fashion accessories, men's fabrics, Pakistan, online shopping, Iconic Futures Innovations"
+        ogTitle="IFI Lifestyle - Premium Watches, Perfumes & Fashion Accessories"
+        ogDescription="Pakistan's premier destination for premium watches, signature perfumes, men's fabrics, and fashion accessories. Quality products with fast nationwide delivery."
+        ogType="website"
+        ogUrl="https://www.ifilifestyle.com/"
+        ogImage="https://www.ifilifestyle.com/logo.png"
+        twitterCard="summary_large_image"
+        twitterTitle="IFI Lifestyle - Premium Watches, Perfumes & Fashion Accessories"
+        twitterDescription="Pakistan's premier destination for premium watches, signature perfumes, men's fabrics, and fashion accessories."
+        canonical="https://www.ifilifestyle.com/"
+        robots="index, follow"
       />
       <LayoutOne headerTop="visible">
         {/* hero banner section */}

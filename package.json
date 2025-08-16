@@ -55,7 +55,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "vercel-build": "npm run build"
+    "vercel-build": "npm run build",
+    "generate-sitemap": "node scripts/generate-sitemap.js",
+    "build-with-sitemap": "npm run build && npm run generate-sitemap"
   },
   "eslintConfig": {
     "extends": [

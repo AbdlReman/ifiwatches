@@ -1,2 +1,28 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.ifilifestyle.com/sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+Disallow: /_redirects
+
+# Allow important pages
+Allow: /watches/
+Allow: /perfumes/
+Allow: /fashion/
+Allow: /eyewear/
+Allow: /rings-accessories/
+Allow: /mobile-gadgets/
+Allow: /watch-straps/
+Allow: /shop/
+Allow: /blog/
+Allow: /about/
+Allow: /contact/
+
+# Crawl delay (optional)
+Crawl-delay: 1
