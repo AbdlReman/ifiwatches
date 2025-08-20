@@ -54,7 +54,7 @@ const Product = () => {
             tag: fields.tag || [],
             images: fields.images?.map(img => img.fields.file.url) || [],
             color: fields.color || [],
-            size: [],
+            size: fields.size || [],
             metaTitle: fields.metaTitle || fields.name || "Product",
             metaDescription: fields.metaDescription || fields.shortDescription || "",
             stock: fields.stock || 0,

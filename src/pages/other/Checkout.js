@@ -162,8 +162,17 @@ const Checkout = () => {
         parseFloat(giftBoxPerUnit) * item.quantity
       ).toFixed(2);
       
+      // Build product name with color and size if available
+      let productNameWithDetails = item.name;
+      if (item.selectedProductColor) {
+        productNameWithDetails += ` (Color: ${item.selectedProductColor})`;
+      }
+      if (item.selectedProductSize) {
+        productNameWithDetails += ` (Size: ${item.selectedProductSize})`;
+      }
+      
       return {
-        productName: item.name,
+        productName: productNameWithDetails,
         quantity: item.quantity,
         price: finalDiscountedPrice,
         total: itemTotal,
@@ -198,11 +207,17 @@ const Checkout = () => {
     const prices = orderSummary.map((item) => `${"Rs "}${item.price}`);
     const totals = orderSummary.map((item) => `${"Rs "}${item.total}`);
     
+    // Create color and size arrays for email
+    const colors = cartItems.map((item) => item.selectedProductColor || "N/A");
+    const sizes = cartItems.map((item) => item.selectedProductSize || "N/A");
+    
     // Join arrays with line breaks for display
     const formattedProductNames = productNames.join("\n");
     const formattedQuantities = quantities.join("\n");
     const formattedPrices = prices.join("\n");
     const formattedTotals = totals.join("\n");
+    const formattedColors = colors.join("\n");
+    const formattedSizes = sizes.join("\n");
 
     // Get payment method display name
     const getPaymentMethodName = (method) => {
@@ -227,6 +242,8 @@ const Checkout = () => {
       quantities: formattedQuantities,
       prices: formattedPrices,
       totals: formattedTotals,
+      colors: formattedColors,
+      sizes: formattedSizes,
       subtotal: total,
       discount: discountAmount.toFixed(2),
       grandTotal: grandTotal.toFixed(2),
@@ -259,6 +276,8 @@ const Checkout = () => {
           quantities: formattedQuantities,
           prices: formattedPrices,
           totals: formattedTotals,
+          colors: formattedColors,
+          sizes: formattedSizes,
           subtotal: total, // subtotal before coupon
           total: grandTotal.toFixed(2), // for template compatibility, send final total here
           giftBoxTotal: giftBoxTotal.toFixed(2),

@@ -912,7 +912,7 @@
 
         display: block;
 
-        margin: 0 0 15px;
+
       }
 
       .pro-details-color-content {
@@ -968,14 +968,16 @@
 
           display: inline-block;
 
-          width: 14px;
-          height: 14px;
-          margin-right: 15px;
+          padding: 6px 10px;
+          margin-right: 8px;
+          margin-bottom: 6px;
 
           cursor: pointer;
           transition: all 0.4s ease 0s;
 
-          border-radius: 50px;
+          border: 1px solid #ddd;
+          border-radius: 3px;
+          background-color: #f9f9f9;
 
           &:last-child {
             margin-right: 0;
@@ -1042,45 +1044,38 @@
           }
 
           .checkmark {
-            position: relative;
+            display: none;
+          }
 
+          input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+          }
+
+          &:has(input:checked),
+          &.selected {
+            background-color: $theme-color;
+            border-color: $theme-color;
+            
+            .color-text {
+              color: #fff;
+            }
+          }
+
+          .color-text {
             display: inline-block;
 
-            width: 14px;
-            height: 14px;
-            margin: 0;
-
-            &:after {
-              position: absolute;
-              top: -7px;
-              left: -4px;
-
-              visibility: hidden;
-
-              width: 20px;
-              height: 20px;
-
-              content: "";
-              transition: 0.3s;
-
-              opacity: 0;
-              border: 2px solid #333;
-              border-radius: 50%;
-            }
-          }
-
-          &:hover {
-            input {
-              &~.checkmark {
-                &:after {
-                  visibility: visible;
-
-                  opacity: 1;
-                }
-              }
-            }
+            font-size: 13px;
+            color: #333;
+            font-weight: 500;
+            line-height: 1.2;
           }
         }
+
+
       }
     }
 

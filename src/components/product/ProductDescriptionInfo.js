@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { getProductCartQuantity } from "../../helpers/product";
 import Rating from "./sub-components/ProductRating";
 import { addToCart } from "../../store/slices/cart-slice";
@@ -22,6 +22,7 @@ const ProductDescriptionInfo = ({
   const navigate = useNavigate();
   
   const [selectedProductColor, setSelectedProductColor] = useState("");
+  const [selectedProductSize, setSelectedProductSize] = useState("");
   const [productStock, setProductStock] = useState(0);
   const [quantityCount, setQuantityCount] = useState(1);
   const [includeGiftBox, setIncludeGiftBox] = useState(false);
@@ -54,7 +55,7 @@ const ProductDescriptionInfo = ({
     cartItems,
     product,
     selectedProductColor,
-    ""
+    selectedProductSize
   );
 
   const handleAddToCart = () => {
@@ -62,6 +63,7 @@ const ProductDescriptionInfo = ({
       ...product,
       quantity: quantityCount,
       selectedProductColor: selectedProductColor ? selectedProductColor : product.selectedProductColor ? product.selectedProductColor : null,
+      selectedProductSize: selectedProductSize ? selectedProductSize : product.selectedProductSize ? product.selectedProductSize : null,
       includeGiftBox: showGiftBoxOption ? includeGiftBox : false,
       giftBoxPrice: showGiftBoxOption ? giftBoxUnitPrice : 0
     }));
@@ -73,6 +75,7 @@ const ProductDescriptionInfo = ({
       ...product,
       quantity: quantityCount,
       selectedProductColor: selectedProductColor ? selectedProductColor : product.selectedProductColor ? product.selectedProductColor : null,
+      selectedProductSize: selectedProductSize ? selectedProductSize : product.selectedProductSize ? product.selectedProductSize : null,
       includeGiftBox: showGiftBoxOption ? includeGiftBox : false,
       giftBoxPrice: showGiftBoxOption ? giftBoxUnitPrice : 0,
       suppressToast: true
@@ -133,12 +136,12 @@ const ProductDescriptionInfo = ({
           <div className="pro-details-color-wrap">
             <span>Color</span>
             <div className="pro-details-color-content">
-              {product.color.map((color, key) => {
-                return (
-                  <label
-                    className={`pro-details-color-content--single ${color}`}
-                    key={key}
-                  >
+                             {product.color.map((color, key) => {
+                 return (
+                   <label
+                     className={`pro-details-color-content--single ${color === selectedProductColor ? 'selected' : ''}`}
+                     key={key}
+                   >
                     <input
                       type="radio"
                       value={color}
@@ -152,6 +155,7 @@ const ProductDescriptionInfo = ({
                       }}
                     />
                     <span className="checkmark"></span>
+                    <span className="color-text">{color}</span>
                   </label>
                 );
               })}
@@ -160,29 +164,37 @@ const ProductDescriptionInfo = ({
         </div>
       )}
 
-
-
-      {/* Display categories if available */}
-      {product.category && product.category.length > 0 && (
-        <div className="pro-details-categories">
-          <span>Categories: </span>
-          {product.category.map((cat, index) => (
-            <Link key={index} to={`/shop?category=${cat}`}>
-              {cat}{index < product.category.length - 1 ? ', ' : ''}
-            </Link>
-          ))}
-        </div>
-      )}
-
-      {/* Display tags if available */}
-      {product.tag && product.tag.length > 0 && (
-        <div className="pro-details-tags">
-          <span>Tags: </span>
-          {product.tag.map((tag, index) => (
-            <Link key={index} to={`/shop?tag=${tag}`}>
-              {tag}{index < product.tag.length - 1 ? ', ' : ''}
-            </Link>
-          ))}
+      {/* Display sizes if available */}
+      {product.size && product.size.length > 0 && (
+        <div className="pro-details-size-color">
+          <div className="pro-details-color-wrap">
+            <span>Size</span>
+            <div className="pro-details-color-content">
+                             {product.size.map((size, key) => {
+                 return (
+                   <label
+                     className={`pro-details-color-content--single ${size === selectedProductSize ? 'selected' : ''}`}
+                     key={key}
+                   >
+                    <input
+                      type="radio"
+                      value={size}
+                      name="product-size"
+                      checked={
+                        size === selectedProductSize ? "checked" : ""
+                      }
+                      onChange={() => {
+                        setSelectedProductSize(size);
+                        setQuantityCount(1);
+                      }}
+                    />
+                    <span className="checkmark"></span>
+                    <span className="color-text">{size}</span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
         </div>
       )}
 
