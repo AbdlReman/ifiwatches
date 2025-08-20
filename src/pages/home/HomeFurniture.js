@@ -573,9 +573,9 @@ const HomeFurniture = () => {
         </FadeInOnScroll>
 
         {/*  */}
-        {/* <FadeInOnScroll direction="up" delay={1.2}>
+        <FadeInOnScroll direction="up" delay={1.2}>
           <FeatureIconTwo spaceTopClass="pt-100" spaceBottomClass="pb-60" />
-        </FadeInOnScroll> */}
+        </FadeInOnScroll>
       </LayoutOne>
     </Fragment>
   );
