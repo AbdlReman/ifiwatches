@@ -318,30 +318,7 @@ const ShopGridStandard = () => {
                    />
                    
                    {/* Temporary Debug Display */}
-                   {selectedCategory && (
-                     <div style={{ 
-                       background: '#f8f9fa', 
-                       padding: '15px', 
-                       margin: '15px 0', 
-                       border: '1px solid #dee2e6',
-                       borderRadius: '8px',
-                       fontSize: '14px',
-                       fontFamily: 'monospace'
-                     }}>
-                       <strong>🔍 FILTER DEBUG:</strong><br/>
-                       <strong>Selected Category:</strong> {selectedCategory}<br/>
-                       <strong>Total Products:</strong> {products.length}<br/>
-                       <strong>Filtered Products:</strong> {sortedProducts.length}<br/>
-                       <strong>Products with this category:</strong> {products.filter(p => 
-                         p.category && Array.isArray(p.category) && 
-                         p.category.some(cat => 
-                           cat && (cat.toLowerCase().includes(selectedCategory.toLowerCase()) ||
-                                  cat.toLowerCase() === selectedCategory.toLowerCase())
-                         )
-                       ).length}<br/>
-                       <strong>All Categories in Products:</strong> {Array.from(new Set(products.flatMap(p => p.category || []))).slice(0, 10).join(', ')}...
-                     </div>
-                   )}
+                  
                    
                    
                   <ShopProducts layout="grid three-column" products={currentData} />

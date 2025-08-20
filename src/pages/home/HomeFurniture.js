@@ -11,6 +11,7 @@ import CategoryShowcase from "../../components/category/CategoryShowcase";
 import HeroBanner from "../../components/hero/HeroBanner";
 import ShopProducts from "../../wrappers/product/ShopProducts";
 import SectionTitle from "../../components/section-title/SectionTitle";
+import ShippingReturnsFeatures from "../../components/features/ShippingReturnsFeatures";
 import client from "../../data/contentful";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import "../../assets/css/category-layouts.css";
@@ -166,6 +167,9 @@ const HomeFurniture = () => {
         <FadeInOnScroll direction="up" delay={0.3}>
           <BannerTwentySeven spaceTopClass="pt-80" spaceBottomClass="pb-60" />
         </FadeInOnScroll>
+
+        {/* Features Section */}
+        <ShippingReturnsFeatures />
 
         {/* latest products section */}
         <FadeInOnScroll direction="up" delay={0.4}>
@@ -568,10 +572,10 @@ const HomeFurniture = () => {
           />
         </FadeInOnScroll>
 
-        {/* feature icon */}
-        <FadeInOnScroll direction="up" delay={1.2}>
+        {/*  */}
+        {/* <FadeInOnScroll direction="up" delay={1.2}>
           <FeatureIconTwo spaceTopClass="pt-100" spaceBottomClass="pb-60" />
-        </FadeInOnScroll>
+        </FadeInOnScroll> */}
       </LayoutOne>
     </Fragment>
   );
