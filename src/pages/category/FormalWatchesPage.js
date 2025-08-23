@@ -104,8 +104,8 @@ const FormalWatchesPage = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate="Formal Watches - IFIwatches"
-        description="Shop elegant formal watches at IFIwatches. Sophisticated timepieces perfect for business and special occasions."
+        titleTemplate="Formal Watches - IFILifestyle"
+        description="Shop elegant formal watches at IFILifestyle. Sophisticated timepieces perfect for business and special occasions."
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

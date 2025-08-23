@@ -115,8 +115,8 @@ const MetalStrapsPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="Metal/Chain Straps - IFIwatches" 
-        description="Shop durable metal and chain watch straps at IFIwatches. Classic and modern designs for your timepiece." 
+                titleTemplate="Metal/Chain Straps - IFILifestyle"
+        description="Shop durable metal and chain watch straps at IFILifestyle. Classic and modern designs for your timepiece." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

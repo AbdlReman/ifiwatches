@@ -116,8 +116,8 @@ const RingsAccessoriesPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="Rings & Accessories - IFIwatches" 
-        description="Shop elegant rings and accessories at IFIwatches. Fashion rings, chains, and bracelets for every style." 
+                titleTemplate="Rings & Accessories - IFILifestyle"
+        description="Shop elegant rings and accessories at IFILifestyle. Fashion rings, chains, and bracelets for every style." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

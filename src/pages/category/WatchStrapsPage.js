@@ -115,8 +115,8 @@ const WatchStrapsPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="Watch Straps - IFIwatches" 
-        description="Shop premium watch straps at IFIwatches. Quality, comfort, and style for every watch." 
+                titleTemplate="Watch Straps - IFILifestyle"
+        description="Shop premium watch straps at IFILifestyle. Quality, comfort, and style for every watch." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

@@ -113,7 +113,7 @@ const SmartPage = () => {
 
   return (
     <Fragment>
-      <SEO titleTemplate="Smart Watches - IFIwatches" description="Shop premium smart watches at IFIwatches. Advanced technology and modern design for the connected lifestyle." />
+      <SEO titleTemplate="Smart Watches - IFILifestyle" description="Shop premium smart watches at IFILifestyle. Advanced technology and modern design for the connected lifestyle." />
       <LayoutOne headerTop="visible">
         <Breadcrumb
           pages={[

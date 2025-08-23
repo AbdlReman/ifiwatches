@@ -7,7 +7,7 @@ import RelatedProductSlider from "../../wrappers/product/RelatedProductSlider";
 import ProductDescriptionTab from "../../wrappers/product/ProductDescriptionTab";
 import ProductImageDescription from "../../wrappers/product/ProductImageDescription";
 import client from "../../data/contentful";
-import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import { processContentfulProduct } from "../../helpers/contentful";
 
 const Product = () => {
   let { pathname } = useLocation();
@@ -38,38 +38,8 @@ const Product = () => {
           const fields = item.fields;
           
           // Transform Contentful data to match our product structure
-          console.log("Raw fullDescription:", fields.fullDescription);
-          const transformedProduct = {
-            id: item.sys.id,
-            name: fields.name || "Product",
-            slug: fields.slug,
-            price: parseFloat(fields.price) || 0,
-            discount: parseFloat(fields.discount) || 0,
-            giftBoxPrice: parseFloat(fields.giftBoxPrice) || 0,
-            shortDescription: fields.shortDescription || "",
-            fullDescription: fields.fullDescription ? 
-              (typeof fields.fullDescription === 'string' ? fields.fullDescription : 
-               fields.fullDescription.content ? documentToHtmlString(fields.fullDescription) : "") : "",
-            category: fields.category || [],
-            tag: fields.tag || [],
-            images: fields.images?.map(img => img.fields.file.url) || [],
-            color: fields.color || [],
-            size: fields.size || [],
-            metaTitle: fields.metaTitle || fields.name || "Product",
-            metaDescription: fields.metaDescription || fields.shortDescription || "",
-            stock: fields.stock || 0,
-            // For backward compatibility with existing components
-            image: fields.images?.[0]?.fields?.file?.url,
-            title: fields.name || "Product",
-            description: fields.fullDescription ? documentToHtmlString(fields.fullDescription) : "",
-            // Add variation structure if colors exist
-            variation: fields.color && fields.color.length > 0 ? 
-              fields.color.map(color => ({
-                color: color
-              })) : null
-          };
+          const transformedProduct = processContentfulProduct(item);
 
-          console.log("Transformed fullDescription:", transformedProduct.fullDescription);
           setProduct(transformedProduct);
         } else {
           setError("Product not found");

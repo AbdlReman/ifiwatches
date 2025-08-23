@@ -115,8 +115,8 @@ const UnisexPerfumesPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="Unisex Scents - IFIwatches" 
-        description="Shop versatile unisex fragrances at IFIwatches. Perfect scents for everyone." 
+                titleTemplate="Unisex Scents - IFILifestyle"
+        description="Shop versatile unisex fragrances at IFILifestyle. Perfect scents for everyone." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

@@ -115,8 +115,8 @@ const PantJeansPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="Pant/Jeans - IFIwatches" 
-        description="Shop pants and jeans at IFIwatches. Quality pants and jeans for every style and occasion." 
+                titleTemplate="Pant/Jeans - IFILifestyle"
+        description="Shop pants and jeans at IFILifestyle. Quality pants and jeans for every style and occasion." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

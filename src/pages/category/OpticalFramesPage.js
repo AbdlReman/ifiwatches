@@ -115,8 +115,8 @@ const OpticalFramesPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="Optical Frames - IFIwatches" 
-        description="Shop stylish optical frames at IFIwatches. Perfect frames for your prescription lenses." 
+                titleTemplate="Optical Frames - IFILifestyle"
+        description="Shop stylish optical frames at IFILifestyle. Perfect frames for your prescription lenses." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

@@ -48,9 +48,11 @@ const ProductDescriptionTab = ({ spaceBottomClass, productFullDesc, product }) =
               </Tab.Pane>
               <Tab.Pane eventKey="productDescription">
                 <div className="product-description">
-                  {console.log("ProductDescriptionTab - productFullDesc:", productFullDesc)}
                   {productFullDesc ? (
-                    <div dangerouslySetInnerHTML={{ __html: productFullDesc }} />
+                    <div 
+                      className="rich-text-content"
+                      dangerouslySetInnerHTML={{ __html: productFullDesc }} 
+                    />
                   ) : (
                     <p>No description available for this product.</p>
                   )}

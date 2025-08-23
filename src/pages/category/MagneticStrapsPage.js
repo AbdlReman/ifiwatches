@@ -115,8 +115,8 @@ const MagneticStrapsPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="Magnetic/Loop Straps - IFIwatches" 
-        description="Shop innovative magnetic and loop watch straps at IFIwatches. Easy to wear and adjust for perfect fit." 
+                titleTemplate="Magnetic/Loop Straps - IFILifestyle"
+        description="Shop innovative magnetic and loop watch straps at IFILifestyle. Easy to wear and adjust for perfect fit." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

@@ -55,7 +55,7 @@ const Contact = () => {
           from_email: formData.email,
           subject: formData.subject,
           message: formData.message,
-          to_name: 'IFIwatches Store'
+          to_name: 'IFILifestyle Store'
         }
       );
 
@@ -332,12 +332,12 @@ const Contact = () => {
                       <i className="fa fa-map-marker" />
                     </div>
                     <div className="contact-info-dec">
-                      <p>IFIwatches Store, </p>
+                      <p>IFILifestyle Store, </p>
                       <p>Islamabad, Pakistan.</p>
                     </div>
                   </div>
                   <div className="contact-social text-center">
-                    <h3>Follow IFIwatches</h3>
+                    <h3>Follow IFILifestyle</h3>
                     <ul>
                       <li>
                         <a href="//facebook.com">

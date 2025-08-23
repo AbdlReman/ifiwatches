@@ -192,8 +192,8 @@ const ${className} = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="${categoryData.name} - IFIwatches" 
-        description="Shop premium ${categoryData.name.toLowerCase()} at IFIwatches. Quality, elegance, and affordability for every customer." 
+                titleTemplate="${categoryData.name} - IFILifestyle"
+        description="Shop premium ${categoryData.name.toLowerCase()} at IFILifestyle. Quality, elegance, and affordability for every customer." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb
@@ -359,8 +359,8 @@ const ${className} = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="${subcategoryData.name} - IFIwatches" 
-        description="Shop premium ${subcategoryData.name.toLowerCase()} at IFIwatches. Quality, elegance, and affordability for every customer." 
+                titleTemplate="${subcategoryData.name} - IFILifestyle"
+        description="Shop premium ${subcategoryData.name.toLowerCase()} at IFILifestyle. Quality, elegance, and affordability for every customer." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

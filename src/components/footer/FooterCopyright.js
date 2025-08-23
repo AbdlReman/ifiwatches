@@ -12,7 +12,7 @@ const FooterCopyright = ({ footerLogo, spaceBottomClass, colorClass }) => {
       <div className="footer-logo">
         <Link to={process.env.PUBLIC_URL + "/"}>
           <img
-            alt="IFIwatches"
+            alt="IFILifestyle"
             className="img-fluid"
             src={process.env.PUBLIC_URL + footerLogo}
           />
@@ -25,7 +25,7 @@ const FooterCopyright = ({ footerLogo, spaceBottomClass, colorClass }) => {
           rel="noopener noreferrer"
           target="_blank"
         >
-          IFIwatches
+          IFILifestyle
         </a>
         .<br /> All Rights Reserved
       </p>

@@ -115,8 +115,8 @@ const SiliconeStrapsPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="Silicone/Rubber Straps - IFIwatches" 
-        description="Shop comfortable silicone and rubber watch straps at IFIwatches. Perfect for sports and casual wear." 
+                titleTemplate="Silicone/Rubber Straps - IFILifestyle"
+        description="Shop comfortable silicone and rubber watch straps at IFILifestyle. Perfect for sports and casual wear." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

@@ -115,8 +115,8 @@ const UsedMobilesPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="Trusted Used Mobiles - IFIwatches" 
-        description="Shop trusted used mobiles at IFIwatches. Quality pre-owned phones at affordable prices." 
+                titleTemplate="Trusted Used Mobiles - IFILifestyle"
+        description="Shop trusted used mobiles at IFILifestyle. Quality pre-owned phones at affordable prices." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

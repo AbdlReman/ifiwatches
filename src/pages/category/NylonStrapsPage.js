@@ -115,8 +115,8 @@ const NylonStrapsPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="Nylon/Fabric Straps - IFIwatches" 
-        description="Shop lightweight nylon and fabric watch straps at IFIwatches. Comfortable and stylish for everyday wear." 
+                titleTemplate="Nylon/Fabric Straps - IFILifestyle"
+        description="Shop lightweight nylon and fabric watch straps at IFILifestyle. Comfortable and stylish for everyday wear." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

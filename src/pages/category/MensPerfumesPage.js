@@ -115,8 +115,8 @@ const MensPerfumesPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="Men's Fragrances - IFIwatches" 
-        description="Shop premium men's fragrances at IFIwatches. Sophisticated scents for the modern gentleman." 
+                titleTemplate="Men's Fragrances - IFILifestyle"
+        description="Shop premium men's fragrances at IFILifestyle. Sophisticated scents for the modern gentleman." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

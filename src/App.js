@@ -88,8 +88,8 @@ const App = () => {
       <ScrollToTop>
         <Suspense
           fallback={
-            <div className="ifiwatches-preloader-wrapper">
-              <div className="ifiwatches-preloader">
+                    <div className="ifilifestyle-preloader-wrapper">
+          <div className="ifilifestyle-preloader">
                 <span></span>
                 <span></span>
               </div>

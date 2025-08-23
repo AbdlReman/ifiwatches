@@ -113,7 +113,7 @@ const ClassicPage = () => {
 
   return (
     <Fragment>
-      <SEO titleTemplate="Classic Watches - IFIwatches" description="Shop premium classic watches at IFIwatches. Timeless elegance and sophisticated design for every occasion." />
+      <SEO titleTemplate="Classic Watches - IFILifestyle" description="Shop premium classic watches at IFILifestyle. Timeless elegance and sophisticated design for every occasion." />
       <LayoutOne headerTop="visible">
         <Breadcrumb
           pages={[

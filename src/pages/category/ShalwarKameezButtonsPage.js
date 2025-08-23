@@ -115,8 +115,8 @@ const ShalwarKameezPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="Shalwar Kameez Fabric - IFIwatches" 
-        description="Shop Shalwar Kameez fabric (unstitched only) at IFIwatches. Quality traditional fabric for your ethnic wear needs." 
+                titleTemplate="Shalwar Kameez Fabric - IFILifestyle"
+        description="Shop Shalwar Kameez fabric (unstitched only) at IFILifestyle. Quality traditional fabric for your ethnic wear needs." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

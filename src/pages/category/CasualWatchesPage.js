@@ -108,8 +108,8 @@ const CasualWatchesPage = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate="Casual Watches - IFIwatches"
-        description="Shop comfortable casual watches at IFIwatches. Perfect for everyday wear with style and comfort."
+        titleTemplate="Casual Watches - IFILifestyle"
+        description="Shop comfortable casual watches at IFILifestyle. Perfect for everyday wear with style and comfort."
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

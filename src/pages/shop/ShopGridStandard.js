@@ -274,7 +274,7 @@ const ShopGridStandard = () => {
 
   return (
     <Fragment>
-      <SEO titleTemplate="IFIwatches Collection - Premium Quality Watches" description="Shop the latest collection of premium quality watches at IFIwatches. Pakistan's premier destination for luxury timepieces with fast delivery. Visit https://www.ifiwatches.pk/" />
+              <SEO titleTemplate="IFILifestyle Collection - Premium Quality Watches" description="Shop the latest collection of premium quality watches at IFILifestyle. Pakistan's premier destination for luxury timepieces with fast delivery. Visit https://www.ifilifestyle.pk/" />
       <LayoutOne headerTop="visible">
         <Breadcrumb
           pages={[

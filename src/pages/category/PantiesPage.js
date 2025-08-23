@@ -113,7 +113,7 @@ const SportsPage = () => {
 
   return (
     <Fragment>
-      <SEO titleTemplate="Sports Watches - IFIwatches" description="Shop premium sports watches at IFIwatches. Quality, durability, and style for active lifestyles." />
+      <SEO titleTemplate="Sports Watches - IFILifestyle" description="Shop premium sports watches at IFILifestyle. Quality, durability, and style for active lifestyles." />
       <LayoutOne headerTop="visible">
         <Breadcrumb
           pages={[

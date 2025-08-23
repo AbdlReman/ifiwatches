@@ -104,8 +104,8 @@ const LuxuryWatchesPage = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate="Luxury Collection - IFIwatches"
-        description="Shop premium luxury watches at IFIwatches. Exclusive timepieces for the discerning collector."
+        titleTemplate="Luxury Collection - IFILifestyle"
+        description="Shop premium luxury watches at IFILifestyle. Exclusive timepieces for the discerning collector."
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

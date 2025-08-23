@@ -107,8 +107,8 @@ const UnisexWatchesPage = () => {
   return (
     <Fragment>
      <SEO
-        titleTemplate="Unisex Watches - IFIwatches"
-        description="Shop stylish unisex watches at IFIwatches. Perfect timepieces for everyone, combining elegance and versatility."
+        titleTemplate="Unisex Watches - IFILifestyle"
+        description="Shop stylish unisex watches at IFILifestyle. Perfect timepieces for everyone, combining elegance and versatility."
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

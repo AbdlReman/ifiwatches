@@ -113,7 +113,7 @@ const LuxuryPage = () => {
 
   return (
     <Fragment>
-      <SEO titleTemplate="Luxury Watches - IFIwatches" description="Shop premium luxury watches at IFIwatches. Quality, elegance, and affordability for every customer." />
+      <SEO titleTemplate="Luxury Watches - IFILifestyle" description="Shop premium luxury watches at IFILifestyle. Quality, elegance, and affordability for every customer." />
       <LayoutOne headerTop="visible">
         <Breadcrumb
           pages={[

@@ -177,10 +177,10 @@ const CategoryPage = () => {
   };
 
   const getPageDescription = () => {
-    if (subcategory && subcategoryNames[subcategory]) {
-      return `Shop ${subcategoryNames[subcategory].toLowerCase()} at IFIwatches. Quality products with competitive prices.`;
-    }
-    return `Shop ${categoryNames[category]?.toLowerCase() || category} at IFIwatches. Quality products with competitive prices.`;
+          if (subcategory && subcategoryNames[subcategory]) {
+        return `Shop ${subcategoryNames[subcategory].toLowerCase()} at IFILifestyle. Quality products with competitive prices.`;
+      }
+      return `Shop ${categoryNames[category]?.toLowerCase() || category} at IFILifestyle. Quality products with competitive prices.`;
   };
 
   // Generate breadcrumb
@@ -223,7 +223,7 @@ const CategoryPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate={`${getPageTitle()} - IFIwatches`} 
+        titleTemplate={`${getPageTitle()} - IFILifestyle`} 
         description={getPageDescription()} 
       />
       <LayoutOne headerTop="visible">

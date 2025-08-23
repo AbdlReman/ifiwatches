@@ -117,8 +117,8 @@ const MensWatchesPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="Men's Watches - IFIwatches" 
-        description="Shop premium men's watches at IFIwatches. Quality, elegance, and affordability for every gentleman." 
+                titleTemplate="Men's Watches - IFILifestyle"
+        description="Shop premium men's watches at IFILifestyle. Quality, elegance, and affordability for every gentleman." 
       />
       <LayoutOne headerTop="visible">
       <AnimatedSection delay={0.2}>

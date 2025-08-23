@@ -115,8 +115,8 @@ const TshirtPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="T-Shirt - IFIwatches" 
-        description="Shop T-shirts at IFIwatches. Quality T-shirts for every style and occasion." 
+                titleTemplate="T-Shirt - IFILifestyle"
+        description="Shop T-shirts at IFILifestyle. Quality T-shirts for every style and occasion." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

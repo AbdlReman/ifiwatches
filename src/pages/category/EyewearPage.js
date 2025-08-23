@@ -115,8 +115,8 @@ const EyewearPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="Eyewear - IFIwatches" 
-        description="Shop premium eyewear at IFIwatches. Quality sunglasses and optical frames for every style." 
+                titleTemplate="Eyewear - IFILifestyle"
+        description="Shop premium eyewear at IFILifestyle. Quality sunglasses and optical frames for every style." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

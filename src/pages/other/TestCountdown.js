@@ -6,7 +6,7 @@ import RecurringCountDown from "../../wrappers/countdown/RecurringCountDown";
 const TestCountdown = () => {
   return (
     <LayoutOne headerTop="visible">
-      <SEO titleTemplate="Test Countdown - IFIwatches" />
+      <SEO titleTemplate="Test Countdown - IFILifestyle" />
       
       <div className="container mt-5">
         <div className="row">

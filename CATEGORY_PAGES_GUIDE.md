@@ -1,7 +1,7 @@
 # Category Pages Implementation Guide
 
 ## Overview
-This guide explains the complete category structure for the IFIwatches store, including all main categories and subcategories with their corresponding Contentful category values.
+This guide explains the complete category structure for the IFILifestyle store, including all main categories and subcategories with their corresponding Contentful category values.
 
 ## Category Structure
 

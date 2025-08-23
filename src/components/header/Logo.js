@@ -7,7 +7,7 @@ const Logo = ({ imageUrl, logoClass }) => {
     <div className={`${logoClass ? logoClass : ""}`}>
       <Link to={process.env.PUBLIC_URL + "/"}>
         <img
-          alt="IFIwatches Logo"
+          alt="IFILifestyle Logo"
           src={process.env.PUBLIC_URL + imageUrl}
         />
       </Link>

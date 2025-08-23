@@ -116,8 +116,8 @@ const MobileGadgetsPage = () => {
   return (
     <Fragment>
       <SEO 
-        titleTemplate="Mobile Gadgets - IFIwatches" 
-        description="Shop trusted used mobiles and mobile accessories at IFIwatches. Quality gadgets at affordable prices." 
+                titleTemplate="Mobile Gadgets - IFILifestyle"
+        description="Shop trusted used mobiles and mobile accessories at IFILifestyle. Quality gadgets at affordable prices." 
       />
       <LayoutOne headerTop="visible">
         <Breadcrumb

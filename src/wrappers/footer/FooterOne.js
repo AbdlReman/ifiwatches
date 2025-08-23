@@ -21,7 +21,7 @@ const FooterOne = ({
               <div className="footer-logo mb-20">
                 <Link to={process.env.PUBLIC_URL + "/"}>
                   <img 
-                    alt="IFIwatches" 
+                    alt="IFILifestyle" 
                     src={process.env.PUBLIC_URL + "/assets/img/logo/logo.png"}
                     style={{ maxWidth: "150px", height: "auto" }}
                   />
@@ -31,7 +31,7 @@ const FooterOne = ({
                 <p className="mt-20">
                   &copy; {new Date().getFullYear()}{" "}
                   <Link to={process.env.PUBLIC_URL + "/"}>
-                    IFIwatches
+                    IFILifestyle
                   </Link>
                   . All Rights Reserved
                 </p>

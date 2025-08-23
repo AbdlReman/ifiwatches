@@ -51,7 +51,7 @@ const AboutContent = () => {
         {/* Why Choose Us Section */}
         <div className="row mt-5">
           <div className="col-lg-12">
-            <div className="why-choose-ifiwatches text-center">
+            <div className="why-choose-ifilifestyle text-center">
               <h2 className="mb-3">Why Choose Us</h2>
               <p className="mb-5" style={{maxWidth: 900, margin: "0 auto", opacity: 0.95}}>
                 We’re not just selling products — we’re <strong>building connections</strong>. Every item in our collection is handpicked, tested for <strong>quality</strong> and <strong>durability</strong>, and backed by our commitment to customer satisfaction. Your feedback drives our growth, shapes our collections, and inspires our innovations.
