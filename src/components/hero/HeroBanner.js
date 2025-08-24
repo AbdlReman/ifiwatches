@@ -1,9 +1,57 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { EffectFade } from 'swiper';
 import Swiper, { SwiperSlide } from "../swiper";
+import client from "../../data/contentful";
 
 const HeroBanner = () => {
+  const [bannerData, setBannerData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch slider data from Contentful
+  useEffect(() => {
+    const fetchSliderData = async () => {
+      try {
+        const response = await client.getEntries({
+          content_type: 'slider',
+          order: 'sys.createdAt'
+        });
+
+        const processedData = response.items.map((item, index) => ({
+          id: item.sys.id,
+          image: item.fields.image?.fields?.file?.url || "/assets/img/banner/hero.png",
+          link: item.fields.link || "/shop"
+        }));
+
+        setBannerData(processedData);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching slider data:', error);
+        // Fallback to default data if Contentful fails
+        setBannerData([
+          {
+            id: 1,
+            image: "/assets/img/banner/hero.png",
+            link: "/shop"
+          },
+          {
+            id: 2,
+            image: "/assets/img/banner/hero.png",
+            link: "/shop"
+          },
+          {
+            id: 3,
+            image: "/assets/img/banner/hero.png",
+            link: "/shop"
+          }
+        ]);
+        setLoading(false);
+      }
+    };
+
+    fetchSliderData();
+  }, []);
+
   // Slider configuration
   const params = {
     effect: "fade",
@@ -23,24 +71,28 @@ const HeroBanner = () => {
     }
   };
 
-  // Three banner images with their data
-  const bannerData = [
-    {
-      id: 1,
-      image: "/assets/img/banner/hero.png",
-      link: "/shop"
-    },
-    {
-      id: 2,
-      image: "/assets/img/banner/hero.png",
-      link: "/shop"
-    },
-    {
-      id: 3,
-      image: "/assets/img/banner/hero.png",
-      link: "/shop"
-    }
-  ];
+  // Show loading state or empty state
+  if (loading) {
+    return (
+      <div className="hero-banner-section" style={{ 
+        width: '100%', 
+        margin: 0, 
+        padding: 0,
+        height: '400px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#f5f5f5'
+      }}>
+        <div>Loading slider...</div>
+      </div>
+    );
+  }
+
+  // Don't render if no data
+  if (bannerData.length === 0) {
+    return null;
+  }
 
   return (
     <div className="hero-banner-section" style={{ 
@@ -120,7 +172,7 @@ const HeroBanner = () => {
         }}>
           <Swiper options={params} style={{ width: '100%' }}>
             {bannerData.map((banner, key) => (
-              <SwiperSlide key={key} style={{ width: '100%' }}>
+              <SwiperSlide key={banner.id || key} style={{ width: '100%' }}>
                 <div className="single-slider" style={{ 
                   width: '100%',
                   margin: 0,
@@ -136,7 +188,7 @@ const HeroBanner = () => {
                     }}
                   >
                     <img 
-                      src={process.env.PUBLIC_URL + banner.image}
+                      src={banner.image.startsWith('http') ? banner.image : process.env.PUBLIC_URL + banner.image}
                       alt="Banner"
                       className="img-fluid w-100"
                       style={{
