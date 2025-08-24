@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, Suspense, lazy } from "react";
 import SEO from "../../components/seo";
 import LayoutOne from "../../layouts/LayoutOne";
 import HeroSliderTwentySeven from "../../wrappers/hero-slider/HeroSliderTwentySeven";
@@ -26,6 +26,24 @@ import {
   LoadingSpinner
 } from "../../components/AnimatedSection";
 
+// Add CSS for loading animations
+const loadingStyles = `
+  @keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  
+  .product-skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 8px;
+  }
+`;
+
+// Lazy load product sections to improve initial page load
+const LazyProductSection = lazy(() => import("../../wrappers/product/ShopProducts"));
+
 const HomeFurniture = () => {
   const [watchesProducts, setWatchesProducts] = useState([]);
   const [watchStrapsProducts, setWatchStrapsProducts] = useState([]);
@@ -34,12 +52,15 @@ const HomeFurniture = () => {
   const [perfumesProducts, setPerfumesProducts] = useState([]);
   const [mobileGadgetsProducts, setMobileGadgetsProducts] = useState([]);
   const [fashionProducts, setFashionProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // Changed to false to show content immediately
+  const [productsLoaded, setProductsLoaded] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
+        // Add a small delay to prioritize slider loading first
+        await new Promise(resolve => setTimeout(resolve, 200));
         const entries = await client.getEntries({ content_type: "product" });
         const items = entries.items.map((item) => {
           const fields = item.fields;
@@ -114,31 +135,84 @@ const HomeFurniture = () => {
         setPerfumesProducts(perfumes);
         setMobileGadgetsProducts(mobileGadgets);
         setFashionProducts(fashion);
+        setProductsLoaded(true);
       } catch (error) {
         console.error("Failed to fetch products from Contentful", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchProducts();
+    
+    // Delay product fetching to prioritize slider and main content
+    const timer = setTimeout(fetchProducts, 500);
+    return () => clearTimeout(timer);
   }, []);
 
-  if (loading) {
-    return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'
-      }}>
-        <LoadingSpinner size={80} color="#667eea" />
+  // Product section loading component
+  const ProductSectionLoader = ({ title, products, category, delay = 0 }) => (
+    <FadeInOnScroll direction="up" delay={delay}>
+      <div className="product-area">
+        <div className="container">
+          <SectionTitle titleText={title} positionClass="text-center" />
+          {loading ? (
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center', 
+              minHeight: '200px',
+              background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+              backgroundSize: '200% 100%',
+              animation: 'loading 1.5s infinite'
+            }}>
+              <LoadingSpinner size={40} color="#daaa58" />
+            </div>
+          ) : products.length > 0 ? (
+            <Suspense fallback={
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'center', 
+                alignItems: 'center', 
+                minHeight: '200px' 
+              }}>
+                <LoadingSpinner size={40} color="#daaa58" />
+              </div>
+            }>
+              <StaggeredGrid className="category-section" staggerDelay={0.2}>
+                <ShopProducts layout="grid four-column" products={products} />
+              </StaggeredGrid>
+            </Suspense>
+          ) : (
+            <div style={{ textAlign: 'center', padding: '40px' }}>
+              <p>No {title.toLowerCase()} found.</p>
+            </div>
+          )}
+          {/* View More Button */}
+          <div style={{ textAlign: 'center', marginTop: '30px' }}>
+            <button
+              onClick={() => window.location.href = `/${category}`}
+              style={{
+                color: '#daaa58',
+                border: '2px solid #daaa58',
+                padding: '12px 30px',
+                borderRadius: '25px',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                background: 'transparent'
+              }}
+            >
+              View More {title}
+            </button>
+          </div>
+        </div>
       </div>
-    );
-  }
+    </FadeInOnScroll>
+  );
 
   return (
     <Fragment>
+      <style>{loadingStyles}</style>
       <SEO
         title="IFI Lifestyle - Premium Watches, Perfumes & Fashion Accessories"
         titleTemplate="IFI Lifestyle | ifilifestyle.com"
@@ -157,14 +231,14 @@ const HomeFurniture = () => {
       />
       <LayoutOne headerTop="visible">
         {/* hero banner section */}
-        <AnimatedSection delay={0.2}>
+        <AnimatedSection delay={0.1}>
           <div>
             <HeroBanner />
           </div>
         </AnimatedSection>
 
         {/* banner */}
-        <FadeInOnScroll direction="up" delay={0.3}>
+        <FadeInOnScroll direction="up" delay={0.2}>
           <BannerTwentySeven spaceTopClass="pt-80" spaceBottomClass="pb-60" />
         </FadeInOnScroll>
 
@@ -172,53 +246,22 @@ const HomeFurniture = () => {
         <ShippingReturnsFeatures />
 
         {/* latest products section */}
-        <FadeInOnScroll direction="up" delay={0.4}>
+        <FadeInOnScroll direction="up" delay={0.3}>
           <LatestProductSection spaceBottomClass="pb-100" />
         </FadeInOnScroll>
 
         {/* luxury watches section */}
-        <FadeInOnScroll direction="up" delay={0.5}>
-          <div className="product-area">
-            <div className="container">
-              <SectionTitle titleText="WATCHES" positionClass="text-center" />
-              {watchesProducts.length > 0 ? (
-                <StaggeredGrid className="category-section" staggerDelay={0.2}>
-                  <ShopProducts layout="grid four-column" products={watchesProducts} />
-                </StaggeredGrid>
-              ) : (
-                <div style={{ textAlign: 'center', padding: '40px' }}>
-                  <p>No watches found.</p>
-                </div>
-              )}
-              {/* View More Button */}
-              <div style={{ textAlign: 'center', marginTop: '30px' }}>
-                <button
-                  onClick={() => window.location.href = '/watches'}
-                  style={{
-                    color: '#daaa58',
-                    border: '2px solid #daaa58',
-                    padding: '12px 30px',
-                    borderRadius: '25px',
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    background: 'transparent'
-                  }}
-                >
-                  View More Watches
-                </button>
-              </div>
-            </div>
-          </div>
-        </FadeInOnScroll>
+        <ProductSectionLoader 
+          title="WATCHES" 
+          products={watchesProducts} 
+          category="watches" 
+          delay={0.4} 
+        />
 
-     <br/>
-
-        
+        <br/>
 
         {/* 2. WATCH STRAPS - Masonry Grid Style */}
-        <AnimatedSection className="watchstraps-masonry-section" delay={0.4}>
+        <AnimatedSection className="watchstraps-masonry-section" delay={0.5}>
           <div className="container">
             {/* Header Section */}
             <div className="watchstraps-header">
@@ -236,7 +279,19 @@ const HomeFurniture = () => {
           <div className="product-area">
             <div>
              
-              {watchStrapsProducts.length > 0 ? (
+              {loading ? (
+                <div style={{ 
+                  display: 'flex', 
+                  justifyContent: 'center', 
+                  alignItems: 'center', 
+                  minHeight: '200px',
+                  background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+                  backgroundSize: '200% 100%',
+                  animation: 'loading 1.5s infinite'
+                }}>
+                  <LoadingSpinner size={40} color="#daaa58" />
+                </div>
+              ) : watchStrapsProducts.length > 0 ? (
                 <StaggeredGrid className="category-section" staggerDelay={0.2}>
                   <ShopProducts layout="grid four-column" products={watchStrapsProducts} />
                 </StaggeredGrid>
@@ -273,31 +328,27 @@ const HomeFurniture = () => {
           
 
         {/* 3. EYEWEAR - Split Layout with Diagonal Design */}
-        <AnimatedSection className="eyewear-split-section" delay={0.5}>
+        <AnimatedSection className="eyewear-split-section" delay={0.6}>
           <div className="container">
             <div className="eyewear-content">
               <div className="row">
                 {/* Products Section - Left Side (8 columns) */}
                 <div className="col-lg-8">
-                  {/* <FadeInOnScroll direction="right" delay={0.7}>
-                    <HoverCard className="eyewear-products-section">
-                      <AnimatedText className="h3" type="h3" delay={0.9} style={{ color: '#2c3e50', marginBottom: '20px', textAlign: 'center' }}>
-                        Featured Eyewear
-                      </AnimatedText>
-                      {eyewearProducts.length > 0 ? (
-                        <StaggeredGrid className="category-section" staggerDelay={0.2}>
-                          <ShopProducts layout="grid three-column" products={eyewearProducts} />
-                        </StaggeredGrid>
-                      ) : (
-                        <div style={{ color: '#2c3e50', textAlign: 'center', padding: '40px' }}>
-                          <p>No eyewear found.</p>
-                        </div>
-                      )}
-                    </HoverCard>
-                  </FadeInOnScroll> */}
                    <div>
              <FadeInOnScroll direction="right" delay={0.7}>
-              {eyewearProducts.length > 0 ? (
+              {loading ? (
+                <div style={{ 
+                  display: 'flex', 
+                  justifyContent: 'center', 
+                  alignItems: 'center', 
+                  minHeight: '200px',
+                  background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+                  backgroundSize: '200% 100%',
+                  animation: 'loading 1.5s infinite'
+                }}>
+                  <LoadingSpinner size={40} color="#daaa58" />
+                </div>
+              ) : eyewearProducts.length > 0 ? (
                 <StaggeredGrid className="category-section" staggerDelay={0.2}>
                   <ShopProducts layout="grid three-column" products={eyewearProducts} />
                 </StaggeredGrid>
@@ -345,44 +396,17 @@ const HomeFurniture = () => {
         </AnimatedSection>
 
         {/* 4. ACCESSORIES - Card Grid with Floating Elements */}
-        <FadeInOnScroll direction="up" delay={0.6}>
-          <div className="product-area">
-            <div className="container">
-              <SectionTitle titleText="Featured Accessories" positionClass="text-center" />
-              {accessoriesProducts.length > 0 ? (
-                <StaggeredGrid className="category-section" staggerDelay={0.2}>
-                  <ShopProducts layout="grid four-column" products={accessoriesProducts} />
-                </StaggeredGrid>
-              ) : (
-                <div style={{ textAlign: 'center', padding: '40px' }}>
-                  <p>No accessories found.</p>
-                </div>
-              )}
-              {/* View More Button */}
-              <div style={{ textAlign: 'center', marginTop: '30px' }}>
-                <button
-                  onClick={() => window.location.href = '/rings-accessories'}
-                  style={{
-                    color: '#daaa58',
-                    border: '2px solid #daaa58',
-                    padding: '12px 30px',
-                    borderRadius: '25px',
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    background: 'transparent'
-                  }}
-                >
-                  View More Accessories
-                </button>
-              </div>
-            </div>
-          </div>
-        </FadeInOnScroll>
-<br/>
+        <ProductSectionLoader 
+          title="Featured Accessories" 
+          products={accessoriesProducts} 
+          category="rings-accessories" 
+          delay={0.7} 
+        />
+
+        <br/>
+
         {/* 5. PERFUMES - Elegant Minimalist Design */}
-        <AnimatedSection className="perfumes-elegant-section" delay={0.7}>
+        <AnimatedSection className="perfumes-elegant-section" delay={0.8}>
           <div className="container">
             {/* Elegant Banner */}
             
@@ -396,20 +420,22 @@ const HomeFurniture = () => {
 
             {/* Products Grid */}
             
-              {/* {perfumesProducts.length > 0 ? (
-                <StaggeredGrid className="category-section" staggerDelay={0.2}>
-                  <ShopProducts layout="grid three-column" products={perfumesProducts} />
-                </StaggeredGrid>
-              ) : (
-                <div style={{ textAlign: 'center', padding: '40px' }}>
-                  <p style={{ color: '#2c3e50' }}>No perfumes found.</p>
-                </div>
-              )} */}
-
               <div className="product-area">
             <div >
              
-              {perfumesProducts.length > 0 ? (
+              {loading ? (
+                <div style={{ 
+                  display: 'flex', 
+                  justifyContent: 'center', 
+                  alignItems: 'center', 
+                  minHeight: '200px',
+                  background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+                  backgroundSize: '200% 100%',
+                  animation: 'loading 1.5s infinite'
+                }}>
+                  <LoadingSpinner size={40} color="#daaa58" />
+                </div>
+              ) : perfumesProducts.length > 0 ? (
                 <StaggeredGrid className="category-section" staggerDelay={0.2}>
                   <ShopProducts layout="grid four-column" products={perfumesProducts} />
                 </StaggeredGrid>
@@ -446,7 +472,7 @@ const HomeFurniture = () => {
         </AnimatedSection>
 
         {/* 6. MOBILE GADGETS - Tech-Inspired Grid */}
-        <AnimatedSection className="mobilegadgets-tech-section" delay={0.8}>
+        <AnimatedSection className="mobilegadgets-tech-section" delay={0.9}>
           <div className="container">
             <div className="mobilegadgets-content">
               {/* Header */}
@@ -464,7 +490,19 @@ const HomeFurniture = () => {
 
               {/* Products Grid */}
              
-                {mobileGadgetsProducts.length > 0 ? (
+                {loading ? (
+                  <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'center', 
+                    alignItems: 'center', 
+                    minHeight: '200px',
+                    background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+                    backgroundSize: '200% 100%',
+                    animation: 'loading 1.5s infinite'
+                  }}>
+                    <LoadingSpinner size={40} color="#daaa58" />
+                  </div>
+                ) : mobileGadgetsProducts.length > 0 ? (
                   <StaggeredGrid className="category-section" staggerDelay={0.15}>
                     <ShopProducts layout="grid four-column" products={mobileGadgetsProducts} />
                   </StaggeredGrid>
@@ -499,7 +537,7 @@ const HomeFurniture = () => {
         </AnimatedSection>
 
         {/* 7. FASHION - Magazine Style Layout */}
-        <AnimatedSection className="fashion-magazine-section" delay={0.9}>
+        <AnimatedSection className="fashion-magazine-section" delay={1.0}>
           <div className="container">
             <div className="fashion-content">
               <div className="row">
@@ -540,7 +578,19 @@ const HomeFurniture = () => {
                       <AnimatedText className="h3" type="h3" delay={1.5} style={{ color: '#2c3e50', marginBottom: '20px', textAlign: 'center' }}>
                         Featured Fashion
                       </AnimatedText>
-                      {fashionProducts.length > 0 ? (
+                      {loading ? (
+                        <div style={{ 
+                          display: 'flex', 
+                          justifyContent: 'center', 
+                          alignItems: 'center', 
+                          minHeight: '200px',
+                          background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+                          backgroundSize: '200% 100%',
+                          animation: 'loading 1.5s infinite'
+                        }}>
+                          <LoadingSpinner size={40} color="#daaa58" />
+                        </div>
+                      ) : fashionProducts.length > 0 ? (
                         <StaggeredGrid className="category-section" staggerDelay={0.2}>
                           <ShopProducts layout="grid three-column" products={fashionProducts} />
                         </StaggeredGrid>
