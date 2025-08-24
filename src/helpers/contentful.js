@@ -32,6 +32,30 @@ export const processContentfulProduct = (item) => {
     giftBoxPrice: parseFloat(fields.giftBoxPrice) || 0,
     shortDescription: fields.shortDescription || "",
     fullDescription: processRichText(fields.fullDescription),
+    video: (() => {
+      const videoField = fields.video;
+      
+      if (!videoField) return null;
+      
+      // If it's a string, return it directly
+      if (typeof videoField === 'string') {
+        return videoField.trim();
+      }
+      
+      // If it's an object, try to extract URL
+      if (typeof videoField === 'object') {
+        // Check for common Contentful asset fields
+        if (videoField.fields && videoField.fields.file) {
+          return videoField.fields.file.url;
+        }
+        // Check for direct URL properties
+        if (videoField.url) return videoField.url;
+        if (videoField.src) return videoField.src;
+        if (videoField.link) return videoField.link;
+      }
+      
+      return null;
+    })(), // Add video field
     category: fields.category || [],
     tag: fields.tag || [],
     images: fields.images?.map(img => img.fields.file.url) || [],

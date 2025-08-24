@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import Tab from "react-bootstrap/Tab";
 import Nav from "react-bootstrap/Nav";
+import ProductVideo from "../../components/product/ProductVideo";
 
 const ProductDescriptionTab = ({ spaceBottomClass, productFullDesc, product }) => {
   return (
@@ -56,6 +57,12 @@ const ProductDescriptionTab = ({ spaceBottomClass, productFullDesc, product }) =
                   ) : (
                     <p>No description available for this product.</p>
                   )}
+                  
+                  {/* Product Video Section */}
+                  <ProductVideo 
+                    videoUrl={product?.video} 
+                    spaceBottomClass="mt-30"
+                  />
                 </div>
               </Tab.Pane>
             </Tab.Content>

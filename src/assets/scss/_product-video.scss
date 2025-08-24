@@ -1,0 +1,117 @@
+/* Product Video Styles */
+.product-video-section {
+  margin: 40px 0;
+  padding: 30px 0;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 16px;
+}
+
+.product-video-wrapper {
+  position: relative;
+}
+
+.product-video-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  background: #000;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  // Style the ReactPlayer container
+  > div {
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+  }
+  
+  // Style the video player
+  iframe {
+    border-radius: 12px;
+  }
+  
+  // Style the light mode thumbnail
+  .react-player__preview {
+    border-radius: 12px;
+    background-size: cover;
+    background-position: center;
+    background-color: #f0f0f0;
+  }
+  
+  // Style the play button overlay
+  .react-player__play-icon {
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #fff;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: rgba(0, 0, 0, 0.9);
+      transform: scale(1.1);
+    }
+  }
+  
+
+  
+  // Fix for black background issue
+  .react-player__preview {
+    background-color: #f8f9fa !important;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      z-index: 1;
+    }
+  }
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .product-video-section {
+    margin: 20px 0;
+    padding: 20px 0;
+    border-radius: 12px;
+  }
+  
+  .product-video-container {
+    max-width: 100%;
+    border-radius: 8px;
+    
+    > div {
+      border-radius: 8px;
+    }
+    
+    iframe {
+      border-radius: 8px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .product-video-container {
+    border-radius: 6px;
+    
+    > div {
+      border-radius: 6px;
+    }
+    
+    iframe {
+      border-radius: 6px;
+    }
+  }
+}
