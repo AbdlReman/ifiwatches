@@ -6,8 +6,7 @@ import LanguageCurrencyChanger from "./sub-components/LanguageCurrencyChanger";
 const HeaderTop = ({ borderStyle }) => {
   const currency = useSelector((state) => state.currency);
   return (
-    <div className={clsx("header-top-wap", borderStyle === "fluid-border" && "border-bottom")} style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-      <LanguageCurrencyChanger currency={currency} />
+    <div>
       <div className="header-marquee">
         <div className="marquee-content">
           <span className="marquee-item">Call Us 03180977696</span>
@@ -44,12 +43,13 @@ const HeaderTop = ({ borderStyle }) => {
              overflow: hidden;
              white-space: nowrap;
              position: relative;
-            
+             background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 100%);
              padding: 8px 0;
-             width: 100%;
+             width: 100vw;
              margin: 0;
-             flex: 1;
              min-height: 20px;
+             left: 50%;
+             transform: translateX(-50%);
            }
           
                                            .marquee-content {
