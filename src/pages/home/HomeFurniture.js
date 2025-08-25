@@ -59,7 +59,7 @@ const HomeFurniture = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        // Add a small delay to prioritize slider loading first
+        // Reduced delay for faster product loading
         await new Promise(resolve => setTimeout(resolve, 200));
         const entries = await client.getEntries({ content_type: "product" });
         const items = entries.items.map((item) => {
@@ -143,7 +143,7 @@ const HomeFurniture = () => {
       }
     };
     
-    // Delay product fetching to prioritize slider and main content
+    // Reduced delay for faster product fetching
     const timer = setTimeout(fetchProducts, 500);
     return () => clearTimeout(timer);
   }, []);
@@ -230,48 +230,48 @@ const HomeFurniture = () => {
         robots="index, follow"
       />
       <LayoutOne headerTop="visible">
-        {/* hero banner section */}
+        {/* hero banner section - Instant load */}
         <AnimatedSection delay={0.1}>
           <div>
             <HeroBanner />
           </div>
         </AnimatedSection>
 
-        {/* banner */}
-        <FadeInOnScroll direction="up" delay={0.2}>
+        {/* banner - Instant load */}
+        <FadeInOnScroll direction="up" delay={0}>
           <BannerTwentySeven spaceTopClass="pt-80" spaceBottomClass="pb-60" />
         </FadeInOnScroll>
 
-        {/* Features Section */}
+        {/* Features Section - Instant load */}
         <ShippingReturnsFeatures />
 
-        {/* latest products section */}
-        <FadeInOnScroll direction="up" delay={0.3}>
+        {/* latest products section - Quick load */}
+        <FadeInOnScroll direction="up" delay={0.1}>
           <LatestProductSection spaceBottomClass="pb-100" />
         </FadeInOnScroll>
 
-        {/* luxury watches section */}
+        {/* luxury watches section - Quick load */}
         <ProductSectionLoader 
           title="WATCHES" 
           products={watchesProducts} 
           category="watches" 
-          delay={0.4} 
+          delay={0.2} 
         />
 
         <br/>
 
         {/* 2. WATCH STRAPS - Masonry Grid Style */}
-        <AnimatedSection className="watchstraps-masonry-section" delay={0.5}>
+        <AnimatedSection className="watchstraps-masonry-section" delay={0.3}>
           <div className="container">
             {/* Header Section */}
             <div className="watchstraps-header">
-              <GradientText className="watchstraps-header h2" type="h2" delay={0.6}>
+              <GradientText className="watchstraps-header h2" type="h2" delay={0.4}>
                 WATCH STRAPS
               </GradientText>
-              <AnimatedText className="watchstraps-header p" type="p" delay={0.8}>
+              <AnimatedText className="watchstraps-header p" type="p" delay={0.5}>
                 Premium Quality Straps for Every Watch
               </AnimatedText>
-              <AnimatedText className="watchstraps-header p" type="p" delay={1.0}>
+              <AnimatedText className="watchstraps-header p" type="p" delay={0.6}>
                 Discover our collection of high-quality watch straps. From leather to metal, find the perfect strap to complement your timepiece.
               </AnimatedText>
             </div>
@@ -328,14 +328,14 @@ const HomeFurniture = () => {
           
 
         {/* 3. EYEWEAR - Split Layout with Diagonal Design */}
-        <AnimatedSection className="eyewear-split-section" delay={0.6}>
+        <AnimatedSection className="eyewear-split-section" delay={0.4}>
           <div className="container">
             <div className="eyewear-content">
               <div className="row">
                 {/* Products Section - Left Side (8 columns) */}
                 <div className="col-lg-8">
                    <div>
-             <FadeInOnScroll direction="right" delay={0.7}>
+             <FadeInOnScroll direction="right" delay={0.5}>
               {loading ? (
                 <div style={{ 
                   display: 'flex', 
@@ -363,11 +363,11 @@ const HomeFurniture = () => {
 
                 {/* Info Panel - Right Side (4 columns) */}
                 <div className="col-lg-4">
-                  <FadeInOnScroll direction="left" delay={0.9}>
+                  <FadeInOnScroll direction="left" delay={0.6}>
                     <HoverCard className="eyewear-info-panel">
                       
                      
-                      <AnimatedText className="eyewear-info-panel p" type="p" delay={1.5}>
+                      <AnimatedText className="eyewear-info-panel p" type="p" delay={0.7}>
                        Our Premium Eyewear Collection.
                       </AnimatedText>
                     
@@ -400,19 +400,19 @@ const HomeFurniture = () => {
           title="Featured Accessories" 
           products={accessoriesProducts} 
           category="rings-accessories" 
-          delay={0.7} 
+          delay={0.5} 
         />
 
         <br/>
 
         {/* 5. PERFUMES - Elegant Minimalist Design */}
-        <AnimatedSection className="perfumes-elegant-section" delay={0.8}>
+        <AnimatedSection className="perfumes-elegant-section" delay={0.6}>
           <div className="container">
             {/* Elegant Banner */}
             
             <HoverCard >
             
-                <GradientText className="perfumes-banner h2" type="h2" delay={0.9}>
+                <GradientText className="perfumes-banner h2" type="h2" delay={0.7}>
                   AM PERFUMES
                 </GradientText>
              
@@ -472,18 +472,18 @@ const HomeFurniture = () => {
         </AnimatedSection>
 
         {/* 6. MOBILE GADGETS - Tech-Inspired Grid */}
-        <AnimatedSection className="mobilegadgets-tech-section" delay={0.9}>
+        <AnimatedSection className="mobilegadgets-tech-section" delay={0.7}>
           <div className="container">
             <div className="mobilegadgets-content">
               {/* Header */}
               <div className="mobilegadgets-header">
-                <GradientText className="mobilegadgets-header h2" type="h2" delay={1.0}>
+                <GradientText className="mobilegadgets-header h2" type="h2" delay={0.8}>
                   MOBILE GADGETS
                 </GradientText>
-                <AnimatedText className="mobilegadgets-header p" type="p" delay={1.2}>
+                <AnimatedText className="mobilegadgets-header p" type="p" delay={0.9}>
                   Cutting-Edge Technology & Innovation
                 </AnimatedText>
-                <AnimatedText className="mobilegadgets-header p" type="p" delay={1.4}>
+                <AnimatedText className="mobilegadgets-header p" type="p" delay={1.0}>
                   Explore our collection of mobile gadgets and accessories. From smartphones to smart accessories, stay connected with the latest technology.
                 </AnimatedText>
               </div>
@@ -537,17 +537,17 @@ const HomeFurniture = () => {
         </AnimatedSection>
 
         {/* 7. FASHION - Magazine Style Layout */}
-        <AnimatedSection className="fashion-magazine-section" delay={1.0}>
+        <AnimatedSection className="fashion-magazine-section" delay={0.8}>
           <div className="container">
             <div className="fashion-content">
               <div className="row">
                 {/* Info Panel - Left Side (4 columns) */}
                 <div className="col-lg-4">
-                  <FadeInOnScroll direction="right" delay={1.1}>
+                  <FadeInOnScroll direction="right" delay={0.9}>
                     <HoverCard className="fashion-info-panel">
                       
                      
-                      <AnimatedText className="fashion-info-panel p" type="p" delay={1.7}>
+                      <AnimatedText className="fashion-info-panel p" type="p" delay={1.0}>
                         Our fashion collection:
                       </AnimatedText>
                      
@@ -573,9 +573,9 @@ const HomeFurniture = () => {
 
                 {/* Products Section - Right Side (8 columns) */}
                 <div className="col-lg-8">
-                  <FadeInOnScroll direction="left" delay={1.3}>
+                  <FadeInOnScroll direction="left" delay={1.0}>
                     
-                      <AnimatedText className="h3" type="h3" delay={1.5} style={{ color: '#2c3e50', marginBottom: '20px', textAlign: 'center' }}>
+                      <AnimatedText className="h3" type="h3" delay={1.1} style={{ color: '#2c3e50', marginBottom: '20px', textAlign: 'center' }}>
                         Featured Fashion
                       </AnimatedText>
                       {loading ? (
@@ -613,7 +613,7 @@ const HomeFurniture = () => {
         </FadeInOnScroll> */}
 
         {/* countdown */}
-        <FadeInOnScroll direction="up" delay={1.1}>
+        <FadeInOnScroll direction="up" delay={0.9}>
           <RecurringCountDown
             spaceTopClass="pt-115"
             spaceBottomClass="pb-115"
@@ -623,7 +623,7 @@ const HomeFurniture = () => {
         </FadeInOnScroll>
 
         {/*  */}
-        <FadeInOnScroll direction="up" delay={1.2}>
+        <FadeInOnScroll direction="up" delay={1.0}>
           <FeatureIconTwo spaceTopClass="pt-100" spaceBottomClass="pb-60" />
         </FadeInOnScroll>
       </LayoutOne>
