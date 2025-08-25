@@ -138,7 +138,7 @@ const HeroBanner = () => {
             background-size: 200% 100%;
             animation: skeleton-loading 2s infinite;
             border-radius: 8px;
-            min-height: 400px;
+            min-height: 300px;
           }
           
           @keyframes skeleton-loading {
@@ -171,6 +171,36 @@ const HeroBanner = () => {
             .hero-banner-section .swiper-pagination-bullet {
               width: 5px !important;
               height: 5px !important;
+            }
+            
+            .hero-banner-section .single-slider img {
+              height: auto !important;
+              max-height: none !important;
+              object-fit: cover !important;
+            }
+            
+            .hero-banner-section .slider-skeleton {
+              min-height: 250px !important;
+            }
+          }
+          
+          @media (max-width: 768px) {
+            .hero-banner-section .single-slider img {
+              height: auto !important;
+              max-height: none !important;
+              object-fit: cover !important;
+            }
+            
+            .hero-banner-section .slider-skeleton {
+              min-height: 280px !important;
+            }
+          }
+          
+          @media (min-width: 769px) {
+            .hero-banner-section .single-slider img {
+              height: auto !important;
+              max-height: 600px !important;
+              object-fit: cover !important;
             }
           }
         `}
@@ -216,7 +246,6 @@ const HeroBanner = () => {
                         display: 'block',
                         margin: 0,
                         padding: 0,
-                        minHeight: '400px',
                         objectFit: 'cover'
                       }}
                       onLoad={(e) => {
