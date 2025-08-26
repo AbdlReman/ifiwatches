@@ -84,6 +84,11 @@ const HomeFurniture = () => {
   const [perfumesProducts, setPerfumesProducts] = useState([]);
   const [mobileGadgetsProducts, setMobileGadgetsProducts] = useState([]);
   const [fashionProducts, setFashionProducts] = useState([]);
+  const [videoAd, setVideoAd] = useState(null);
+  const [videoLoading, setVideoLoading] = useState(true);
+  const [videoPaused, setVideoPaused] = useState(false);
+  const [videoMuted, setVideoMuted] = useState(true);
+  const [showControls, setShowControls] = useState(false);
   const [loading, setLoading] = useState(false); // Changed to false to show content immediately
   const [productsLoaded, setProductsLoaded] = useState(false);
 
@@ -93,7 +98,27 @@ const HomeFurniture = () => {
         setLoading(true);
         // Reduced delay for faster product loading
         await new Promise(resolve => setTimeout(resolve, 200));
+        
+        // Fetch products
         const entries = await client.getEntries({ content_type: "product" });
+        
+        // Fetch video ad
+        try {
+          const videoEntries = await client.getEntries({ content_type: "videoAds" });
+          if (videoEntries.items.length > 0) {
+            const videoData = videoEntries.items[0].fields;
+            setVideoAd({
+              id: videoEntries.items[0].sys.id,
+              video: videoData.video,
+          
+              
+            });
+          }
+        } catch (videoError) {
+          console.log("No video ads found or error fetching video:", videoError);
+        } finally {
+          setVideoLoading(false);
+        }
         const items = entries.items.map((item) => {
           const fields = item.fields;
           return {
@@ -314,6 +339,180 @@ const HomeFurniture = () => {
           category="watches" 
           animationClass="fade-in"
         />
+
+        <br/>
+
+        {/* Video Advertisement Section */}
+        {(videoAd || videoLoading) && (
+          <div className="video-ad-section fade-in" style={{
+            width: '100%',
+            background: 'linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f8f9fa 100%)',
+            padding: '80px 0',
+            margin: '0',
+            borderTop: '1px solid #e8eaed',
+            borderBottom: '1px solid #e8eaed'
+          }}>
+            {videoLoading ? (
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: '400px',
+                background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+                backgroundSize: '200% 100%',
+                animation: 'loading 1.5s infinite'
+              }}>
+                <div className="loading-spinner"></div>
+              </div>
+            ) : videoAd ? (
+              <div style={{ width: '100%' }}>
+                <div style={{
+                  textAlign: 'center',
+                  marginBottom: '2rem',
+                  padding: '0 20px'
+                }}>
+                  <h3 style={{
+                    color: '#2c3e50',
+                    fontSize: 'clamp(1.8rem, 4vw, 2.5rem)',
+                    fontWeight: '800',
+                    marginBottom: '1rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '2px'
+                  }}>
+                    {videoAd.title}
+                  </h3>
+                  {videoAd.description && (
+                    <p style={{
+                      color: '#666',
+                      fontSize: 'clamp(1rem, 2.5vw, 1.2rem)',
+                      lineHeight: '1.6',
+                      maxWidth: '800px',
+                      margin: '0 auto'
+                    }}>
+                      {videoAd.description}
+                    </p>
+                  )}
+                </div>
+                <div 
+                  className="video-container"
+                  style={{
+                    position: 'relative',
+                    width: 'calc(100% - 40px)',
+                    height: '0',
+                    paddingBottom: 'calc(56.25% - 22.5px)', // 16:9 aspect ratio with margin adjustment
+                    background: '#000',
+                    overflow: 'hidden',
+                    borderRadius: '20px',
+                    margin: '0 20px',
+                    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseEnter={() => setShowControls(true)}
+                  onMouseLeave={() => setShowControls(false)}
+                >
+                  <video
+                    ref={(el) => {
+                      if (el) {
+                        el.muted = videoMuted;
+                      }
+                    }}
+                    autoPlay
+                    muted={videoMuted}
+                    loop
+                    playsInline
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      borderRadius: '20px'
+                    }}
+                    poster={videoAd.video?.fields?.file?.url ? `${videoAd.video.fields.file.url}?w=1200&h=675&fit=fill` : undefined}
+                  >
+                    <source src={videoAd.video?.fields?.file?.url} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                  
+                  {/* Video Controls Overlay */}
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '20px',
+                    right: '20px',
+                    display: 'flex',
+                    gap: '10px',
+                    opacity: showControls ? 1 : 0,
+                    transition: 'opacity 0.3s ease',
+                    zIndex: 10
+                  }}>
+                    {/* Play/Pause Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const video = e.target.closest('.video-container').querySelector('video');
+                        if (video.paused) {
+                          video.play();
+                          setVideoPaused(false);
+                        } else {
+                          video.pause();
+                          setVideoPaused(true);
+                        }
+                      }}
+                      style={{
+                        background: 'rgba(0, 0, 0, 0.8)',
+                        border: '2px solid rgba(255, 255, 255, 0.3)',
+                        borderRadius: '50%',
+                        width: '50px',
+                        height: '50px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        color: 'white',
+                        fontSize: '18px',
+                        backdropFilter: 'blur(10px)',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onMouseEnter={(e) => e.target.style.background = 'rgba(0, 0, 0, 0.9)'}
+                      onMouseLeave={(e) => e.target.style.background = 'rgba(0, 0, 0, 0.8)'}
+                    >
+                      {videoPaused ? '▶️' : '⏸️'}
+                    </button>
+                    
+                    {/* Mute/Unmute Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setVideoMuted(!videoMuted);
+                      }}
+                      style={{
+                        background: 'rgba(0, 0, 0, 0.8)',
+                        border: '2px solid rgba(255, 255, 255, 0.3)',
+                        borderRadius: '50%',
+                        width: '50px',
+                        height: '50px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        color: 'white',
+                        fontSize: '18px',
+                        backdropFilter: 'blur(10px)',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onMouseEnter={(e) => e.target.style.background = 'rgba(0, 0, 0, 0.9)'}
+                      onMouseLeave={(e) => e.target.style.background = 'rgba(0, 0, 0, 0.8)'}
+                    >
+                      {videoMuted ? '🔇' : '🔊'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        )}
 
         <br/>
 

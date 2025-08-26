@@ -15,7 +15,7 @@ const HeaderTop = ({ borderStyle }) => {
             <span className="marquee-item">
               Free delivery on order over{" "}
               <span className="highlight">
-                {"Rs "+ (20000 * currency.currencyRate).toFixed(2)}
+                {"Rs "+ (3000 * currency.currencyRate).toFixed(2)}
               </span>
             </span>
             <span className="marquee-separator">•</span>
@@ -24,7 +24,7 @@ const HeaderTop = ({ borderStyle }) => {
             <span className="marquee-item">
               Free delivery on order over{" "}
               <span className="highlight">
-                {"Rs "+ (20000 * currency.currencyRate).toFixed(2)}
+                {"Rs "+ (3000 * currency.currencyRate).toFixed(2)}
               </span>
             </span>
             <span className="marquee-separator">•</span>
@@ -33,7 +33,7 @@ const HeaderTop = ({ borderStyle }) => {
             <span className="marquee-item">
               Free delivery on order over{" "}
               <span className="highlight">
-                {"Rs "+ (20000 * currency.currencyRate).toFixed(2)}
+                {"Rs "+ (3000 * currency.currencyRate).toFixed(2)}
               </span>
             </span>
           </div>
