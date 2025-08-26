@@ -142,7 +142,7 @@ const HomeFurniture = () => {
 
         const eyewear = items.filter(product =>
           hasCategory(product, "eyewear")
-        ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
+        ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 3); // Latest 3 for Eyewear
 
         const accessories = items.filter(product =>
           hasCategory(product, "ringsaccessories")
@@ -180,7 +180,7 @@ const HomeFurniture = () => {
 
         const fashion = items.filter(product =>
           hasCategory(product, "fashion")
-        ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
+        ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 3); // Latest 3 for Fashion
 
         setWatchesProducts(watches);
         setWatchStrapsProducts(watchStraps);
@@ -652,14 +652,13 @@ const HomeFurniture = () => {
         </div> */}
 
         {/* countdown */}
-        <div className="fade-in">
+        {/* <div className="fade-in">
           <RecurringCountDown
             spaceTopClass="pt-115"
             spaceBottomClass="pb-115"
-            bgImg="/assets/img/bg/bg.png"
             cycleDays={10}
           />
-        </div>
+        </div> */}
 
         {/*  */}
         <div className="fade-in">

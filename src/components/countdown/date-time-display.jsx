@@ -2,9 +2,14 @@ import PropTypes from "prop-types";
 
 const DateTimeDisplay = ({ value, type }) => {
     return (
-        <span className="cdown">
-            {value} <p>{type}</p>
-        </span>
+        <div className="countdown-item">
+            <span className="countdown-value">
+                {value.toString().padStart(2, '0')}
+            </span>
+            <span className="countdown-label">
+                {type}
+            </span>
+        </div>
     );
 };
 

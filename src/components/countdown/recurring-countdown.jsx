@@ -8,12 +8,12 @@ const RecurringCountdownTimer = ({ className, cycleDays = 10 }) => {
 
     return (
         <div
-            className={clsx("timer timer-style", className)}
+            className={clsx("countdown-timer", className)}
         >
-            <DateTimeDisplay value={days} type="days" />
-            <DateTimeDisplay value={hours} type="hours" />
-            <DateTimeDisplay value={minutes} type="minutes" />
-            <DateTimeDisplay value={seconds} type="secs" />
+            <DateTimeDisplay value={days} type="Days" />
+            <DateTimeDisplay value={hours} type="Hours" />
+            <DateTimeDisplay value={minutes} type="Minutes" />
+            <DateTimeDisplay value={seconds} type="Seconds" />
         </div>
     );
 };
