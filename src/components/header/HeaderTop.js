@@ -69,7 +69,7 @@ const HeaderTop = ({ borderStyle }) => {
           
           .marquee-content {
             display: inline-block;
-            animation: marquee 15s linear infinite;
+            animation: marquee 25s linear infinite;
             white-space: nowrap;
             transform: translateX(0);
             opacity: 1;
@@ -122,7 +122,7 @@ const HeaderTop = ({ borderStyle }) => {
             }
             
             .marquee-content {
-              animation-duration: 12s;
+              animation-duration: 20s;
             }
           }
           
@@ -143,7 +143,7 @@ const HeaderTop = ({ borderStyle }) => {
             }
             
             .marquee-content {
-              animation-duration: 10s;
+              animation-duration: 18s;
             }
           }
           
@@ -164,7 +164,7 @@ const HeaderTop = ({ borderStyle }) => {
             }
             
             .marquee-content {
-              animation-duration: 8s;
+              animation-duration: 15s;
             }
           }
           
@@ -185,7 +185,7 @@ const HeaderTop = ({ borderStyle }) => {
             }
             
             .marquee-content {
-              animation-duration: 18s;
+              animation-duration: 30s;
             }
           }
           
@@ -206,7 +206,7 @@ const HeaderTop = ({ borderStyle }) => {
             }
             
             .marquee-content {
-              animation-duration: 6s;
+              animation-duration: 12s;
             }
           }
         `}
