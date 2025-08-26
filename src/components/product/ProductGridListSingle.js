@@ -123,7 +123,18 @@ const ProductGridListSingle = ({
           {(product.discount || product.new) && (
             <div className="product-img-badges">
               {product.discount && (
-                <span className="brand-color">-{product.discount}%</span>
+                <span 
+                  className="brand-color"
+                  style={{
+                    backgroundColor: '#ff3d2a',
+                    color: 'red',
+                    padding: '3px 6px',
+                    
+                   
+                  }}
+                >
+                  -{product.discount}%
+                </span>
               )}
               {product.new && <span className="purple">New</span>}
             </div>
