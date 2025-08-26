@@ -3,6 +3,7 @@
 
 export const categoryMapper = {
   // Watch categories
+  'watches': ['watches', 'watch'],
   'menwatches': ['menwatches', 'mens-watches', 'men\'s watches', 'menswatches'],
   'womenwatches': ['womenwatches', 'womens-watches', 'women\'s watches', 'womenswatches'],
   'unisexwatches': ['unisexwatches', 'unisex-watches', 'unisex watches'],
@@ -12,6 +13,7 @@ export const categoryMapper = {
   'sportswatches': ['sportswatches', 'sports-watches', 'sports watches'],
   
   // Watch strap categories
+  'watchstraps': ['watchstraps', 'watch-straps', 'watch straps'],
   'leatherstraps': ['leatherstraps', 'leather-straps', 'leather straps'],
   'metalstraps': ['metalstraps', 'metal-straps', 'metal straps'],
   'siliconestraps': ['siliconestraps', 'silicone-straps', 'silicone straps'],
@@ -19,14 +21,17 @@ export const categoryMapper = {
   'magneticstraps': ['magneticstraps', 'magnetic-straps', 'magnetic straps'],
   
   // Eyewear categories
+  'eyewear': ['eyewear', 'eye-wear', 'eye wear'],
   'sunglasses': ['sunglasses', 'sunglass'],
   'opticalframes': ['opticalframes', 'optical-frames', 'optical frames'],
   
   // Accessories categories
+  'ringsaccessories': ['ringsaccessories', 'rings-accessories', 'rings accessories'],
   'fashionrings': ['fashionrings', 'fashion-rings', 'fashion rings'],
   'chainsbracelets': ['chainsbracelets', 'chains-bracelets', 'chains & bracelets'],
   
   // Perfume categories
+  'perfumes': ['perfumes', 'perfume'],
   'mensperfumes': ['mensperfumes', 'mens-perfumes', 'men\'s perfumes'],
   'womensperfumes': ['womensperfumes', 'womens-perfumes', 'women\'s perfumes'],
   'unisexperfumes': ['unisexperfumes', 'unisex-perfumes', 'unisex perfumes'],
@@ -34,8 +39,10 @@ export const categoryMapper = {
   // Mobile categories
   'usedmobiles': ['usedmobiles', 'used-mobiles', 'used mobiles'],
   'mobileaccessories': ['mobileaccessories', 'mobile-accessories', 'mobile accessories'],
+  'mobilegadgets': ['mobilegadgets', 'mobile-gadgets', 'mobile gadgets'],
   
   // Fashion categories
+  'fashion': ['fashion', 'fashion-items', 'fashion items'],
   'tshirtbuttons': ['tshirtbuttons', 'tshirt-buttons', 'tshirt buttons', 'tshirt'],
   'pantjeansbuttons': ['pantjeansbuttons', 'pant-jeans-buttons', 'pant jeans buttons', 'pantjeans'],
   'shalwarkameezbuttons': ['shalwarkameezbuttons', 'shalwar-kameez-buttons', 'shalwar kameez buttons', 'shalwarkameez'],

@@ -14,23 +14,29 @@ import SectionTitle from "../../components/section-title/SectionTitle";
 import ShippingReturnsFeatures from "../../components/features/ShippingReturnsFeatures";
 import client from "../../data/contentful";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import { hasCategory } from "../../helpers/categoryMapper";
 import "../../assets/css/category-layouts.css";
-import {
-  AnimatedSection,
-  AnimatedText,
-  AnimatedButton,
-  GradientText,
-  FadeInOnScroll,
-  StaggeredGrid,
-  HoverCard,
-  LoadingSpinner
-} from "../../components/AnimatedSection";
 
-// Add CSS for loading animations
-const loadingStyles = `
+// Add CSS for loading animations and simple fade effects
+const simpleStyles = `
   @keyframes loading {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
   }
   
   .product-skeleton {
@@ -38,6 +44,32 @@ const loadingStyles = `
     background-size: 200% 100%;
     animation: loading 1.5s infinite;
     border-radius: 8px;
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+  
+  .slide-in-left {
+    animation: slideInLeft 0.6s ease-out;
+  }
+  
+  .slide-in-right {
+    animation: slideInRight 0.6s ease-out;
+  }
+  
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #daaa58;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 `;
 
@@ -101,31 +133,53 @@ const HomeFurniture = () => {
 
         // Filter products by category and sort by creation date (latest first)
         const watches = items.filter(product =>
-          product.category && product.category.includes("watches")
+          hasCategory(product, "watches")
         ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
 
         const watchStraps = items.filter(product =>
-          product.category && product.category.includes("watchstraps")
+          hasCategory(product, "watchstraps")
         ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
 
         const eyewear = items.filter(product =>
-          product.category && product.category.includes("eyewear")
+          hasCategory(product, "eyewear")
         ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
 
         const accessories = items.filter(product =>
-          product.category && product.category.includes("ringsaccessories")
+          hasCategory(product, "ringsaccessories")
         ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
 
         const perfumes = items.filter(product =>
-          product.category && product.category.includes("perfumes")
+          hasCategory(product, "perfumes")
         ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
 
         const mobileGadgets = items.filter(product =>
-          product.category && product.category.includes("mobilegadgets")
+          hasCategory(product, "mobilegadgets")
         ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
 
+        // Debug logging
+        console.log("Total products fetched:", items.length);
+        console.log("Mobile gadgets products found:", mobileGadgets.length);
+        console.log("Mobile gadgets products:", mobileGadgets);
+        
+        // Log all unique categories to help debug
+        const allCategories = items.reduce((acc, product) => {
+          if (product.category) {
+            if (Array.isArray(product.category)) {
+              product.category.forEach(cat => {
+                if (cat && typeof cat === 'string') {
+                  acc.add(cat.toLowerCase());
+                }
+              });
+            } else if (typeof product.category === 'string') {
+              acc.add(product.category.toLowerCase());
+            }
+          }
+          return acc;
+        }, new Set());
+        console.log("All unique categories in products:", Array.from(allCategories));
+
         const fashion = items.filter(product =>
-          product.category && product.category.includes("fashion")
+          hasCategory(product, "fashion")
         ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
 
         setWatchesProducts(watches);
@@ -148,10 +202,14 @@ const HomeFurniture = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Simple loading spinner component
+  const LoadingSpinner = () => (
+    <div className="loading-spinner"></div>
+  );
+
   // Product section loading component
-  const ProductSectionLoader = ({ title, products, category, delay = 0 }) => (
-    <FadeInOnScroll direction="up" delay={delay}>
-      <div className="product-area">
+  const ProductSectionLoader = ({ title, products, category, animationClass = "fade-in" }) => (
+    <div className={`product-area ${animationClass}`}>
         <div className="container">
           <SectionTitle titleText={title} positionClass="text-center" />
           {loading ? (
@@ -164,7 +222,7 @@ const HomeFurniture = () => {
               backgroundSize: '200% 100%',
               animation: 'loading 1.5s infinite'
             }}>
-              <LoadingSpinner size={40} color="#daaa58" />
+            <LoadingSpinner />
             </div>
           ) : products.length > 0 ? (
             <Suspense fallback={
@@ -174,12 +232,12 @@ const HomeFurniture = () => {
                 alignItems: 'center', 
                 minHeight: '200px' 
               }}>
-                <LoadingSpinner size={40} color="#daaa58" />
+              <LoadingSpinner />
               </div>
             }>
-              <StaggeredGrid className="category-section" staggerDelay={0.2}>
+            <div className="category-section">
                 <ShopProducts layout="grid four-column" products={products} />
-              </StaggeredGrid>
+            </div>
             </Suspense>
           ) : (
             <div style={{ textAlign: 'center', padding: '40px' }}>
@@ -207,12 +265,11 @@ const HomeFurniture = () => {
           </div>
         </div>
       </div>
-    </FadeInOnScroll>
   );
 
   return (
     <Fragment>
-      <style>{loadingStyles}</style>
+      <style>{simpleStyles}</style>
       <SEO
         title="IFI Lifestyle - Premium Watches, Perfumes & Fashion Accessories"
         titleTemplate="IFI Lifestyle | ifilifestyle.com"
@@ -231,51 +288,43 @@ const HomeFurniture = () => {
       />
       <LayoutOne headerTop="visible">
         {/* hero banner section - Instant load */}
-        <AnimatedSection delay={0.1}>
+        <div className="fade-in">
           <div>
             <HeroBanner />
           </div>
-        </AnimatedSection>
+        </div>
 
         {/* banner - Instant load */}
-        <FadeInOnScroll direction="up" delay={0}>
+        <div className="fade-in">
           <BannerTwentySeven spaceTopClass="pt-80" spaceBottomClass="pb-60" />
-        </FadeInOnScroll>
+        </div>
 
         {/* Features Section - Instant load */}
         <ShippingReturnsFeatures />
 
         {/* latest products section - Quick load */}
-        <FadeInOnScroll direction="up" delay={0.1}>
+        <div className="fade-in">
           <LatestProductSection spaceBottomClass="pb-100" />
-        </FadeInOnScroll>
+        </div>
 
         {/* luxury watches section - Quick load */}
         <ProductSectionLoader 
           title="WATCHES" 
           products={watchesProducts} 
           category="watches" 
-          delay={0.2} 
+          animationClass="fade-in"
         />
 
         <br/>
 
         {/* 2. WATCH STRAPS - Masonry Grid Style */}
-        <AnimatedSection className="watchstraps-masonry-section" delay={0.3}>
+        <div className="watchstraps-masonry-section fade-in">
           <div className="container">
             {/* Header Section */}
-            <div className="watchstraps-header">
-              <GradientText className="watchstraps-header h2" type="h2" delay={0.4}>
-                WATCH STRAPS
-              </GradientText>
-              <AnimatedText className="watchstraps-header p" type="p" delay={0.5}>
-                Premium Quality Straps for Every Watch
-              </AnimatedText>
-              <AnimatedText className="watchstraps-header p" type="p" delay={0.6}>
-                Discover our collection of high-quality watch straps. From leather to metal, find the perfect strap to complement your timepiece.
-              </AnimatedText>
-            </div>
+            <SectionTitle titleText=" WATCH STRAPS" positionClass="text-center" />
 
+            
+            
           <div className="product-area">
             <div>
              
@@ -289,12 +338,12 @@ const HomeFurniture = () => {
                   backgroundSize: '200% 100%',
                   animation: 'loading 1.5s infinite'
                 }}>
-                  <LoadingSpinner size={40} color="#daaa58" />
+                  <LoadingSpinner />
                 </div>
               ) : watchStrapsProducts.length > 0 ? (
-                <StaggeredGrid className="category-section" staggerDelay={0.2}>
+                <div className="category-section">
                   <ShopProducts layout="grid four-column" products={watchStrapsProducts} />
-                </StaggeredGrid>
+                </div>
               ) : (
                 <div style={{ textAlign: 'center', padding: '40px' }}>
                   <p>No watches Straps found.</p>
@@ -324,18 +373,18 @@ const HomeFurniture = () => {
         
             
           </div>
-        </AnimatedSection>
+        </div>
           
 
         {/* 3. EYEWEAR - Split Layout with Diagonal Design */}
-        <AnimatedSection className="eyewear-split-section" delay={0.4}>
+        <div className="eyewear-split-section fade-in">
           <div className="container">
             <div className="eyewear-content">
               <div className="row">
                 {/* Products Section - Left Side (8 columns) */}
                 <div className="col-lg-8">
                    <div>
-             <FadeInOnScroll direction="right" delay={0.5}>
+             <div className="slide-in-left">
               {loading ? (
                 <div style={{ 
                   display: 'flex', 
@@ -346,30 +395,30 @@ const HomeFurniture = () => {
                   backgroundSize: '200% 100%',
                   animation: 'loading 1.5s infinite'
                 }}>
-                  <LoadingSpinner size={40} color="#daaa58" />
+                  <LoadingSpinner />
                 </div>
               ) : eyewearProducts.length > 0 ? (
-                <StaggeredGrid className="category-section" staggerDelay={0.2}>
+                <div className="category-section">
                   <ShopProducts layout="grid three-column" products={eyewearProducts} />
-                </StaggeredGrid>
+                </div>
               ) : (
                 <div style={{ textAlign: 'center', padding: '40px' }}>
                   <p>No Eyewear found.</p>
                 </div>
               )}
-             </FadeInOnScroll>
+             </div>
             </div>
                 </div>
 
                 {/* Info Panel - Right Side (4 columns) */}
                 <div className="col-lg-4">
-                  <FadeInOnScroll direction="left" delay={0.6}>
-                    <HoverCard className="eyewear-info-panel">
+                  <div className="slide-in-right">
+                    <div className="eyewear-info-panel">
                       
                      
-                      <AnimatedText className="eyewear-info-panel p" type="p" delay={0.7}>
+                      <p className="eyewear-info-panel p">
                        Our Premium Eyewear Collection.
-                      </AnimatedText>
+                      </p>
                     
                       <button
                         onClick={() => window.location.href = '/eyewear'}
@@ -387,36 +436,36 @@ const HomeFurniture = () => {
                       >
                         Shop All Eyewear
                       </button>
-                    </HoverCard>
-                  </FadeInOnScroll>
+                    </div>
+                  </div>
+                </div>
                 </div>
               </div>
             </div>
           </div>
-        </AnimatedSection>
 
         {/* 4. ACCESSORIES - Card Grid with Floating Elements */}
         <ProductSectionLoader 
           title="Featured Accessories" 
           products={accessoriesProducts} 
           category="rings-accessories" 
-          delay={0.5} 
+          animationClass="fade-in"
         />
 
         <br/>
 
         {/* 5. PERFUMES - Elegant Minimalist Design */}
-        <AnimatedSection className="perfumes-elegant-section" delay={0.6}>
+        <div className="perfumes-elegant-section fade-in">
           <div className="container">
             {/* Elegant Banner */}
             
-            <HoverCard >
+            <div>
             
-                <GradientText className="perfumes-banner h2" type="h2" delay={0.7}>
+                <h2 className="perfumes-banner h2">
                   AM PERFUMES
-                </GradientText>
+                </h2>
              
-            </HoverCard>
+            </div>
 
             {/* Products Grid */}
             
@@ -433,12 +482,12 @@ const HomeFurniture = () => {
                   backgroundSize: '200% 100%',
                   animation: 'loading 1.5s infinite'
                 }}>
-                  <LoadingSpinner size={40} color="#daaa58" />
+                  <LoadingSpinner />
                 </div>
               ) : perfumesProducts.length > 0 ? (
-                <StaggeredGrid className="category-section" staggerDelay={0.2}>
+                <div className="category-section">
                   <ShopProducts layout="grid four-column" products={perfumesProducts} />
-                </StaggeredGrid>
+                </div>
               ) : (
                 <div style={{ textAlign: 'center', padding: '40px' }}>
                   <p>No Perfumes found.</p>
@@ -469,24 +518,14 @@ const HomeFurniture = () => {
               </button>
             </div>
           </div>
-        </AnimatedSection>
+        </div>
 
         {/* 6. MOBILE GADGETS - Tech-Inspired Grid */}
-        <AnimatedSection className="mobilegadgets-tech-section" delay={0.7}>
+        <div className="mobilegadgets-tech-section fade-in">
           <div className="container">
             <div className="mobilegadgets-content">
               {/* Header */}
-              <div className="mobilegadgets-header">
-                <GradientText className="mobilegadgets-header h2" type="h2" delay={0.8}>
-                  MOBILE GADGETS
-                </GradientText>
-                <AnimatedText className="mobilegadgets-header p" type="p" delay={0.9}>
-                  Cutting-Edge Technology & Innovation
-                </AnimatedText>
-                <AnimatedText className="mobilegadgets-header p" type="p" delay={1.0}>
-                  Explore our collection of mobile gadgets and accessories. From smartphones to smart accessories, stay connected with the latest technology.
-                </AnimatedText>
-              </div>
+              <SectionTitle titleText="Mobile Gadgets" positionClass="text-center" />
 
               {/* Products Grid */}
              
@@ -500,12 +539,12 @@ const HomeFurniture = () => {
                     backgroundSize: '200% 100%',
                     animation: 'loading 1.5s infinite'
                   }}>
-                    <LoadingSpinner size={40} color="#daaa58" />
+                    <LoadingSpinner />
                   </div>
                 ) : mobileGadgetsProducts.length > 0 ? (
-                  <StaggeredGrid className="category-section" staggerDelay={0.15}>
+                  <div className="category-section">
                     <ShopProducts layout="grid four-column" products={mobileGadgetsProducts} />
-                  </StaggeredGrid>
+                  </div>
                 ) : (
                   <div style={{ color: 'white', textAlign: 'center', padding: '40px' }}>
                     <p>No mobile gadgets found.</p>
@@ -534,22 +573,22 @@ const HomeFurniture = () => {
               </div>
             </div>
           </div>
-        </AnimatedSection>
+        </div>
 
         {/* 7. FASHION - Magazine Style Layout */}
-        <AnimatedSection className="fashion-magazine-section" delay={0.8}>
+        <div className="fashion-magazine-section fade-in">
           <div className="container">
             <div className="fashion-content">
               <div className="row">
                 {/* Info Panel - Left Side (4 columns) */}
                 <div className="col-lg-4">
-                  <FadeInOnScroll direction="right" delay={0.9}>
-                    <HoverCard className="fashion-info-panel">
+                  <div className="slide-in-right">
+                    <div className="fashion-info-panel">
                       
                      
-                      <AnimatedText className="fashion-info-panel p" type="p" delay={1.0}>
+                      <p className="fashion-info-panel p">
                         Our fashion collection:
-                      </AnimatedText>
+                      </p>
                      
                       <button
                         onClick={() => window.location.href = '/fashion'}
@@ -567,17 +606,17 @@ const HomeFurniture = () => {
                       >
                         Shop All Fashion
                       </button>
-                    </HoverCard>
-                  </FadeInOnScroll>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Products Section - Right Side (8 columns) */}
                 <div className="col-lg-8">
-                  <FadeInOnScroll direction="left" delay={1.0}>
+                  <div className="slide-in-left">
                     
-                      <AnimatedText className="h3" type="h3" delay={1.1} style={{ color: '#2c3e50', marginBottom: '20px', textAlign: 'center' }}>
+                      <h3 style={{ color: '#2c3e50', marginBottom: '20px', textAlign: 'center' }}>
                         Featured Fashion
-                      </AnimatedText>
+                      </h3>
                       {loading ? (
                         <div style={{ 
                           display: 'flex', 
@@ -588,44 +627,44 @@ const HomeFurniture = () => {
                           backgroundSize: '200% 100%',
                           animation: 'loading 1.5s infinite'
                         }}>
-                          <LoadingSpinner size={40} color="#daaa58" />
+                          <LoadingSpinner />
                         </div>
                       ) : fashionProducts.length > 0 ? (
-                        <StaggeredGrid className="category-section" staggerDelay={0.2}>
+                        <div className="category-section">
                           <ShopProducts layout="grid three-column" products={fashionProducts} />
-                        </StaggeredGrid>
+                        </div>
                       ) : (
                         <div style={{ color: '#2c3e50', textAlign: 'center', padding: '40px' }}>
                           <p>No fashion items found.</p>
                         </div>
                       )}
                   
-                  </FadeInOnScroll>
+                  </div>
+                </div>
                 </div>
               </div>
             </div>
           </div>
-        </AnimatedSection>
 
         {/* category showcase section */}
-        {/* <FadeInOnScroll direction="up" delay={1.0}>
+        {/* <div className="fade-in">
           <CategoryShowcase />
-        </FadeInOnScroll> */}
+        </div> */}
 
         {/* countdown */}
-        <FadeInOnScroll direction="up" delay={0.9}>
+        <div className="fade-in">
           <RecurringCountDown
             spaceTopClass="pt-115"
             spaceBottomClass="pb-115"
             bgImg="/assets/img/bg/bg.png"
             cycleDays={10}
           />
-        </FadeInOnScroll>
+        </div>
 
         {/*  */}
-        <FadeInOnScroll direction="up" delay={1.0}>
+        <div className="fade-in">
           <FeatureIconTwo spaceTopClass="pt-100" spaceBottomClass="pb-60" />
-        </FadeInOnScroll>
+        </div>
       </LayoutOne>
     </Fragment>
   );

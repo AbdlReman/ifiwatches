@@ -81,17 +81,90 @@ const HeroBanner = () => {
     },
     pagination: {
       clickable: true,
-    }
+    },
+    // Prevent scroll issues
+    allowTouchMove: false,
+    preventInteractionOnTransition: true
   };
 
   return (
     <div className="hero-banner-section" style={{ 
       width: '100%', 
       margin: 0, 
-      padding: 0
+      padding: 0,
+      overflow: 'hidden',
+      position: 'relative'
     }}>
       <style>
         {`
+          /* Reset all margins and paddings */
+          .hero-banner-section,
+          .hero-banner-section * {
+            box-sizing: border-box;
+          }
+          
+          .hero-banner-section .slider-area {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+          }
+          
+          .hero-banner-section .slider-active {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+          }
+          
+          .hero-banner-section .swiper {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+          }
+          
+          .hero-banner-section .swiper-wrapper {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+          
+          .hero-banner-section .swiper-slide {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+          }
+          
+          .hero-banner-section .single-slider {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+            position: relative !important;
+          }
+          
+          .hero-banner-section .single-slider a {
+            display: block !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+          }
+          
+          .hero-banner-section .single-slider img {
+            width: 100% !important;
+            height: auto !important;
+            display: block !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            object-fit: cover !important;
+            cursor: pointer !important;
+            transition: all 0.4s ease !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15) !important;
+          }
+          
           .hero-banner-section .swiper-pagination {
             position: absolute !important;
             bottom: 20px !important;
@@ -146,166 +219,140 @@ const HeroBanner = () => {
             100% { background-position: 200% 0; }
           }
           
-                     @media (max-width: 768px) {
-             .hero-banner-section .swiper-pagination {
-               bottom: 15px !important;
-               gap: 6px !important;
-             }
-             
-             .hero-banner-section .swiper-pagination-bullet {
-               width: 6px !important;
-               height: 6px !important;
-             }
-             
-             .hero-banner-section .swiper-pagination-bullet-active {
-               transform: scale(1.1) !important;
-             }
-             
-             .hero-banner-section .single-slider img {
-               height: auto !important;
-               min-height: 250px !important;
-               max-height: 400px !important;
-               object-fit: cover !important;
-               width: 100% !important;
-             }
-             
-             .hero-banner-section .single-slider {
-               min-height: 250px !important;
-               max-height: 400px !important;
-               overflow: hidden !important;
-             }
-             
-             .hero-banner-section .slider-skeleton {
-               min-height: 280px !important;
-             }
-           }
-           
-           @media (max-width: 480px) {
-             .hero-banner-section .swiper-pagination {
-               bottom: 10px !important;
-               gap: 4px !important;
-             }
-             
-             .hero-banner-section .swiper-pagination-bullet {
-               width: 5px !important;
-               height: 5px !important;
-             }
-             
-             .hero-banner-section .single-slider img {
-               height: auto !important;
-               min-height: 200px !important;
-               max-height: 350px !important;
-               object-fit: cover !important;
-               width: 100% !important;
-             }
-             
-             .hero-banner-section .single-slider {
-               min-height: 200px !important;
-               max-height: 350px !important;
-               overflow: hidden !important;
-             }
-             
-             .hero-banner-section .slider-skeleton {
-               min-height: 250px !important;
-             }
-           }
+          /* Prevent scroll bar */
+          .hero-banner-section {
+            overflow: hidden !important;
+          }
           
-                     @media (min-width: 769px) and (max-width: 1299px) {
-             .hero-banner-section .single-slider img {
-               height: auto !important;
-               max-height: 700px !important;
-               object-fit: cover !important;
-             }
-           }
-           
-           @media (min-width: 1300px) {
-             .hero-banner-section .single-slider img {
-               height: auto !important;
-               min-height: 500px !important;
-               max-height: 800px !important;
-               object-fit: cover !important;
-               width: 100% !important;
-             }
-             
-             .hero-banner-section .single-slider {
-               min-height: 500px !important;
-               max-height: 800px !important;
-               overflow: hidden !important;
-             }
-           }
-           
-           @media (min-width: 1600px) {
-             .hero-banner-section .single-slider img {
-               height: auto !important;
-               min-height: 550px !important;
-               max-height: 900px !important;
-             }
-             
-             .hero-banner-section .single-slider {
-               min-height: 550px !important;
-               max-height: 900px !important;
-             }
-           }
-           
-           @media (min-width: 1920px) {
-             .hero-banner-section .single-slider img {
-               height: auto !important;
-               min-height: 600px !important;
-               max-height: 1000px !important;
-             }
-             
-             .hero-banner-section .single-slider {
-               min-height: 600px !important;
-               max-height: 1000px !important;
-             }
-           }
+          /* Mobile responsive */
+          @media (max-width: 768px) {
+            .hero-banner-section .swiper-pagination {
+              bottom: 15px !important;
+              gap: 6px !important;
+            }
+            
+            .hero-banner-section .swiper-pagination-bullet {
+              width: 6px !important;
+              height: 6px !important;
+            }
+            
+            .hero-banner-section .swiper-pagination-bullet-active {
+              transform: scale(1.1) !important;
+            }
+            
+            .hero-banner-section .single-slider img {
+              height: auto !important;
+              min-height: 250px !important;
+              max-height: 400px !important;
+              object-fit: cover !important;
+              width: 100% !important;
+            }
+            
+            .hero-banner-section .single-slider {
+              min-height: 250px !important;
+              max-height: 400px !important;
+              overflow: hidden !important;
+            }
+            
+            .hero-banner-section .slider-skeleton {
+              min-height: 280px !important;
+            }
+          }
+          
+          @media (max-width: 480px) {
+            .hero-banner-section .swiper-pagination {
+              bottom: 10px !important;
+              gap: 4px !important;
+            }
+            
+            .hero-banner-section .swiper-pagination-bullet {
+              width: 5px !important;
+              height: 5px !important;
+            }
+            
+            .hero-banner-section .single-slider img {
+              height: auto !important;
+              min-height: 200px !important;
+              max-height: 350px !important;
+              object-fit: cover !important;
+              width: 100% !important;
+            }
+            
+            .hero-banner-section .single-slider {
+              min-height: 200px !important;
+              max-height: 350px !important;
+              overflow: hidden !important;
+            }
+            
+            .hero-banner-section .slider-skeleton {
+              min-height: 250px !important;
+            }
+          }
+          
+          @media (min-width: 769px) and (max-width: 1299px) {
+            .hero-banner-section .single-slider img {
+              height: auto !important;
+              max-height: 700px !important;
+              object-fit: cover !important;
+            }
+          }
+          
+          @media (min-width: 1300px) {
+            .hero-banner-section .single-slider img {
+              height: auto !important;
+              min-height: 500px !important;
+              max-height: 800px !important;
+              object-fit: cover !important;
+              width: 100% !important;
+            }
+            
+            .hero-banner-section .single-slider {
+              min-height: 500px !important;
+              max-height: 800px !important;
+              overflow: hidden !important;
+            }
+          }
+          
+          @media (min-width: 1600px) {
+            .hero-banner-section .single-slider img {
+              height: auto !important;
+              min-height: 550px !important;
+              max-height: 900px !important;
+            }
+            
+            .hero-banner-section .single-slider {
+              min-height: 550px !important;
+              max-height: 900px !important;
+            }
+          }
+          
+          @media (min-width: 1920px) {
+            .hero-banner-section .single-slider img {
+              height: auto !important;
+              min-height: 600px !important;
+              max-height: 1000px !important;
+            }
+            
+            .hero-banner-section .single-slider {
+              min-height: 600px !important;
+              max-height: 1000px !important;
+            }
+          }
         `}
       </style>
-      <div className="slider-area" style={{ 
-        width: '100%', 
-        margin: 0, 
-        padding: 0,
-        position: 'relative'
-      }}>
-        <div className="slider-active nav-style-1" style={{ 
-          width: '100%', 
-          margin: 0, 
-          padding: 0
-        }}>
-          <Swiper options={params} style={{ width: '100%' }}>
+      <div className="slider-area">
+        <div className="slider-active nav-style-1">
+          <Swiper options={params}>
             {bannerData.map((banner, key) => (
-              <SwiperSlide key={banner.id || key} style={{ width: '100%' }}>
-                <div className="single-slider" style={{ 
-                  width: '100%',
-                  margin: 0,
-                  padding: 0
-                }}>
+              <SwiperSlide key={banner.id || key}>
+                <div className="single-slider">
                   <Link 
-                    to={process.env.PUBLIC_URL + banner.link} 
-                    style={{ 
-                      display: 'block',
-                      width: '100%',
-                      margin: 0,
-                      padding: 0
-                    }}
+                    to={process.env.PUBLIC_URL + banner.link}
                   >
                     <img 
                       src={banner.image.startsWith('http') ? banner.image : process.env.PUBLIC_URL + banner.image}
                       alt="Banner"
                       className={`img-fluid w-100 ${isLoading && !hasContentfulData ? 'slider-loading' : ''}`}
-                                             style={{
-                         cursor: 'pointer',
-                         transition: 'all 0.4s ease',
-                         boxShadow: '0 15px 40px rgba(0, 0, 0, 0.15)',
-                         width: '100%',
-                         height: 'auto',
-                         minHeight: '200px',
-                         maxHeight: '1000px',
-                         display: 'block',
-                         margin: 0,
-                         padding: 0,
-                         objectFit: 'cover'
-                       }}
                       onLoad={(e) => {
                         // Remove loading class when image loads
                         e.target.classList.remove('slider-loading');
