@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { Fragment, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getProductCartQuantity } from "../../helpers/product";
+import { getProductCartQuantity, getQuantityDiscount, getQuantityDiscountedPrice } from "../../helpers/product";
 import Rating from "./sub-components/ProductRating";
 import { addToCart } from "../../store/slices/cart-slice";
 import { addToWishlist } from "../../store/slices/wishlist-slice";
@@ -58,6 +58,12 @@ const ProductDescriptionInfo = ({
     selectedProductSize
   );
 
+  // Calculate quantity discount
+  const quantityDiscount = getQuantityDiscount(quantityCount);
+  const basePrice = discountedPrice !== null ? discountedPrice : product.price;
+  const quantityDiscountedPrice = getQuantityDiscountedPrice(basePrice, quantityCount);
+  const finalQuantityDiscountedPrice = +(quantityDiscountedPrice * (currency?.currencyRate || 1)).toFixed(2);
+
   const handleAddToCart = () => {
     dispatch(addToCart({
       ...product,
@@ -111,6 +117,80 @@ const ProductDescriptionInfo = ({
       )}
       <div className="pro-details-list">
         <p>{product.shortDescription}</p>
+      </div>
+
+      {/* Quantity Discount Section */}
+      <div className="quantity-discount-section" style={{
+        border: '2px dashed #28a745',
+        borderRadius: '8px',
+        padding: '15px',
+        margin: '15px 0',
+        backgroundColor: '#f8fff9'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          <span style={{ fontSize: '16px', fontWeight: 'bold', color: '#28a745' }}>
+            🎉 Buy More Save More!
+          </span>
+        </div>
+        <div style={{ 
+          display: 'flex', 
+          gap: '20px', 
+          marginBottom: '10px',
+          flexWrap: 'wrap'
+        }}>
+                     <label style={{ 
+             display: 'flex', 
+             alignItems: 'center', 
+             cursor: 'pointer',
+             fontSize: '14px'
+           }}>
+             <input
+               type="radio"
+               name="quantity-discount"
+               checked={quantityCount === 2}
+               onChange={() => setQuantityCount(2)}
+               style={{ 
+                 marginRight: '6px',
+                 width: '14px',
+                 height: '14px',
+                 cursor: 'pointer'
+               }}
+             />
+             <span>Buy 2 - Get 5% OFF</span>
+           </label>
+           <label style={{ 
+             display: 'flex', 
+             alignItems: 'center',
+             cursor: 'pointer',
+             fontSize: '14px'
+           }}>
+             <input
+               type="radio"
+               name="quantity-discount"
+               checked={quantityCount === 3}
+               onChange={() => setQuantityCount(3)}
+               style={{ 
+                 marginRight: '6px',
+                 width: '14px',
+                 height: '14px',
+                 cursor: 'pointer'
+               }}
+             />
+             <span>Buy 3 - Get 10% OFF</span>
+           </label>
+        </div>
+        {quantityDiscount > 0 && (
+          <div style={{ 
+            fontSize: '14px', 
+            color: '#28a745', 
+            fontWeight: 'bold',
+            padding: '8px',
+            backgroundColor: '#e8f5e8',
+            borderRadius: '4px'
+          }}>
+            You save: Rs {((basePrice * quantityCount * (currency?.currencyRate || 1)) - (quantityDiscountedPrice * quantityCount * (currency?.currencyRate || 1))).toFixed(2)}
+          </div>
+        )}
       </div>
 
       {/* Gift box option (only if configured and > 0) */}

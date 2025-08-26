@@ -288,3 +288,22 @@ export const truncateTitle = (title, maxLength = 20) => {
   if (title.length <= maxLength) return title;
   return title.substring(0, maxLength) + "...";
 };
+
+// Calculate quantity-based discount
+export const getQuantityDiscount = (quantity) => {
+  if (quantity >= 3) {
+    return 10; // 10% off for 3 or more
+  } else if (quantity >= 2) {
+    return 5; // 5% off for 2
+  }
+  return 0; // No discount for 1
+};
+
+// Calculate final price with quantity discount
+export const getQuantityDiscountedPrice = (basePrice, quantity) => {
+  const discountPercent = getQuantityDiscount(quantity);
+  if (discountPercent === 0) {
+    return basePrice;
+  }
+  return basePrice * (1 - discountPercent / 100);
+};

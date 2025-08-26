@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SEO from "../../components/seo";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
-import { getDiscountPrice } from "../../helpers/product";
+import { getDiscountPrice, getQuantityDiscountedPrice } from "../../helpers/product";
 import { deleteFromCart, updateQuantity, deleteAllFromCart } from "../../store/slices/cart-slice";
 
 const Cart = () => {
@@ -44,6 +44,7 @@ const Cart = () => {
   };
 
   let cartTotalPrice = 0;
+  let quantityDiscountTotal = 0;
 
   return (
     <Fragment>
@@ -88,26 +89,35 @@ const Cart = () => {
                           item.price,
                           item.discount
                         );
+                        const basePrice = discountedPrice != null ? discountedPrice : item.price;
+                        const quantityDiscountedPrice = getQuantityDiscountedPrice(basePrice, item.quantity);
+                        
                         const finalProductPrice = (
                           item.price * currency.currencyRate
                         ).toFixed(2);
                         const finalDiscountedPrice = discountedPrice
                           ? (discountedPrice * currency.currencyRate).toFixed(2)
                           : null;
+                        const finalQuantityDiscountedPrice = (
+                          quantityDiscountedPrice * currency.currencyRate
+                        ).toFixed(2);
 
                         const giftBoxPerUnit =
                           item.includeGiftBox && item.giftBoxPrice > 0
                             ? (item.giftBoxPrice * currency.currencyRate).toFixed(2)
                             : 0;
 
-                        const baseUnitPrice = parseFloat(
-                          (discountedPrice ? finalDiscountedPrice : finalProductPrice)
-                        );
+                        const baseUnitPrice = parseFloat(finalQuantityDiscountedPrice);
                         const unitPriceWithGift = (baseUnitPrice + parseFloat(giftBoxPerUnit || 0)).toFixed(2);
 
                         const subtotal = (parseFloat(unitPriceWithGift) * item.quantity).toFixed(2);
 
                         cartTotalPrice += parseFloat(unitPriceWithGift) * item.quantity;
+                        
+                        // Calculate quantity discount savings
+                        const originalPrice = parseFloat(discountedPrice ? finalDiscountedPrice : finalProductPrice);
+                        const quantityDiscountSavings = (originalPrice * item.quantity) - (parseFloat(finalQuantityDiscountedPrice) * item.quantity);
+                        quantityDiscountTotal += quantityDiscountSavings;
 
                         return (
                           <tr key={key}>
@@ -138,20 +148,25 @@ const Cart = () => {
                                   <small>Size: {item.selectedProductSize}</small>
                                 </div>
                               )}
+                              {item.includeGiftBox && item.giftBoxPrice > 0 && (
+                                <div className="cart-item-variation">
+                                  <small>Gift box: + Rs {(item.giftBoxPrice * currency.currencyRate).toFixed(2)} per unit</small>
+                                </div>
+                              )}
                             </td>
                             <td className="product-price-cart">
                               {discountedPrice ? (
                                 <Fragment>
                                   <span className="amount old">
-                                    {"Rs " + (parseFloat(finalProductPrice) + parseFloat(giftBoxPerUnit || 0)).toFixed(2)}
+                                    {"Rs " + finalProductPrice}
                                   </span>
                                   <span className="amount">
-                                    {"Rs " + (parseFloat(finalDiscountedPrice) + parseFloat(giftBoxPerUnit || 0)).toFixed(2)}
+                                    {"Rs " + finalQuantityDiscountedPrice}
                                   </span>
                                 </Fragment>
                               ) : (
                                 <span className="amount">
-                                  {"Rs " + (parseFloat(finalProductPrice) + parseFloat(giftBoxPerUnit || 0)).toFixed(2)}
+                                  {"Rs " + finalQuantityDiscountedPrice}
                                 </span>
                               )}
                             </td>
@@ -229,6 +244,14 @@ const Cart = () => {
                       {"Rs " + cartTotalPrice.toFixed(2)}
                     </span>
                   </h5>
+                  {quantityDiscountTotal > 0 && (
+                    <h5 style={{ color: '#28a745' }}>
+                      Quantity Discount Savings:{" "}
+                      <span>
+                        {"Rs " + quantityDiscountTotal.toFixed(2)}
+                      </span>
+                    </h5>
+                  )}
                   <h4>
                     Grand Total:{" "}
                     <span>

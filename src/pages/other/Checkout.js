@@ -2,7 +2,7 @@ import { Fragment, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { getDiscountPrice } from "../../helpers/product";
+import { getDiscountPrice, getQuantityDiscountedPrice } from "../../helpers/product";
 import SEO from "../../components/seo";
 import LayoutOne from "../../layouts/LayoutOne";
 import emailjs from "emailjs-com";
@@ -55,9 +55,9 @@ const Checkout = () => {
   // Helpers to calculate prices (shared by UI and submission)
   const calculateItemFinalUnitPrice = (item) => {
     const discountedPrice = getDiscountPrice(item.price, item.discount);
-    const base =
-      (discountedPrice != null ? discountedPrice : item.price) *
-      currency.currencyRate;
+    const basePrice = discountedPrice != null ? discountedPrice : item.price;
+    const quantityDiscountedPrice = getQuantityDiscountedPrice(basePrice, item.quantity);
+    const base = quantityDiscountedPrice * currency.currencyRate;
     return parseFloat(Number(base).toFixed(2));
   };
 
@@ -140,14 +140,14 @@ const Checkout = () => {
     // Show loading toast
     const loadingToast = toast.loading("Processing your order...");
 
-    // Create order summary with proper discount calculation (include gift box)
+    // Create order summary with proper discount calculation (include gift box and quantity discount)
     let giftBoxTotalAccumulator = 0;
     const orderSummary = cartItems.map((item) => {
       const finalProductPrice = (item.price * currency.currencyRate).toFixed(2);
       const discountedPrice = getDiscountPrice(item.price, item.discount);
-      const finalDiscountedPrice = discountedPrice 
-        ? (discountedPrice * currency.currencyRate).toFixed(2)
-        : finalProductPrice;
+      const basePrice = discountedPrice != null ? discountedPrice : item.price;
+      const quantityDiscountedPrice = getQuantityDiscountedPrice(basePrice, item.quantity);
+      const finalDiscountedPrice = (quantityDiscountedPrice * currency.currencyRate).toFixed(2);
       
       const giftBoxPerUnit =
         item.includeGiftBox && item.giftBoxPrice > 0

@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { toast } from 'react-toastify';
+import { getQuantityDiscount, getQuantityDiscountedPrice } from "../../helpers/product";
 const { createSlice } = require("@reduxjs/toolkit");
 
 const cartSlice = createSlice({
@@ -12,12 +13,17 @@ const cartSlice = createSlice({
       const product = action.payload;
       const suppressToast = action.payload?.suppressToast || false;
       
+      // Calculate quantity discount
+      const quantity = product.quantity ? product.quantity : 1;
+      const quantityDiscount = getQuantityDiscount(quantity);
+      
       if (!product.variation) {
         const cartItem = state.cartItems.find((item) => item.id === product.id);
         if (!cartItem) {
           state.cartItems.push({
             ...product,
-            quantity: product.quantity ? product.quantity : 1,
+            quantity: quantity,
+            quantityDiscount: quantityDiscount,
             cartItemId: uuidv4(),
           });
           if (!suppressToast) {
@@ -26,11 +32,13 @@ const cartSlice = createSlice({
         } else {
           state.cartItems = state.cartItems.map((item) => {
             if (item.cartItemId === cartItem.cartItemId) {
+              const newQuantity = product.quantity
+                ? item.quantity + product.quantity
+                : item.quantity + 1;
               return {
                 ...item,
-                quantity: product.quantity
-                  ? item.quantity + product.quantity
-                  : item.quantity + 1,
+                quantity: newQuantity,
+                quantityDiscount: getQuantityDiscount(newQuantity),
               };
             }
             return item;
@@ -52,7 +60,8 @@ const cartSlice = createSlice({
         if (!cartItem) {
           state.cartItems.push({
             ...product,
-            quantity: product.quantity ? product.quantity : 1,
+            quantity: quantity,
+            quantityDiscount: quantityDiscount,
             cartItemId: uuidv4(),
           });
           if (!suppressToast) {
@@ -67,7 +76,8 @@ const cartSlice = createSlice({
             ...state.cartItems,
             {
               ...product,
-              quantity: product.quantity ? product.quantity : 1,
+              quantity: quantity,
+              quantityDiscount: quantityDiscount,
               cartItemId: uuidv4(),
             },
           ];
@@ -77,11 +87,13 @@ const cartSlice = createSlice({
         } else {
           state.cartItems = state.cartItems.map((item) => {
             if (item.cartItemId === cartItem.cartItemId) {
+              const newQuantity = product.quantity
+                ? item.quantity + product.quantity
+                : item.quantity + 1;
               return {
                 ...item,
-                quantity: product.quantity
-                  ? item.quantity + product.quantity
-                  : item.quantity + 1,
+                quantity: newQuantity,
+                quantityDiscount: getQuantityDiscount(newQuantity),
                 selectedProductColor: product.selectedProductColor,
                 selectedProductSize: product.selectedProductSize,
               };
@@ -124,7 +136,11 @@ const cartSlice = createSlice({
       } else {
         state.cartItems = state.cartItems.map((item) =>
           item.cartItemId === cartItemId
-            ? { ...item, quantity: quantity }
+            ? { 
+                ...item, 
+                quantity: quantity,
+                quantityDiscount: getQuantityDiscount(quantity)
+              }
             : item
         );
         toast.success("Quantity updated successfully!");
