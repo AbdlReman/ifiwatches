@@ -126,8 +126,8 @@ const ProductGridListSingle = ({
                 <span 
                   className="brand-color"
                   style={{
-                    backgroundColor: '#ff3d2a',
-                    color: 'red',
+                    backgroundColor: 'red',
+                    color: '#ffffff',
                     padding: '3px 6px',
                     
                    
