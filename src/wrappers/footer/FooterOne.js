@@ -93,7 +93,7 @@ const FooterOne = ({
                 <ul>
                   <li>
                     <i className="fa fa-phone"></i>{" "}
-                    <a href="tel://03180977696">03180977696</a>
+                    <a href="tel://+923285315636">+923285315636</a>
                   </li>
                  
                  
