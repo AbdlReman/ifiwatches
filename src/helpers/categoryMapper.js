@@ -50,7 +50,10 @@ export const categoryMapper = {
   // Additional mappings for exact matches
   'tshirt': ['tshirt', 'tshirtbuttons'],
   'pantjeans': ['pantjeans', 'pantjeansbuttons'],
-  'shalwarkameez': ['shalwarkameez', 'shalwarkameezbuttons']
+  'shalwarkameez': ['shalwarkameez', 'shalwarkameezbuttons'],
+  
+  // AA category
+  'aa': ['aa', 'AA']
 };
 
 // Function to check if a product has a specific category

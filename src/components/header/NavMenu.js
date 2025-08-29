@@ -175,24 +175,29 @@ const NavMenu = ({ menuWhiteClass, sidebarMenu }) => {
                 </ul>
               </li>
               
-              {/* Fashion */}
-              <li className="menu-item-has-children">
-                <Link to={process.env.PUBLIC_URL + "/fashion"}>
-                  Fashion
-                  <i className="fa fa-angle-right" />
-                </Link>
-                <ul className="sub-menu">
-                  <li>
-                    <Link to={process.env.PUBLIC_URL + "/fashion/tshirt"}>T-Shirt</Link>
-                  </li>
-                  <li>
-                    <Link to={process.env.PUBLIC_URL + "/fashion/pant-jeans"}>Pant/Jeans</Link>
-                  </li>
-                  <li>
-                    <Link to={process.env.PUBLIC_URL + "/fashion/shalwar-kameez"}>Shalwar Kameez Fabric</Link>
-                  </li>
-                </ul>
-              </li>
+                             {/* Fashion */}
+               <li className="menu-item-has-children">
+                 <Link to={process.env.PUBLIC_URL + "/fashion"}>
+                   Fashion
+                   <i className="fa fa-angle-right" />
+                 </Link>
+                 <ul className="sub-menu">
+                   <li>
+                     <Link to={process.env.PUBLIC_URL + "/fashion/tshirt"}>T-Shirt</Link>
+                   </li>
+                   <li>
+                     <Link to={process.env.PUBLIC_URL + "/fashion/pant-jeans"}>Pant/Jeans</Link>
+                   </li>
+                   <li>
+                     <Link to={process.env.PUBLIC_URL + "/fashion/shalwar-kameez"}>Shalwar Kameez Fabric</Link>
+                   </li>
+                 </ul>
+               </li>
+               
+               {/* AA */}
+               <li>
+                 <Link to={process.env.PUBLIC_URL + "/aa"}>AA●</Link>
+               </li>
             </ul>
           </li>
 

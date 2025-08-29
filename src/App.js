@@ -60,6 +60,9 @@ const TshirtPage = lazy(() => import("./pages/category/TshirtButtonsPage"));
 const PantJeansPage = lazy(() => import("./pages/category/PantJeansButtonsPage"));
 const ShalwarKameezPage = lazy(() => import("./pages/category/ShalwarKameezButtonsPage"));
 
+// category pages - AA category
+const AaPage = lazy(() => import("./pages/category/AaPage"));
+
 // blog pages
 const BlogStandard = lazy(() => import("./pages/blog/BlogStandard"));
 const BlogNoSidebar = lazy(() => import("./pages/blog/BlogNoSidebar"));
@@ -258,6 +261,12 @@ const App = () => {
             <Route
               path={process.env.PUBLIC_URL + "/fashion/shalwar-kameez"}
               element={<ShalwarKameezPage />}
+            />
+
+            {/* Category pages - AA category */}
+            <Route
+              path={process.env.PUBLIC_URL + "/aa"}
+              element={<AaPage />}
             />
 
             {/* Blog pages */}
