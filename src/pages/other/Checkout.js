@@ -845,7 +845,7 @@ const Checkout = () => {
                                     <strong>Account 2:</strong> 03329779996
                                   </p>
                                   <p>
-                                    <strong>Account Holder:</strong> Moiz Paracha
+                                    <strong>Account Holder:</strong> Ahmed Abdul Malik Paracha
                                   </p>
                                 </div>
                               )}
