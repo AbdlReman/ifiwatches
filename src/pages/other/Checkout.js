@@ -116,7 +116,6 @@ const Checkout = () => {
       "streetAddress",
       "city",
       "phone",
-      "email",
     ];
     const missingFields = requiredFields.filter((field) => !formData[field]);
 
@@ -484,11 +483,11 @@ const Checkout = () => {
                 <div className="row">
                   <div className="col-lg-7">
                     <div className="billing-info-wrap">
-                      <h3>Billing Details | Billing ki Tafseel</h3>
+                                             <h3>Billing Details</h3>
                       <div className="row">
                         <div className="col-lg-6 col-md-6">
                           <div className="billing-info mb-20">
-                            <label>First Name (Pehla Naam) *</label>
+                                                         <label>First Name *</label>
                             <input
                               type="text"
                               name="firstName"
@@ -499,7 +498,7 @@ const Checkout = () => {
                         </div>
                         <div className="col-lg-6 col-md-6">
                           <div className="billing-info mb-20">
-                            <label>Last Name (Aakhri Naam) *</label>
+                                                         <label>Last Name *</label>
                             <input
                               type="text"
                               name="lastName"
@@ -508,33 +507,55 @@ const Checkout = () => {
                             />
                           </div>
                         </div>
+                                                 <div className="col-lg-12">
+                           <div className="billing-info mb-20">
+                             <label>WhatsApp Number</label>
+                             <input
+                               type="text"
+                               name="whatsappNumber"
+                               value={formData.whatsappNumber}
+                               onChange={handleChange}
+                             />
+                           </div>
+                         </div>
+                         <div className="col-lg-6 col-md-6">
+                           <div className="billing-info mb-20">
+                             <label>Phone *</label>
+                             <input
+                               type="text"
+                               name="phone"
+                               value={formData.phone}
+                               onChange={handleChange}
+                             />
+                           </div>
+                         </div>
+                         <div className="col-lg-6 col-md-6">
+                           <div className="billing-info mb-20">
+                             <label>Email Address</label>
+                             <input
+                               type="text"
+                               name="email"
+                               value={formData.email}
+                               onChange={handleChange}
+                             />
+                           </div>
+                         </div>
+                         <div className="col-lg-12">
+                           <div className="billing-select mb-20">
+                             <label>Country *</label>
+                             <select
+                               name="country"
+                               value={formData.country}
+                               onChange={handleChange}
+                             >
+                               <option value="">Select a country</option>
+                               <option value="Pakistan">Pakistan (Pakistan)</option>
+                             </select>
+                           </div>
+                         </div>
                         <div className="col-lg-12">
                           <div className="billing-info mb-20">
-                            <label>WhatsApp Number (WhatsApp Number)</label>
-                            <input
-                              type="text"
-                              name="whatsappNumber"
-                              value={formData.whatsappNumber}
-                              onChange={handleChange}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-lg-12">
-                          <div className="billing-select mb-20">
-                            <label>Country (Mulk) *</label>
-                            <select
-                              name="country"
-                              value={formData.country}
-                              onChange={handleChange}
-                            >
-                              <option value="">Select a country</option>
-                              <option value="Pakistan">Pakistan (Pakistan)</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="col-lg-12">
-                          <div className="billing-info mb-20">
-                            <label>Delivery Address (Delivery ka Pata)</label>
+                                                         <label>Delivery Address</label>
                             <input
                               className="billing-address"
                               placeholder="House number and street name"
@@ -554,7 +575,7 @@ const Checkout = () => {
                         </div>
                         <div className="col-lg-12">
                           <div className="billing-info mb-20">
-                            <label>City (Shehar) *</label>
+                                                         <label>City *</label>
                             <input
                               type="text"
                               name="city"
@@ -565,7 +586,7 @@ const Checkout = () => {
                         </div>
                         <div className="col-lg-6 col-md-6">
                           <div className="billing-info mb-20">
-                            <label>State/Province (Sooba)</label>
+                                                         <label>State/Province</label>
                             <input
                               type="text"
                               name="state"
@@ -574,45 +595,23 @@ const Checkout = () => {
                             />
                           </div>
                         </div>
-                        <div className="col-lg-6 col-md-6">
-                          <div className="billing-info mb-20">
-                            <label>Postal Code (Postal Code)</label>
-                            <input
-                              type="text"
-                              name="postcode"
-                              value={formData.postcode}
-                              onChange={handleChange}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-lg-6 col-md-6">
-                          <div className="billing-info mb-20">
-                            <label>Phone (Phone Number) *</label>
-                            <input
-                              type="text"
-                              name="phone"
-                              value={formData.phone}
-                              onChange={handleChange}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-lg-6 col-md-6">
-                          <div className="billing-info mb-20">
-                            <label>Email Address (Email) *</label>
-                            <input
-                              type="text"
-                              name="email"
-                              value={formData.email}
-                              onChange={handleChange}
-                            />
-                          </div>
-                        </div>
+                                                 <div className="col-lg-6 col-md-6">
+                           <div className="billing-info mb-20">
+                             <label>Postal Code</label>
+                             <input
+                               type="text"
+                               name="postcode"
+                               value={formData.postcode}
+                               onChange={handleChange}
+                             />
+                           </div>
+                         </div>
                       </div>
 
                       <div className="additional-info-wrap">
-                        <h4>Additional Information (Izafi Maloomat)</h4>
+                                                 <h4>Additional Information</h4>
                         <div className="additional-info">
-                          <label>Order Notes (Order se Mutaliq Notes)</label>
+                                                     <label>Order Notes</label>
                           <textarea
                             placeholder="Notes about your order, e.g. special notes for delivery."
                             name="orderNotes"
@@ -626,12 +625,12 @@ const Checkout = () => {
 
                   <div className="col-lg-5">
                     <div className="your-order-area">
-                      <h3>Your Order | Apka Order</h3>
+                                             <h3>Your Order</h3>
                       <div className="your-order-wrap gray-bg-4">
                         <div className="your-order-product-info">
                           <div className="your-order-top">
                             <ul>
-                              <li>Product (Product)</li>
+                                                             <li>Product</li>
                               <li>Total</li>
                             </ul>
                           </div>
