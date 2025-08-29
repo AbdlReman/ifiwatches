@@ -30,9 +30,9 @@ const ChildCategoryButtons = ({ parentCategory }) => {
       { name: "Chains & Bracelets", slug: "chains-bracelets", icon: "📿" }
     ],
     perfumes: [
-      { name: "Men's Fragrances", slug: "mens", icon: "🧴" },
-      { name: "Women's Fragrances", slug: "womens", icon: "🧴" },
-      { name: "Unisex Scents", slug: "unisex", icon: "🧴" }
+      { name: "Men's Fragrances", slug: "mens", icon: "" },
+      { name: "Women's Fragrances", slug: "womens", icon: "" },
+      { name: "Unisex Scents", slug: "unisex", icon: "" }
     ],
     "mobile-gadgets": [
       { name: "Trusted Used Mobiles", slug: "used-mobiles", icon: "📱" },

@@ -8,6 +8,8 @@ import ShopTopbar from "../../wrappers/product/ShopTopbar";
 import ShopProducts from "../../wrappers/product/ShopProducts";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import ChildCategoryButtons from "../../components/category/ChildCategoryButtons";
+import { AnimatedSection } from "../../components/AnimatedSection";
+import { Link } from "react-router-dom";
 
 const PerfumesPage = () => {
   const [products, setProducts] = useState([]);
@@ -119,12 +121,35 @@ const PerfumesPage = () => {
         description="Shop premium perfumes at IFILifestyle. Quality fragrances for every occasion and personality." 
       />
       <LayoutOne headerTop="visible">
-        <Breadcrumb
-          pages={[
-            { label: "Home", path: process.env.PUBLIC_URL + "/" },
-            { label: "Perfumes", path: process.env.PUBLIC_URL + "/perfumes" },
-          ]}
-        />
+             <AnimatedSection delay={0.2}>
+           <div>
+                       <div className="hero-banner-section" style={{ width: '100%', overflow: 'hidden' }}>
+                <Link to={process.env.PUBLIC_URL + "/perfumes"}>
+         <img 
+           src={process.env.PUBLIC_URL + "/assets/img/banner/perfumes.PNG"}
+           alt="Shop Now"
+           className="img-fluid"
+           style={{
+             cursor: 'pointer',
+             transition: 'all 0.4s ease',
+             boxShadow: '0 15px 40px rgba(0, 0, 0, 0.15)',
+             width: '100%',
+             height: 'auto',
+             display: 'block'
+           }}
+           onMouseOver={(e) => {
+             e.target.style.transform = "scale(1.02)";
+             e.target.style.boxShadow = "0 25px 60px rgba(0, 0, 0, 0.25)";
+           }}
+           onMouseOut={(e) => {
+             e.target.style.transform = "scale(1)";
+             e.target.style.boxShadow = "0 15px 40px rgba(0, 0, 0, 0.15)";
+           }}
+         />
+       </Link>
+      </div>
+           </div>
+         </AnimatedSection>
         <div className="shop-area pt-95 pb-100">
           <div className="container">
             <ChildCategoryButtons parentCategory="perfumes" />
