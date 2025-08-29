@@ -55,42 +55,48 @@ const ProductGridListSingle = ({
          display: 'flex',
          flexDirection: 'column'
        }}
-             onMouseEnter={(e) => {
-         e.currentTarget.style.transform = 'translateY(-5px)';
-         e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
-         // Only apply hover image effect if there are multiple images
-         if (displayImages.length > 1) {
-           const hoverImg = e.currentTarget.querySelector('.hover-img');
-           if (hoverImg) {
-             hoverImg.style.opacity = '1';
-           }
-         }
-       }}
-       onMouseLeave={(e) => {
-         e.currentTarget.style.transform = 'translateY(0)';
-         e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)';
-         // Only apply hover image effect if there are multiple images
-         if (displayImages.length > 1) {
-           const hoverImg = e.currentTarget.querySelector('.hover-img');
-           if (hoverImg) {
-             hoverImg.style.opacity = '0';
-           }
-         }
-       }}>
+                     onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'translateY(-5px)';
+          e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
+          // Only apply hover image effect if there are multiple images
+          if (displayImages.length > 1) {
+            const hoverImg = e.currentTarget.querySelector('.hover-img');
+            const defaultImg = e.currentTarget.querySelector('.default-img');
+            if (hoverImg && defaultImg) {
+              hoverImg.style.opacity = '1';
+              hoverImg.style.transform = 'scale(1.0)';
+              defaultImg.style.opacity = '0';
+            }
+          }
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'translateY(0)';
+          e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)';
+          // Only apply hover image effect if there are multiple images
+          if (displayImages.length > 1) {
+            const hoverImg = e.currentTarget.querySelector('.hover-img');
+            const defaultImg = e.currentTarget.querySelector('.default-img');
+            if (hoverImg && defaultImg) {
+              hoverImg.style.opacity = '0';
+              hoverImg.style.transform = 'scale(0.95)';
+              defaultImg.style.opacity = '1';
+            }
+          }
+        }}>
         <div className="product-img" style={{ position: 'relative' }}>
           <Link to={process.env.PUBLIC_URL + "/product/" + product.slug}>
-            <img
-              className="default-img responsive-product-image"
-              src={mainImage}
-              alt={product.name}
-              style={{
-                width: '100%',
-                height: '200px',
-                objectFit: 'cover',
-                transition: 'transform 0.3s ease',
-                margin: 0,
-                padding: 0
-              }}
+                          <img
+                className="default-img responsive-product-image"
+                src={mainImage}
+                alt={product.name}
+                             style={{
+                 width: '100%',
+                 height: '200px',
+                 objectFit: 'cover',
+                 transition: 'opacity 0.8s ease, transform 0.8s ease', // Enhanced transition with scale
+                 margin: 0,
+                 padding: 0
+               }}
               onError={(e) => {
                 e.target.src = '/assets/img/product/default-product.jpg';
               }}
@@ -101,18 +107,19 @@ const ProductGridListSingle = ({
                 className="hover-img responsive-product-image"
                 src={hoverImage}
                 alt={product.name}
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '200px',
-                  objectFit: 'cover',
-                  opacity: 0,
-                  transition: 'opacity 0.3s ease',
-                  margin: 0,
-                  padding: 0
-                }}
+                               style={{
+                 position: 'absolute',
+                 top: 0,
+                 left: 0,
+                 width: '100%',
+                 height: '200px',
+                 objectFit: 'cover',
+                 opacity: 0,
+                 transition: 'opacity 0.8s ease, transform 0.8s ease', // Enhanced transition with scale
+                 margin: 0,
+                 padding: 0,
+                 transform: 'scale(0.95)'
+               }}
                 onError={(e) => {
                   e.target.src = '/assets/img/product/default-product.jpg';
                 }}
