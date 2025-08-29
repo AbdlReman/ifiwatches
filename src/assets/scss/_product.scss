@@ -1059,7 +1059,7 @@
           &.selected {
             background-color: $theme-color;
             border-color: $theme-color;
-            
+
             .color-text {
               color: #fff;
             }
@@ -1898,7 +1898,13 @@
       }
 
       &.brand-color {
-        color: $theme-color;
+        background-color: #ff3d2a;
+        color: #fff;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 5px 12px;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(255, 61, 42, 0.3);
       }
 
       &.red {

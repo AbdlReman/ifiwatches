@@ -92,7 +92,14 @@ const ProductDescriptionInfo = ({
   };
 
   return (
-    <div className="product-details-content ml-70">
+    <div className="product-details-content ml-70" style={{
+      minHeight: '600px',
+      padding: '20px 0',
+      '@media (min-width: 992px)': {
+        minHeight: '650px',
+        padding: '30px 0'
+      }
+    }}>
       <h2>{product.name}</h2>
                   <div className="product-details-price">
               {discountedPrice !== null ? (
@@ -115,6 +122,7 @@ const ProductDescriptionInfo = ({
       ) : (
         ""
       )}
+      <hr style={{ margin: '20px 0', border: '1px solid #e5e5e5' }} />
       <div className="pro-details-list">
         <p>{product.shortDescription}</p>
       </div>
@@ -123,26 +131,30 @@ const ProductDescriptionInfo = ({
       <div className="quantity-discount-section" style={{
         border: '2px dashed #28a745',
         borderRadius: '8px',
-        padding: '15px',
-        margin: '15px 0',
-        backgroundColor: '#f8fff9'
+        padding: '20px',
+        margin: '25px 0',
+        backgroundColor: '#f8fff9',
+        minHeight: '120px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-          <span style={{ fontSize: '16px', fontWeight: 'bold', color: '#28a745' }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '15px' }}>
+          <span style={{ fontSize: '18px', fontWeight: 'bold', color: '#28a745' }}>
             🎉 Buy More Save More!
           </span>
         </div>
         <div style={{ 
           display: 'flex', 
-          gap: '20px', 
-          marginBottom: '10px',
+          gap: '25px', 
+          marginBottom: '15px',
           flexWrap: 'wrap'
         }}>
                      <label style={{ 
              display: 'flex', 
              alignItems: 'center', 
              cursor: 'pointer',
-             fontSize: '14px'
+             fontSize: '15px'
            }}>
              <input
                type="radio"
@@ -150,9 +162,9 @@ const ProductDescriptionInfo = ({
                checked={quantityCount === 2}
                onChange={() => setQuantityCount(2)}
                style={{ 
-                 marginRight: '6px',
-                 width: '14px',
-                 height: '14px',
+                 marginRight: '8px',
+                 width: '16px',
+                 height: '16px',
                  cursor: 'pointer'
                }}
              />
@@ -162,7 +174,7 @@ const ProductDescriptionInfo = ({
              display: 'flex', 
              alignItems: 'center',
              cursor: 'pointer',
-             fontSize: '14px'
+             fontSize: '15px'
            }}>
              <input
                type="radio"
@@ -170,9 +182,9 @@ const ProductDescriptionInfo = ({
                checked={quantityCount === 3}
                onChange={() => setQuantityCount(3)}
                style={{ 
-                 marginRight: '6px',
-                 width: '14px',
-                 height: '14px',
+                 marginRight: '8px',
+                 width: '16px',
+                 height: '16px',
                  cursor: 'pointer'
                }}
              />
@@ -181,21 +193,24 @@ const ProductDescriptionInfo = ({
         </div>
         {quantityDiscount > 0 && (
           <div style={{ 
-            fontSize: '14px', 
+            fontSize: '15px', 
             color: '#28a745', 
             fontWeight: 'bold',
-            padding: '8px',
+            padding: '10px',
             backgroundColor: '#e8f5e8',
-            borderRadius: '4px'
+            borderRadius: '4px',
+            marginTop: 'auto'
           }}>
             You save: Rs {((basePrice * quantityCount * (currency?.currencyRate || 1)) - (quantityDiscountedPrice * quantityCount * (currency?.currencyRate || 1))).toFixed(2)}
           </div>
         )}
       </div>
 
+      <hr style={{ margin: '20px 0', border: '1px solid #e5e5e5' }} />
+
       {/* Gift box option (only if configured and > 0) */}
       {showGiftBoxOption && (
-        <div className="pro-details-giftbox" style={{ marginTop: 10 }}>
+        <div className="pro-details-giftbox" style={{ marginTop: 15, marginBottom: 15 }}>
           <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
             <input
               type="checkbox"
