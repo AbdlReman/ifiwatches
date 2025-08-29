@@ -100,6 +100,17 @@ const ProductDescriptionInfo = ({
         padding: '30px 0'
       }
     }}>
+      {/* Conditional line for perfumes category */}
+      {product.category && product.category.includes("perfumes") && (
+        <div style={{
+          fontSize: '20px',
+          color: '#666',
+          marginBottom: '18px',
+          fontWeight: '400'
+        }}>
+          Inspired by Hugo perfume
+        </div>
+      )}
       <h2>{product.name}</h2>
                   <div className="product-details-price">
               {discountedPrice !== null ? (
