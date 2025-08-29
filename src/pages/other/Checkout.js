@@ -827,10 +827,16 @@ const Checkout = () => {
                               {formData.paymentMethod === "jazzcash" && (
                                 <div className="payment-details">
                                   <p>
-                                    <strong>Account:</strong> 03448935702
+                                    <strong>Account 1:</strong> 03448935702
                                   </p>
                                   <p>
                                     <strong>Account Holder:</strong> Ibrar Ullah
+                                  </p>
+                                  <p>
+                                    <strong>Account 2:</strong> 03329779996
+                                  </p>
+                                  <p>
+                                    <strong>Account Holder:</strong> Ahmed Abdul Malik Paracha
                                   </p>
                                 </div>
                               )}
