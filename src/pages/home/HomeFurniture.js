@@ -82,6 +82,7 @@ const HomeFurniture = () => {
   const [eyewearProducts, setEyewearProducts] = useState([]);
   const [accessoriesProducts, setAccessoriesProducts] = useState([]);
   const [perfumesProducts, setPerfumesProducts] = useState([]);
+  const [aaProducts, setAaProducts] = useState([]);
   const [mobileGadgetsProducts, setMobileGadgetsProducts] = useState([]);
   const [fashionProducts, setFashionProducts] = useState([]);
   const [videoAd, setVideoAd] = useState(null);
@@ -199,6 +200,10 @@ const HomeFurniture = () => {
           hasCategory(product, "perfumes")
         ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
 
+        const aa = items.filter(product =>
+          hasCategory(product, "aa")
+        ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
+
         const mobileGadgets = items.filter(product =>
           hasCategory(product, "mobilegadgets")
         ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4); // Latest 4
@@ -234,6 +239,7 @@ const HomeFurniture = () => {
         setEyewearProducts(eyewear);
         setAccessoriesProducts(accessories);
         setPerfumesProducts(perfumes);
+        setAaProducts(aa);
         setMobileGadgetsProducts(mobileGadgets);
         setFashionProducts(fashion);
         setProductsLoaded(true);
@@ -744,6 +750,16 @@ const HomeFurniture = () => {
           </div>
         </div>
 
+        {/* AA section - Similar to WATCHES */}
+        <ProductSectionLoader 
+          title="AA." 
+          products={aaProducts} 
+          category="aa" 
+          animationClass="fade-in"
+        />
+
+        <br/>
+
         {/* 6. MOBILE GADGETS - Tech-Inspired Grid */}
         <div className="mobilegadgets-tech-section fade-in">
           <div className="container">
@@ -868,10 +884,10 @@ const HomeFurniture = () => {
                   
                   </div>
                 </div>
-                </div>
               </div>
             </div>
           </div>
+        </div>
 
         {/* category showcase section */}
         {/* <div className="fade-in">
