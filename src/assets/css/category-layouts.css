@@ -875,6 +875,10 @@
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 
+.category-section .product-grid.two-column {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
 .category-section .product-grid.six-column {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
@@ -2090,4 +2094,26 @@ img[src*="default-product"],
 .product-card:hover .default-img,
 .product-area:hover .default-img {
   transition: opacity 0.7s ease !important;
+}
+
+/* Additional mobile-specific rules for two-column layout */
+@media (max-width: 768px) {
+  .category-section .product-grid.two-column {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 15px !important;
+  }
+
+  .eyewear-products-section .product-grid.two-column,
+  .fashion-products-section .product-grid.two-column {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 15px !important;
+  }
+
+  /* Ensure product cards in two-column layout are properly sized */
+  .category-section .product-grid.two-column .product-wrap,
+  .eyewear-products-section .product-grid.two-column .product-wrap,
+  .fashion-products-section .product-grid.two-column .product-wrap {
+    width: 100% !important;
+    max-width: none !important;
+  }
 }

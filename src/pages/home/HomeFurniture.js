@@ -91,6 +91,28 @@ const HomeFurniture = () => {
   const [showControls, setShowControls] = useState(false);
   const [loading, setLoading] = useState(false); // Changed to false to show content immediately
   const [productsLoaded, setProductsLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Custom hook for detecting screen size
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Check on mount
+    checkScreenSize();
+
+    // Add event listener for resize
+    window.addEventListener('resize', checkScreenSize);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  // Get products based on screen size
+  const getDisplayProducts = (products, desktopCount = 3, mobileCount = 2) => {
+    return isMobile ? products.slice(0, mobileCount) : products.slice(0, desktopCount);
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -598,7 +620,10 @@ const HomeFurniture = () => {
                 </div>
               ) : eyewearProducts.length > 0 ? (
                 <div className="category-section">
-                  <ShopProducts layout="grid three-column" products={eyewearProducts} />
+                  <ShopProducts 
+                    layout={isMobile ? "grid two-column" : "grid three-column"} 
+                    products={getDisplayProducts(eyewearProducts, 3, 2)} 
+                  />
                 </div>
               ) : (
                 <div style={{ textAlign: 'center', padding: '40px' }}>
@@ -610,7 +635,7 @@ const HomeFurniture = () => {
                 </div>
 
                 {/* Info Panel - Right Side (4 columns) */}
-                <div className="col-lg-4">
+                <div className="col-lg-4 mt-5">
                   <div className="slide-in-right">
                     <div className="eyewear-info-panel">
                       
@@ -811,7 +836,7 @@ const HomeFurniture = () => {
 
                 {/* Products Section - Right Side (8 columns) */}
                 <div className="col-lg-8">
-                  <div className="slide-in-left">
+                  <div className="slide-in-left mt-2">
                     
                       <h3 style={{ color: '#2c3e50', marginBottom: '20px', textAlign: 'center' }}>
                         Featured Fashion
@@ -830,7 +855,10 @@ const HomeFurniture = () => {
                         </div>
                       ) : fashionProducts.length > 0 ? (
                         <div className="category-section">
-                          <ShopProducts layout="grid three-column" products={fashionProducts} />
+                          <ShopProducts 
+                            layout={isMobile ? "grid two-column" : "grid three-column"} 
+                            products={getDisplayProducts(fashionProducts, 3, 2)} 
+                          />
                         </div>
                       ) : (
                         <div style={{ color: '#2c3e50', textAlign: 'center', padding: '40px' }}>
