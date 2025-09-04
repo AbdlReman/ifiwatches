@@ -3,31 +3,13 @@ import { Link } from "react-router-dom";
 import { EffectFade } from 'swiper';
 import Swiper, { SwiperSlide } from "../swiper";
 
-// Fallback banner data - will show immediately while Contentful data loads
-const fallbackBannerData = [
-  {
-    id: 1,
-    image: "/assets/img/banner/hero.png",
-    link: "/shop"
-  },
-  {
-    id: 2,
-    image: "/assets/img/banner/hero.png", 
-    link: "/watches"
-  },
-  {
-    id: 3,
-    image: "/assets/img/banner/hero.png",
-    link: "/perfumes"
-  }
-];
-
 const HeroBanner = () => {
-  const [bannerData, setBannerData] = useState(fallbackBannerData); // Start with fallback data
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasContentfulData, setHasContentfulData] = useState(false);
+  const [bannerData, setBannerData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [imagesLoaded, setImagesLoaded] = useState(0);
+  const [totalImages, setTotalImages] = useState(0);
 
-  // Fetch slider data from Contentful in background
+  // Fetch slider data from Contentful
   useEffect(() => {
     const fetchSliderData = async () => {
       try {
@@ -43,27 +25,38 @@ const HeroBanner = () => {
         });
 
         if (response.items && response.items.length > 0) {
-          const processedData = response.items.map((item, index) => ({
+          const processedData = response.items.map((item) => ({
             id: item.sys.id,
-            image: item.fields.image?.fields?.file?.url || fallbackBannerData[index % fallbackBannerData.length].image,
-            link: item.fields.link || fallbackBannerData[index % fallbackBannerData.length].link
+            image: item.fields.image?.fields?.file?.url || '',
+            link: item.fields.link || '/shop'
           }));
 
           setBannerData(processedData);
-          setHasContentfulData(true);
+          setTotalImages(processedData.length);
+        } else {
+          // If no Contentful data, show empty state
+          setBannerData([]);
+          setTotalImages(0);
         }
       } catch (error) {
         console.error('Error fetching slider data:', error);
-        // Keep fallback data if Contentful fails
+        setBannerData([]);
+        setTotalImages(0);
       } finally {
         setIsLoading(false);
       }
     };
 
-    // Delay the fetch slightly to prioritize initial render
-    const timer = setTimeout(fetchSliderData, 100);
-    return () => clearTimeout(timer);
+    fetchSliderData();
   }, []);
+
+  // Handle image load completion
+  const handleImageLoad = () => {
+    setImagesLoaded(prev => prev + 1);
+  };
+
+  // Check if all images are loaded
+  const allImagesLoaded = imagesLoaded >= totalImages && totalImages > 0;
 
   // Slider configuration
   const params = {
@@ -86,6 +79,131 @@ const HeroBanner = () => {
     allowTouchMove: false,
     preventInteractionOnTransition: true
   };
+
+  // Skeleton loader component
+  const SkeletonLoader = () => (
+    <div className="slider-skeleton-container">
+      <div className="slider-skeleton">
+        <div className="skeleton-content">
+          <div className="skeleton-image"></div>
+          <div className="skeleton-text">
+            <div className="skeleton-line"></div>
+            <div className="skeleton-line short"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Show skeleton while loading or if no data
+  if (isLoading || bannerData.length === 0) {
+    return (
+      <div className="hero-banner-section skeleton-mode">
+        <style>
+          {`
+            .hero-banner-section.skeleton-mode {
+              width: 100%;
+              margin: 0;
+              padding: 0;
+              overflow: hidden;
+              position: relative;
+              background: #f8f9fa;
+            }
+            
+            .slider-skeleton-container {
+              width: 100%;
+              height: 400px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            }
+            
+            .slider-skeleton {
+              width: 100%;
+              max-width: 1200px;
+              height: 100%;
+              background: #fff;
+              border-radius: 12px;
+              box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+              overflow: hidden;
+              position: relative;
+            }
+            
+            .skeleton-content {
+              padding: 20px;
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            }
+            
+            .skeleton-image {
+              width: 80%;
+              height: 200px;
+              background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+              background-size: 200% 100%;
+              animation: skeleton-loading 2s infinite;
+              border-radius: 8px;
+              margin-bottom: 20px;
+            }
+            
+            .skeleton-text {
+              width: 60%;
+              text-align: center;
+            }
+            
+            .skeleton-line {
+              height: 12px;
+              background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+              background-size: 200% 100%;
+              animation: skeleton-loading 2s infinite;
+              border-radius: 6px;
+              margin-bottom: 10px;
+            }
+            
+            .skeleton-line.short {
+              width: 40%;
+              margin: 0 auto;
+            }
+            
+            @keyframes skeleton-loading {
+              0% { background-position: -200% 0; }
+              100% { background-position: 200% 0; }
+            }
+            
+            @media (max-width: 768px) {
+              .slider-skeleton-container {
+                height: 300px;
+              }
+              
+              .skeleton-image {
+                height: 150px;
+                width: 90%;
+              }
+              
+              .skeleton-text {
+                width: 80%;
+              }
+            }
+            
+            @media (max-width: 480px) {
+              .slider-skeleton-container {
+                height: 250px;
+              }
+              
+              .skeleton-image {
+                height: 120px;
+                width: 95%;
+              }
+            }
+          `}
+        </style>
+        <SkeletonLoader />
+      </div>
+    );
+  }
 
   return (
     <div className="hero-banner-section" style={{ 
@@ -163,6 +281,9 @@ const HeroBanner = () => {
             cursor: pointer !important;
             transition: all 0.4s ease !important;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15) !important;
+            opacity: ${allImagesLoaded ? '1' : '0'};
+            transform: ${allImagesLoaded ? 'scale(1)' : 'scale(0.95)'};
+            transition: opacity 0.6s ease, transform 0.6s ease;
           }
           
           .hero-banner-section .swiper-pagination {
@@ -191,32 +312,6 @@ const HeroBanner = () => {
           .hero-banner-section .swiper-pagination-bullet-active {
             background: #fff !important;
             transform: scale(1.2) !important;
-          }
-          
-          .hero-banner-section .slider-loading {
-            position: relative;
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-            border-radius: 8px;
-          }
-          
-          @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-          }
-          
-          .hero-banner-section .slider-skeleton {
-            background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 50%, #f8f9fa 100%);
-            background-size: 200% 100%;
-            animation: skeleton-loading 2s infinite;
-            border-radius: 8px;
-            min-height: 300px;
-          }
-          
-          @keyframes skeleton-loading {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
           }
           
           /* Prevent scroll bar */
@@ -253,10 +348,6 @@ const HeroBanner = () => {
               max-height: 400px !important;
               overflow: hidden !important;
             }
-            
-            .hero-banner-section .slider-skeleton {
-              min-height: 280px !important;
-            }
           }
           
           @media (max-width: 480px) {
@@ -282,10 +373,6 @@ const HeroBanner = () => {
               min-height: 200px !important;
               max-height: 350px !important;
               overflow: hidden !important;
-            }
-            
-            .hero-banner-section .slider-skeleton {
-              min-height: 250px !important;
             }
           }
           
@@ -352,15 +439,12 @@ const HeroBanner = () => {
                     <img 
                       src={banner.image.startsWith('http') ? banner.image : process.env.PUBLIC_URL + banner.image}
                       alt="Banner"
-                      className={`img-fluid w-100 ${isLoading && !hasContentfulData ? 'slider-loading' : ''}`}
-                      onLoad={(e) => {
-                        // Remove loading class when image loads
-                        e.target.classList.remove('slider-loading');
-                      }}
+                      className="img-fluid w-100"
+                      onLoad={handleImageLoad}
                       onError={(e) => {
                         // Fallback to default image if loading fails
                         e.target.src = process.env.PUBLIC_URL + "/assets/img/banner/banner-1.jpg";
-                        e.target.classList.remove('slider-loading');
+                        handleImageLoad();
                       }}
                       onMouseOver={(e) => {
                         e.target.style.transform = "scale(1.02)";
