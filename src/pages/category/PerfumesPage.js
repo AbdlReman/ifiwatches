@@ -126,7 +126,7 @@ const PerfumesPage = () => {
                        <div className="hero-banner-section" style={{ width: '100%', overflow: 'hidden' }}>
                 <Link to={process.env.PUBLIC_URL + "/perfumes"}>
          <img 
-           src={process.env.PUBLIC_URL + "/assets/img/banner/perfumes.PNG"}
+           src={process.env.PUBLIC_URL + "/assets/img/banner/perfumes.png"}
            alt="Shop Now"
            className="img-fluid"
            style={{
