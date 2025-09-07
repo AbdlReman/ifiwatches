@@ -7,7 +7,7 @@ const MobileWidgets = () => {
         <div className="header-offcanvas-widget-content">
           <p>Need help? Call us:</p>
           <p>
-            <a href="tel://+923285315636">+923285315636</a>
+            <a href="tel://+923360054420">+923360054420</a>
           </p>
           <p>
             <a href="mailto:info@ifilifestyle.com">info@ifilifestyle.com</a>

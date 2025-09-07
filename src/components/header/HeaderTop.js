@@ -10,7 +10,7 @@ const HeaderTop = ({ borderStyle }) => {
       <div className="header-top-container">
         <div className="header-marquee">
           <div className="marquee-content">
-            <span className="marquee-item">Call Us +923285315636</span>
+            <span className="marquee-item">Call Us +923360054420</span>
             <span className="marquee-separator">•</span>
             <span className="marquee-item">
               Free delivery on order over{" "}
@@ -19,7 +19,7 @@ const HeaderTop = ({ borderStyle }) => {
               </span>
             </span>
             <span className="marquee-separator">•</span>
-            <span className="marquee-item">Call Us +923285315636</span>
+            <span className="marquee-item">Call Us +923360054420</span>
             <span className="marquee-separator">•</span>
             <span className="marquee-item">
               Free delivery on order over{" "}
@@ -28,7 +28,7 @@ const HeaderTop = ({ borderStyle }) => {
               </span>
             </span>
             <span className="marquee-separator">•</span>
-            <span className="marquee-item">Call Us +923285315636</span>
+            <span className="marquee-item">Call Us +923360054420</span>
             <span className="marquee-separator">•</span>
             <span className="marquee-item">
               Free delivery on order over{" "}

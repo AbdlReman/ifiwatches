@@ -250,7 +250,7 @@ const Contact = () => {
                        <i className="fa fa-phone" />
                      </div>
                      <div className="contact-info-dec">
-                       <p>+92 328-5315636</p>
+                       <p>+92 336 0054420</p>
                      </div>
                    </div>
                    <div className="single-contact-info">
