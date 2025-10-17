@@ -11,7 +11,47 @@ export const processRichText = (richTextField) => {
     return "";
   }
 
-  // Use the enhanced Markdown processor for better handling of embedded Markdown
+  // Debug logging (remove in production)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Rich text field type:', typeof richTextField);
+    console.log('Rich text field content:', richTextField);
+  }
+
+  // If it's already a string, it might be plain text with markdown
+  if (typeof richTextField === 'string') {
+    console.log('Processing as string (markdown)');
+    return processContentfulRichText(richTextField);
+  }
+
+  // If it's a Contentful rich text object, use the proper renderer
+  if (richTextField.nodeType === 'document' && richTextField.content) {
+    try {
+      console.log('Processing as Contentful rich text document');
+      const htmlResult = documentToHtmlString(richTextField);
+      console.log('Generated HTML:', htmlResult);
+      return htmlResult;
+    } catch (error) {
+      console.error('Error rendering Contentful rich text:', error);
+      // Fallback to markdown processing
+      return processContentfulRichText(richTextField);
+    }
+  }
+
+  // Check if it's a different rich text format
+  if (richTextField.nodeType && richTextField.content) {
+    try {
+      console.log('Processing as rich text object with nodeType:', richTextField.nodeType);
+      const htmlResult = documentToHtmlString(richTextField);
+      console.log('Generated HTML:', htmlResult);
+      return htmlResult;
+    } catch (error) {
+      console.error('Error rendering rich text object:', error);
+      return processContentfulRichText(richTextField);
+    }
+  }
+
+  // For other object types, try to process as markdown
+  console.log('Fallback: Processing as markdown');
   return processContentfulRichText(richTextField);
 };
 

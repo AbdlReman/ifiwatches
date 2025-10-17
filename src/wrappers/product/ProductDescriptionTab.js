@@ -4,6 +4,7 @@ import clsx from "clsx";
 import Tab from "react-bootstrap/Tab";
 import Nav from "react-bootstrap/Nav";
 import ProductVideo from "../../components/product/ProductVideo";
+import "../../assets/css/rich-text.css";
 
 const ProductDescriptionTab = ({ spaceBottomClass, productFullDesc, product }) => {
   return (
@@ -55,6 +56,11 @@ const ProductDescriptionTab = ({ spaceBottomClass, productFullDesc, product }) =
                   {productFullDesc ? (
                     <div 
                       className="rich-text-content"
+                      style={{
+                        lineHeight: '1.6',
+                        fontSize: '14px',
+                        color: '#333'
+                      }}
                       dangerouslySetInnerHTML={{ __html: productFullDesc }} 
                     />
                   ) : (

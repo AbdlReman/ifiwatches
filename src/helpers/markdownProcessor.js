@@ -39,8 +39,12 @@ export const processEmbeddedMarkdown = (htmlContent) => {
     return `<strong>${content}</strong>`;
   });
 
-  // Step 3: Handle italic text
-  processedContent = processedContent.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  // Step 3: Handle italic text (but avoid interfering with bold patterns)
+  processedContent = processedContent.replace(/\*(?!\*)(.*?)(?<!\*)\*/g, '<em>$1</em>');
+  
+  // Step 3.1: Handle underscore formatting
+  processedContent = processedContent.replace(/__(.*?)__/g, '<strong>$1</strong>');
+  processedContent = processedContent.replace(/_(.*?)_/g, '<em>$1</em>');
 
   // Step 4: Handle lists
   // Convert - item to <li>item</li>
@@ -70,7 +74,18 @@ export const processEmbeddedMarkdown = (htmlContent) => {
   processedContent = processedContent.replace(/\s+</g, '<');
   processedContent = processedContent.replace(/>\s+/g, '>');
 
-  // Step 7: Remove any remaining literal Markdown syntax that wasn't converted
+  // Step 7: Handle specific problematic patterns before cleanup
+  // Handle patterns like "*__Product Details:" or "*__" at the beginning of lines
+  processedContent = processedContent.replace(/^\*\*__\s*/gm, ''); // Remove "*__" at start of lines
+  processedContent = processedContent.replace(/^\*__\s*/gm, ''); // Remove "*__" at start of lines
+  processedContent = processedContent.replace(/^\*\*\s*/gm, ''); // Remove "**" at start of lines
+  processedContent = processedContent.replace(/^\*__\s*/gm, ''); // Remove "*__" at start of lines
+  
+  // Handle standalone markdown symbols that don't form proper patterns
+  processedContent = processedContent.replace(/\s*\*__\s*/g, ' '); // Remove standalone "*__" with spaces
+  processedContent = processedContent.replace(/\s*__\*\s*/g, ' '); // Remove standalone "__*" with spaces
+  
+  // Step 8: Remove any remaining literal Markdown syntax that wasn't converted
   processedContent = processedContent.replace(/##\*\*/g, '');
   processedContent = processedContent.replace(/\*\*##/g, '');
   processedContent = processedContent.replace(/###\*\*/g, '');
@@ -80,6 +95,8 @@ export const processEmbeddedMarkdown = (htmlContent) => {
   processedContent = processedContent.replace(/\*\* ##/g, '');
   processedContent = processedContent.replace(/### \*\*/g, '');
   processedContent = processedContent.replace(/\*\* ###/g, '');
+  processedContent = processedContent.replace(/\*__/g, ''); // Remove any remaining "*__" patterns
+  processedContent = processedContent.replace(/__\*/g, ''); // Remove any remaining "__*" patterns
 
   return processedContent;
 };
@@ -107,8 +124,20 @@ export const processContentfulRichText = (richTextField) => {
     content = JSON.stringify(richTextField);
   }
   
+  // Debug logging (remove in production)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Original Contentful content:', content);
+  }
+  
   // Process the content for embedded Markdown
-  return processEmbeddedMarkdown(content);
+  const processedContent = processEmbeddedMarkdown(content);
+  
+  // Debug logging (remove in production)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Processed content:', processedContent);
+  }
+  
+  return processedContent;
 };
 
 /**
