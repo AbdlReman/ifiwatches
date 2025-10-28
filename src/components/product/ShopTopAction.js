@@ -12,20 +12,20 @@ const ShopTopAction = ({
     <div className="shop-top-bar mb-35">
       <div className="select-shoing-wrap">
         <div className="shop-select">
-          <select
+          {/* <select
             onChange={e => getFilterSortParams("filterSort", e.target.value)}
           >
             <option value="default">Default</option>
             <option value="priceHighToLow">Price - High to Low</option>
             <option value="priceLowToHigh">Price - Low to High</option>
-          </select>
+          </select> */}
         </div>
         <p>
           Showing {sortedProductCount} of {productCount} result
         </p>
       </div>
 
-      <div className="shop-tab">
+      {/* <div className="shop-tab">
         <button
           onClick={e => {
             getLayout("grid two-column");
@@ -50,7 +50,7 @@ const ShopTopAction = ({
         >
           <i className="fa fa-list-ul" />
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
