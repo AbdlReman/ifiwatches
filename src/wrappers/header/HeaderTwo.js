@@ -38,7 +38,7 @@ const HeaderTwo = () => {
             <div className="col-lg-2 d-none d-lg-block text-center">
               {/* header logo */}
               <Logo
-                imageUrl="/assets/img/logo/nav-logo.png"
+                imageUrl="/assets/img/logo/logo.svg"
                 logoClass="logo-hm-9"
               />
             </div>
@@ -58,7 +58,7 @@ const HeaderTwo = () => {
           <div className="row">
             <div className="col-6 d-block d-lg-none">
               {/* header logo */}
-              <Logo imageUrl="/assets/img/logo/nav-logo.png" />
+              <Logo imageUrl="/assets/img/logo/logo.svg" />
             </div>
             <div className="col-6 d-block d-lg-none">
               {/* Icon group */}
