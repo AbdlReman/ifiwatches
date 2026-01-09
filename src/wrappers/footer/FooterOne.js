@@ -22,7 +22,7 @@ const FooterOne = ({
                 <Link to={process.env.PUBLIC_URL + "/"}>
                   <img 
                     alt="IFILifestyle" 
-                    src={process.env.PUBLIC_URL + "/assets/img/logo/logo.png"}
+                    src={process.env.PUBLIC_URL + "/assets/img/logo/logo.svg"}
                     style={{ maxWidth: "150px", height: "auto" }}
                   />
                 </Link>
