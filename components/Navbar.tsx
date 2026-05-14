@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { siteConfig } from "@/lib/siteConfig";
 import BrandLogoMark from "@/components/BrandLogoMark";
 
@@ -14,18 +14,12 @@ const STATIC_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
-const dedupe = (values: string[]) =>
-  Array.from(new Set(values.map((value) => value.trim()).filter(Boolean)));
-
 export default function Navbar() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [collections, setCollections] = useState<string[]>([]);
   const [cartCount, setCartCount] = useState(0);
   const [authUser, setAuthUser] = useState<AuthUser | null | undefined>(undefined);
   const [accountOpen, setAccountOpen] = useState(false);
-  const activeCategory = searchParams.get("category") || "";
 
   const refreshAuth = useCallback(async () => {
     try {
@@ -44,15 +38,6 @@ export default function Navbar() {
     return () => window.clearTimeout(timer);
   }, [refreshAuth]);
 
-  const categoryLinks = useMemo(
-    () =>
-      dedupe([...siteConfig.categories, ...collections]).map((category) => ({
-        href: `/shop?category=${encodeURIComponent(category)}`,
-        label: category,
-      })),
-    [collections]
-  );
-
   useEffect(() => {
     const sync = () => {
       const items = JSON.parse(localStorage.getItem("cart_items") || "[]");
@@ -68,28 +53,8 @@ export default function Navbar() {
     };
   }, []);
 
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch("/api/navigation/collections");
-        const data = await res.json();
-        if (!cancelled) {
-          setCollections(Array.isArray(data.categories) ? data.categories : []);
-        }
-      } catch {
-        if (!cancelled) setCollections([]);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
   const isHome = pathname === "/";
-  const isShop = pathname === "/shop" && !activeCategory;
-  const isCategoryActive = (label: string) =>
-    pathname === "/shop" && activeCategory.toLowerCase() === label.toLowerCase();
+  const isShop = pathname === "/shop";
 
   const linkClass = (active: boolean) =>
     `nav-link text-zinc-100 hover:text-white transition-colors ${active ? "border-b-2 border-[rgb(218,170,88)]" : ""}`;
@@ -126,15 +91,6 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={linkClass(link.href === "/" ? isHome : link.href === "/shop" ? isShop : pathname === link.href)}
-              >
-                {link.label}
-              </Link>
-            ))}
-            {categoryLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={linkClass(isCategoryActive(link.label))}
               >
                 {link.label}
               </Link>
@@ -287,22 +243,6 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-
-            <div className="grid grid-cols-2 gap-3 border-y border-zinc-800 py-4">
-              {categoryLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className={`text-sm text-zinc-200 hover:text-white ${
-                    isCategoryActive(link.label) ? "font-bold text-[rgb(218,170,88)]" : ""
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-
             <div className="grid grid-cols-2 gap-3">
               {siteConfig.utilityLinks.map((link) => (
                 <Link

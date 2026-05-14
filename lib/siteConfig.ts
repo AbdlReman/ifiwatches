@@ -4,7 +4,7 @@ export const siteConfig = {
   domain: "ifilifestyle.com",
   url: "https://www.ifilifestyle.com/",
   logo: {
-    src: "/logo.png",
+    src: "/images/logo.png",
     alt: "ifilifestyle logo",
   },
   images: {
