@@ -1,0 +1,18 @@
+import Link from "next/link";
+import type { ReactNode } from "react";
+
+export default function AccountLayout({ children }: { children: ReactNode }) {
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-10">
+      <nav className="flex flex-wrap gap-6 border-b border-zinc-800 pb-4 mb-8 text-sm font-semibold uppercase tracking-widest">
+        <Link href="/account" className="text-zinc-400 hover:text-zinc-100">
+          Profile
+        </Link>
+        <Link href="/account/orders" className="text-zinc-400 hover:text-zinc-100">
+          My orders
+        </Link>
+      </nav>
+      {children}
+    </div>
+  );
+}
