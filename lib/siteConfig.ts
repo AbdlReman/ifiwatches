@@ -3,6 +3,14 @@ export const siteConfig = {
   brandInitials: "IFI",
   domain: "ifilifestyle.com",
   url: "https://www.ifilifestyle.com/",
+  logo: {
+    src: "/logo.png",
+    alt: "ifilifestyle logo",
+  },
+  images: {
+    hero: "/images/product/default-product.jpg",
+    productPlaceholder: "/images/product/default-product.jpg",
+  },
   brandColor: "rgb(218, 170, 88)",
   brandGradient: "linear-gradient(135deg, rgb(218, 170, 88) 0%, rgb(244, 202, 104) 100%)",
   categories: [

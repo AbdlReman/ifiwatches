@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { siteConfig } from "@/lib/siteConfig";
+import BrandLogoMark from "@/components/BrandLogoMark";
 
 const navLinks = [
   {
@@ -68,12 +68,7 @@ export default function SellerSidebar() {
   return (
     <aside className="w-16 lg:w-64 bg-slate-900 flex flex-col flex-shrink-0 border-r border-slate-800">
       <div className="h-16 flex items-center px-4 border-b border-slate-800">
-        <div
-          className="w-8 h-8 rounded flex items-center justify-center flex-shrink-0"
-          style={{ background: siteConfig.brandGradient }}
-        >
-          <span className="text-slate-950 font-black text-sm">S</span>
-        </div>
+        <BrandLogoMark size="sm" className="rounded" />
         <span className="ml-3 font-black text-sm uppercase tracking-widest text-white hidden lg:block">
           Seller
         </span>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { siteConfig } from "@/lib/siteConfig";
+import BrandLogoMark from "@/components/BrandLogoMark";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -43,12 +44,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <div
-                className="w-8 h-8 rounded-sm flex items-center justify-center"
-                style={{ background: siteConfig.brandGradient }}
-              >
-                <span className="text-black font-black text-sm">{siteConfig.brandInitials}</span>
-              </div>
+              <BrandLogoMark size="sm" />
               <span className="font-black text-lg lowercase tracking-widest">
                 {siteConfig.brandName}
               </span>

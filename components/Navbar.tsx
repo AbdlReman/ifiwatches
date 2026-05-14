@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { siteConfig } from "@/lib/siteConfig";
+import BrandLogoMark from "@/components/BrandLogoMark";
 
 type AuthUser = { id: string; email: string; name: string; role: string };
 
@@ -112,12 +113,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between gap-5 min-h-16 py-3">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0" aria-label={`${siteConfig.brandName} home`}>
-            <div
-              className="w-9 h-9 rounded-sm flex items-center justify-center"
-              style={{ background: siteConfig.brandGradient }}
-            >
-              <span className="text-zinc-950 font-black text-sm">{siteConfig.brandInitials}</span>
-            </div>
+            <BrandLogoMark size="md" />
             <span className="font-black text-lg lowercase tracking-widest text-zinc-100">
               {siteConfig.brandName}
             </span>

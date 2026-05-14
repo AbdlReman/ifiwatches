@@ -12,7 +12,7 @@ const featuredProducts = [
     brand: "Watches",
     color: "Black / Gold",
     bg: "bg-gray-100",
-    image: "/images/1.webp",
+    image: siteConfig.images.productPlaceholder,
   },
   {
     id: 2,
@@ -22,7 +22,7 @@ const featuredProducts = [
     brand: "Perfumes",
     color: "Premium fragrance",
     bg: "bg-red-50",
-    image: "/images/2.webp",
+    image: siteConfig.images.productPlaceholder,
   },
   {
     id: 3,
@@ -32,7 +32,7 @@ const featuredProducts = [
     brand: "Eyewear",
     color: "Modern frame",
     bg: "bg-blue-50",
-    image: "/images/3.webp",
+    image: siteConfig.images.productPlaceholder,
   },
   {
     id: 4,
@@ -42,7 +42,7 @@ const featuredProducts = [
     brand: "Mobile Gadgets",
     color: "Smart essentials",
     bg: "bg-orange-50",
-    image: "/images/01.webp",
+    image: siteConfig.images.productPlaceholder,
   },
 ];
 
@@ -58,7 +58,15 @@ export default function HomePage() {
     <div>
       {/* Hero Section */}
       <section className="relative bg-black text-white overflow-hidden min-h-[60vh] flex items-center">
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800" style={{backgroundImage: 'url(/images/hero.webp)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.75}} />
+        <div
+          className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800"
+          style={{
+            backgroundImage: `url(${siteConfig.images.hero})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: 0.75,
+          }}
+        />
 
         {/* Decorative circle */}
         <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full border border-gray-800 opacity-30" />
@@ -133,7 +141,7 @@ export default function HomePage() {
             <Link key={product.id} href="/shop" className="product-card group cursor-pointer">
               {/* Image placeholder */}
               <div className={`${product.bg} h-64 flex items-center justify-center overflow-hidden mb-4 relative`}>
-                <Image src={product.image} alt={product.name} fill className="object-cover product-img" />
+                <Image src={product.image} alt={product.name} fill sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" className="object-cover product-img" />
                 <span className="absolute top-3 left-3 bg-black text-white text-xs font-bold px-2 py-1 uppercase tracking-widest">
                   {product.brand}
                 </span>
@@ -160,7 +168,7 @@ export default function HomePage() {
       {/* Full-width Banner */}
       <section
         className="relative text-white py-24 text-center overflow-hidden"
-        style={{ backgroundImage: "url(/images/hero.webp)", backgroundSize: "cover", backgroundPosition: "center" }}
+        style={{ backgroundImage: `url(${siteConfig.images.hero})`, backgroundSize: "cover", backgroundPosition: "center" }}
       >
         <div className="absolute inset-0 bg-slate-900/75" />
         <div className="relative z-10 px-4">
