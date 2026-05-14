@@ -8,7 +8,7 @@ export const siteConfig = {
     alt: "ifilifestyle logo",
   },
   images: {
-    hero: "/images/product/default-product.jpg",
+    hero: "/images/hero.webp",
     productPlaceholder: "/images/product/default-product.jpg",
   },
   brandColor: "rgb(218, 170, 88)",
