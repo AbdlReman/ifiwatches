@@ -8,4 +8,4 @@ export interface IReview {
   updatedAt: string;
 }
 
-export const REVIEW_ACCESS_STORAGE_KEY = "pumashoes_review_edit_tokens";
+export const REVIEW_ACCESS_STORAGE_KEY = "ifilifestyle_review_edit_tokens";

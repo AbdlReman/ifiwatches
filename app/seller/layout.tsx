@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import "../globals.css";
 import SellerSidebar from "./_components/SellerSidebar";
+import { siteConfig } from "@/lib/siteConfig";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Seller — Branded Thrift",
+  title: `Seller - ${siteConfig.brandName}`,
 };
 
 export default function SellerLayout({ children }: { children: React.ReactNode }) {

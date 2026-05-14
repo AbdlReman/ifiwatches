@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { siteConfig } from "@/lib/siteConfig";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -42,19 +43,32 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-white rounded-sm flex items-center justify-center">
-                <span className="text-black font-black text-sm">BT</span>
+              <div
+                className="w-8 h-8 rounded-sm flex items-center justify-center"
+                style={{ background: siteConfig.brandGradient }}
+              >
+                <span className="text-black font-black text-sm">{siteConfig.brandInitials}</span>
               </div>
-              <span className="font-black text-lg uppercase tracking-widest">
-                Branded<span className="text-gray-400">Thrift</span>
+              <span className="font-black text-lg lowercase tracking-widest">
+                {siteConfig.brandName}
               </span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Premium branded footwear at unbeatable prices. Authentic. Stylish. Sustainable.
+              A multi-vendor lifestyle marketplace for watches, perfumes, eyewear, accessories, mobile gadgets, and fashion.
             </p>
+            <div className="mt-5 space-y-3">
+              {siteConfig.trustBadges.map((badge) => (
+                <div key={badge.title} className="border border-gray-800 rounded-lg p-3">
+                  <p className="text-xs font-bold uppercase tracking-widest" style={{ color: siteConfig.brandColor }}>
+                    {badge.title}
+                  </p>
+                  <p className="text-xs text-gray-400 mt-1">{badge.description}</p>
+                </div>
+              ))}
+            </div>
             <div className="flex gap-4 mt-6">
               <a
-                href="https://www.instagram.com/branded_thrift.store"
+                href={siteConfig.social.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
@@ -65,7 +79,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://www.tiktok.com/@branded_thrifts"
+                href={siteConfig.social.tiktok}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="TikTok"
@@ -76,7 +90,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://www.facebook.com/profile.php?id=61588665817103"
+                href={siteConfig.social.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
@@ -87,7 +101,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://wa.me/923140151948"
+                href={siteConfig.contact.whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
@@ -104,9 +118,12 @@ export default function Footer() {
           <div>
             <h4 className="font-bold uppercase tracking-widest text-xs mb-5">Shop</h4>
             <ul className="space-y-3">
-              {["New Arrivals", "Men's Shoes", "Women's Shoes", "Kids' Shoes", "Sale"].map((item) => (
+              {siteConfig.categories.map((item) => (
                 <li key={item}>
-                  <Link href="/shop" className="text-gray-400 text-sm hover:text-white transition-colors">
+                  <Link
+                    href={`/shop?category=${encodeURIComponent(item)}`}
+                    className="text-gray-400 text-sm hover:text-white transition-colors"
+                  >
                     {item}
                   </Link>
                 </li>
@@ -116,12 +133,35 @@ export default function Footer() {
 
           {/* Help */}
           <div>
-            <h4 className="font-bold uppercase tracking-widest text-xs mb-5">Help</h4>
+            <h4 className="font-bold uppercase tracking-widest text-xs mb-5">Contact Info</h4>
             <ul className="space-y-3">
-              {["Shipping & Delivery", "Contact Us", "WhatsApp Support"].map((item) => (
-                <li key={item}>
-                  <Link href="/contact" className="text-gray-400 text-sm hover:text-white transition-colors">
-                    {item}
+              <li>
+                <a href={`tel:${siteConfig.contact.phone}`} className="text-gray-400 text-sm hover:text-white transition-colors">
+                  {siteConfig.contact.phone}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${siteConfig.contact.email}`}
+                  className="text-gray-400 text-sm hover:text-white transition-colors"
+                >
+                  {siteConfig.contact.email}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={siteConfig.contact.whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 text-sm hover:text-white transition-colors"
+                >
+                  WhatsApp: {siteConfig.contact.whatsapp}
+                </a>
+              </li>
+              {siteConfig.utilityLinks.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="text-gray-400 text-sm hover:text-white transition-colors">
+                    {item.label}
                   </Link>
                 </li>
               ))}
@@ -132,7 +172,7 @@ export default function Footer() {
           <div>
             <h4 className="font-bold uppercase tracking-widest text-xs mb-5">Newsletter</h4>
             <p className="text-gray-400 text-sm mb-4">
-              Get exclusive deals, new arrivals, and style tips delivered to your inbox.
+              Get multi-vendor deals, new arrivals, and lifestyle updates from {siteConfig.domain}.
             </p>
             <form className="flex flex-col gap-2" onSubmit={onSubscribe}>
               <input
@@ -146,7 +186,8 @@ export default function Footer() {
               <button
                 type="submit"
                 disabled={subscribing}
-                className="bg-white text-black text-xs font-bold uppercase tracking-widest py-2.5 hover:bg-gray-200 transition-colors"
+                className="text-black text-xs font-bold uppercase tracking-widest py-2.5 hover:opacity-90 transition-opacity"
+                style={{ background: siteConfig.brandGradient }}
               >
                 {subscribing ? "Subscribing..." : "Subscribe"}
               </button>
@@ -157,7 +198,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-gray-500 text-xs">
-            © {new Date().getFullYear()} Branded Thrift. All rights reserved.
+            © {new Date().getFullYear()} {siteConfig.brandName}. All rights reserved.
           </p>
           <div className="flex gap-6">
             {["Privacy Policy", "Terms of Service", "Cookie Policy"].map((item) => (

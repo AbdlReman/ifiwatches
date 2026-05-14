@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { siteConfig } from "@/lib/siteConfig";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -117,7 +118,7 @@ export default function RegisterPage() {
                 onChange={() => setRole("seller")}
                 className="accent-zinc-100"
               />
-              Sell on Branded Thrift
+              Sell on {siteConfig.brandName}
             </label>
           </div>
         </fieldset>

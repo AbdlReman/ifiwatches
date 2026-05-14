@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     const folderSlug = String(formData.get("folder") || "products")
       .replace(/[^a-z0-9-]/gi, "")
       .slice(0, 40);
-    const cloudFolder = `branded-thrift/${folderSlug || "products"}`;
+    const cloudFolder = `ifilifestyle/${folderSlug || "products"}`;
 
     const isPaymentScreenshot = folderSlug === "payment-screenshots";
     if (!isPaymentScreenshot) {

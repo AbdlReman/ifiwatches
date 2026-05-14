@@ -6,8 +6,9 @@ import { toast } from "sonner";
 import type { CartItem } from "@/types/product";
 import { discountFromPercent } from "@/lib/couponValidation";
 import { formatPkr } from "@/lib/formatCurrency";
+import { paymentMethods, siteConfig } from "@/lib/siteConfig";
 
-type PaymentMethod = "easypaisa" | "jazzcash" | "mcbislamic" | "";
+type PaymentMethod = (typeof paymentMethods)[number]["value"] | "";
 
 async function validateCouponCode(code: string) {
   const res = await fetch("/api/coupons/validate", {
@@ -79,8 +80,11 @@ export default function CheckoutPage() {
     const param = new URLSearchParams(window.location.search).get("coupon")?.trim();
     if (!param) return;
     urlCouponDone.current = true;
-    setCouponInput(param.toUpperCase());
-    void applyCoupon(param);
+    const timer = window.setTimeout(() => {
+      setCouponInput(param.toUpperCase());
+      void applyCoupon(param);
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [applyCoupon]);
 
   const subtotal = useMemo(() => items.reduce((sum, item) => sum + item.price * item.quantity, 0), [items]);
@@ -156,7 +160,7 @@ export default function CheckoutPage() {
       return;
     }
     if (!paymentMethod) {
-      toast.error("Payment method required", { description: "Choose EasyPaisa, JazzCash, or MCB Islamic Bank." });
+      toast.error("Payment method required", { description: "Choose Easy Paisa, Jazz Cash, or Raast Payment." });
       return;
     }
     const trx = paymentTransactionId.trim();
@@ -212,6 +216,7 @@ export default function CheckoutPage() {
 
   const labelClass = "block text-xs font-bold uppercase text-gray-600 mb-1";
   const inputClass = "border px-3 py-2 w-full";
+  const selectedPaymentDetails = paymentMethods.find((method) => method.value === paymentMethod);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
@@ -394,16 +399,12 @@ export default function CheckoutPage() {
             <fieldset className="space-y-2">
               <legend className="sr-only">Choose how you paid</legend>
               {(
-                [
-                  { value: "easypaisa" as const, label: "EasyPaisa" },
-                  { value: "jazzcash" as const, label: "JazzCash" },
-                  { value: "mcbislamic" as const, label: "MCB Islamic Bank" },
-                ] as const
+                paymentMethods
               ).map((opt) => (
                 <label
                   key={opt.value}
                   className={`flex items-center gap-3 border px-3 py-2 cursor-pointer ${
-                    paymentMethod === opt.value ? "border-black bg-gray-50" : "border-gray-200"
+                    paymentMethod === opt.value ? "border-black bg-amber-50" : "border-gray-200"
                   }`}
                 >
                   <input
@@ -419,57 +420,31 @@ export default function CheckoutPage() {
               ))}
             </fieldset>
 
-            {paymentMethod === "easypaisa" ? (
-              <div className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-950">
-                <p className="font-bold mb-1">EasyPaisa transfer details</p>
-                <p>
-                  <span className="text-blue-800">Account:</span>{" "}
-                  <span className="font-mono font-semibold">03231589585</span>
-                </p>
-                <p>
-                  <span className="text-blue-800">Account holder:</span> Waleed Ishtiaq
-                </p>
-                <p className="mt-2 text-blue-900">
-                  Send exactly <strong>{formatPkr(totalAmount)}</strong> to this account, then enter your TRX ID and/or
-                  upload a screenshot below.
-                </p>
-              </div>
-            ) : null}
-
-            {paymentMethod === "jazzcash" ? (
-              <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800">
-                <p className="font-bold mb-1">JazzCash transfer details</p>
-                <p>
-                  <span className="text-slate-700">Account:</span>{" "}
-                  <span className="font-mono font-semibold">03231589585</span>
-                </p>
-                <p>
-                  <span className="text-slate-700">Account holder:</span> Waleed Ishtiaq
-                </p>
-                <p className="mt-2">
-                  Send exactly <strong>{formatPkr(totalAmount)}</strong> to this account, then enter your TRX ID and/or
-                  upload a screenshot below.
-                </p>
-              </div>
-            ) : null}
-
-            {paymentMethod === "mcbislamic" ? (
-              <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800">
-                <p className="font-bold mb-1">MCB Islamic Bank transfer details</p>
-                <p>
-                  <span className="text-slate-700">IBAN:</span>{" "}
-                  <span className="font-mono font-semibold">PK15MCIB2511007217870001</span>
-                </p>
-                <p>
-                  <span className="text-slate-700">Account number:</span>{" "}
-                  <span className="font-mono font-semibold">2511007217870001</span>
-                </p>
-                <p>
-                  <span className="text-slate-700">Account holder:</span> Waleed Ishtiaq
-                </p>
-                <p>
-                  Send exactly <strong>{formatPkr(totalAmount)}</strong> to this account, then enter your TRX ID and/or
-                  upload a screenshot below.
+            {selectedPaymentDetails ? (
+              <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-slate-900">
+                <p className="font-bold mb-3">{selectedPaymentDetails.label} transfer details</p>
+                <div className="space-y-3">
+                  {selectedPaymentDetails.accounts.map((account, index) => (
+                    <div key={`${selectedPaymentDetails.value}-${account.account}`}>
+                      <p className="font-semibold">Account {index + 1}</p>
+                      <p>
+                        <span className="text-slate-700">Account holder:</span> {account.holder}
+                      </p>
+                      <p>
+                        <span className="text-slate-700">Account number:</span>{" "}
+                        <span className="font-mono font-semibold">{account.account}</span>
+                      </p>
+                      {"iban" in account ? (
+                        <p>
+                          <span className="text-slate-700">IBAN:</span>{" "}
+                          <span className="font-mono font-semibold">{account.iban}</span>
+                        </p>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-3">
+                  Send exactly <strong>{formatPkr(totalAmount)}</strong>, then enter your TRX ID and/or upload a screenshot below.
                 </p>
               </div>
             ) : null}
@@ -505,7 +480,11 @@ export default function CheckoutPage() {
               least one is required).
             </p>
 
-            <button disabled={loading} className="w-full bg-black text-white px-5 py-2.5 text-sm font-bold uppercase">
+            <button
+              disabled={loading}
+              className="w-full text-black px-5 py-2.5 text-sm font-bold uppercase disabled:opacity-60"
+              style={{ background: siteConfig.brandGradient }}
+            >
               {loading ? "Placing..." : "Place Order"}
             </button>
           </div>

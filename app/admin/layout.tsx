@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import "../globals.css";
 import AdminSidebar from "./_components/AdminSidebar";
+import { siteConfig } from "@/lib/siteConfig";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Admin — Branded Thrift",
+  title: `Admin - ${siteConfig.brandName}`,
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

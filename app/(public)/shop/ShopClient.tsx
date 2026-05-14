@@ -7,6 +7,7 @@ import ShopPagination from "@/components/shop/ShopPagination";
 import type { IProduct } from "@/types/product";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { siteConfig } from "@/lib/siteConfig";
 
 const SORTS = [
   { value: "latest", label: "Newest" },
@@ -42,7 +43,7 @@ export default function ShopClient({ products }: { products: IProduct[] }) {
   const requestedCategory = searchParams.get("category");
 
   const categories = useMemo(() => {
-    const rest = Array.from(new Set(products.flatMap((p) => categoriesOf(p)).filter(Boolean))).sort((a, b) =>
+    const rest = Array.from(new Set([...siteConfig.categories, ...products.flatMap((p) => categoriesOf(p))].filter(Boolean))).sort((a, b) =>
       a.localeCompare(b)
     );
     return ["All", ...rest];
@@ -196,7 +197,7 @@ export default function ShopClient({ products }: { products: IProduct[] }) {
               />
             </div>
             <div className="min-w-[9rem] flex-1 sm:flex-none sm:w-[10rem]">
-              <label htmlFor="filter-category" className={labelClass}>Style</label>
+              <label htmlFor="filter-category" className={labelClass}>Category</label>
               <select id="filter-category" value={category} onChange={(e) => setCategory(e.target.value)} className={selectClass}>
                 {categories.map((v) => (
                   <option key={v} value={v}>{v}</option>

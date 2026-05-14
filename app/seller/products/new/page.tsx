@@ -5,6 +5,7 @@ import { connectDB } from "@/lib/mongodb";
 import Brand from "@/models/Brand";
 import Category from "@/models/Category";
 import ProductForm from "@/app/admin/_components/ProductForm";
+import { siteConfig } from "@/lib/siteConfig";
 
 export const metadata: Metadata = { title: "Add Product — Seller" };
 
@@ -19,9 +20,9 @@ export default async function SellerNewProductPage() {
   ]);
   const brandOptions = (brandsRaw as Record<string, unknown>[]).map((b) => String(b.name || "")).filter(Boolean);
   const categoryOptions = (categoriesRaw as Record<string, unknown>[]).map((c) => String(c.name || "")).filter(Boolean);
-  const finalBrandOptions = brandOptions.length > 0 ? brandOptions : ["PUMA"];
+  const finalBrandOptions = brandOptions.length > 0 ? brandOptions : [siteConfig.brandName];
   const finalCategoryOptions = Array.from(
-    new Set((categoryOptions.length > 0 ? categoryOptions : ["Running"]).concat(["Men", "Women"]))
+    new Set((categoryOptions.length > 0 ? categoryOptions : [...siteConfig.categories]).concat([...siteConfig.categories]))
   );
 
   return (

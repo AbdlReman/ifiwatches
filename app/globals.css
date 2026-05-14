@@ -3,6 +3,9 @@
 :root {
   --background: #ffffff;
   --foreground: #0a0a0a;
+  --brand-gold: rgb(218, 170, 88);
+  --brand-gold-light: rgb(244, 202, 104);
+  --brand-gradient: linear-gradient(135deg, rgb(218, 170, 88) 0%, rgb(244, 202, 104) 100%);
 }
 
 body {
@@ -55,9 +58,9 @@ body {
 
 .btn-primary {
   display: inline-block;
-  background: #ffffff;
+  background: var(--brand-gradient);
   color: #0a0a0a;
-  border: 2px solid #ffffff;
+  border: 2px solid var(--brand-gold);
   padding: 0.85rem 2.3rem;
   font-size: 0.75rem;
   font-weight: 800;
@@ -67,7 +70,7 @@ body {
   cursor: pointer;
 }
 
-.btn-primary:hover { background: transparent; color: #fff; }
+.btn-primary:hover { background: transparent; color: var(--brand-gold); }
 
 .btn-outline {
   display: inline-block;

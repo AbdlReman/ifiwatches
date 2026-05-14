@@ -1,19 +1,17 @@
 import Link from "next/link";
+import { siteConfig } from "@/lib/siteConfig";
 
 const team = [
-  { name: "Jordan Lee",    role: "Founder & CEO",         emoji: "👤" },
-  { name: "Sarah Kim",     role: "Head of Curation",      emoji: "👤" },
-  { name: "Marcus Obi",    role: "Brand Partnerships",    emoji: "👤" },
-  { name: "Priya Sharma",  role: "Customer Experience",   emoji: "👤" },
+  { name: "Vendor Network", role: "Multi-vendor marketplace", badge: "V" },
+  { name: "Customer Care", role: "Support across Pakistan", badge: "C" },
+  { name: "Product Team", role: "Lifestyle category curation", badge: "P" },
+  { name: "Operations", role: "Shipping and discreet packaging", badge: "O" },
 ];
 
 const milestones = [
-  { year: "2019", event: "Branded Thrift founded from a garage in NYC" },
-  { year: "2020", event: "Launched online store, 500+ shoes in first month" },
-  { year: "2021", event: "Partnered with 25+ premium brands" },
-  { year: "2022", event: "Reached 10,000 happy customers" },
-  { year: "2023", event: "Opened first physical pop-up store" },
-  { year: "2024", event: "Expanded globally — shipping to 40+ countries" },
+  { year: "2024", event: "Built a lifestyle marketplace for Pakistani shoppers" },
+  { year: "2025", event: "Expanded into watches, perfumes, eyewear, fashion, and gadgets" },
+  { year: "2026", event: "Opened seller tools for multi-vendor growth" },
 ];
 
 export default function AboutPage() {
@@ -31,17 +29,15 @@ export default function AboutPage() {
               <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tight leading-none mb-8">
                 Our
                 <br />
-                <span className="text-gray-500">Story</span>
+                <span style={{ color: siteConfig.brandColor }}>Story</span>
               </h1>
               <p className="text-gray-400 text-lg leading-relaxed max-w-lg">
-                Branded Thrift was born from a simple belief: premium footwear
-                shouldn&apos;t cost a premium. We source authentic branded shoes
-                directly from manufacturers, overstock, and carefully vetted
-                pre-loved collections.
+                {siteConfig.brandName} is a multi-vendor lifestyle marketplace for shoppers who want premium everyday products in one trusted place.
+                We connect customers with sellers across watches, perfumes, eyewear, accessories, mobile gadgets, and fashion.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              {[["500+", "Styles Available"], ["50+", "Brand Partners"], ["10K+", "Customers Served"], ["40+", "Countries Shipped"]].map(([num, label]) => (
+              {[["7", "Top Categories"], ["2", "Payment Wallets"], ["1", "Raast Option"], ["PK", "Pakistan Delivery"]].map(([num, label]) => (
                 <div key={label} className="border border-gray-800 p-6">
                   <p className="text-4xl font-black mb-2">{num}</p>
                   <p className="text-gray-500 text-xs uppercase tracking-widest">{label}</p>
@@ -58,17 +54,14 @@ export default function AboutPage() {
           <div>
             <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">Our Mission</p>
             <h2 className="text-4xl font-black uppercase tracking-tight mb-6">
-              Style For Everyone
+              A Marketplace For Lifestyle Essentials
             </h2>
             <p className="text-gray-600 leading-relaxed mb-6">
-              We believe that access to quality footwear is a right, not a privilege.
-              Our mission is to democratize premium fashion by connecting sneaker lovers
-              with authentic branded shoes at prices that won&apos;t break the bank.
+              Our mission is to make shopping easier for customers while giving sellers a focused platform for lifestyle products.
+              Customers can browse multiple categories, checkout quickly, and contact support when they need help.
             </p>
             <p className="text-gray-600 leading-relaxed mb-8">
-              Every pair we sell is authenticated by our expert team. We&apos;re not
-              just selling shoes — we&apos;re building a community of conscious consumers
-              who value quality, style, and sustainability.
+              Orders above Rs. 3000 qualify for free shipping across Pakistan, and each parcel is shipped in discreet packaging for customer privacy.
             </p>
             <Link href="/shop" className="btn-primary">
               Shop the Collection
@@ -78,12 +71,15 @@ export default function AboutPage() {
           {/* Values */}
           <div className="space-y-6">
             {[
-              { title: "Authenticity First", desc: "Triple-checked authentication on every single pair. If it's not real, it doesn't ship." },
-              { title: "Sustainable Fashion", desc: "By extending the lifecycle of premium footwear, we reduce waste and carbon emissions." },
-              { title: "Community Driven", desc: "Built by sneaker lovers, for sneaker lovers. Your feedback shapes everything we do." },
+              { title: "Multi-Vendor Range", desc: "Sellers can list products across watches, straps, perfumes, eyewear, accessories, gadgets, and fashion." },
+              { title: "Private Delivery", desc: "Plain packaging keeps every order discreet from checkout to delivery." },
+              { title: "Local Support", desc: `Reach us at ${siteConfig.contact.phone} or ${siteConfig.contact.email}.` },
             ].map(({ title, desc }, i) => (
               <div key={title} className="flex gap-5">
-                <div className="w-10 h-10 bg-black text-white rounded-full flex-shrink-0 flex items-center justify-center font-black text-sm">
+                <div
+                  className="w-10 h-10 text-black rounded-full flex-shrink-0 flex items-center justify-center font-black text-sm"
+                  style={{ background: siteConfig.brandGradient }}
+                >
                   {i + 1}
                 </div>
                 <div>
@@ -112,7 +108,7 @@ export default function AboutPage() {
                     <span className="font-black text-lg">{year}</span>
                   </div>
                   <div className="relative flex-shrink-0">
-                    <div className="w-3 h-3 bg-black rounded-full mt-1.5" />
+                  <div className="w-3 h-3 rounded-full mt-1.5" style={{ background: siteConfig.brandColor }} />
                   </div>
                   <p className="text-gray-600 pt-0.5">{event}</p>
                 </div>
@@ -126,13 +122,16 @@ export default function AboutPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-14">
           <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">The People</p>
-          <h2 className="text-4xl font-black uppercase tracking-tight">Meet the Team</h2>
+          <h2 className="text-4xl font-black uppercase tracking-tight">Meet the Marketplace</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {team.map(({ name, role, emoji }) => (
+          {team.map(({ name, role, badge }) => (
             <div key={name} className="text-center">
-              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl">
-                {emoji}
+              <div
+                className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl font-black"
+                style={{ background: siteConfig.brandGradient }}
+              >
+                {badge}
               </div>
               <h3 className="font-black uppercase tracking-tight text-sm mb-1">{name}</h3>
               <p className="text-gray-500 text-xs">{role}</p>
@@ -147,7 +146,7 @@ export default function AboutPage() {
           Ready to Shop?
         </h2>
         <p className="text-gray-400 mb-10 max-w-md mx-auto">
-          Browse our latest collection of authentic branded footwear.
+          Browse watches, watch straps, perfumes, eyewear, accessories, mobile gadgets, and fashion.
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
           <Link href="/shop" className="btn-primary">

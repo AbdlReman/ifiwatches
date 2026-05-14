@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import ImageUploader from "./ImageUploader";
 import RichTextEditor from "./RichTextEditor";
 import type { ColorVariant, IProduct } from "@/types/product";
+import { siteConfig } from "@/lib/siteConfig";
 
 function newVariantRowKey(): string {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
@@ -61,8 +62,8 @@ export default function ProductForm({
   afterSaveRedirect = "/admin/products",
 }: ProductFormProps) {
   const router = useRouter();
-  const fallbackBrand = brandOptions[0] || "PUMA";
-  const fallbackCategory = categoryOptions[0] || "Running";
+  const fallbackBrand = brandOptions[0] || siteConfig.brandName;
+  const fallbackCategory = categoryOptions[0] || siteConfig.categories[0];
   const emptyForm = {
     name: "",
     brand: fallbackBrand,
@@ -216,7 +217,7 @@ export default function ProductForm({
               required
               value={form.name}
               onChange={(e) => set("name", e.target.value)}
-              placeholder="e.g. Velocity Runner Pro"
+              placeholder="e.g. Classic Chronograph Watch"
               className={inputClass}
             />
           </div>
@@ -414,7 +415,7 @@ export default function ProductForm({
               maxLength={60}
               value={form.metaTitle}
               onChange={(e) => set("metaTitle", e.target.value)}
-              placeholder="e.g. PUMA Velocity Runner Pro - Best Running Shoes"
+              placeholder="e.g. Classic Chronograph Watch - ifilifestyle"
               className={inputClass}
             />
             <p className="text-slate-500 text-xs mt-1">{form.metaTitle.length}/60</p>
@@ -427,7 +428,7 @@ export default function ProductForm({
               maxLength={160}
               value={form.metaDescription}
               onChange={(e) => set("metaDescription", e.target.value)}
-              placeholder="e.g. Experience ultimate comfort and performance with the PUMA Velocity Runner Pro. Perfect for serious runners."
+              placeholder="e.g. Premium lifestyle product available from trusted vendors at ifilifestyle."
               className={`${inputClass} resize-none`}
             />
             <p className="text-slate-500 text-xs mt-1">{form.metaDescription.length}/160</p>

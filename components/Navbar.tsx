@@ -2,25 +2,25 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { siteConfig } from "@/lib/siteConfig";
 
 type AuthUser = { id: string; email: string; name: string; role: string };
 
-const PRIMARY_LINKS = [
+const STATIC_LINKS = [
   { href: "/", label: "Home" },
-  { href: "/shop?category=Men", label: "Men" },
-  { href: "/shop?category=Women", label: "Women" },
+  { href: "/shop", label: "Shop" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
+
+const dedupe = (values: string[]) =>
+  Array.from(new Set(values.map((value) => value.trim()).filter(Boolean)));
 
 export default function Navbar() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [collectionsOpen, setCollectionsOpen] = useState(false);
-  const [mobileCollectionsOpen, setMobileCollectionsOpen] = useState(false);
   const [collections, setCollections] = useState<string[]>([]);
-  const [loadingCollections, setLoadingCollections] = useState(true);
   const [cartCount, setCartCount] = useState(0);
   const [authUser, setAuthUser] = useState<AuthUser | null | undefined>(undefined);
   const [accountOpen, setAccountOpen] = useState(false);
@@ -37,11 +37,18 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    void refreshAuth();
+    const timer = window.setTimeout(() => {
+      void refreshAuth();
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [refreshAuth]);
 
-  const collectionLinks = useMemo(
-    () => collections.map((category) => ({ href: `/shop?category=${encodeURIComponent(category)}`, label: category })),
+  const categoryLinks = useMemo(
+    () =>
+      dedupe([...siteConfig.categories, ...collections]).map((category) => ({
+        href: `/shop?category=${encodeURIComponent(category)}`,
+        label: category,
+      })),
     [collections]
   );
 
@@ -63,7 +70,6 @@ export default function Navbar() {
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      setLoadingCollections(true);
       try {
         const res = await fetch("/api/navigation/collections");
         const data = await res.json();
@@ -72,8 +78,6 @@ export default function Navbar() {
         }
       } catch {
         if (!cancelled) setCollections([]);
-      } finally {
-        if (!cancelled) setLoadingCollections(false);
       }
     })();
     return () => {
@@ -82,97 +86,59 @@ export default function Navbar() {
   }, []);
 
   const isHome = pathname === "/";
-  const isMen = pathname === "/shop" && activeCategory.toLowerCase() === "men";
-  const isWomen = pathname === "/shop" && activeCategory.toLowerCase() === "women";
-  const isCollectionsActive =
-    pathname === "/shop" &&
-    activeCategory !== "" &&
-    activeCategory.toLowerCase() !== "men" &&
-    activeCategory.toLowerCase() !== "women";
+  const isShop = pathname === "/shop" && !activeCategory;
+  const isCategoryActive = (label: string) =>
+    pathname === "/shop" && activeCategory.toLowerCase() === label.toLowerCase();
 
   const linkClass = (active: boolean) =>
-    `nav-link text-zinc-100 hover:text-white transition-colors ${active ? "border-b-2 border-zinc-200" : ""}`;
+    `nav-link text-zinc-100 hover:text-white transition-colors ${active ? "border-b-2 border-[rgb(218,170,88)]" : ""}`;
 
   return (
     <header className="sticky top-0 z-50 bg-zinc-950/95 backdrop-blur border-b border-zinc-800">
       {/* Top promo bar */}
-      <div className="bg-zinc-900 text-zinc-100 text-center py-2 text-xs font-bold tracking-widest uppercase border-b border-zinc-800">
-        We Deliver Free All Over Pakistan
+      <div
+        className="text-zinc-950 py-2 text-xs font-bold tracking-widest uppercase border-b border-zinc-800"
+        style={{ background: siteConfig.brandGradient }}
+      >
+        <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-1">
+          <span>Free shipping on orders above Rs. 3000 across Pakistan</span>
+          <span className="text-[11px]">
+            {siteConfig.contact.phone} | {siteConfig.contact.email}
+          </span>
+        </div>
       </div>
 
       <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between gap-5 min-h-16 py-3">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-zinc-100 rounded-sm flex items-center justify-center">
-              <span className="text-zinc-900 font-black text-sm">BT</span>
+          <Link href="/" className="flex items-center gap-2 shrink-0" aria-label={`${siteConfig.brandName} home`}>
+            <div
+              className="w-9 h-9 rounded-sm flex items-center justify-center"
+              style={{ background: siteConfig.brandGradient }}
+            >
+              <span className="text-zinc-950 font-black text-sm">{siteConfig.brandInitials}</span>
             </div>
-            <span className="font-black text-lg uppercase tracking-widest text-zinc-100">
-              Branded<span className="text-zinc-300">Thrift</span>
+            <span className="font-black text-lg lowercase tracking-widest text-zinc-100">
+              {siteConfig.brandName}
             </span>
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8">
-            {PRIMARY_LINKS.slice(0, 3).map((link) => {
-              const active =
-                link.label === "Home" ? isHome : link.label === "Men" ? isMen : isWomen;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={linkClass(active)}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-
-            <div
-              className="relative"
-              onMouseEnter={() => setCollectionsOpen(true)}
-              onMouseLeave={() => setCollectionsOpen(false)}
-            >
-              <button
-                type="button"
-                className={`${linkClass(isCollectionsActive)} inline-flex items-center gap-1`}
-                onClick={() => setCollectionsOpen((prev) => !prev)}
-                aria-expanded={collectionsOpen}
-                aria-haspopup="menu"
-              >
-                Collections
-                <span className="text-xs">▼</span>
-              </button>
-
-              {collectionsOpen && (
-                <div className="absolute left-0 top-full mt-2 min-w-[13rem] rounded-md border border-zinc-700 bg-zinc-900 p-2 shadow-xl before:absolute before:-top-2 before:left-0 before:right-0 before:h-2 before:content-['']">
-                  {loadingCollections ? (
-                    <p className="px-3 py-2 text-xs text-zinc-400">Loading...</p>
-                  ) : collectionLinks.length === 0 ? (
-                    <p className="px-3 py-2 text-xs text-zinc-400">No collections</p>
-                  ) : (
-                    collectionLinks.map((link) => (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        className={`block rounded px-3 py-2 text-sm text-zinc-100 hover:bg-zinc-800 ${
-                          activeCategory.toLowerCase() === link.label.toLowerCase() ? "bg-zinc-800" : ""
-                        }`}
-                        onClick={() => setCollectionsOpen(false)}
-                      >
-                        {link.label}
-                      </Link>
-                    ))
-                  )}
-                </div>
-              )}
-            </div>
-
-            {PRIMARY_LINKS.slice(3).map((link) => (
+          <nav className="hidden xl:flex items-center gap-5">
+            {STATIC_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={linkClass(pathname === link.href)}
+                className={linkClass(link.href === "/" ? isHome : link.href === "/shop" ? isShop : pathname === link.href)}
+              >
+                {link.label}
+              </Link>
+            ))}
+            {categoryLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={linkClass(isCategoryActive(link.label))}
               >
                 {link.label}
               </Link>
@@ -180,7 +146,7 @@ export default function Navbar() {
           </nav>
 
           {/* Icons */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-4">
             {authUser === undefined ? null : authUser ? (
               <div
                 className="relative hidden sm:block"
@@ -253,13 +219,20 @@ export default function Navbar() {
                 </Link>
               </div>
             )}
-            {/* Search */}
-            <button aria-label="Search" className="hover:opacity-70 transition-opacity text-zinc-100">
+            <Link href="/wishlist" aria-label="Wishlist" className="hidden sm:block hover:opacity-70 transition-opacity text-zinc-100">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.35-4.35" />
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" />
               </svg>
-            </button>
+            </Link>
+
+            <Link href="/compare" aria-label="Compare" className="hidden sm:block hover:opacity-70 transition-opacity text-zinc-100">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path d="M16 3h5v5" />
+                <path d="M8 21H3v-5" />
+                <path d="M21 3 14 10" />
+                <path d="M3 21 10 14" />
+              </svg>
+            </Link>
 
             {/* Cart */}
             <Link href="/cart" aria-label="Cart" className="relative hover:opacity-70 transition-opacity text-zinc-100">
@@ -269,7 +242,10 @@ export default function Navbar() {
                 <path d="M16 10a4 4 0 0 1-8 0" />
               </svg>
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-zinc-100 text-zinc-900 text-xs w-4 h-4 rounded-full flex items-center justify-center">
+                <span
+                  className="absolute -top-2 -right-2 text-zinc-950 text-xs w-4 h-4 rounded-full flex items-center justify-center"
+                  style={{ background: siteConfig.brandGradient }}
+                >
                   {cartCount}
                 </span>
               )}
@@ -277,7 +253,7 @@ export default function Navbar() {
 
             {/* Mobile menu button */}
             <button
-              className="md:hidden hover:opacity-70 transition-opacity text-zinc-100"
+              className="xl:hidden hover:opacity-70 transition-opacity text-zinc-100"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle menu"
             >
@@ -299,78 +275,50 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden border-t border-zinc-800 bg-zinc-950">
+        <div className="xl:hidden border-t border-zinc-800 bg-zinc-950">
           <nav className="flex flex-col px-4 py-4 gap-4">
-            <Link
-              href="/"
-              onClick={() => setMenuOpen(false)}
-              className={`nav-link text-sm py-1 text-zinc-100 hover:text-white transition-colors ${
-                isHome ? "border-b-2 border-zinc-200 w-fit" : ""
-              }`}
-            >
-              Home
-            </Link>
-            <Link
-              href="/shop?category=Men"
-              onClick={() => setMenuOpen(false)}
-              className={`nav-link text-sm py-1 text-zinc-100 hover:text-white transition-colors ${
-                isMen ? "border-b-2 border-zinc-200 w-fit" : ""
-              }`}
-            >
-              Men
-            </Link>
-            <Link
-              href="/shop?category=Women"
-              onClick={() => setMenuOpen(false)}
-              className={`nav-link text-sm py-1 text-zinc-100 hover:text-white transition-colors ${
-                isWomen ? "border-b-2 border-zinc-200 w-fit" : ""
-              }`}
-            >
-              Women
-            </Link>
-
-            <button
-              type="button"
-              onClick={() => setMobileCollectionsOpen((prev) => !prev)}
-              className={`nav-link text-left text-sm py-1 text-zinc-100 hover:text-white transition-colors ${
-                isCollectionsActive ? "border-b-2 border-zinc-200 w-fit" : ""
-              }`}
-            >
-              Collections ▼
-            </button>
-            {mobileCollectionsOpen && (
-              <div className="ml-3 flex flex-col gap-2 border-l border-zinc-800 pl-3">
-                {loadingCollections ? (
-                  <p className="text-xs text-zinc-400">Loading...</p>
-                ) : collectionLinks.length === 0 ? (
-                  <p className="text-xs text-zinc-400">No collections</p>
-                ) : (
-                  collectionLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setMenuOpen(false)}
-                      className="text-sm text-zinc-200 hover:text-white"
-                    >
-                      {link.label}
-                    </Link>
-                  ))
-                )}
-              </div>
-            )}
-
-            {PRIMARY_LINKS.slice(3).map((link) => (
+            {STATIC_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
                 className={`nav-link text-sm py-1 text-zinc-100 hover:text-white transition-colors ${
-                  pathname === link.href ? "border-b-2 border-zinc-200 w-fit" : ""
+                  (link.href === "/" ? isHome : link.href === "/shop" ? isShop : pathname === link.href)
+                    ? "border-b-2 border-[rgb(218,170,88)] w-fit"
+                    : ""
                 }`}
               >
                 {link.label}
               </Link>
             ))}
+
+            <div className="grid grid-cols-2 gap-3 border-y border-zinc-800 py-4">
+              {categoryLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={`text-sm text-zinc-200 hover:text-white ${
+                    isCategoryActive(link.label) ? "font-bold text-[rgb(218,170,88)]" : ""
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              {siteConfig.utilityLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="text-sm text-zinc-200 hover:text-white"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
 
             {authUser === undefined ? null : authUser ? (
               <>

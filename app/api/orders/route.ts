@@ -20,7 +20,7 @@ import {
 } from "@/lib/orderEmailHtml";
 
 function makeOrderNumber() {
-  return `BT-${Date.now().toString().slice(-8)}`;
+  return `IFI-${Date.now().toString().slice(-8)}`;
 }
 
 export async function GET() {
@@ -54,7 +54,7 @@ export async function GET() {
   }
 }
 
-const VALID_PAYMENT_METHODS = ["easypaisa", "sadapay", "meezan"] as const;
+const VALID_PAYMENT_METHODS = ["easypaisa", "jazzcash", "raast"] as const;
 
 export async function POST(req: NextRequest) {
   try {

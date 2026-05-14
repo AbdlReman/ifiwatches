@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
+import { siteConfig } from "@/lib/siteConfig";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
@@ -49,7 +50,7 @@ export default function ContactPage() {
           <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tight leading-none">
             Get in
             <br />
-            <span className="text-gray-500">Touch</span>
+            <span style={{ color: siteConfig.brandColor }}>Touch</span>
           </h1>
         </div>
       </section>
@@ -78,8 +79,8 @@ export default function ContactPage() {
                       </svg>
                     ),
                     label: "Phone / WhatsApp",
-                    value: "03140151948",
-                    href: "https://wa.me/923140151948",
+                    value: siteConfig.contact.phone,
+                    href: `tel:${siteConfig.contact.phone}`,
                   },
                   {
                     icon: (
@@ -88,8 +89,8 @@ export default function ContactPage() {
                       </svg>
                     ),
                     label: "WhatsApp",
-                    value: "03140151948",
-                    href: "https://wa.me/923140151948",
+                    value: siteConfig.contact.whatsapp,
+                    href: siteConfig.contact.whatsappHref,
                   },
                   {
                     icon: (
@@ -98,11 +99,26 @@ export default function ContactPage() {
                       </svg>
                     ),
                     label: "Email",
-                    value: "hello@brandedthrift.com",
+                    value: siteConfig.contact.email,
+                    href: `mailto:${siteConfig.contact.email}`,
+                  },
+                  {
+                    icon: (
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                      </svg>
+                    ),
+                    label: "Website",
+                    value: siteConfig.domain,
+                    href: siteConfig.url,
                   },
                 ].map(({ icon, label, value, href }) => (
                   <div key={label} className="flex gap-4">
-                    <div className="w-10 h-10 bg-black text-white rounded-full flex-shrink-0 flex items-center justify-center">
+                    <div
+                      className="w-10 h-10 text-black rounded-full flex-shrink-0 flex items-center justify-center"
+                      style={{ background: siteConfig.brandGradient }}
+                    >
                       {icon}
                     </div>
                     <div>
@@ -127,14 +143,11 @@ export default function ContactPage() {
               <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Quick Answers</p>
               <div className="space-y-4">
                 {[
-                  { q: "How long does shipping take?", a: "Standard shipping takes 3-5 business days." },
-                  { q: "Are all shoes authentic?", a: "Yes — every shoe is verified by our authentication team." },
-                  {
-                    q: "Are the shoes used?",
-                    a: "Yes - all pairs are preloved, but we ensure they are in great condition before listing.",
-                  },
+                  { q: "How much is shipping?", a: "Shipping is free on all orders above Rs. 3000 across Pakistan." },
+                  { q: "Is packaging private?", a: "Yes. Orders are delivered in plain, discreet packaging for your privacy." },
+                  { q: "Can I sell on ifilifestyle?", a: "Yes. Create a seller account and list products through the seller dashboard." },
                 ].map(({ q, a }) => (
-                  <div key={q} className="border-l-2 border-black pl-4">
+                  <div key={q} className="border-l-2 pl-4" style={{ borderColor: siteConfig.brandColor }}>
                     <p className="font-bold text-sm mb-1">{q}</p>
                     <p className="text-gray-500 text-xs">{a}</p>
                   </div>
@@ -203,7 +216,7 @@ export default function ContactPage() {
                     <option value="">Select a subject…</option>
                     <option>Order & Shipping</option>
                     <option>Returns & Refunds</option>
-                    <option>Product Authenticity</option>
+                    <option>Vendor / Seller Support</option>
                     <option>Partnership Inquiry</option>
                     <option>Other</option>
                   </select>

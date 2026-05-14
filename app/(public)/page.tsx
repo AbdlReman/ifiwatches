@@ -1,55 +1,57 @@
 import Link from "next/link";
 import Image from "next/image";
 import { formatPkr } from "@/lib/formatCurrency";
+import { siteConfig } from "@/lib/siteConfig";
 
 const featuredProducts = [
   {
     id: 1,
-    name: "Velocity Runner Pro",
+    name: "Classic Chronograph Watch",
     price: 12999,
     originalPrice: 17999,
-    brand: "PUMA",
-    color: "Black / White",
+    brand: "Watches",
+    color: "Black / Gold",
     bg: "bg-gray-100",
     image: "/images/1.webp",
   },
   {
     id: 2,
-    name: "Street Glide Elite",
+    name: "Signature Perfume",
     price: 9999,
     originalPrice: 14499,
-    brand: "NIKE",
-    color: "Red / Black",
+    brand: "Perfumes",
+    color: "Premium fragrance",
     bg: "bg-red-50",
     image: "/images/2.webp",
   },
   {
     id: 3,
-    name: "Classic Court Low",
+    name: "Everyday Eyewear",
     price: 8499,
     originalPrice: 11999,
-    brand: "ADIDAS",
-    color: "White / Navy",
+    brand: "Eyewear",
+    color: "Modern frame",
     bg: "bg-blue-50",
     image: "/images/3.webp",
   },
   {
     id: 4,
-    name: "Trail Blazer X9",
+    name: "Mobile Gadget Set",
     price: 14999,
     originalPrice: 20999,
-    brand: "NEW BALANCE",
-    color: "Grey / Orange",
+    brand: "Mobile Gadgets",
+    color: "Smart essentials",
     bg: "bg-orange-50",
     image: "/images/01.webp",
   },
 ];
 
-const categories = [
-  { name: "Running", desc: "Performance-built for every mile", bg: "bg-black", text: "text-white" },
-  { name: "Lifestyle", desc: "Street-ready everyday style", bg: "bg-gray-100", text: "text-black" },
-  { name: "Training", desc: "Built for the gym & beyond", bg: "bg-gray-900", text: "text-white" },
-];
+const categories = siteConfig.categories.map((name, index) => ({
+  name,
+  desc: index % 2 === 0 ? "Curated marketplace picks" : "Vendor-listed lifestyle essentials",
+  bg: index % 2 === 0 ? "bg-black" : "bg-gray-100",
+  text: index % 2 === 0 ? "text-white" : "text-black",
+}));
 
 export default function HomePage() {
   return (
@@ -65,13 +67,13 @@ export default function HomePage() {
         <div className="relative max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-white mb-4 animate-fade-in-up text-4xl md:text-6xl font-black uppercase tracking-tight">
-              Thrifted Branded Shoes
+              IFI Lifestyle Marketplace
             </h1>
             <p className="text-gray-100 text-base md:text-lg mb-3 leading-relaxed">
-              Upgrade your style for less - branded looks without the cost.
+              Premium watches, perfumes, eyewear, accessories, mobile gadgets, and fashion from trusted vendors.
             </p>
             <p className="text-gray-200 text-sm md:text-base max-w-2xl mx-auto mb-10">
-              100% original branded shoes - preloved, no repairs, affordable.
+              Shop at {siteConfig.domain} with private delivery and support across Pakistan.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link href="/shop" className="btn-primary">
@@ -93,11 +95,11 @@ export default function HomePage() {
       {/* Category Strip */}
       <section className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <h2 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-8">Shop by Category</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
           {categories.map((cat) => (
             <Link
               key={cat.name}
-              href="/shop"
+              href={`/shop?category=${encodeURIComponent(cat.name)}`}
               className={`${cat.bg} ${cat.text} group relative overflow-hidden h-56 flex flex-col justify-end p-8 hover:opacity-90 transition-opacity`}
             >
               <span className="text-xs font-bold uppercase tracking-widest opacity-60 mb-2">
@@ -107,7 +109,7 @@ export default function HomePage() {
                 {cat.name}
               </h3>
               <span className="mt-4 text-xs font-bold uppercase tracking-widest flex items-center gap-2 group-hover:gap-4 transition-all">
-                Explore →
+                Explore -&gt;
               </span>
             </Link>
           ))}
@@ -122,7 +124,7 @@ export default function HomePage() {
             <h2 className="text-4xl font-black uppercase tracking-tight">Featured Drops</h2>
           </div>
           <Link href="/shop" className="text-xs font-bold uppercase tracking-widest hover:opacity-60 transition-opacity flex items-center gap-2">
-            View All →
+            View All -&gt;
           </Link>
         </div>
 
@@ -163,10 +165,10 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-slate-900/75" />
         <div className="relative z-10 px-4">
         <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">
-          THRIFTED SHOES FROM BRANDS YOU LOVE
+          A MULTI-VENDOR STORE FOR EVERYDAY LIFESTYLE
         </h2>
         <p className="text-slate-200 mb-10 max-w-xl mx-auto">
-          Up to 30% Off. Premium looks, better prices, and free shipping all over Pakistan.
+          Free shipping above Rs. 3000, discreet packaging, and easy checkout across Pakistan.
         </p>
         <Link href="/shop" className="btn-primary">
           Shop the Sale
@@ -177,17 +179,19 @@ export default function HomePage() {
       {/* Why Us */}
       <section className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-14">
-          <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Why Branded Thrift</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Why {siteConfig.brandName}</p>
           <h2 className="text-4xl font-black uppercase tracking-tight">The Difference</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {[
-            { icon: "✓", title: "100% Authentic", desc: "Every shoe is verified authentic. No replicas, no exceptions." },
-            { icon: "♻", title: "Sustainable", desc: "Pre-loved and new stock — great for your wallet and the planet." },
-            { icon: "⚡", title: "Fast Delivery", desc: "Orders dispatched quickly with free shipping all over Pakistan." },
+            { icon: "1", title: "Multi-Vendor Choice", desc: "Shop products across lifestyle categories from different sellers in one place." },
+            ...siteConfig.trustBadges.map((badge, index) => ({ icon: String(index + 2), title: badge.title, desc: badge.description })),
           ].map(({ icon, title, desc }) => (
             <div key={title} className="text-center">
-              <div className="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-black">
+              <div
+                className="w-16 h-16 text-black rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-black"
+                style={{ background: siteConfig.brandGradient }}
+              >
                 {icon}
               </div>
               <h3 className="font-black uppercase tracking-tight text-xl mb-3">{title}</h3>

@@ -7,6 +7,7 @@ import Brand from "@/models/Brand";
 import Category from "@/models/Category";
 import ProductForm from "../../../_components/ProductForm";
 import type { IProduct } from "@/types/product";
+import { siteConfig } from "@/lib/siteConfig";
 
 export const metadata: Metadata = { title: "Edit Product — Admin" };
 
@@ -40,9 +41,9 @@ export default async function EditProductPage({
         .concat(String((raw as Record<string, unknown>).category || ""))
     )
   );
-  const finalBrandOptions = brandOptions.length > 0 ? brandOptions : ["PUMA"];
+  const finalBrandOptions = brandOptions.length > 0 ? brandOptions : [siteConfig.brandName];
   const finalCategoryOptions = Array.from(
-    new Set((categoryOptions.length > 0 ? categoryOptions : ["Running"]).concat(["Men", "Women"]))
+    new Set((categoryOptions.length > 0 ? categoryOptions : [...siteConfig.categories]).concat([...siteConfig.categories]))
   );
 
   const p = raw as Record<string, unknown>;

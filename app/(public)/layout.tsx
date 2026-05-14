@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import "../globals.css";
 import PublicChrome from "@/components/PublicChrome";
+import { siteConfig } from "@/lib/siteConfig";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Branded Thrift | Premium Shoes",
-  description: "Shop the latest collection of premium branded shoes at Branded Thrift.",
+  title: `${siteConfig.brandName} | Multi-Vendor Lifestyle Marketplace`,
+  description:
+    "Shop watches, watch straps, perfumes, eyewear, rings, accessories, mobile gadgets, and fashion at ifilifestyle.",
+  metadataBase: new URL(siteConfig.url),
 };
 
 export default function PublicLayout({

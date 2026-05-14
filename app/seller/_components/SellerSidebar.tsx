@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { siteConfig } from "@/lib/siteConfig";
 
 const navLinks = [
   {
@@ -67,8 +68,11 @@ export default function SellerSidebar() {
   return (
     <aside className="w-16 lg:w-64 bg-slate-900 flex flex-col flex-shrink-0 border-r border-slate-800">
       <div className="h-16 flex items-center px-4 border-b border-slate-800">
-        <div className="w-8 h-8 bg-emerald-600 rounded flex items-center justify-center flex-shrink-0">
-          <span className="text-white font-black text-sm">S</span>
+        <div
+          className="w-8 h-8 rounded flex items-center justify-center flex-shrink-0"
+          style={{ background: siteConfig.brandGradient }}
+        >
+          <span className="text-slate-950 font-black text-sm">S</span>
         </div>
         <span className="ml-3 font-black text-sm uppercase tracking-widest text-white hidden lg:block">
           Seller
