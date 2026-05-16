@@ -75,13 +75,14 @@ export default function HomePage() {
         <div className="relative max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-white mb-4 animate-fade-in-up text-4xl md:text-6xl font-black uppercase tracking-tight">
-              IFI Lifestyle Marketplace
+              IFI Lifestyle
             </h1>
             <p className="text-gray-100 text-base md:text-lg mb-3 leading-relaxed">
-              Premium watches, perfumes, eyewear, accessories, mobile gadgets, and fashion from trusted vendors.
+              Our Standard, Our Signature — one product, one trusted seller, zero confusion.
             </p>
             <p className="text-gray-200 text-sm md:text-base max-w-2xl mx-auto mb-10">
-              Shop at {siteConfig.domain} with private delivery and support across Pakistan.
+              Premium watches, perfumes, eyewear, accessories, mobile gadgets, and fashion. Quality, trust, and simplicity
+              in one place.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link href="/shop" className="btn-primary">
@@ -173,10 +174,11 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-slate-900/75" />
         <div className="relative z-10 px-4">
         <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">
-          A MULTI-VENDOR STORE FOR EVERYDAY LIFESTYLE
+          Building the Future of Digital Lifestyle
         </h2>
         <p className="text-slate-200 mb-10 max-w-xl mx-auto">
-          Free shipping above Rs. 3000, discreet packaging, and easy checkout across Pakistan.
+          One seller per product. Trusted sellers only. Free shipping above Rs. 3000 and discreet packaging across
+          Pakistan.
         </p>
         <Link href="/shop" className="btn-primary">
           Shop the Sale
@@ -192,7 +194,11 @@ export default function HomePage() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {[
-            { icon: "1", title: "Multi-Vendor Choice", desc: "Shop products across lifestyle categories from different sellers in one place." },
+            {
+              icon: "1",
+              title: "One Seller Per Product",
+              desc: "Every product has one verified seller — no duplicates, no confusion, full accountability.",
+            },
             ...siteConfig.trustBadges.map((badge, index) => ({ icon: String(index + 2), title: badge.title, desc: badge.description })),
           ].map(({ icon, title, desc }) => (
             <div key={title} className="text-center">

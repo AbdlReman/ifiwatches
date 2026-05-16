@@ -50,7 +50,8 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed">
-              A multi-vendor lifestyle marketplace for watches, perfumes, eyewear, accessories, mobile gadgets, and fashion.
+              IFI Lifestyle — Iconic Futures Innovations. A trusted lifestyle platform: one product, one seller, quality
+              and standards first.
             </p>
             <div className="mt-5 space-y-3">
               {siteConfig.trustBadges.map((badge) => (
