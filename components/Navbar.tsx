@@ -62,10 +62,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-zinc-950/95 backdrop-blur border-b border-zinc-800">
       {/* Top promo bar */}
-      <div
-        className="text-zinc-950 py-2 text-xs font-bold tracking-widest uppercase border-b border-zinc-800"
-        style={{ background: siteConfig.brandGradient }}
-      >
+      <div className="bg-white text-zinc-900 py-2 text-xs font-bold tracking-widest uppercase border-b border-zinc-200">
         <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-1">
           <span>Free shipping on orders above Rs. 3000 across Pakistan</span>
           <span className="text-[11px]">
