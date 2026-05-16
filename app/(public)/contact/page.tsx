@@ -41,10 +41,10 @@ export default function ContactPage() {
   return (
     <div>
       {/* Header */}
-      <section className="bg-black text-white py-20">
+      <section className="bg-zinc-100 text-zinc-900 py-20 border-b border-zinc-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <Link href="/" className="hover:text-zinc-950 transition-colors">Home</Link>
             {" / "}Contact
           </p>
           <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tight leading-none">
@@ -160,7 +160,10 @@ export default function ContactPage() {
           <div className="lg:col-span-3">
             {submitted ? (
               <div className="h-full flex flex-col items-center justify-center text-center py-20 border border-gray-200">
-                <div className="w-20 h-20 bg-black text-white rounded-full flex items-center justify-center text-3xl mb-6">
+                <div
+                  className="w-20 h-20 text-zinc-950 rounded-full flex items-center justify-center text-3xl mb-6"
+                  style={{ background: siteConfig.brandGradient }}
+                >
                   ✓
                 </div>
                 <h2 className="text-3xl font-black uppercase tracking-tight mb-3">Message Sent!</h2>

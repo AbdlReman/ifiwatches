@@ -39,10 +39,10 @@ export default function AboutPage() {
   return (
     <div>
       {/* Hero — Our Standard, Our Signature */}
-      <section className="bg-black text-white min-h-[60vh] flex items-center">
+      <section className="bg-zinc-100 text-zinc-900 min-h-[60vh] flex items-center border-b border-zinc-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
-          <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">
-            <Link href="/" className="hover:text-white transition-colors">
+          <p className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-4">
+            <Link href="/" className="hover:text-zinc-950 transition-colors">
               Home
             </Link>
             {" / "}About
@@ -55,7 +55,7 @@ export default function AboutPage() {
               IFI Lifestyle — Our Standard, Our Signature
             </h1>
             <blockquote
-              className="border-l-4 pl-6 text-gray-300 text-lg md:text-xl leading-relaxed italic mb-6"
+              className="border-l-4 pl-6 text-zinc-700 text-lg md:text-xl leading-relaxed italic mb-6"
               style={{ borderColor: siteConfig.brandColor }}
             >
               We are not a marketplace. We are a standard.
@@ -64,7 +64,7 @@ export default function AboutPage() {
               <br />
               Everything you need — quality, trust, and simplicity — in one place.
             </blockquote>
-            <p className="text-gray-400 font-semibold tracking-wide">IFI Lifestyle. Iconic Futures Innovations.</p>
+            <p className="text-zinc-600 font-semibold tracking-wide">IFI Lifestyle. Iconic Futures Innovations.</p>
           </div>
         </div>
       </section>
@@ -176,11 +176,11 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-black text-white py-20 text-center">
+      <section className="bg-zinc-100 text-zinc-900 py-20 text-center border-t border-zinc-200">
         <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-6">
           Building the Future of Digital Lifestyle
         </h2>
-        <p className="text-gray-400 mb-10 max-w-xl mx-auto">
+        <p className="text-zinc-600 mb-10 max-w-xl mx-auto">
           One product. One trusted seller. Premium lifestyle essentials — watches, perfumes, eyewear, accessories, mobile
           gadgets, and fashion.
         </p>
@@ -188,7 +188,7 @@ export default function AboutPage() {
           <Link href="/shop" className="btn-primary">
             Shop Now
           </Link>
-          <Link href="/contact" className="btn-outline border-white text-white hover:bg-white hover:text-black">
+          <Link href="/contact" className="btn-outline-dark">
             Get in Touch
           </Link>
         </div>

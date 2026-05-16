@@ -17,7 +17,7 @@ export default function PublicLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en-PK" className="h-full" suppressHydrationWarning>
-      <body className="min-h-full flex flex-col antialiased" suppressHydrationWarning>
+      <body className="min-h-full flex flex-col antialiased bg-white text-zinc-900" suppressHydrationWarning>
         <PublicChrome>{children}</PublicChrome>
       </body>
     </html>

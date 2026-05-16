@@ -87,5 +87,42 @@ body {
 
 .btn-outline:hover { background: #fff; color: #0a0a0a; }
 
+.btn-outline-dark {
+  display: inline-block;
+  border: 2px solid #0a0a0a;
+  color: #0a0a0a;
+  padding: 0.75rem 2.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-outline-dark:hover { background: #0a0a0a; color: #ffffff; }
+
+.public-input {
+  width: 100%;
+  border: 1px solid #d4d4d8;
+  background: #ffffff;
+  color: #18181b;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.public-input:focus {
+  outline: none;
+  border-color: #71717a;
+}
+
+.public-card {
+  border: 1px solid #e4e4e7;
+  background: #ffffff;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
 .product-card:hover .product-img { transform: scale(1.04); }
 .product-img { transition: transform 0.4s ease; }

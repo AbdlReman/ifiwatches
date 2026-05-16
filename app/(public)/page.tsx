@@ -49,38 +49,39 @@ const featuredProducts = [
 const categories = siteConfig.categories.map((name, index) => ({
   name,
   desc: index % 2 === 0 ? "Curated marketplace picks" : "Vendor-listed lifestyle essentials",
-  bg: index % 2 === 0 ? "bg-black" : "bg-gray-100",
-  text: index % 2 === 0 ? "text-white" : "text-black",
+  bg: index % 2 === 0 ? "bg-zinc-100" : "bg-white border border-zinc-200",
+  text: "text-zinc-900",
 }));
 
 export default function HomePage() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-black text-white overflow-hidden min-h-[60vh] flex items-center">
+      <section className="relative bg-zinc-100 text-zinc-900 overflow-hidden min-h-[60vh] flex items-center">
         <div
-          className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800"
+          className="absolute inset-0"
           style={{
             backgroundImage: `url(${siteConfig.images.hero})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            opacity: 0.75,
+            opacity: 0.35,
           }}
         />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/80 to-white/95" />
 
         {/* Decorative circle */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full border border-gray-800 opacity-30" />
-        <div className="absolute right-20 top-1/2 -translate-y-1/2 w-[320px] h-[320px] rounded-full border border-gray-700 opacity-20" />
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full border border-zinc-300 opacity-40" />
+        <div className="absolute right-20 top-1/2 -translate-y-1/2 w-[320px] h-[320px] rounded-full border border-zinc-200 opacity-50" />
 
         <div className="relative max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-white mb-4 animate-fade-in-up text-4xl md:text-6xl font-black uppercase tracking-tight">
+            <h1 className="text-zinc-950 mb-4 animate-fade-in-up text-4xl md:text-6xl font-black uppercase tracking-tight">
               IFI Lifestyle
             </h1>
-            <p className="text-gray-100 text-base md:text-lg mb-3 leading-relaxed">
+            <p className="text-zinc-800 text-base md:text-lg mb-3 leading-relaxed">
               Our Standard, Our Signature — one product, one trusted seller, zero confusion.
             </p>
-            <p className="text-gray-200 text-sm md:text-base max-w-2xl mx-auto mb-10">
+            <p className="text-zinc-600 text-sm md:text-base max-w-2xl mx-auto mb-10">
               Premium watches, perfumes, eyewear, accessories, mobile gadgets, and fashion. Quality, trust, and simplicity
               in one place.
             </p>
@@ -90,7 +91,7 @@ export default function HomePage() {
               </Link>
               <Link
                 href="/about"
-                className="btn-outline border-white bg-white/10 !text-white shadow-white/10 hover:bg-white/20 !hover:text-white transition duration-200"
+                className="btn-outline-dark"
               >
                 Our Story
               </Link>
@@ -168,15 +169,15 @@ export default function HomePage() {
 
       {/* Full-width Banner */}
       <section
-        className="relative text-white py-24 text-center overflow-hidden"
+        className="relative text-zinc-900 py-24 text-center overflow-hidden"
         style={{ backgroundImage: `url(${siteConfig.images.hero})`, backgroundSize: "cover", backgroundPosition: "center" }}
       >
-        <div className="absolute inset-0 bg-slate-900/75" />
+        <div className="absolute inset-0 bg-white/85" />
         <div className="relative z-10 px-4">
-        <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">
+        <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6 text-zinc-950">
           Building the Future of Digital Lifestyle
         </h2>
-        <p className="text-slate-200 mb-10 max-w-xl mx-auto">
+        <p className="text-zinc-700 mb-10 max-w-xl mx-auto">
           One seller per product. Trusted sellers only. Free shipping above Rs. 3000 and discreet packaging across
           Pakistan.
         </p>

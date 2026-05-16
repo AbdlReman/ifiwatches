@@ -55,15 +55,15 @@ export default function RegisterPage() {
 
   return (
     <div className="max-w-md mx-auto px-4 py-16">
-      <h1 className="text-3xl font-black uppercase tracking-tight text-zinc-100 mb-2">Create account</h1>
-      <p className="text-zinc-500 text-sm mb-8">
+      <h1 className="text-3xl font-black uppercase tracking-tight text-zinc-900 mb-2">Create account</h1>
+      <p className="text-zinc-600 text-sm mb-8">
         Already have an account?{" "}
-        <Link href="/login" className="text-zinc-200 underline hover:text-white">
+        <Link href="/login" className="text-zinc-900 underline hover:text-zinc-600">
           Sign in
         </Link>
       </p>
 
-      <form onSubmit={handleSubmit} className="space-y-5 border border-zinc-800 bg-zinc-900/40 p-6 rounded-xl">
+      <form onSubmit={handleSubmit} className="public-card space-y-5">
         <div>
           <label className="block text-xs font-bold uppercase text-zinc-500 mb-1">Name</label>
           <input
@@ -71,7 +71,7 @@ export default function RegisterPage() {
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-zinc-700 bg-zinc-950 text-zinc-100 px-3 py-2 rounded-lg text-sm"
+            className="public-input"
           />
         </div>
         <div>
@@ -82,7 +82,7 @@ export default function RegisterPage() {
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-zinc-700 bg-zinc-950 text-zinc-100 px-3 py-2 rounded-lg text-sm"
+            className="public-input"
           />
         </div>
         <div>
@@ -94,13 +94,13 @@ export default function RegisterPage() {
             minLength={8}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-zinc-700 bg-zinc-950 text-zinc-100 px-3 py-2 rounded-lg text-sm"
+            className="public-input"
           />
         </div>
         <fieldset>
           <legend className="block text-xs font-bold uppercase text-zinc-500 mb-2">Account type</legend>
           <div className="space-y-2">
-            <label className="flex items-center gap-2 text-sm text-zinc-300 cursor-pointer">
+            <label className="flex items-center gap-2 text-sm text-zinc-700 cursor-pointer">
               <input
                 type="radio"
                 name="role"
@@ -110,7 +110,7 @@ export default function RegisterPage() {
               />
               Shop as a customer (default)
             </label>
-            <label className="flex items-center gap-2 text-sm text-zinc-300 cursor-pointer">
+            <label className="flex items-center gap-2 text-sm text-zinc-700 cursor-pointer">
               <input
                 type="radio"
                 name="role"
@@ -122,12 +122,8 @@ export default function RegisterPage() {
             </label>
           </div>
         </fieldset>
-        {error ? <p className="text-red-400 text-sm">{error}</p> : null}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-zinc-100 text-zinc-950 font-bold py-2.5 rounded-lg text-sm uppercase tracking-widest hover:bg-white disabled:opacity-50"
-        >
+        {error ? <p className="text-red-600 text-sm">{error}</p> : null}
+        <button type="submit" disabled={loading} className="btn-primary w-full text-center disabled:opacity-50">
           {loading ? "Creating…" : "Register"}
         </button>
       </form>

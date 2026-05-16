@@ -156,17 +156,17 @@ export default function ShopClient({ products }: { products: IProduct[] }) {
 
   return (
     <div className="min-h-screen bg-white text-black">
-      <header className="border-b border-neutral-200 bg-black text-white">
+      <header className="border-b border-zinc-200 bg-white text-zinc-900">
         <div className="mx-auto max-w-[90rem] px-4 py-8 sm:px-6 lg:px-8">
           <Breadcrumbs
-            className="text-neutral-400 [&_a]:text-white [&_a:hover]:underline [&_span]:text-neutral-500"
+            className="text-zinc-500 [&_a]:text-zinc-800 [&_a:hover]:underline [&_span]:text-zinc-500"
             items={[
               { label: "Home", href: "/" },
               { label: "Shop" },
             ]}
           />
           <h1 className="mt-6 text-3xl font-black uppercase tracking-tight sm:text-4xl">Shop</h1>
-          <p className="mt-2 text-sm text-neutral-400">{filtered.length} products</p>
+          <p className="mt-2 text-sm text-zinc-600">{filtered.length} products</p>
         </div>
       </header>
 

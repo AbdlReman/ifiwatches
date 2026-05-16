@@ -68,14 +68,14 @@ export default function AccountProfilePage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-black uppercase tracking-tight text-zinc-100">Profile</h1>
+        <h1 className="text-3xl font-black uppercase tracking-tight text-zinc-900">Profile</h1>
         <p className="text-zinc-500 text-sm mt-1">{user.email}</p>
         <p className="text-zinc-600 text-xs mt-2">
           Role: <span className="text-zinc-400 font-semibold">{user.role}</span>
         </p>
       </div>
 
-      <form onSubmit={onSave} className="max-w-md space-y-4 border border-zinc-800 bg-zinc-900/40 p-6 rounded-xl">
+      <form onSubmit={onSave} className="max-w-md public-card space-y-4">
         <div>
           <label className="block text-xs font-bold uppercase text-zinc-500 mb-1">Display name</label>
           <input
@@ -83,15 +83,11 @@ export default function AccountProfilePage() {
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-zinc-700 bg-zinc-950 text-zinc-100 px-3 py-2 rounded-lg text-sm"
+            className="public-input"
           />
         </div>
         {message ? <p className="text-sm text-zinc-400">{message}</p> : null}
-        <button
-          type="submit"
-          disabled={saving}
-          className="bg-zinc-100 text-zinc-950 font-bold px-5 py-2 rounded-lg text-sm uppercase tracking-widest hover:bg-white disabled:opacity-50"
-        >
+        <button type="submit" disabled={saving} className="btn-primary disabled:opacity-50">
           {saving ? "Saving…" : "Save"}
         </button>
       </form>

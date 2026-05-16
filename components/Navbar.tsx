@@ -57,15 +57,15 @@ export default function Navbar() {
   const isShop = pathname === "/shop";
 
   const linkClass = (active: boolean) =>
-    `nav-link text-zinc-100 hover:text-white transition-colors ${active ? "border-b-2 border-[rgb(218,170,88)]" : ""}`;
+    `nav-link text-zinc-700 hover:text-zinc-950 transition-colors ${active ? "border-b-2 border-[rgb(218,170,88)] text-zinc-950" : ""}`;
 
   return (
-    <header className="sticky top-0 z-50 bg-zinc-950/95 backdrop-blur border-b border-zinc-800">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-zinc-200 shadow-sm">
       {/* Top promo bar */}
-      <div className="bg-white text-zinc-900 py-2 text-xs font-bold tracking-widest uppercase border-b border-zinc-200">
+      <div className="bg-zinc-50 text-zinc-800 py-2 text-xs font-bold tracking-widest uppercase border-b border-zinc-200">
         <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-1">
           <span>Free shipping on orders above Rs. 3000 across Pakistan</span>
-          <span className="text-[11px]">
+          <span className="text-[11px] text-zinc-600">
             {siteConfig.contact.phone} | {siteConfig.contact.email}
           </span>
         </div>
@@ -73,15 +73,13 @@ export default function Navbar() {
 
       <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-5 min-h-16 py-3">
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0" aria-label={`${siteConfig.brandName} home`}>
             <BrandLogoMark size="md" />
-            <span className="font-black text-lg lowercase tracking-widest text-zinc-100">
+            <span className="font-black text-lg lowercase tracking-widest text-zinc-900">
               {siteConfig.brandName}
             </span>
           </Link>
 
-          {/* Desktop nav */}
           <nav className="hidden xl:flex items-center gap-5">
             {STATIC_LINKS.map((link) => (
               <Link
@@ -94,7 +92,6 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Icons */}
           <div className="flex items-center gap-4">
             {authUser === undefined ? null : authUser ? (
               <div
@@ -104,23 +101,23 @@ export default function Navbar() {
               >
                 <button
                   type="button"
-                  className="text-sm font-semibold text-zinc-100 hover:text-white uppercase tracking-widest"
+                  className="text-sm font-semibold text-zinc-800 hover:text-zinc-950 uppercase tracking-widest"
                   aria-expanded={accountOpen}
                 >
                   Account
                 </button>
                 {accountOpen && (
-                  <div className="absolute right-0 top-full mt-2 min-w-[12rem] rounded-md border border-zinc-700 bg-zinc-900 py-1 shadow-xl z-50">
+                  <div className="absolute right-0 top-full mt-2 min-w-[12rem] rounded-md border border-zinc-200 bg-white py-1 shadow-xl z-50">
                     <Link
                       href="/account"
-                      className="block px-3 py-2 text-sm text-zinc-100 hover:bg-zinc-800"
+                      className="block px-3 py-2 text-sm text-zinc-800 hover:bg-zinc-50"
                       onClick={() => setAccountOpen(false)}
                     >
                       Profile
                     </Link>
                     <Link
                       href="/account/orders"
-                      className="block px-3 py-2 text-sm text-zinc-100 hover:bg-zinc-800"
+                      className="block px-3 py-2 text-sm text-zinc-800 hover:bg-zinc-50"
                       onClick={() => setAccountOpen(false)}
                     >
                       My orders
@@ -128,7 +125,7 @@ export default function Navbar() {
                     {authUser.role === "seller" ? (
                       <Link
                         href="/seller"
-                        className="block px-3 py-2 text-sm text-emerald-300 hover:bg-zinc-800"
+                        className="block px-3 py-2 text-sm text-emerald-700 hover:bg-zinc-50"
                         onClick={() => setAccountOpen(false)}
                       >
                         Seller dashboard
@@ -137,7 +134,7 @@ export default function Navbar() {
                     {authUser.role === "admin" ? (
                       <Link
                         href="/admin"
-                        className="block px-3 py-2 text-sm text-indigo-300 hover:bg-zinc-800"
+                        className="block px-3 py-2 text-sm text-indigo-700 hover:bg-zinc-50"
                         onClick={() => setAccountOpen(false)}
                       >
                         Admin panel
@@ -145,7 +142,7 @@ export default function Navbar() {
                     ) : null}
                     <button
                       type="button"
-                      className="w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-zinc-800"
+                      className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-zinc-50"
                       onClick={async () => {
                         await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
                         setAuthUser(null);
@@ -160,21 +157,21 @@ export default function Navbar() {
               </div>
             ) : (
               <div className="hidden sm:flex items-center gap-3 text-sm font-semibold uppercase tracking-widest">
-                <Link href="/login" className="text-zinc-300 hover:text-white">
+                <Link href="/login" className="text-zinc-600 hover:text-zinc-950">
                   Sign in
                 </Link>
-                <Link href="/register" className="text-zinc-100 hover:text-white">
+                <Link href="/register" className="text-zinc-900 hover:text-zinc-950">
                   Register
                 </Link>
               </div>
             )}
-            <Link href="/wishlist" aria-label="Wishlist" className="hidden sm:block hover:opacity-70 transition-opacity text-zinc-100">
+            <Link href="/wishlist" aria-label="Wishlist" className="hidden sm:block hover:opacity-70 transition-opacity text-zinc-800">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" />
               </svg>
             </Link>
 
-            <Link href="/compare" aria-label="Compare" className="hidden sm:block hover:opacity-70 transition-opacity text-zinc-100">
+            <Link href="/compare" aria-label="Compare" className="hidden sm:block hover:opacity-70 transition-opacity text-zinc-800">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path d="M16 3h5v5" />
                 <path d="M8 21H3v-5" />
@@ -183,8 +180,7 @@ export default function Navbar() {
               </svg>
             </Link>
 
-            {/* Cart */}
-            <Link href="/cart" aria-label="Cart" className="relative hover:opacity-70 transition-opacity text-zinc-100">
+            <Link href="/cart" aria-label="Cart" className="relative hover:opacity-70 transition-opacity text-zinc-800">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
                 <line x1="3" y1="6" x2="21" y2="6" />
@@ -200,9 +196,8 @@ export default function Navbar() {
               )}
             </Link>
 
-            {/* Mobile menu button */}
             <button
-              className="xl:hidden hover:opacity-70 transition-opacity text-zinc-100"
+              className="xl:hidden hover:opacity-70 transition-opacity text-zinc-800"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle menu"
             >
@@ -222,18 +217,17 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {menuOpen && (
-        <div className="xl:hidden border-t border-zinc-800 bg-zinc-950">
+        <div className="xl:hidden border-t border-zinc-200 bg-white">
           <nav className="flex flex-col px-4 py-4 gap-4">
             {STATIC_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className={`nav-link text-sm py-1 text-zinc-100 hover:text-white transition-colors ${
+                className={`nav-link text-sm py-1 text-zinc-800 hover:text-zinc-950 transition-colors ${
                   (link.href === "/" ? isHome : link.href === "/shop" ? isShop : pathname === link.href)
-                    ? "border-b-2 border-[rgb(218,170,88)] w-fit"
+                    ? "border-b-2 border-[rgb(218,170,88)] w-fit text-zinc-950"
                     : ""
                 }`}
               >
@@ -246,7 +240,7 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="text-sm text-zinc-200 hover:text-white"
+                  className="text-sm text-zinc-600 hover:text-zinc-950"
                 >
                   {link.label}
                 </Link>
@@ -255,28 +249,16 @@ export default function Navbar() {
 
             {authUser === undefined ? null : authUser ? (
               <>
-                <Link
-                  href="/account"
-                  onClick={() => setMenuOpen(false)}
-                  className="text-sm py-1 text-zinc-100 hover:text-white"
-                >
+                <Link href="/account" onClick={() => setMenuOpen(false)} className="text-sm py-1 text-zinc-800">
                   Account
                 </Link>
                 {authUser.role === "seller" ? (
-                  <Link
-                    href="/seller"
-                    onClick={() => setMenuOpen(false)}
-                    className="text-sm py-1 text-emerald-300 hover:text-emerald-200"
-                  >
+                  <Link href="/seller" onClick={() => setMenuOpen(false)} className="text-sm py-1 text-emerald-700">
                     Seller dashboard
                   </Link>
                 ) : null}
                 {authUser.role === "admin" ? (
-                  <Link
-                    href="/admin"
-                    onClick={() => setMenuOpen(false)}
-                    className="text-sm py-1 text-indigo-300 hover:text-indigo-200"
-                  >
+                  <Link href="/admin" onClick={() => setMenuOpen(false)} className="text-sm py-1 text-indigo-700">
                     Admin
                   </Link>
                 ) : null}
@@ -288,17 +270,17 @@ export default function Navbar() {
                     setMenuOpen(false);
                     window.location.href = "/";
                   }}
-                  className="text-left text-sm py-1 text-red-400 hover:text-red-300"
+                  className="text-left text-sm py-1 text-red-600"
                 >
                   Sign out
                 </button>
               </>
             ) : (
               <>
-                <Link href="/login" onClick={() => setMenuOpen(false)} className="text-sm py-1 text-zinc-100">
+                <Link href="/login" onClick={() => setMenuOpen(false)} className="text-sm py-1 text-zinc-800">
                   Sign in
                 </Link>
-                <Link href="/register" onClick={() => setMenuOpen(false)} className="text-sm py-1 text-zinc-100">
+                <Link href="/register" onClick={() => setMenuOpen(false)} className="text-sm py-1 text-zinc-800">
                   Register
                 </Link>
               </>
