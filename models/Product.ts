@@ -27,9 +27,19 @@ const ProductSchema = new Schema(
     metaDescription: { type: String, trim: true, maxlength: 170, default: "" },
     popularityScore: { type: Number, min: 0, default: 0 },
     soldCount: { type: Number, min: 0, default: 0 },
+    lastSoldAt: { type: Date, default: null },
     inStock: { type: Boolean, default: true },
     isActive: { type: Boolean, default: true },
+    isHidden: { type: Boolean, default: false },
+    isClearance: { type: Boolean, default: false },
+    isArchived: { type: Boolean, default: false },
     status: { type: String, enum: ["Draft", "Published"], default: "Draft" },
+    /** Seller listings require admin approval before they can be published. */
+    approvalStatus: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "approved",
+    },
     slug: { type: String, unique: true },
     /** Set for seller-owned listings; unset/legacy products are store/admin catalog. */
     sellerId: { type: Schema.Types.ObjectId, ref: "User", index: true, default: null },

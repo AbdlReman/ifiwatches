@@ -12,6 +12,7 @@ import {
   isCouponUsable,
 } from "@/lib/couponValidation";
 import { sendOrderEmails } from "@/lib/mailer";
+import { recordSellerCommissionsForOrder } from "@/lib/recordSellerCommissions";
 import {
   buildAdminOrderEmailHtml,
   buildCustomerOrderEmailHtml,
@@ -177,7 +178,9 @@ export async function POST(req: NextRequest) {
 
       reservedProducts.push({ productId, quantity: qty });
       const nextStock = Number((updatedProduct as Record<string, unknown>).stockQuantity || 0);
-      await Product.findByIdAndUpdate(productId, { $set: { inStock: nextStock > 0 } });
+      await Product.findByIdAndUpdate(productId, {
+        $set: { inStock: nextStock > 0, lastSoldAt: new Date() },
+      });
     }
 
     let order;
@@ -318,6 +321,14 @@ export async function PATCH(req: NextRequest) {
 
     if (!order) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
+    }
+
+    if (nextStatus === "completed") {
+      await recordSellerCommissionsForOrder(order as {
+        _id: unknown;
+        orderNumber?: string;
+        items?: { productId?: string; price?: number; quantity?: number }[];
+      });
     }
 
     const o = order as Record<string, unknown>;

@@ -1,220 +1,58 @@
-import Link from "next/link";
-import Image from "next/image";
-import { formatPkr } from "@/lib/formatCurrency";
+import { connectDB } from "@/lib/mongodb";
+import { serializeProductFromLean } from "@/lib/serializeProduct";
+import Product from "@/models/Product";
+import User from "@/models/User";
 import { siteConfig } from "@/lib/siteConfig";
+import type { IProduct } from "@/types/product";
+import HomePageView from "@/components/home/HomePageView";
 
-const featuredProducts = [
-  {
-    id: 1,
-    name: "Classic Chronograph Watch",
-    price: 12999,
-    originalPrice: 17999,
-    brand: "Watches",
-    color: "Black / Gold",
-    bg: "bg-gray-100",
-    image: siteConfig.images.productPlaceholder,
-  },
-  {
-    id: 2,
-    name: "Signature Perfume",
-    price: 9999,
-    originalPrice: 14499,
-    brand: "Perfumes",
-    color: "Premium fragrance",
-    bg: "bg-red-50",
-    image: siteConfig.images.productPlaceholder,
-  },
-  {
-    id: 3,
-    name: "Everyday Eyewear",
-    price: 8499,
-    originalPrice: 11999,
-    brand: "Eyewear",
-    color: "Modern frame",
-    bg: "bg-blue-50",
-    image: siteConfig.images.productPlaceholder,
-  },
-  {
-    id: 4,
-    name: "Mobile Gadget Set",
-    price: 14999,
-    originalPrice: 20999,
-    brand: "Mobile Gadgets",
-    color: "Smart essentials",
-    bg: "bg-orange-50",
-    image: siteConfig.images.productPlaceholder,
-  },
-];
+export const dynamic = "force-dynamic";
 
-const categories = siteConfig.categories.map((name, index) => ({
-  name,
-  desc: index % 2 === 0 ? "Curated marketplace picks" : "Vendor-listed lifestyle essentials",
-  bg: index % 2 === 0 ? "bg-zinc-100" : "bg-white border border-zinc-200",
-  text: "text-zinc-900",
-}));
+const publishedFilter = {
+  isActive: true,
+  isHidden: { $ne: true },
+  isArchived: { $ne: true },
+  $or: [{ status: "Published" }, { status: { $exists: false } }],
+  $and: [
+    {
+      $or: [
+        { sellerId: null },
+        { sellerId: { $exists: false } },
+        { approvalStatus: "approved" },
+      ],
+    },
+  ],
+};
 
-export default function HomePage() {
+function toProducts(raw: Record<string, unknown>[]): IProduct[] {
+  return raw.map((p) => serializeProductFromLean(p));
+}
+
+export default async function HomePage() {
+  await connectDB();
+
+  const [featuredRaw, vendorRaw, productCount, sellerCount] = await Promise.all([
+    Product.find(publishedFilter).sort({ createdAt: -1 }).limit(8).lean(),
+    Product.find({ ...publishedFilter, sellerId: { $ne: null } })
+      .sort({ popularityScore: -1, createdAt: -1 })
+      .limit(4)
+      .lean(),
+    Product.countDocuments(publishedFilter),
+    User.countDocuments({ role: "seller" }),
+  ]);
+
+  const featuredProducts = toProducts(featuredRaw as Record<string, unknown>[]);
+  const vendorProducts = toProducts(vendorRaw as Record<string, unknown>[]);
+
   return (
-    <div>
-      {/* Hero Section */}
-      <section className="relative bg-zinc-100 text-zinc-900 overflow-hidden min-h-[60vh] flex items-center">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${siteConfig.images.hero})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            opacity: 0.35,
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/80 to-white/95" />
-
-        {/* Decorative circle */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full border border-zinc-300 opacity-40" />
-        <div className="absolute right-20 top-1/2 -translate-y-1/2 w-[320px] h-[320px] rounded-full border border-zinc-200 opacity-50" />
-
-        <div className="relative max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-zinc-950 mb-4 animate-fade-in-up text-4xl md:text-6xl font-black uppercase tracking-tight">
-              IFI Lifestyle
-            </h1>
-            <p className="text-zinc-800 text-base md:text-lg mb-3 leading-relaxed">
-              Our Standard, Our Signature — one product, one trusted seller, zero confusion.
-            </p>
-            <p className="text-zinc-600 text-sm md:text-base max-w-2xl mx-auto mb-10">
-              Premium watches, perfumes, eyewear, accessories, mobile gadgets, and fashion. Quality, trust, and simplicity
-              in one place.
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Link href="/shop" className="btn-primary">
-                Shop Now
-              </Link>
-              <Link
-                href="/about"
-                className="btn-outline-dark"
-              >
-                Our Story
-              </Link>
-            </div>
-          </div>
-        </div>
-
- 
-      </section>
-
-      {/* Category Strip */}
-      <section className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-8">Shop by Category</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-          {categories.map((cat) => (
-            <Link
-              key={cat.name}
-              href={`/shop?category=${encodeURIComponent(cat.name)}`}
-              className={`${cat.bg} ${cat.text} group relative overflow-hidden h-56 flex flex-col justify-end p-8 hover:opacity-90 transition-opacity`}
-            >
-              <span className="text-xs font-bold uppercase tracking-widest opacity-60 mb-2">
-                {cat.desc}
-              </span>
-              <h3 className="text-3xl font-black uppercase tracking-tight">
-                {cat.name}
-              </h3>
-              <span className="mt-4 text-xs font-bold uppercase tracking-widest flex items-center gap-2 group-hover:gap-4 transition-all">
-                Explore -&gt;
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Featured Products */}
-      <section className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        <div className="flex items-end justify-between mb-10">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Curated For You</p>
-            <h2 className="text-4xl font-black uppercase tracking-tight">Featured Drops</h2>
-          </div>
-          <Link href="/shop" className="text-xs font-bold uppercase tracking-widest hover:opacity-60 transition-opacity flex items-center gap-2">
-            View All -&gt;
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredProducts.map((product) => (
-            <Link key={product.id} href="/shop" className="product-card group cursor-pointer">
-              {/* Image placeholder */}
-              <div className={`${product.bg} h-64 flex items-center justify-center overflow-hidden mb-4 relative`}>
-                <Image src={product.image} alt={product.name} fill sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" className="object-cover product-img" />
-                <span className="absolute top-3 left-3 bg-black text-white text-xs font-bold px-2 py-1 uppercase tracking-widest">
-                  {product.brand}
-                </span>
-                <span className="absolute top-3 right-3 bg-red-600 text-white text-xs font-bold px-2 py-1">
-                  SALE
-                </span>
-              </div>
-              <div>
-                <h3 className="font-bold text-sm uppercase tracking-wide mb-1">{product.name}</h3>
-                <p className="text-gray-500 text-xs mb-2">{product.color}</p>
-                <div className="flex items-center gap-3">
-                  <span className="font-black text-lg">{formatPkr(product.price)}</span>
-                  <span className="text-gray-400 line-through text-sm">{formatPkr(product.originalPrice)}</span>
-                  <span className="text-red-600 text-xs font-bold">
-                    -{Math.round((1 - product.price / product.originalPrice) * 100)}%
-                  </span>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Full-width Banner */}
-      <section
-        className="relative text-zinc-900 py-24 text-center overflow-hidden"
-        style={{ backgroundImage: `url(${siteConfig.images.hero})`, backgroundSize: "cover", backgroundPosition: "center" }}
-      >
-        <div className="absolute inset-0 bg-white/85" />
-        <div className="relative z-10 px-4">
-        <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6 text-zinc-950">
-          Building the Future of Digital Lifestyle
-        </h2>
-        <p className="text-zinc-700 mb-10 max-w-xl mx-auto">
-          One seller per product. Trusted sellers only. Free shipping above Rs. 3000 and discreet packaging across
-          Pakistan.
-        </p>
-        <Link href="/shop" className="btn-primary">
-          Shop the Sale
-        </Link>
-        </div>
-      </section>
-
-      {/* Why Us */}
-      <section className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-14">
-          <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Why {siteConfig.brandName}</p>
-          <h2 className="text-4xl font-black uppercase tracking-tight">The Difference</h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {[
-            {
-              icon: "1",
-              title: "One Seller Per Product",
-              desc: "Every product has one verified seller — no duplicates, no confusion, full accountability.",
-            },
-            ...siteConfig.trustBadges.map((badge, index) => ({ icon: String(index + 2), title: badge.title, desc: badge.description })),
-          ].map(({ icon, title, desc }) => (
-            <div key={title} className="text-center">
-              <div
-                className="w-16 h-16 text-black rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-black"
-                style={{ background: siteConfig.brandGradient }}
-              >
-                {icon}
-              </div>
-              <h3 className="font-black uppercase tracking-tight text-xl mb-3">{title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-    </div>
+    <HomePageView
+      featuredProducts={featuredProducts}
+      vendorProducts={vendorProducts}
+      stats={{
+        sellerCount,
+        productCount,
+        categoryCount: siteConfig.categories.length,
+      }}
+    />
   );
 }

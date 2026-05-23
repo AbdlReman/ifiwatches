@@ -51,7 +51,18 @@ export async function GET(req: NextRequest) {
 
     const query: Record<string, unknown> = {
       isActive: true,
+      isHidden: { $ne: true },
+      isArchived: { $ne: true },
       $or: [{ status: "Published" }, { status: { $exists: false } }],
+      $and: [
+        {
+          $or: [
+            { sellerId: null },
+            { sellerId: { $exists: false } },
+            { approvalStatus: "approved" },
+          ],
+        },
+      ],
     };
     if (category) {
       query.$and = [
@@ -110,13 +121,16 @@ export async function POST(req: NextRequest) {
         ? body.images
         : [];
 
-    const publish = body.publish === true || body.status === "Published" || body.isActive === true;
+    const isSeller = auth.session.role === "seller";
+    const publish =
+      !isSeller &&
+      (body.publish === true || body.status === "Published" || body.isActive === true);
     const nextStatus = publish ? "Published" : "Draft";
     const categories = normalizeCategories(body.categories, body.category);
     const primaryCategory = categories[0] || "";
 
     let sellerId: mongoose.Types.ObjectId | null = null;
-    if (auth.session.role === "seller") {
+    if (isSeller) {
       sellerId = new mongoose.Types.ObjectId(auth.session.sub);
     } else if (auth.session.role === "admin" && body.sellerId) {
       const sid = String(body.sellerId).trim();
@@ -145,6 +159,7 @@ export async function POST(req: NextRequest) {
       isActive: publish,
       status: nextStatus,
       sellerId,
+      approvalStatus: isSeller ? "pending" : "approved",
     });
     await product.save();
     const plain = product.toObject() as Record<string, unknown>;

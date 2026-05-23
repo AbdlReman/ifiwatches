@@ -22,9 +22,14 @@ export interface IProduct {
   discount: number;
   inStock: boolean;
   isActive: boolean;
+  isHidden?: boolean;
+  isClearance?: boolean;
+  isArchived?: boolean;
   status: "Draft" | "Published";
+  approvalStatus?: "pending" | "approved" | "rejected";
   popularityScore: number;
   soldCount: number;
+  lastSoldAt?: string | null;
   slug: string;
   metaTitle: string;
   metaDescription: string;
