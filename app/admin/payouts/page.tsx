@@ -10,8 +10,8 @@ export default function AdminPayoutsPage() {
         <p className="text-slate-400 text-sm mt-1">
           Approve payout requests from sellers (net earnings after 10% commission).
         </p>
-      </motion>
+      </div>
       <PayoutsAdminClient />
-    </motion>
+    </div>
   );
 }
