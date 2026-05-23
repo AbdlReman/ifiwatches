@@ -43,11 +43,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <BrandLogoMark size="sm" />
-              <span className="font-black text-lg lowercase tracking-widest">
-                {siteConfig.brandName}
-              </span>
+            <Link href="/" className="mb-4 inline-flex" aria-label={`${siteConfig.brandName} home`}>
+              <BrandLogoMark size="md" />
             </Link>
             <p className="text-zinc-600 text-sm leading-relaxed">
               IFI Lifestyle — Iconic Futures Innovations. A trusted lifestyle platform: one product, one seller, quality

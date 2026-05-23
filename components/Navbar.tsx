@@ -73,11 +73,8 @@ export default function Navbar() {
 
       <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-5 min-h-16 py-3">
-          <Link href="/" className="flex items-center gap-2 shrink-0" aria-label={`${siteConfig.brandName} home`}>
-            <BrandLogoMark size="md" />
-            <span className="font-black text-lg lowercase tracking-widest text-zinc-900">
-              {siteConfig.brandName}
-            </span>
+          <Link href="/" className="flex shrink-0 items-center" aria-label={`${siteConfig.brandName} home`}>
+            <BrandLogoMark size="lg" />
           </Link>
 
           <nav className="hidden xl:flex items-center gap-5">

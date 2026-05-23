@@ -7,9 +7,9 @@ import { siteConfig } from "@/lib/siteConfig";
 type LogoSize = "sm" | "md" | "lg";
 
 const sizeClass: Record<LogoSize, string> = {
-  sm: "h-8 w-8 text-sm",
-  md: "h-9 w-9 text-sm",
-  lg: "h-16 w-16 text-2xl",
+  sm: "h-10 w-28 text-sm",
+  md: "h-12 w-36 text-sm",
+  lg: "h-14 w-44 text-2xl",
 };
 
 export default function BrandLogoMark({
@@ -34,8 +34,8 @@ export default function BrandLogoMark({
           src={siteConfig.logo.src}
           alt={siteConfig.logo.alt}
           fill
-          sizes={size === "lg" ? "64px" : "36px"}
-          className="object-contain p-1"
+          sizes={size === "lg" ? "176px" : size === "md" ? "144px" : "112px"}
+          className="object-contain object-left"
           onError={() => setImageFailed(true)}
         />
       ) : (
