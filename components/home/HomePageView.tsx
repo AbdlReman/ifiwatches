@@ -4,6 +4,7 @@ import { siteConfig } from "@/lib/siteConfig";
 import { getCategoryVisual } from "@/components/home/categoryStyles";
 import ProductCard from "@/components/shop/ProductCard";
 import type { IProduct } from "@/types/product";
+import type { HomeCategory } from "@/lib/homeCategories";
 
 export type HomeStats = {
   sellerCount: number;
@@ -41,20 +42,34 @@ const TRUST_FEATURES = [
   ...siteConfig.trustBadges.map((b) => ({ title: b.title, desc: b.description })),
 ];
 
+function buildCategoryCards(categories: HomeCategory[]) {
+  return categories.map((cat, index) => {
+    const visual = getCategoryVisual(cat.name);
+    const tagline =
+      cat.productCount > 0
+        ? `${cat.productCount} live listing${cat.productCount === 1 ? "" : "s"}`
+        : visual.tagline;
+    return {
+      name: cat.name,
+      productCount: cat.productCount,
+      visual: { ...visual, tagline },
+      wide: index === 0,
+    };
+  });
+}
+
 export default function HomePageView({
+  categories,
   featuredProducts,
   vendorProducts,
   stats,
 }: {
+  categories: HomeCategory[];
   featuredProducts: IProduct[];
   vendorProducts: IProduct[];
   stats: HomeStats;
 }) {
-  const categories = siteConfig.categories.map((name, index) => ({
-    name,
-    visual: getCategoryVisual(name),
-    wide: index === 0,
-  }));
+  const categoryCards = buildCategoryCards(categories);
 
   return (
     <div className="bg-white">
@@ -109,7 +124,7 @@ export default function HomePageView({
           </div>
 
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
-            {categories.slice(0, 4).map((cat) => (
+            {categoryCards.slice(0, 4).map((cat) => (
               <Link
                 key={cat.name}
                 href={`/shop?category=${encodeURIComponent(cat.name)}`}
@@ -146,44 +161,46 @@ export default function HomePageView({
         </div>
       </section>
 
-      {/* Categories bento */}
-      <section className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-        <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Marketplace categories</p>
-            <h2 className="mt-2 text-3xl font-black uppercase tracking-tight text-zinc-950 md:text-4xl">
-              Shop by department
-            </h2>
-          </div>
-          <Link
-            href="/shop"
-            className="text-xs font-bold uppercase tracking-widest text-zinc-700 underline decoration-1 underline-offset-4 hover:text-zinc-950"
-          >
-            View all products →
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
-          {categories.map((cat) => (
+      {/* Categories bento — from admin categories or live product taxonomy */}
+      {categoryCards.length > 0 ? (
+        <section className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+          <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Marketplace categories</p>
+              <h2 className="mt-2 text-3xl font-black uppercase tracking-tight text-zinc-950 md:text-4xl">
+                Shop by department
+              </h2>
+            </div>
             <Link
-              key={cat.name}
-              href={`/shop?category=${encodeURIComponent(cat.name)}`}
-              className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${cat.visual.gradient} ${
-                cat.wide ? "lg:col-span-2 lg:min-h-[220px]" : "min-h-[180px]"
-              } flex flex-col justify-end p-6 text-white transition-transform hover:-translate-y-0.5`}
+              href="/shop"
+              className="text-xs font-bold uppercase tracking-widest text-zinc-700 underline decoration-1 underline-offset-4 hover:text-zinc-950"
             >
-              <span className="absolute right-4 top-4 text-5xl font-black opacity-15">{cat.visual.letter}</span>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-white/60">{cat.visual.tagline}</p>
-              <h3 className={`mt-2 font-black uppercase tracking-tight ${cat.wide ? "text-3xl md:text-4xl" : "text-2xl"}`}>
-                {cat.name}
-              </h3>
-              <span className="mt-4 text-[10px] font-bold uppercase tracking-widest opacity-70 transition-opacity group-hover:opacity-100">
-                Explore vendors →
-              </span>
+              View all products →
             </Link>
-          ))}
-        </div>
-      </section>
+          </div>
+
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+            {categoryCards.map((cat) => (
+              <Link
+                key={cat.name}
+                href={`/shop?category=${encodeURIComponent(cat.name)}`}
+                className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${cat.visual.gradient} ${
+                  cat.wide ? "lg:col-span-2 lg:min-h-[220px]" : "min-h-[180px]"
+                } flex flex-col justify-end p-6 text-white transition-transform hover:-translate-y-0.5`}
+              >
+                <span className="absolute right-4 top-4 text-5xl font-black opacity-15">{cat.visual.letter}</span>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-white/60">{cat.visual.tagline}</p>
+                <h3 className={`mt-2 font-black uppercase tracking-tight ${cat.wide ? "text-3xl md:text-4xl" : "text-2xl"}`}>
+                  {cat.name}
+                </h3>
+                <span className="mt-4 text-[10px] font-bold uppercase tracking-widest opacity-70 transition-opacity group-hover:opacity-100">
+                  Explore vendors →
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       {/* Vendor picks */}
       {vendorProducts.length > 0 ? (
