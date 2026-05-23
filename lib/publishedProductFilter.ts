@@ -13,4 +13,4 @@ export const publishedProductFilter = {
       ],
     },
   ],
-} as const;
+};
