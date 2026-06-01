@@ -363,7 +363,7 @@ export default function ProductForm({
               required
               value={form.sizesInput}
               onChange={(e) => set("sizesInput", e.target.value)}
-              placeholder="7, 8, 9, 10"
+              placeholder=""
               className={inputClass}
             />
           </div>
