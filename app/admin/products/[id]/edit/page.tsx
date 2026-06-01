@@ -73,6 +73,7 @@ export default async function EditProductPage({
     metaTitle: String(p.metaTitle || ""),
     metaDescription: String(p.metaDescription || ""),
     isFeatured: Boolean(p.isFeatured),
+    isBestSeller: Boolean(p.isBestSeller),
     createdAt: String(p.createdAt),
     updatedAt: String(p.updatedAt),
   };
@@ -98,6 +99,7 @@ export default async function EditProductPage({
         initialData={product}
         categoryOptions={finalCategoryOptions}
         showFeaturedField
+        showBestSellerField
       />
     </div>
   );

@@ -59,6 +59,7 @@ export function serializeProductFromLean(p: Record<string, unknown>): IProduct {
     inStock: Boolean(p.inStock),
     isActive: p.isActive !== false,
     isFeatured: Boolean(p.isFeatured),
+    isBestSeller: Boolean(p.isBestSeller),
     status:
       p.status === "Published" || (p.status == null && p.isActive !== false)
         ? "Published"

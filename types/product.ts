@@ -27,6 +27,8 @@ export interface IProduct {
   isArchived?: boolean;
   /** Shown in homepage Featured drops; set by admin only. */
   isFeatured?: boolean;
+  /** Shown in homepage Our Best Sellers; set by admin only. */
+  isBestSeller?: boolean;
   status: "Draft" | "Published";
   approvalStatus?: "pending" | "approved" | "rejected";
   popularityScore: number;

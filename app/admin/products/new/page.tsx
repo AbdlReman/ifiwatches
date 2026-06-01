@@ -29,7 +29,12 @@ export default async function NewProductPage() {
         <p className="text-slate-400 text-sm mt-1">Fill in the details to add a new product to the store.</p>
       </div>
 
-      <ProductForm mode="create" categoryOptions={finalCategoryOptions} showFeaturedField />
+      <ProductForm
+        mode="create"
+        categoryOptions={finalCategoryOptions}
+        showFeaturedField
+        showBestSellerField
+      />
     </div>
   );
 }

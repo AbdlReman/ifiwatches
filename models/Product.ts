@@ -35,6 +35,8 @@ const ProductSchema = new Schema(
     isArchived: { type: Boolean, default: false },
     /** Homepage “Featured drops”; admin-only. */
     isFeatured: { type: Boolean, default: false, index: true },
+    /** Homepage “Our Best Sellers”; admin-only. */
+    isBestSeller: { type: Boolean, default: false, index: true },
     status: { type: String, enum: ["Draft", "Published"], default: "Draft" },
     /** Seller listings require admin approval before they can be published. */
     approvalStatus: {

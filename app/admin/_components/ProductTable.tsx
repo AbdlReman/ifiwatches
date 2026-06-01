@@ -16,6 +16,8 @@ interface ProductTableProps {
   useStorefrontProductLink?: boolean;
   /** Admin-only: show Featured drops indicator column. */
   showFeaturedColumn?: boolean;
+  /** Admin-only: show Best seller indicator column. */
+  showBestSellerColumn?: boolean;
 }
 
 export default function ProductTable({
@@ -24,6 +26,7 @@ export default function ProductTable({
   showPublishAllDrafts = true,
   useStorefrontProductLink = false,
   showFeaturedColumn = false,
+  showBestSellerColumn = false,
 }: ProductTableProps) {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -175,6 +178,7 @@ export default function ProductTable({
               <th className="text-left px-4 py-3">Product</th>
               <th className="text-left px-4 py-3">Status</th>
               {showFeaturedColumn ? <th className="text-left px-4 py-3">Featured</th> : null}
+              {showBestSellerColumn ? <th className="text-left px-4 py-3">Best seller</th> : null}
               <th className="text-left px-4 py-3">Brand</th>
               <th className="text-left px-4 py-3">Category</th>
               <th className="text-left px-4 py-3">Price</th>
@@ -224,6 +228,18 @@ export default function ProductTable({
                     {product.isFeatured ? (
                       <span className="inline-flex items-center rounded-full bg-amber-900/50 px-2.5 py-0.5 text-xs font-medium text-amber-200">
                         Featured
+                      </span>
+                    ) : (
+                      <span className="text-slate-500 text-xs">—</span>
+                    )}
+                  </td>
+                ) : null}
+
+                {showBestSellerColumn ? (
+                  <td className="px-4 py-3">
+                    {product.isBestSeller ? (
+                      <span className="inline-flex items-center rounded-full bg-emerald-900/50 px-2.5 py-0.5 text-xs font-medium text-emerald-200">
+                        Best seller
                       </span>
                     ) : (
                       <span className="text-slate-500 text-xs">—</span>

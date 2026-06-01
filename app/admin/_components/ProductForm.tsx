@@ -51,6 +51,8 @@ interface ProductFormProps {
   categoryOptions: string[];
   /** Admin-only: show Featured drops toggle (homepage). */
   showFeaturedField?: boolean;
+  /** Admin-only: show Best seller toggle (homepage slider). */
+  showBestSellerField?: boolean;
   /** Where to navigate after a successful save (default: admin products). */
   afterSaveRedirect?: string;
 }
@@ -60,6 +62,7 @@ export default function ProductForm({
   mode,
   categoryOptions,
   showFeaturedField = false,
+  showBestSellerField = false,
   afterSaveRedirect = "/admin/products",
 }: ProductFormProps) {
   const router = useRouter();
@@ -78,6 +81,7 @@ export default function ProductForm({
     metaDescription: "",
     publish: false,
     featured: false,
+    bestSeller: false,
   };
   const [form, setForm] = useState(
     initialData
@@ -98,6 +102,7 @@ export default function ProductForm({
           metaDescription: initialData.metaDescription,
           publish: initialData.status === "Published" || initialData.isActive,
           featured: Boolean(initialData.isFeatured),
+          bestSeller: Boolean(initialData.isBestSeller),
         }
       : emptyForm
   );
@@ -165,7 +170,7 @@ export default function ProductForm({
       const url =
         mode === "create" ? "/api/products" : `/api/products/${initialData!._id}`;
       const method = mode === "create" ? "POST" : "PUT";
-      const { featured, sizesInput, categories: formCategories, publish, ...rest } = form;
+      const { featured, bestSeller, sizesInput, categories: formCategories, publish, ...rest } = form;
       const payload: Record<string, unknown> = {
         ...rest,
         categories: formCategories,
@@ -179,6 +184,9 @@ export default function ProductForm({
       };
       if (showFeaturedField) {
         payload.isFeatured = featured;
+      }
+      if (showBestSellerField) {
+        payload.isBestSeller = bestSeller;
       }
 
       const res = await fetch(url, {
@@ -390,6 +398,23 @@ export default function ProductForm({
                 />
                 <span className={`text-xs ${form.featured ? "text-amber-300" : "text-slate-500"}`}>
                   {form.featured ? "On homepage" : "Not featured"}
+                </span>
+              </div>
+            ) : null}
+            {showBestSellerField ? (
+              <div className="flex items-center gap-3">
+                <label htmlFor="bestSeller" className="text-slate-300 text-xs font-semibold uppercase tracking-widest">
+                  Best seller
+                </label>
+                <input
+                  id="bestSeller"
+                  type="checkbox"
+                  checked={form.bestSeller}
+                  onChange={(e) => set("bestSeller", e.target.checked)}
+                  className="h-4 w-4 rounded border-slate-500 bg-slate-700 text-emerald-500 focus:ring-emerald-500"
+                />
+                <span className={`text-xs ${form.bestSeller ? "text-emerald-300" : "text-slate-500"}`}>
+                  {form.bestSeller ? "Best sellers slider" : "Not listed"}
                 </span>
               </div>
             ) : null}

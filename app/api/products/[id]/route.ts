@@ -11,6 +11,10 @@ function parseIsFeatured(body: Record<string, unknown>): boolean {
   return body.isFeatured === true || body.featured === true;
 }
 
+function parseIsBestSeller(body: Record<string, unknown>): boolean {
+  return body.isBestSeller === true || body.bestSeller === true;
+}
+
 function normalizeColorVariants(input: unknown) {
   if (!Array.isArray(input)) return [];
   return input
@@ -145,7 +149,9 @@ export async function PUT(req: NextRequest, { params }: Params) {
     }
 
     if (auth.session.role === "admin") {
-      payload.isFeatured = parseIsFeatured(body as Record<string, unknown>);
+      const adminBody = body as Record<string, unknown>;
+      payload.isFeatured = parseIsFeatured(adminBody);
+      payload.isBestSeller = parseIsBestSeller(adminBody);
     }
 
     const product = await Product.findByIdAndUpdate(
