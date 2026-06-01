@@ -30,12 +30,15 @@ export default async function SellerNewProductPage() {
           <span className="text-slate-400">Add new</span>
         </div>
         <h1 className="text-3xl font-black uppercase tracking-tight text-white">Add product</h1>
-        <p className="text-slate-400 text-sm mt-1">Your listing will be tied to your seller account.</p>
+        <p className="text-slate-400 text-sm mt-1">
+          Submit for admin approval — your product goes live after it is approved.
+        </p>
       </div>
 
       <ProductForm
         mode="create"
         categoryOptions={finalCategoryOptions}
+        showPublishField={false}
         afterSaveRedirect="/seller/products"
       />
     </div>

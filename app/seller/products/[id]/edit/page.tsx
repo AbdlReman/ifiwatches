@@ -69,6 +69,7 @@ export default async function SellerEditProductPage({
     discount: Number(p.discount || 0),
     inStock: Boolean(p.inStock),
     isActive: p.isActive !== false,
+    approvalStatus: (p.approvalStatus as IProduct["approvalStatus"]) || "pending",
     status:
       p.status === "Published" || (p.status == null && p.isActive !== false)
         ? "Published"
@@ -102,6 +103,7 @@ export default async function SellerEditProductPage({
         mode="edit"
         initialData={product}
         categoryOptions={finalCategoryOptions}
+        showPublishField={false}
         afterSaveRedirect="/seller/products"
       />
     </div>

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { connectDB } from "@/lib/mongodb";
 import { formatPkr } from "@/lib/formatCurrency";
 import Order from "@/models/Order";
@@ -8,9 +9,10 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
   await connectDB();
-  const [ordersRaw, productsRaw] = await Promise.all([
+  const [ordersRaw, productsRaw, pendingApprovals] = await Promise.all([
     Order.find({}).sort({ createdAt: -1 }).lean(),
     Product.find({}).lean(),
+    Product.countDocuments({ sellerId: { $ne: null }, approvalStatus: "pending" }),
   ]);
 
   const orders = ordersRaw as Record<string, unknown>[];
@@ -39,6 +41,25 @@ export default async function AdminPage() {
         <h1 className="text-3xl font-black uppercase tracking-tight text-white">Dashboard</h1>
         <p className="text-slate-400 text-sm mt-1">Orders, revenue, and inventory overview</p>
       </div>
+
+      {pendingApprovals > 0 ? (
+        <div className="flex flex-col gap-3 rounded-xl border border-amber-500/40 bg-amber-950/30 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-sm font-semibold text-amber-200">
+              {pendingApprovals} seller product{pendingApprovals === 1 ? "" : "s"} need approval
+            </p>
+            <p className="text-xs text-amber-200/70 mt-0.5">
+              New or updated vendor listings are waiting in Approvals.
+            </p>
+          </div>
+          <Link
+            href="/admin/approvals"
+            className="inline-flex shrink-0 items-center justify-center rounded-lg bg-amber-500 px-4 py-2 text-xs font-bold uppercase tracking-widest text-zinc-950 hover:bg-amber-400"
+          >
+            Open approvals
+          </Link>
+        </div>
+      ) : null}
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[

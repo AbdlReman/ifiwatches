@@ -133,7 +133,7 @@ export async function POST(req: NextRequest) {
     const publish =
       !isSeller &&
       (body.publish === true || body.status === "Published" || body.isActive === true);
-    const nextStatus = publish ? "Published" : "Draft";
+    const nextStatus = isSeller ? "Draft" : publish ? "Published" : "Draft";
     const categories = normalizeCategories(body.categories, body.category);
     const primaryCategory = categories[0] || "";
 
@@ -164,7 +164,7 @@ export async function POST(req: NextRequest) {
       metaTitle: body.metaTitle || "",
       metaDescription: body.metaDescription || "",
       inStock: Number(body.stockQuantity || 0) > 0,
-      isActive: publish,
+      isActive: isSeller ? false : publish,
       status: nextStatus,
       sellerId,
       approvalStatus: isSeller ? "pending" : "approved",

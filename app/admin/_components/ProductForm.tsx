@@ -53,6 +53,8 @@ interface ProductFormProps {
   showFeaturedField?: boolean;
   /** Admin-only: show Best seller toggle (homepage slider). */
   showBestSellerField?: boolean;
+  /** When false (seller panel), publish is hidden; listing goes to admin for approval. */
+  showPublishField?: boolean;
   /** Where to navigate after a successful save (default: admin products). */
   afterSaveRedirect?: string;
 }
@@ -63,6 +65,7 @@ export default function ProductForm({
   categoryOptions,
   showFeaturedField = false,
   showBestSellerField = false,
+  showPublishField = true,
   afterSaveRedirect = "/admin/products",
 }: ProductFormProps) {
   const router = useRouter();
@@ -187,6 +190,9 @@ export default function ProductForm({
       }
       if (showBestSellerField) {
         payload.isBestSeller = bestSeller;
+      }
+      if (!showPublishField) {
+        payload.submitForApproval = true;
       }
 
       const res = await fetch(url, {
@@ -369,21 +375,27 @@ export default function ProductForm({
           </div>
 
           <div className="flex flex-wrap items-center gap-6 md:col-span-2">
-            <div className="flex items-center gap-3">
-              <label htmlFor="publish" className="text-slate-300 text-xs font-semibold uppercase tracking-widest">
-                Publish
-              </label>
-              <input
-                id="publish"
-                type="checkbox"
-                checked={form.publish}
-                onChange={(e) => set("publish", e.target.checked)}
-                className="h-4 w-4 rounded border-slate-500 bg-slate-700 text-indigo-500 focus:ring-indigo-500"
-              />
-              <span className={`text-xs ${form.publish ? "text-green-300" : "text-amber-300"}`}>
-                {form.publish ? "Published" : "Draft"}
-              </span>
-            </div>
+            {showPublishField ? (
+              <div className="flex items-center gap-3">
+                <label htmlFor="publish" className="text-slate-300 text-xs font-semibold uppercase tracking-widest">
+                  Publish
+                </label>
+                <input
+                  id="publish"
+                  type="checkbox"
+                  checked={form.publish}
+                  onChange={(e) => set("publish", e.target.checked)}
+                  className="h-4 w-4 rounded border-slate-500 bg-slate-700 text-indigo-500 focus:ring-indigo-500"
+                />
+                <span className={`text-xs ${form.publish ? "text-green-300" : "text-amber-300"}`}>
+                  {form.publish ? "Published" : "Draft"}
+                </span>
+              </div>
+            ) : (
+              <p className="text-xs text-slate-400 leading-relaxed max-w-md">
+                Your listing will be sent to admin for review. It appears in the shop only after approval.
+              </p>
+            )}
             {showFeaturedField ? (
               <div className="flex items-center gap-3">
                 <label htmlFor="featured" className="text-slate-300 text-xs font-semibold uppercase tracking-widest">
@@ -550,6 +562,10 @@ export default function ProductForm({
           )}
           {loading
             ? "Saving…"
+            : !showPublishField
+            ? mode === "create"
+              ? "Submit for approval"
+              : "Save & submit for approval"
             : mode === "create"
             ? "Create Product"
             : "Save Changes"}

@@ -38,6 +38,7 @@ export default async function SellerProductsPage() {
     discount: Number(p.discount || 0),
     inStock: Boolean(p.inStock),
     isActive: p.isActive !== false,
+    approvalStatus: (p.approvalStatus as IProduct["approvalStatus"]) || "pending",
     status:
       p.status === "Published" || (p.status == null && p.isActive !== false)
         ? "Published"
@@ -75,6 +76,7 @@ export default async function SellerProductsPage() {
         productsBasePath="/seller/products"
         showPublishAllDrafts={false}
         useStorefrontProductLink
+        showApprovalStatus
       />
     </div>
   );

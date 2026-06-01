@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import BrandLogoMark from "@/components/BrandLogoMark";
 
 const navLinks = [
@@ -24,6 +25,19 @@ const navLinks = [
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.5h8.25V3H3v10.5Zm0 7.5h8.25v-4.5H3V21Zm9.75 0H21V10.5h-8.25V21Zm0-12H21V3h-8.25v6Z" />
+      </svg>
+    ),
+  },
+  {
+    href: "/admin/approvals",
+    label: "Approvals",
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.745 3.745 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.745 3.745 0 0 1 3.296-1.043A3.745 3.745 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.745 3.745 0 0 1 3.296 1.043 3.745 3.745 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
+        />
       </svg>
     ),
   },
@@ -103,6 +117,27 @@ const navLinks = [
 export default function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const [pendingApprovals, setPendingApprovals] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await fetch("/api/admin/products/approvals", { credentials: "include" });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!cancelled) setPendingApprovals(Number(data.count || 0));
+      } catch {
+        /* ignore */
+      }
+    };
+    load();
+    const interval = setInterval(load, 60_000);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, [pathname]);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
@@ -132,6 +167,8 @@ export default function AdminSidebar() {
               ? pathname === "/admin/users"
               : link.href === "/admin"
               ? pathname === "/admin"
+              : link.href === "/admin/approvals"
+              ? pathname === "/admin/approvals"
               : link.href === "/admin/reviews"
               ? pathname === "/admin/reviews" || pathname.startsWith("/admin/reviews/")
               : link.href === "/admin/coupons"
@@ -150,7 +187,12 @@ export default function AdminSidebar() {
               }`}
             >
               {link.icon}
-              <span className="hidden lg:block">{link.label}</span>
+              <span className="hidden lg:block flex-1">{link.label}</span>
+              {link.href === "/admin/approvals" && pendingApprovals > 0 ? (
+                <span className="ml-auto inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-amber-500 px-1.5 py-0.5 text-[10px] font-black text-zinc-950">
+                  {pendingApprovals > 99 ? "99+" : pendingApprovals}
+                </span>
+              ) : null}
             </Link>
           );
         })}

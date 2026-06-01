@@ -6,6 +6,20 @@ import { useMemo, useState } from "react";
 import type { IProduct } from "@/types/product";
 import { formatPkr } from "@/lib/formatCurrency";
 
+function productStatusBadge(product: IProduct) {
+  const approval = product.approvalStatus || (product.sellerId ? "pending" : "approved");
+  if (product.sellerId && approval === "pending") {
+    return { label: "Pending approval", className: "bg-amber-900/60 text-amber-300" };
+  }
+  if (product.sellerId && approval === "rejected") {
+    return { label: "Rejected", className: "bg-red-900/60 text-red-300" };
+  }
+  if (product.status === "Published" && product.isActive) {
+    return { label: "Published", className: "bg-emerald-900/60 text-emerald-300" };
+  }
+  return { label: "Draft", className: "bg-slate-700/80 text-slate-300" };
+}
+
 interface ProductTableProps {
   products: IProduct[];
   /** Base path for product management URLs (e.g. `/admin/products` or `/seller/products`). */
@@ -18,6 +32,10 @@ interface ProductTableProps {
   showFeaturedColumn?: boolean;
   /** Admin-only: show Best seller indicator column. */
   showBestSellerColumn?: boolean;
+  /** Admin-only: show who created the listing (seller name or store). */
+  showSellerColumn?: boolean;
+  /** Use approval-aware status labels (admin + seller lists). */
+  showApprovalStatus?: boolean;
 }
 
 export default function ProductTable({
@@ -27,6 +45,8 @@ export default function ProductTable({
   useStorefrontProductLink = false,
   showFeaturedColumn = false,
   showBestSellerColumn = false,
+  showSellerColumn = false,
+  showApprovalStatus = false,
 }: ProductTableProps) {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -177,6 +197,7 @@ export default function ProductTable({
               <th className="text-left px-4 py-3">Image</th>
               <th className="text-left px-4 py-3">Product</th>
               <th className="text-left px-4 py-3">Status</th>
+              {showSellerColumn ? <th className="text-left px-4 py-3">Created by</th> : null}
               {showFeaturedColumn ? <th className="text-left px-4 py-3">Featured</th> : null}
               {showBestSellerColumn ? <th className="text-left px-4 py-3">Best seller</th> : null}
               <th className="text-left px-4 py-3">Brand</th>
@@ -212,16 +233,34 @@ export default function ProductTable({
                 </td>
 
                 <td className="px-4 py-3">
-                  <span
-                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                      product.status === "Published"
-                        ? "bg-emerald-900/60 text-emerald-300"
-                        : "bg-amber-900/60 text-amber-300"
-                    }`}
-                  >
-                    {product.status === "Published" ? "Published" : "Draft"}
-                  </span>
+                  {(() => {
+                    const badge = showApprovalStatus
+                      ? productStatusBadge(product)
+                      : product.status === "Published"
+                      ? { label: "Published", className: "bg-emerald-900/60 text-emerald-300" }
+                      : { label: "Draft", className: "bg-amber-900/60 text-amber-300" };
+                    return (
+                      <span
+                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${badge.className}`}
+                      >
+                        {badge.label}
+                      </span>
+                    );
+                  })()}
                 </td>
+
+                {showSellerColumn ? (
+                  <td className="px-4 py-3 text-slate-300">
+                    {product.sellerId ? (
+                      <>
+                        <span className="text-xs font-semibold text-indigo-200">Seller</span>
+                        <p className="text-sm text-slate-100">{product.sellerName || "Unknown seller"}</p>
+                      </>
+                    ) : (
+                      <span className="text-sm text-slate-400">Store catalog</span>
+                    )}
+                  </td>
+                ) : null}
 
                 {showFeaturedColumn ? (
                   <td className="px-4 py-3">

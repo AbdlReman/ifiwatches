@@ -7,6 +7,8 @@ export interface IProduct {
   _id: string;
   /** Seller account that owns this listing, when applicable. */
   sellerId?: string;
+  /** Resolved seller display name for admin lists. */
+  sellerName?: string;
   name: string;
   brand?: string;
   category: string;

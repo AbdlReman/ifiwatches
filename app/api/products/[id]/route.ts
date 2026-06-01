@@ -89,17 +89,10 @@ export async function PUT(req: NextRequest, { params }: Params) {
         ? body.images
         : [];
     const isSeller = auth.session.role === "seller";
-    const existingSeller = Boolean((existing as { sellerId?: unknown }).sellerId);
     const wantsPublish =
       body.publish === true || body.status === "Published" || body.isActive === true;
-    const approvalOk =
-      !existingSeller ||
-      String((existing as { approvalStatus?: string }).approvalStatus || "approved") ===
-        "approved";
     const publish = !isSeller && wantsPublish;
-    const sellerCanPublish =
-      isSeller && wantsPublish && approvalOk && !Boolean((existing as { isArchived?: boolean }).isArchived);
-    const nextStatus = publish || sellerCanPublish ? "Published" : "Draft";
+    const nextStatus = publish ? "Published" : "Draft";
     const categories = normalizeCategories(body.categories, body.category);
     const primaryCategory = categories[0] || "";
     const payload: Record<string, unknown> = {
@@ -119,24 +112,14 @@ export async function PUT(req: NextRequest, { params }: Params) {
       metaTitle: body.metaTitle || "",
       metaDescription: body.metaDescription || "",
       inStock: Number(body.stockQuantity || 0) > 0,
-      isActive: publish || sellerCanPublish,
+      isActive: publish,
       status: nextStatus,
     };
 
-    if (isSeller && wantsPublish && !approvalOk) {
-      return NextResponse.json(
-        { error: "This product must be approved by admin before it can be published." },
-        { status: 400 }
-      );
-    }
-
     if (isSeller) {
-      payload.status = sellerCanPublish ? "Published" : "Draft";
-      payload.isActive = sellerCanPublish;
-      const prevApproval = String((existing as { approvalStatus?: string }).approvalStatus || "pending");
-      if (prevApproval === "approved" && !sellerCanPublish) {
-        payload.approvalStatus = "pending";
-      }
+      payload.status = "Draft";
+      payload.isActive = false;
+      payload.approvalStatus = "pending";
     }
 
     if (auth.session.role === "admin" && body.sellerId !== undefined) {

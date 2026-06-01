@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { connectDB } from "@/lib/mongodb";
 import Product from "@/models/Product";
+import User from "@/models/User";
 import ProductTable from "../_components/ProductTable";
 import type { IProduct } from "@/types/product";
 
@@ -10,11 +11,34 @@ export const dynamic = "force-dynamic";
 
 export default async function ProductsPage() {
   await connectDB();
-  const raw = await Product.find({}).sort({ createdAt: -1 }).lean();
+  const [raw, pendingCount] = await Promise.all([
+    Product.find({}).sort({ createdAt: -1 }).lean(),
+    Product.countDocuments({ sellerId: { $ne: null }, approvalStatus: "pending" }),
+  ]);
+
+  const sellerIds = [
+    ...new Set(
+      (raw as Record<string, unknown>[])
+        .map((p) => (p.sellerId ? String(p.sellerId) : ""))
+        .filter(Boolean)
+    ),
+  ];
+  const sellers = sellerIds.length
+    ? await User.find({ _id: { $in: sellerIds } })
+        .select("name")
+        .lean()
+    : [];
+  const sellerNameById = new Map(
+    sellers.map((s) => {
+      const u = s as { _id: unknown; name?: string };
+      return [String(u._id), String(u.name || "Seller")];
+    })
+  );
 
   const products: IProduct[] = (raw as Record<string, unknown>[]).map((p) => ({
     _id: String(p._id),
     sellerId: p.sellerId ? String(p.sellerId) : undefined,
+    sellerName: p.sellerId ? sellerNameById.get(String(p.sellerId)) : undefined,
     name: String(p.name),
     brand: String(p.brand || ""),
     category: String(p.category || ""),
@@ -34,6 +58,9 @@ export default async function ProductsPage() {
     discount: Number(p.discount || 0),
     inStock: Boolean(p.inStock),
     isActive: p.isActive !== false,
+    isFeatured: Boolean(p.isFeatured),
+    isBestSeller: Boolean(p.isBestSeller),
+    approvalStatus: (p.approvalStatus as IProduct["approvalStatus"]) || (p.sellerId ? "pending" : "approved"),
     status:
       p.status === "Published" || (p.status == null && p.isActive !== false)
         ? "Published"
@@ -43,8 +70,6 @@ export default async function ProductsPage() {
     slug: String(p.slug || ""),
     metaTitle: String(p.metaTitle || ""),
     metaDescription: String(p.metaDescription || ""),
-    isFeatured: Boolean(p.isFeatured),
-    isBestSeller: Boolean(p.isBestSeller),
     createdAt: String(p.createdAt),
     updatedAt: String(p.updatedAt),
   }));
@@ -53,7 +78,23 @@ export default async function ProductsPage() {
 
   return (
     <div>
-      {/* Header */}
+      {pendingCount > 0 ? (
+        <div className="mb-6 flex flex-col gap-3 rounded-xl border border-amber-500/40 bg-amber-950/40 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-sm font-semibold text-amber-200">
+              {pendingCount} seller listing{pendingCount === 1 ? "" : "s"} awaiting approval
+            </p>
+            <p className="text-xs text-amber-200/70 mt-0.5">Review and publish vendor products from approvals.</p>
+          </div>
+          <Link
+            href="/admin/approvals"
+            className="inline-flex shrink-0 items-center justify-center rounded-lg bg-amber-500 px-4 py-2 text-xs font-bold uppercase tracking-widest text-zinc-950 hover:bg-amber-400"
+          >
+            Review now
+          </Link>
+        </div>
+      ) : null}
+
       <div className="flex items-start justify-between mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-black uppercase tracking-tight text-white">Products</h1>
@@ -72,7 +113,6 @@ export default async function ProductsPage() {
         </Link>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
           { label: "Total Products", value: products.length, color: "text-white" },
@@ -82,12 +122,7 @@ export default async function ProductsPage() {
             label: "Avg. Discount",
             value:
               products.length > 0
-                ? Math.round(
-                    products.reduce(
-                      (sum, p) => sum + p.discount,
-                      0
-                    ) / products.length
-                  ) + "%"
+                ? Math.round(products.reduce((sum, p) => sum + p.discount, 0) / products.length) + "%"
                 : "0%",
             color: "text-indigo-400",
           },
@@ -99,7 +134,7 @@ export default async function ProductsPage() {
         ))}
       </div>
 
-      <ProductTable products={products} showFeaturedColumn showBestSellerColumn />
+      <ProductTable products={products} showFeaturedColumn showBestSellerColumn showSellerColumn showApprovalStatus />
     </div>
   );
 }
