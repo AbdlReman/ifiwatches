@@ -49,9 +49,9 @@ export default function ShopClient({ products }: { products: IProduct[] }) {
     return ["All", ...rest];
   }, [products]);
   const brands = useMemo(() => {
-    const rest = Array.from(new Set(products.map((p) => p.brand).filter(Boolean))).sort((a, b) =>
-      a.localeCompare(b)
-    );
+    const rest = Array.from(
+      new Set(products.map((p) => p.brand?.trim()).filter((b): b is string => Boolean(b)))
+    ).sort((a, b) => a.localeCompare(b));
     return ["All", ...rest];
   }, [products]);
   const sizes = useMemo(() => {
@@ -115,7 +115,7 @@ export default function ShopClient({ products }: { products: IProduct[] }) {
   const filtered = useMemo(() => {
     return products
       .filter((p) => category === "All" || categoriesOf(p).includes(category))
-      .filter((p) => brand === "All" || p.brand === brand)
+      .filter((p) => brand === "All" || (p.brand?.trim() || "") === brand)
       .filter((p) => size === "All" || p.sizes.includes(size))
       .filter((p) => color === "All" || p.colors.includes(color))
       .filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))

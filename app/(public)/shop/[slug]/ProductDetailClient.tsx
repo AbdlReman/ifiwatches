@@ -136,7 +136,7 @@ export default function ProductDetailClient({
         slug: product.slug,
         name: product.name,
         image: previewImg,
-        brand: product.brand,
+        brand: product.brand ?? "",
         price: product.price,
         discount: product.discount,
       },

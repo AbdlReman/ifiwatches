@@ -48,7 +48,6 @@ function normalizeVariantsFromServer(data: IProduct): ColorVariant[] {
 interface ProductFormProps {
   initialData?: IProduct;
   mode: "create" | "edit";
-  brandOptions: string[];
   categoryOptions: string[];
   /** Where to navigate after a successful save (default: admin products). */
   afterSaveRedirect?: string;
@@ -57,16 +56,14 @@ interface ProductFormProps {
 export default function ProductForm({
   initialData,
   mode,
-  brandOptions,
   categoryOptions,
   afterSaveRedirect = "/admin/products",
 }: ProductFormProps) {
   const router = useRouter();
-  const fallbackBrand = brandOptions[0] || siteConfig.brandName;
   const fallbackCategory = categoryOptions[0] || siteConfig.categories[0];
   const emptyForm = {
     name: "",
-    brand: fallbackBrand,
+    brand: "",
     categories: [fallbackCategory],
     price: "" as unknown as number,
     description: "",
@@ -82,7 +79,7 @@ export default function ProductForm({
     initialData
       ? {
           name: initialData.name,
-          brand: initialData.brand,
+          brand: initialData.brand ?? "",
           categories:
             Array.isArray(initialData.categories) && initialData.categories.length > 0
               ? initialData.categories
@@ -223,15 +220,14 @@ export default function ProductForm({
           </div>
 
           <div>
-            <label className={labelClass}>Brand *</label>
-            <select
+            <label className={labelClass}>Brand (optional)</label>
+            <input
+              type="text"
               value={form.brand}
               onChange={(e) => set("brand", e.target.value)}
+              placeholder="e.g. Rolex, Nike"
               className={inputClass}
-              required
-            >
-              {brandOptions.map((b) => <option key={b}>{b}</option>)}
-            </select>
+            />
           </div>
 
           <div>

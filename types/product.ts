@@ -8,7 +8,7 @@ export interface IProduct {
   /** Seller account that owns this listing, when applicable. */
   sellerId?: string;
   name: string;
-  brand: string;
+  brand?: string;
   category: string;
   categories?: string[];
   price: number;

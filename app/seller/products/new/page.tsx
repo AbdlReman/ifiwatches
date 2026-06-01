@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
 import { connectDB } from "@/lib/mongodb";
-import Brand from "@/models/Brand";
 import Category from "@/models/Category";
 import ProductForm from "@/app/admin/_components/ProductForm";
 import { siteConfig } from "@/lib/siteConfig";
@@ -14,13 +13,8 @@ export default async function SellerNewProductPage() {
   if (!session || session.role !== "seller") return null;
 
   await connectDB();
-  const [brandsRaw, categoriesRaw] = await Promise.all([
-    Brand.find({ isActive: true }).sort({ name: 1 }).lean(),
-    Category.find({ isActive: true }).sort({ name: 1 }).lean(),
-  ]);
-  const brandOptions = (brandsRaw as Record<string, unknown>[]).map((b) => String(b.name || "")).filter(Boolean);
+  const categoriesRaw = await Category.find({ isActive: true }).sort({ name: 1 }).lean();
   const categoryOptions = (categoriesRaw as Record<string, unknown>[]).map((c) => String(c.name || "")).filter(Boolean);
-  const finalBrandOptions = brandOptions.length > 0 ? brandOptions : [siteConfig.brandName];
   const finalCategoryOptions = Array.from(
     new Set((categoryOptions.length > 0 ? categoryOptions : [...siteConfig.categories]).concat([...siteConfig.categories]))
   );
@@ -41,7 +35,6 @@ export default async function SellerNewProductPage() {
 
       <ProductForm
         mode="create"
-        brandOptions={finalBrandOptions}
         categoryOptions={finalCategoryOptions}
         afterSaveRedirect="/seller/products"
       />

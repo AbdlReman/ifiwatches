@@ -106,7 +106,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
       colorVariants,
       stockQuantity: Number(body.stockQuantity || 0),
       images,
-      brand: body.brand || "",
+      brand: String(body.brand ?? "").trim(),
       discount: Number(body.discount || 0),
       metaTitle: body.metaTitle || "",
       metaDescription: body.metaDescription || "",

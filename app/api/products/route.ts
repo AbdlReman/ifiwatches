@@ -151,7 +151,7 @@ export async function POST(req: NextRequest) {
       colorVariants,
       stockQuantity: Number(body.stockQuantity || 0),
       images,
-      brand: body.brand || "",
+      brand: String(body.brand ?? "").trim(),
       discount: Number(body.discount || 0),
       metaTitle: body.metaTitle || "",
       metaDescription: body.metaDescription || "",

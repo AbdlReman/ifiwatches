@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { getSession } from "@/lib/auth/session";
 import { connectDB } from "@/lib/mongodb";
 import Product from "@/models/Product";
-import Brand from "@/models/Brand";
 import Category from "@/models/Category";
 import ProductForm from "@/app/admin/_components/ProductForm";
 import type { IProduct } from "@/types/product";
@@ -23,22 +22,13 @@ export default async function SellerEditProductPage({
   if (!session || session.role !== "seller") return null;
 
   await connectDB();
-  const [raw, brandsRaw, categoriesRaw] = await Promise.all([
+  const [raw, categoriesRaw] = await Promise.all([
     Product.findById(id).lean(),
-    Brand.find({ isActive: true }).sort({ name: 1 }).lean(),
     Category.find({ isActive: true }).sort({ name: 1 }).lean(),
   ]);
   if (!raw) notFound();
   if (!sellerOwnsProduct(session, raw as { sellerId?: unknown })) notFound();
 
-  const brandOptions = Array.from(
-    new Set(
-      (brandsRaw as Record<string, unknown>[])
-        .map((b) => String(b.name || ""))
-        .filter(Boolean)
-        .concat(String((raw as Record<string, unknown>).brand || ""))
-    )
-  );
   const categoryOptions = Array.from(
     new Set(
       (categoriesRaw as Record<string, unknown>[])
@@ -47,7 +37,6 @@ export default async function SellerEditProductPage({
         .concat(String((raw as Record<string, unknown>).category || ""))
     )
   );
-  const finalBrandOptions = brandOptions.length > 0 ? brandOptions : [siteConfig.brandName];
   const finalCategoryOptions = Array.from(
     new Set((categoryOptions.length > 0 ? categoryOptions : [...siteConfig.categories]).concat([...siteConfig.categories]))
   );
@@ -112,7 +101,6 @@ export default async function SellerEditProductPage({
       <ProductForm
         mode="edit"
         initialData={product}
-        brandOptions={finalBrandOptions}
         categoryOptions={finalCategoryOptions}
         afterSaveRedirect="/seller/products"
       />

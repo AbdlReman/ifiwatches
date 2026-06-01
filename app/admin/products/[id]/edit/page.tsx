@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { connectDB } from "@/lib/mongodb";
 import Product from "@/models/Product";
-import Brand from "@/models/Brand";
 import Category from "@/models/Category";
 import ProductForm from "../../../_components/ProductForm";
 import type { IProduct } from "@/types/product";
@@ -19,20 +18,11 @@ export default async function EditProductPage({
   const { id } = await params;
 
   await connectDB();
-  const [raw, brandsRaw, categoriesRaw] = await Promise.all([
+  const [raw, categoriesRaw] = await Promise.all([
     Product.findById(id).lean(),
-    Brand.find({ isActive: true }).sort({ name: 1 }).lean(),
     Category.find({ isActive: true }).sort({ name: 1 }).lean(),
   ]);
   if (!raw) notFound();
-  const brandOptions = Array.from(
-    new Set(
-      (brandsRaw as Record<string, unknown>[])
-        .map((b) => String(b.name || ""))
-        .filter(Boolean)
-        .concat(String((raw as Record<string, unknown>).brand || ""))
-    )
-  );
   const categoryOptions = Array.from(
     new Set(
       (categoriesRaw as Record<string, unknown>[])
@@ -41,7 +31,6 @@ export default async function EditProductPage({
         .concat(String((raw as Record<string, unknown>).category || ""))
     )
   );
-  const finalBrandOptions = brandOptions.length > 0 ? brandOptions : [siteConfig.brandName];
   const finalCategoryOptions = Array.from(
     new Set((categoryOptions.length > 0 ? categoryOptions : [...siteConfig.categories]).concat([...siteConfig.categories]))
   );
@@ -103,12 +92,7 @@ export default async function EditProductPage({
         <p className="text-slate-400 text-sm mt-1 truncate">{product.name}</p>
       </div>
 
-      <ProductForm
-        mode="edit"
-        initialData={product}
-        brandOptions={finalBrandOptions}
-        categoryOptions={finalCategoryOptions}
-      />
+      <ProductForm mode="edit" initialData={product} categoryOptions={finalCategoryOptions} />
     </div>
   );
 }
