@@ -77,40 +77,37 @@ export default function HomePageView({
   return (
     <div className="bg-white">
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-zinc-200 bg-zinc-50">
+      <section className="relative min-h-[min(88vh,720px)] overflow-hidden border-b border-zinc-200">
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.18]"
-          style={{
-            backgroundImage: `url(${siteConfig.images.hero})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${siteConfig.images.hero})` }}
+          role="img"
+          aria-label=""
         />
-        <div className="pointer-events-none absolute -right-24 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full border border-zinc-300/60" />
-        <div className="pointer-events-none absolute right-8 top-1/2 h-[380px] w-[380px] -translate-y-1/2 rounded-full border border-[rgb(218,170,88)]/30" />
 
-        <div className="relative mx-auto grid max-w-[90rem] gap-12 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-8 lg:py-20">
-          <div>
-            <span
-              className="mb-5 inline-flex items-center gap-2 rounded-full border border-[rgb(218,170,88)]/40 bg-white/90 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-800 shadow-sm"
-            >
+        <div className="relative mx-auto flex min-h-[min(88vh,720px)] max-w-[90rem] items-center px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+          <div className="max-w-2xl">
+            <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/30 bg-black/35 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white shadow-sm backdrop-blur-[2px]">
               <span className="h-1.5 w-1.5 rounded-full" style={{ background: siteConfig.brandColor }} />
               Multi-vendor marketplace
             </span>
-            <h1 className="text-4xl font-black uppercase leading-[0.95] tracking-tight text-zinc-950 sm:text-5xl lg:text-6xl">
+            <h1 className="text-4xl font-black uppercase leading-[0.95] tracking-tight text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.7)] sm:text-5xl lg:text-6xl">
               Shop lifestyle.
               <br />
               <span style={{ color: siteConfig.brandColor }}>Trust every seller.</span>
             </h1>
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-zinc-600 md:text-lg">
+            <p className="mt-5 max-w-lg text-base leading-relaxed text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.65)] md:text-lg">
               IFI Lifestyle brings verified vendors together under one standard — premium watches, perfumes,
               eyewear, gadgets, and fashion with one seller per product.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/shop" className="btn-primary">
+              <Link href="/shop" className="btn-primary shadow-lg">
                 Explore marketplace
               </Link>
-              <Link href="/register" className="btn-outline-dark">
+              <Link
+                href="/register"
+                className="border-2 border-white bg-transparent px-10 py-3 text-xs font-bold uppercase tracking-widest text-white shadow-lg transition hover:bg-white hover:text-zinc-950"
+              >
                 Become a seller
               </Link>
             </div>
@@ -118,29 +115,12 @@ export default function HomePageView({
               {["Verified vendors", "One seller per SKU", "Nationwide delivery"].map((pill) => (
                 <span
                   key={pill}
-                  className="rounded-full border border-zinc-200 bg-white/80 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-zinc-600"
+                  className="rounded-full border border-white/35 bg-black/30 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-[2px]"
                 >
                   {pill}
                 </span>
               ))}
             </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
-            {categoryCards.slice(0, 4).map((cat) => (
-              <Link
-                key={cat.name}
-                href={`/shop?category=${encodeURIComponent(cat.name)}`}
-                className={`group relative overflow-hidden rounded-xl bg-gradient-to-br ${cat.visual.gradient} p-5 text-white shadow-lg transition-transform hover:-translate-y-0.5 sm:p-6`}
-              >
-                <span className="text-4xl font-black opacity-20">{cat.visual.letter}</span>
-                <p className="mt-6 text-[10px] font-bold uppercase tracking-widest text-white/70">{cat.visual.tagline}</p>
-                <h3 className="mt-1 text-sm font-black uppercase tracking-tight sm:text-base">{cat.name}</h3>
-                <span className="mt-3 inline-block text-[10px] font-bold uppercase tracking-widest opacity-0 transition-opacity group-hover:opacity-100">
-                  Shop →
-                </span>
-              </Link>
-            ))}
           </div>
         </div>
       </section>
@@ -370,25 +350,22 @@ export default function HomePageView({
       </section>
 
       {/* Promo banner */}
-      <section className="relative overflow-hidden border-y border-zinc-200">
+      <section className="relative min-h-[420px] overflow-hidden border-y border-zinc-200 sm:min-h-[480px]">
         <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${siteConfig.images.hero})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${siteConfig.images.hero})` }}
+          role="img"
+          aria-label=""
         />
-        <div className="absolute inset-0 bg-white/88" />
-        <div className="relative z-10 mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
-          <h2 className="text-3xl font-black uppercase tracking-tight text-zinc-950 md:text-5xl">
+        <div className="relative z-10 mx-auto flex min-h-[420px] max-w-3xl flex-col items-center justify-center px-4 py-20 text-center sm:min-h-[480px] sm:px-6">
+          <h2 className="text-3xl font-black uppercase tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.65)] md:text-5xl">
             The future of digital lifestyle
           </h2>
-          <p className="mx-auto mt-5 max-w-xl text-zinc-600 leading-relaxed">
+          <p className="mx-auto mt-5 max-w-xl leading-relaxed text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]">
             One seller per product. Trusted vendors only. Free shipping above Rs. 3,000 and discreet packaging across
             Pakistan.
           </p>
-          <Link href="/shop" className="btn-primary mt-8 inline-block">
+          <Link href="/shop" className="btn-primary mt-8 inline-block shadow-lg">
             Shop the marketplace
           </Link>
         </div>
