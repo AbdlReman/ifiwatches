@@ -185,32 +185,42 @@ export default function HomePageView({
         </section>
       ) : null}
 
-      {/* Vendor picks */}
-      {vendorProducts.length > 0 ? (
-        <section className="border-y border-zinc-200 bg-zinc-50">
-          <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-            <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">From our sellers</p>
-                <h2 className="mt-2 text-3xl font-black uppercase tracking-tight text-zinc-950 md:text-4xl">
-                  Vendor marketplace picks
-                </h2>
-              </div>
-              <Link
-                href="/shop"
-                className="text-xs font-bold uppercase tracking-widest text-zinc-700 underline decoration-1 underline-offset-4 hover:text-zinc-950"
-              >
-                Browse all →
+      {/* Best sellers */}
+      <section className="border-b border-zinc-200 bg-white">
+        <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+          <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div className="max-w-2xl">
+              <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Customer favorites</p>
+              <h2 className="mt-2 text-3xl font-black uppercase tracking-tight text-zinc-950 md:text-4xl">
+                Our Best Sellers
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-zinc-600 md:text-base">
+                Discover the favorites that keep our customers coming back for more.
+              </p>
+            </div>
+            <Link
+              href="/shop"
+              className="shrink-0 text-xs font-bold uppercase tracking-widest text-zinc-700 underline decoration-1 underline-offset-4 hover:text-zinc-950"
+            >
+              Shop all →
+            </Link>
+          </div>
+
+          {bestSellerProducts.length > 0 ? (
+            <ProductSlider products={bestSellerProducts} />
+          ) : (
+            <div className="rounded-2xl border border-dashed border-zinc-300 bg-zinc-50 px-8 py-16 text-center">
+              <p className="text-sm font-bold uppercase tracking-widest text-zinc-500">Best sellers coming soon</p>
+              <p className="mt-2 text-zinc-600">
+                Admins can mark published products as best sellers from the product editor.
+              </p>
+              <Link href="/shop" className="btn-primary mt-8 inline-block">
+                Visit shop
               </Link>
             </div>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              {vendorProducts.map((product, idx) => (
-                <ProductCard key={product._id} product={product} priority={idx < 2} />
-              ))}
-            </div>
-          </div>
-        </section>
-      ) : null}
+          )}
+        </div>
+      </section>
 
       {/* Featured */}
       <section className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
@@ -248,43 +258,6 @@ export default function HomePageView({
         )}
       </section>
 
-      {/* Best sellers */}
-      <section className="border-y border-zinc-200 bg-zinc-50">
-        <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-          <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <div className="max-w-2xl">
-              <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Customer favorites</p>
-              <h2 className="mt-2 text-3xl font-black uppercase tracking-tight text-zinc-950 md:text-4xl">
-                Our Best Sellers
-              </h2>
-              <p className="mt-3 text-sm leading-relaxed text-zinc-600 md:text-base">
-                Discover the favorites that keep our customers coming back for more.
-              </p>
-            </div>
-            <Link
-              href="/shop"
-              className="shrink-0 text-xs font-bold uppercase tracking-widest text-zinc-700 underline decoration-1 underline-offset-4 hover:text-zinc-950"
-            >
-              Shop all →
-            </Link>
-          </div>
-
-          {bestSellerProducts.length > 0 ? (
-            <ProductSlider products={bestSellerProducts} />
-          ) : (
-            <div className="rounded-2xl border border-dashed border-zinc-300 bg-white px-8 py-16 text-center">
-              <p className="text-sm font-bold uppercase tracking-widest text-zinc-500">Best sellers coming soon</p>
-              <p className="mt-2 text-zinc-600">
-                Admins can mark published products as best sellers from the product editor.
-              </p>
-              <Link href="/shop" className="btn-primary mt-8 inline-block">
-                Visit shop
-              </Link>
-            </div>
-          )}
-        </div>
-      </section>
-
       {/* How it works */}
       <section className="border-t border-zinc-200 bg-white">
         <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
@@ -313,6 +286,33 @@ export default function HomePageView({
           </div>
         </div>
       </section>
+
+      {/* Vendor picks */}
+      {vendorProducts.length > 0 ? (
+        <section className="border-y border-zinc-200 bg-zinc-50">
+          <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+            <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">From our sellers</p>
+                <h2 className="mt-2 text-3xl font-black uppercase tracking-tight text-zinc-950 md:text-4xl">
+                  Vendor marketplace picks
+                </h2>
+              </div>
+              <Link
+                href="/shop"
+                className="text-xs font-bold uppercase tracking-widest text-zinc-700 underline decoration-1 underline-offset-4 hover:text-zinc-950"
+              >
+                Browse all →
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              {vendorProducts.map((product, idx) => (
+                <ProductCard key={product._id} product={product} priority={idx < 2} />
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {/* Seller CTA */}
       <section className="relative overflow-hidden">
