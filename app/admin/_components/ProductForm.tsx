@@ -49,6 +49,8 @@ interface ProductFormProps {
   initialData?: IProduct;
   mode: "create" | "edit";
   categoryOptions: string[];
+  /** Admin-only: show Featured drops toggle (homepage). */
+  showFeaturedField?: boolean;
   /** Where to navigate after a successful save (default: admin products). */
   afterSaveRedirect?: string;
 }
@@ -57,6 +59,7 @@ export default function ProductForm({
   initialData,
   mode,
   categoryOptions,
+  showFeaturedField = false,
   afterSaveRedirect = "/admin/products",
 }: ProductFormProps) {
   const router = useRouter();
@@ -74,6 +77,7 @@ export default function ProductForm({
     metaTitle: "",
     metaDescription: "",
     publish: false,
+    featured: false,
   };
   const [form, setForm] = useState(
     initialData
@@ -93,6 +97,7 @@ export default function ProductForm({
           metaTitle: initialData.metaTitle,
           metaDescription: initialData.metaDescription,
           publish: initialData.status === "Published" || initialData.isActive,
+          featured: Boolean(initialData.isFeatured),
         }
       : emptyForm
   );
@@ -160,16 +165,21 @@ export default function ProductForm({
       const url =
         mode === "create" ? "/api/products" : `/api/products/${initialData!._id}`;
       const method = mode === "create" ? "POST" : "PUT";
-      const payload = {
-        ...form,
-        category: form.categories[0] || fallbackCategory,
-        status: form.publish ? "Published" : "Draft",
-        isActive: form.publish,
-        sizes: form.sizesInput.split(",").map((s) => s.trim()).filter(Boolean),
+      const { featured, sizesInput, categories: formCategories, publish, ...rest } = form;
+      const payload: Record<string, unknown> = {
+        ...rest,
+        categories: formCategories,
+        category: formCategories[0] || fallbackCategory,
+        status: publish ? "Published" : "Draft",
+        isActive: publish,
+        sizes: sizesInput.split(",").map((s) => s.trim()).filter(Boolean),
         colorVariants: normalizedColorVariants,
         colors: normalizedColorVariants.map((variant) => variant.color),
         images: normalizedColorVariants.flatMap((variant) => variant.images),
       };
+      if (showFeaturedField) {
+        payload.isFeatured = featured;
+      }
 
       const res = await fetch(url, {
         method,
@@ -350,20 +360,39 @@ export default function ProductForm({
             />
           </div>
 
-          <div className="flex items-center gap-3">
-            <label htmlFor="publish" className="text-slate-300 text-xs font-semibold uppercase tracking-widest">
-              Publish
-            </label>
-            <input
-              id="publish"
-              type="checkbox"
-              checked={form.publish}
-              onChange={(e) => set("publish", e.target.checked)}
-              className="h-4 w-4 rounded border-slate-500 bg-slate-700 text-indigo-500 focus:ring-indigo-500"
-            />
-            <span className={`text-xs ${form.publish ? "text-green-300" : "text-amber-300"}`}>
-              {form.publish ? "Published" : "Draft"}
-            </span>
+          <div className="flex flex-wrap items-center gap-6 md:col-span-2">
+            <div className="flex items-center gap-3">
+              <label htmlFor="publish" className="text-slate-300 text-xs font-semibold uppercase tracking-widest">
+                Publish
+              </label>
+              <input
+                id="publish"
+                type="checkbox"
+                checked={form.publish}
+                onChange={(e) => set("publish", e.target.checked)}
+                className="h-4 w-4 rounded border-slate-500 bg-slate-700 text-indigo-500 focus:ring-indigo-500"
+              />
+              <span className={`text-xs ${form.publish ? "text-green-300" : "text-amber-300"}`}>
+                {form.publish ? "Published" : "Draft"}
+              </span>
+            </div>
+            {showFeaturedField ? (
+              <div className="flex items-center gap-3">
+                <label htmlFor="featured" className="text-slate-300 text-xs font-semibold uppercase tracking-widest">
+                  Featured drops
+                </label>
+                <input
+                  id="featured"
+                  type="checkbox"
+                  checked={form.featured}
+                  onChange={(e) => set("featured", e.target.checked)}
+                  className="h-4 w-4 rounded border-slate-500 bg-slate-700 text-amber-500 focus:ring-amber-500"
+                />
+                <span className={`text-xs ${form.featured ? "text-amber-300" : "text-slate-500"}`}>
+                  {form.featured ? "On homepage" : "Not featured"}
+                </span>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

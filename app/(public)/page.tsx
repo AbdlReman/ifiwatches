@@ -17,7 +17,10 @@ export default async function HomePage() {
   await connectDB();
 
   const [featuredRaw, vendorRaw, productCount, sellerCount, categories] = await Promise.all([
-    Product.find(publishedProductFilter).sort({ createdAt: -1 }).limit(8).lean(),
+    Product.find({ ...publishedProductFilter, isFeatured: true })
+      .sort({ updatedAt: -1 })
+      .limit(8)
+      .lean(),
     Product.find({ ...publishedProductFilter, sellerId: { $ne: null } })
       .sort({ popularityScore: -1, createdAt: -1 })
       .limit(4)

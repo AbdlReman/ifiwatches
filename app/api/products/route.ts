@@ -21,6 +21,10 @@ function normalizeCategories(input: unknown, fallbackCategory: unknown): string[
   return one ? [one] : [];
 }
 
+function parseIsFeatured(body: Record<string, unknown>): boolean {
+  return body.isFeatured === true || body.featured === true;
+}
+
 function normalizeColorVariants(input: unknown) {
   if (!Array.isArray(input)) return [];
   return input
@@ -160,6 +164,7 @@ export async function POST(req: NextRequest) {
       status: nextStatus,
       sellerId,
       approvalStatus: isSeller ? "pending" : "approved",
+      isFeatured: !isSeller && parseIsFeatured(body as Record<string, unknown>),
     });
     await product.save();
     const plain = product.toObject() as Record<string, unknown>;

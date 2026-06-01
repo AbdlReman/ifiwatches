@@ -235,7 +235,7 @@ export default function HomePageView({
           <div>
             <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Curated for you</p>
             <h2 className="mt-2 text-3xl font-black uppercase tracking-tight text-zinc-950 md:text-4xl">
-              {featuredProducts.length > 0 ? "Latest arrivals" : "Featured drops"}
+              Featured drops
             </h2>
           </div>
           <Link
@@ -255,7 +255,9 @@ export default function HomePageView({
         ) : (
           <div className="rounded-2xl border border-dashed border-zinc-300 bg-zinc-50 px-8 py-16 text-center">
             <p className="text-sm font-bold uppercase tracking-widest text-zinc-500">Listings coming soon</p>
-            <p className="mt-2 text-zinc-600">New products from verified sellers will appear here.</p>
+            <p className="mt-2 text-zinc-600">
+              Admins can mark published products as featured from the product editor.
+            </p>
             <Link href="/shop" className="btn-primary mt-8 inline-block">
               Visit shop
             </Link>

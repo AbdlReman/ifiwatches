@@ -33,6 +33,8 @@ const ProductSchema = new Schema(
     isHidden: { type: Boolean, default: false },
     isClearance: { type: Boolean, default: false },
     isArchived: { type: Boolean, default: false },
+    /** Homepage “Featured drops”; admin-only. */
+    isFeatured: { type: Boolean, default: false, index: true },
     status: { type: String, enum: ["Draft", "Published"], default: "Draft" },
     /** Seller listings require admin approval before they can be published. */
     approvalStatus: {

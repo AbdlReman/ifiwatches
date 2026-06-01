@@ -72,6 +72,7 @@ export default async function EditProductPage({
     slug: String(p.slug || ""),
     metaTitle: String(p.metaTitle || ""),
     metaDescription: String(p.metaDescription || ""),
+    isFeatured: Boolean(p.isFeatured),
     createdAt: String(p.createdAt),
     updatedAt: String(p.updatedAt),
   };
@@ -92,7 +93,12 @@ export default async function EditProductPage({
         <p className="text-slate-400 text-sm mt-1 truncate">{product.name}</p>
       </div>
 
-      <ProductForm mode="edit" initialData={product} categoryOptions={finalCategoryOptions} />
+      <ProductForm
+        mode="edit"
+        initialData={product}
+        categoryOptions={finalCategoryOptions}
+        showFeaturedField
+      />
     </div>
   );
 }

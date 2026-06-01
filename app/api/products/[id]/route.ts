@@ -7,6 +7,10 @@ import { canMutateProduct } from "@/lib/productAccess";
 
 type Params = { params: Promise<{ id: string }> };
 
+function parseIsFeatured(body: Record<string, unknown>): boolean {
+  return body.isFeatured === true || body.featured === true;
+}
+
 function normalizeColorVariants(input: unknown) {
   if (!Array.isArray(input)) return [];
   return input
@@ -138,6 +142,10 @@ export async function PUT(req: NextRequest, { params }: Params) {
       } else if (mongoose.isValidObjectId(sid)) {
         payload.sellerId = new mongoose.Types.ObjectId(sid);
       }
+    }
+
+    if (auth.session.role === "admin") {
+      payload.isFeatured = parseIsFeatured(body as Record<string, unknown>);
     }
 
     const product = await Product.findByIdAndUpdate(

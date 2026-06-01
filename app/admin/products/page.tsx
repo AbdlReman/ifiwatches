@@ -43,6 +43,7 @@ export default async function ProductsPage() {
     slug: String(p.slug || ""),
     metaTitle: String(p.metaTitle || ""),
     metaDescription: String(p.metaDescription || ""),
+    isFeatured: Boolean(p.isFeatured),
     createdAt: String(p.createdAt),
     updatedAt: String(p.updatedAt),
   }));
@@ -97,7 +98,7 @@ export default async function ProductsPage() {
         ))}
       </div>
 
-      <ProductTable products={products} />
+      <ProductTable products={products} showFeaturedColumn />
     </div>
   );
 }

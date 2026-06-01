@@ -25,6 +25,8 @@ export interface IProduct {
   isHidden?: boolean;
   isClearance?: boolean;
   isArchived?: boolean;
+  /** Shown in homepage Featured drops; set by admin only. */
+  isFeatured?: boolean;
   status: "Draft" | "Published";
   approvalStatus?: "pending" | "approved" | "rejected";
   popularityScore: number;

@@ -14,6 +14,8 @@ interface ProductTableProps {
   showPublishAllDrafts?: boolean;
   /** When true, "View" opens the public storefront (`/shop/[slug]`) instead of admin preview. */
   useStorefrontProductLink?: boolean;
+  /** Admin-only: show Featured drops indicator column. */
+  showFeaturedColumn?: boolean;
 }
 
 export default function ProductTable({
@@ -21,6 +23,7 @@ export default function ProductTable({
   productsBasePath = "/admin/products",
   showPublishAllDrafts = true,
   useStorefrontProductLink = false,
+  showFeaturedColumn = false,
 }: ProductTableProps) {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -171,6 +174,7 @@ export default function ProductTable({
               <th className="text-left px-4 py-3">Image</th>
               <th className="text-left px-4 py-3">Product</th>
               <th className="text-left px-4 py-3">Status</th>
+              {showFeaturedColumn ? <th className="text-left px-4 py-3">Featured</th> : null}
               <th className="text-left px-4 py-3">Brand</th>
               <th className="text-left px-4 py-3">Category</th>
               <th className="text-left px-4 py-3">Price</th>
@@ -214,6 +218,18 @@ export default function ProductTable({
                     {product.status === "Published" ? "Published" : "Draft"}
                   </span>
                 </td>
+
+                {showFeaturedColumn ? (
+                  <td className="px-4 py-3">
+                    {product.isFeatured ? (
+                      <span className="inline-flex items-center rounded-full bg-amber-900/50 px-2.5 py-0.5 text-xs font-medium text-amber-200">
+                        Featured
+                      </span>
+                    ) : (
+                      <span className="text-slate-500 text-xs">—</span>
+                    )}
+                  </td>
+                ) : null}
 
                 {/* Brand */}
                 <td className="px-4 py-3">
