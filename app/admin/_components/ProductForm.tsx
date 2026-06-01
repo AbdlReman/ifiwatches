@@ -364,12 +364,11 @@ export default function ProductForm({
           </div>
 
           <div>
-            <label className={labelClass}>Sizes * (comma separated)</label>
+            <label className={labelClass}>Sizes (optional, comma separated)</label>
             <input
-              required
               value={form.sizesInput}
               onChange={(e) => set("sizesInput", e.target.value)}
-              placeholder=""
+              placeholder="e.g. 7, 8, 9, 10 — leave empty if not applicable"
               className={inputClass}
             />
           </div>
