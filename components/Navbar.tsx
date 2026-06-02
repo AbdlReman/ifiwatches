@@ -143,10 +143,10 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-zinc-200 shadow-sm">
       {/* Top promo bar */}
-      <div className="bg-zinc-50 text-zinc-800 py-2 text-xs font-bold tracking-widest uppercase border-b border-zinc-200">
+      <div className="hidden sm:block bg-zinc-950 text-white py-2 text-xs font-bold tracking-widest uppercase border-b border-zinc-800">
         <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-1">
           <span>Free shipping on orders above Rs. 3000 across Pakistan</span>
-          <span className="text-[11px] text-zinc-600">
+          <span className="text-[11px] text-white/80">
             {siteConfig.contact.phone} | {siteConfig.contact.email}
           </span>
         </div>
