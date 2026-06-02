@@ -78,6 +78,7 @@ export default function HomePageView({
   stats: HomeStats;
 }) {
   const categoryCards = buildCategoryCards(categories);
+  const topCategories = categoryCards.slice(0, 8);
 
   return (
     <div className="bg-white">
@@ -148,6 +149,37 @@ export default function HomePageView({
           ))}
         </div>
       </section>
+
+      {/* Marketplace category strip */}
+      {topCategories.length > 0 ? (
+        <section className="border-b border-zinc-200 bg-zinc-50">
+          <div className="mx-auto flex max-w-[90rem] flex-col gap-5 px-4 py-7 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">Category session</p>
+              <h2 className="mt-1 text-2xl font-black uppercase tracking-tight text-zinc-950 md:text-3xl">
+                Explore vendor categories
+              </h2>
+              <p className="mt-1 text-sm text-zinc-600">
+                One marketplace, many trusted sellers across every lifestyle category.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {topCategories.map((cat) => (
+                <Link
+                  key={`chip-${cat.name}`}
+                  href={`/shop?category=${encodeURIComponent(cat.name)}`}
+                  className="rounded-full border border-zinc-300 bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-zinc-700 transition hover:border-zinc-900 hover:text-zinc-950"
+                >
+                  {cat.name}{" "}
+                  <span className="text-zinc-500">
+                    ({cat.productCount > 0 ? cat.productCount.toLocaleString() : "0"})
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {/* Categories bento — from admin categories or live product taxonomy */}
       {categoryCards.length > 0 ? (
@@ -395,6 +427,9 @@ export default function HomePageView({
                 <h2 className="mt-2 text-3xl font-black uppercase tracking-tight text-zinc-950 md:text-4xl">
                   Vendor marketplace picks
                 </h2>
+                <p className="mt-2 max-w-2xl text-sm text-zinc-600">
+                  Fresh products from verified independent vendors across Pakistan.
+                </p>
               </div>
               <Link
                 href="/shop"
