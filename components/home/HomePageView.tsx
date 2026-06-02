@@ -6,6 +6,7 @@ import ProductCard from "@/components/shop/ProductCard";
 import ProductSlider from "@/components/home/ProductSlider";
 import type { IProduct } from "@/types/product";
 import type { HomeCategory } from "@/lib/homeCategories";
+import { formatPkr } from "@/lib/formatCurrency";
 
 export type HomeStats = {
   sellerCount: number;
@@ -64,12 +65,16 @@ export default function HomePageView({
   featuredProducts,
   bestSellerProducts,
   vendorProducts,
+  flashSaleProducts,
+  justForYouProducts,
   stats,
 }: {
   categories: HomeCategory[];
   featuredProducts: IProduct[];
   bestSellerProducts: IProduct[];
   vendorProducts: IProduct[];
+  flashSaleProducts: IProduct[];
+  justForYouProducts: IProduct[];
   stats: HomeStats;
 }) {
   const categoryCards = buildCategoryCards(categories);
@@ -181,6 +186,99 @@ export default function HomePageView({
                 </span>
               </Link>
             ))}
+          </div>
+        </section>
+      ) : null}
+
+      {/* Flash Sale */}
+      {flashSaleProducts.length > 0 ? (
+        <section className="border-y border-zinc-200 bg-zinc-950 text-white">
+          <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+            <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+              <div>
+                <span className="inline-flex items-center gap-2 rounded-full border border-red-500/40 bg-red-500/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-red-400">
+                  <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-red-500" />
+                  Limited time
+                </span>
+                <h2 className="mt-3 text-3xl font-black uppercase tracking-tight text-white md:text-4xl">
+                  Flash Sale
+                </h2>
+                <p className="mt-2 text-sm text-zinc-400">Biggest discounts, handpicked for you today.</p>
+              </div>
+              <Link
+                href="/shop"
+                className="shrink-0 text-xs font-bold uppercase tracking-widest text-zinc-400 underline decoration-1 underline-offset-4 hover:text-white"
+              >
+                See all deals →
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {flashSaleProducts.map((product, idx) => {
+                const finalPrice = product.price * (1 - product.discount / 100);
+                return (
+                  <Link
+                    key={product._id}
+                    href={`/shop/${product.slug}`}
+                    className="group relative flex flex-col overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900 transition hover:border-zinc-600 hover:shadow-xl"
+                  >
+                    <div className="relative aspect-square overflow-hidden bg-zinc-800">
+                      {product.images[0] ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={product.images[0]}
+                          alt={product.name}
+                          className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                          loading={idx < 2 ? "eager" : "lazy"}
+                        />
+                      ) : (
+                        <div className="flex h-full items-center justify-center text-4xl text-zinc-700">🛍</div>
+                      )}
+                      <span className="absolute left-3 top-3 rounded-full bg-red-500 px-2.5 py-0.5 text-[11px] font-black text-white shadow">
+                        −{product.discount}%
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-1 p-4">
+                      {product.brand ? (
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">{product.brand}</p>
+                      ) : null}
+                      <p className="text-sm font-semibold leading-snug text-white line-clamp-2">{product.name}</p>
+                      <div className="mt-2 flex items-baseline gap-2">
+                        <span className="text-base font-black text-white">{formatPkr(finalPrice)}</span>
+                        <span className="text-xs text-zinc-500 line-through">{formatPkr(product.price)}</span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {/* Just For You */}
+      {justForYouProducts.length > 0 ? (
+        <section className="border-b border-zinc-200 bg-white">
+          <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+            <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Picked for you</p>
+                <h2 className="mt-2 text-3xl font-black uppercase tracking-tight text-zinc-950 md:text-4xl">
+                  Just For You
+                </h2>
+                <p className="mt-2 text-sm text-zinc-500">Fresh arrivals you might love.</p>
+              </div>
+              <Link
+                href="/shop"
+                className="shrink-0 text-xs font-bold uppercase tracking-widest text-zinc-700 underline decoration-1 underline-offset-4 hover:text-zinc-950"
+              >
+                Explore all →
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              {justForYouProducts.map((product, idx) => (
+                <ProductCard key={product._id} product={product} priority={idx < 2} />
+              ))}
+            </div>
           </div>
         </section>
       ) : null}

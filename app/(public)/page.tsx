@@ -13,10 +13,29 @@ function toProducts(raw: Record<string, unknown>[]): IProduct[] {
   return raw.map((p) => serializeProductFromLean(p));
 }
 
+/** Fisher-Yates shuffle then slice — picks `n` items randomly from an array. */
+function pickRandom<T>(arr: T[], n: number): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a.slice(0, n);
+}
+
 export default async function HomePage() {
   await connectDB();
 
-  const [featuredRaw, bestSellerRaw, vendorRaw, productCount, sellerCount, categories] = await Promise.all([
+  const [
+    featuredRaw,
+    bestSellerRaw,
+    vendorRaw,
+    flashSalePool,
+    justForYouPool,
+    productCount,
+    sellerCount,
+    categories,
+  ] = await Promise.all([
     Product.find({ ...publishedProductFilter, isFeatured: true })
       .sort({ updatedAt: -1 })
       .limit(8)
@@ -29,6 +48,16 @@ export default async function HomePage() {
       .sort({ popularityScore: -1, createdAt: -1 })
       .limit(4)
       .lean(),
+    // Flash Sale pool: top 30 by discount
+    Product.find({ ...publishedProductFilter, discount: { $gt: 0 } })
+      .sort({ discount: -1 })
+      .limit(30)
+      .lean(),
+    // Just For You pool: top 30 latest
+    Product.find(publishedProductFilter)
+      .sort({ createdAt: -1 })
+      .limit(30)
+      .lean(),
     Product.countDocuments(publishedProductFilter),
     User.countDocuments({ role: "seller" }),
     getHomeCategories(),
@@ -37,6 +66,12 @@ export default async function HomePage() {
   const featuredProducts = toProducts(featuredRaw as Record<string, unknown>[]);
   const bestSellerProducts = toProducts(bestSellerRaw as Record<string, unknown>[]);
   const vendorProducts = toProducts(vendorRaw as Record<string, unknown>[]);
+  const flashSaleProducts = toProducts(
+    pickRandom(flashSalePool as Record<string, unknown>[], 4)
+  );
+  const justForYouProducts = toProducts(
+    pickRandom(justForYouPool as Record<string, unknown>[], 4)
+  );
 
   return (
     <HomePageView
@@ -44,6 +79,8 @@ export default async function HomePage() {
       featuredProducts={featuredProducts}
       bestSellerProducts={bestSellerProducts}
       vendorProducts={vendorProducts}
+      flashSaleProducts={flashSaleProducts}
+      justForYouProducts={justForYouProducts}
       stats={{
         sellerCount,
         productCount,
