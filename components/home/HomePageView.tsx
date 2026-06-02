@@ -14,6 +14,12 @@ export type HomeStats = {
   categoryCount: number;
 };
 
+type HomeCategoryProducts = {
+  name: string;
+  productCount: number;
+  products: IProduct[];
+};
+
 const MARKETPLACE_STEPS = [
   {
     step: "01",
@@ -67,6 +73,7 @@ export default function HomePageView({
   vendorProducts,
   flashSaleProducts,
   justForYouProducts,
+  featuredByCategory,
   stats,
 }: {
   categories: HomeCategory[];
@@ -75,6 +82,7 @@ export default function HomePageView({
   vendorProducts: IProduct[];
   flashSaleProducts: IProduct[];
   justForYouProducts: IProduct[];
+  featuredByCategory: HomeCategoryProducts[];
   stats: HomeStats;
 }) {
   const categoryCards = buildCategoryCards(categories);
@@ -355,6 +363,47 @@ export default function HomePageView({
           </div>
         )}
       </section>
+
+      {/* Featured drops by category */}
+      {featuredByCategory.length > 0 ? (
+        <section className="mx-auto max-w-[90rem] border-t border-zinc-200 px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+          <div className="mb-10">
+            <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Curated for you</p>
+            <h2 className="mt-2 text-3xl font-black uppercase tracking-tight text-zinc-950 md:text-4xl">
+              Featured drops by category
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {featuredByCategory.map((group) => (
+              <article key={group.name} className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6">
+                <div className="mb-5 flex items-end justify-between gap-4">
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-500">Category</p>
+                    <h3 className="mt-1 text-2xl font-black uppercase tracking-tight text-zinc-950">{group.name}</h3>
+                    <p className="mt-1 text-sm text-zinc-600">
+                      {group.productCount.toLocaleString()} live listing
+                      {group.productCount === 1 ? "" : "s"}
+                    </p>
+                  </div>
+                  <Link
+                    href={`/shop?category=${encodeURIComponent(group.name)}`}
+                    className="rounded-full border border-zinc-300 px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-zinc-700 transition hover:border-zinc-900 hover:text-zinc-950"
+                  >
+                    View More
+                  </Link>
+                </div>
+
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                  {group.products.map((product, idx) => (
+                    <ProductCard key={`${group.name}-${product._id}`} product={product} priority={idx === 0} />
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       {/* How it works */}
       <section className="border-t border-zinc-200 bg-white">

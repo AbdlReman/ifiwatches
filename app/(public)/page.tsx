@@ -13,6 +13,12 @@ function toProducts(raw: Record<string, unknown>[]): IProduct[] {
   return raw.map((p) => serializeProductFromLean(p));
 }
 
+type CategoryWithProducts = {
+  name: string;
+  productCount: number;
+  products: IProduct[];
+};
+
 /** Fisher-Yates shuffle then slice — picks `n` items randomly from an array. */
 function pickRandom<T>(arr: T[], n: number): T[] {
   const a = [...arr];
@@ -72,6 +78,27 @@ export default async function HomePage() {
   const justForYouProducts = toProducts(
     pickRandom(justForYouPool as Record<string, unknown>[], 4)
   );
+  const featuredByCategory: CategoryWithProducts[] = (
+    await Promise.all(
+      categories
+        .filter((cat) => cat.productCount > 0)
+        .map(async (cat) => {
+          const latestRaw = await Product.find({
+            ...publishedProductFilter,
+            $or: [{ category: cat.name }, { categories: cat.name }],
+          })
+            .sort({ createdAt: -1, updatedAt: -1 })
+            .limit(2)
+            .lean();
+
+          return {
+            name: cat.name,
+            productCount: cat.productCount,
+            products: toProducts(latestRaw as Record<string, unknown>[]),
+          };
+        })
+    )
+  ).filter((entry) => entry.products.length > 0);
 
   return (
     <HomePageView
@@ -81,6 +108,7 @@ export default async function HomePage() {
       vendorProducts={vendorProducts}
       flashSaleProducts={flashSaleProducts}
       justForYouProducts={justForYouProducts}
+      featuredByCategory={featuredByCategory}
       stats={{
         sellerCount,
         productCount,
