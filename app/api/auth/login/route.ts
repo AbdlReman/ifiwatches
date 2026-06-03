@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     }
 
     await connectDB();
-    const user = await User.findOne({ email }).select("+passwordHash sellerApproved").lean();
+    const user = await User.findOne({ email }).select("+passwordHash").lean();
     if (!user) {
       return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
     }
