@@ -98,13 +98,13 @@ export default function Navbar() {
       >
         <button
           type="button"
-          className={linkClass(isCategoriesActive)}
+          className={`${linkClass(isCategoriesActive)} inline-flex items-center gap-1 align-middle leading-none`}
           aria-expanded={categoriesOpen}
           aria-haspopup="true"
         >
           Categories
           <svg
-            className="ml-1 inline-block h-3.5 w-3.5 opacity-60"
+            className="h-3.5 w-3.5 opacity-60"
             fill="none"
             stroke="currentColor"
             strokeWidth={2}
