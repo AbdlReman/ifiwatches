@@ -7,14 +7,13 @@ import type { UserRole } from "@/lib/auth/jwt";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const email = String(body.email || "")
-      .trim()
-      .toLowerCase();
+    const email = String(body.email || "").trim().toLowerCase();
     const password = String(body.password || "");
     const name = String(body.name || "").trim();
     const roleRaw = String(body.role || "user").toLowerCase();
     const phone = String(body.phone || "").trim().slice(0, 40);
     const address = String(body.address || "").trim().slice(0, 240);
+    const businessName = String(body.businessName || "").trim().slice(0, 120);
     const businessCategory = String(body.businessCategory || "").trim().slice(0, 120);
     const businessSummary = String(body.businessSummary || "").trim().slice(0, 1000);
 
@@ -36,6 +35,9 @@ export async function POST(req: NextRequest) {
     }
 
     if (role === "seller") {
+      if (!phone) {
+        return NextResponse.json({ error: "Phone number is required for seller accounts." }, { status: 400 });
+      }
       if (!businessCategory) {
         return NextResponse.json({ error: "Please choose a business category." }, { status: 400 });
       }
@@ -58,9 +60,13 @@ export async function POST(req: NextRequest) {
       role,
       phone: phone || undefined,
       address: address || undefined,
+      businessName: role === "seller" && businessName ? businessName : undefined,
       businessCategory: role === "seller" ? businessCategory : undefined,
       businessSummary: role === "seller" ? businessSummary : undefined,
       sellerApproved: role === "seller" ? false : true,
+      sellerEnabled: true,
+      assignedCategories: [],
+      commissionRate: 0,
     });
 
     return NextResponse.json({

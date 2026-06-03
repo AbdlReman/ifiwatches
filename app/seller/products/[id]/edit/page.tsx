@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getSession } from "@/lib/auth/session";
 import { connectDB } from "@/lib/mongodb";
 import Product from "@/models/Product";
+import User from "@/models/User";
 import Category from "@/models/Category";
 import ProductForm from "@/app/admin/_components/ProductForm";
 import type { IProduct } from "@/types/product";
@@ -22,24 +23,40 @@ export default async function SellerEditProductPage({
   if (!session || session.role !== "seller") return null;
 
   await connectDB();
-  const [raw, categoriesRaw] = await Promise.all([
+  const [raw, categoriesRaw, sellerDoc] = await Promise.all([
     Product.findById(id).lean(),
     Category.find({ isActive: true }).sort({ name: 1 }).lean(),
+    User.findById(session.sub).select("assignedCategories").lean(),
   ]);
   if (!raw) notFound();
   if (!sellerOwnsProduct(session, raw as { sellerId?: unknown })) notFound();
 
-  const categoryOptions = Array.from(
-    new Set(
-      (categoriesRaw as Record<string, unknown>[])
-        .map((c) => String(c.name || ""))
-        .filter(Boolean)
-        .concat(String((raw as Record<string, unknown>).category || ""))
-    )
-  );
-  const finalCategoryOptions = Array.from(
-    new Set((categoryOptions.length > 0 ? categoryOptions : [...siteConfig.categories]).concat([...siteConfig.categories]))
-  );
+  const seller = sellerDoc as { assignedCategories?: string[] } | null;
+  const assignedCategories: string[] = seller?.assignedCategories?.length
+    ? seller.assignedCategories
+    : [];
+
+  const dbCategories = (categoriesRaw as Record<string, unknown>[])
+    .map((c) => String(c.name || ""))
+    .filter(Boolean);
+
+  const currentProductCategory = String((raw as Record<string, unknown>).category || "").trim();
+
+  let finalCategoryOptions: string[];
+  if (assignedCategories.length > 0) {
+    // Always include the product's current category so it doesn't disappear
+    finalCategoryOptions = Array.from(
+      new Set([...assignedCategories, ...(currentProductCategory ? [currentProductCategory] : [])])
+    );
+  } else {
+    finalCategoryOptions = Array.from(
+      new Set(
+        (dbCategories.length > 0 ? dbCategories : [...siteConfig.categories])
+          .concat([...siteConfig.categories])
+          .concat(currentProductCategory ? [currentProductCategory] : [])
+      )
+    );
+  }
 
   const p = raw as Record<string, unknown>;
   const categories = Array.isArray(p.categories)

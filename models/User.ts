@@ -14,9 +14,13 @@ const UserSchema = new Schema(
     },
     phone: { type: String, trim: true, maxlength: 40 },
     address: { type: String, trim: true, maxlength: 240 },
+    businessName: { type: String, trim: true, maxlength: 120 },
     businessCategory: { type: String, trim: true, maxlength: 120 },
     businessSummary: { type: String, trim: true, maxlength: 1000 },
     sellerApproved: { type: Boolean, default: true, index: true },
+    sellerEnabled: { type: Boolean, default: true },
+    assignedCategories: { type: [String], default: [] },
+    commissionRate: { type: Number, default: 0, min: 0, max: 100 },
   },
   { timestamps: true }
 );
