@@ -13,8 +13,7 @@ export default function RegisterPage() {
   const [role, setRole] = useState<"user" | "seller">("user");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [businessName, setBusinessName] = useState("");
-  const [businessCategory, setBusinessCategory] = useState<string>("");
+  const [businessCategory, setBusinessCategory] = useState("");
   const [businessSummary, setBusinessSummary] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -43,7 +42,6 @@ export default function RegisterPage() {
           role,
           phone,
           address,
-          businessName: role === "seller" ? businessName : undefined,
           businessCategory: role === "seller" ? businessCategory : undefined,
           businessSummary: role === "seller" ? businessSummary : undefined,
         }),
@@ -82,8 +80,6 @@ export default function RegisterPage() {
       setLoading(false);
     }
   };
-
-  const categoryOptions = siteConfig.categories.length > 0 ? [...siteConfig.categories] : ["General"];
 
   return (
     <div className="max-w-lg mx-auto px-4 py-16">
@@ -209,20 +205,6 @@ export default function RegisterPage() {
                 Seller application details
               </h2>
 
-              {/* Store / Business name */}
-              <div>
-                <label className="block text-xs font-bold uppercase text-zinc-500 mb-1">
-                  Store / business name <span className="text-slate-400 font-normal normal-case">(optional)</span>
-                </label>
-                <input
-                  type="text"
-                  value={businessName}
-                  onChange={(e) => setBusinessName(e.target.value)}
-                  className="public-input"
-                  placeholder="e.g. Luxury Time Co"
-                />
-              </div>
-
               {/* Phone — required */}
               <div>
                 <label className="block text-xs font-bold uppercase text-zinc-500 mb-1">
@@ -252,32 +234,19 @@ export default function RegisterPage() {
                 />
               </div>
 
-              {/* Business category — static chips */}
+              {/* Business category */}
               <div>
-                <label className="block text-xs font-bold uppercase text-zinc-500 mb-2">
+                <label className="block text-xs font-bold uppercase text-zinc-500 mb-1">
                   Business category <span className="text-red-500">*</span>
                 </label>
-                <div className="flex flex-wrap gap-2">
-                  {categoryOptions.map((cat) => (
-                    <button
-                      key={cat}
-                      type="button"
-                      onClick={() => setBusinessCategory(cat)}
-                      className={`rounded-full px-3 py-1.5 text-sm font-medium border-2 transition-colors ${
-                        businessCategory === cat
-                          ? "border-zinc-900 bg-zinc-900 text-white"
-                          : "border-zinc-200 bg-white text-zinc-600 hover:border-zinc-400"
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
-                {businessCategory ? (
-                  <p className="text-xs text-emerald-600 mt-1.5 font-medium">Selected: {businessCategory}</p>
-                ) : (
-                  <p className="text-xs text-slate-400 mt-1.5">Select one category above</p>
-                )}
+                <input
+                  type="text"
+                  required
+                  value={businessCategory}
+                  onChange={(e) => setBusinessCategory(e.target.value)}
+                  className="public-input"
+                  placeholder="e.g. Fashion, Electronics, Beauty"
+                />
               </div>
 
               {/* Business summary */}
