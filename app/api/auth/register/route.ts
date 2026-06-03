@@ -13,6 +13,10 @@ export async function POST(req: NextRequest) {
     const password = String(body.password || "");
     const name = String(body.name || "").trim();
     const roleRaw = String(body.role || "user").toLowerCase();
+    const phone = String(body.phone || "").trim().slice(0, 40);
+    const address = String(body.address || "").trim().slice(0, 240);
+    const businessCategory = String(body.businessCategory || "").trim().slice(0, 120);
+    const businessSummary = String(body.businessSummary || "").trim().slice(0, 1000);
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json({ error: "Valid email is required." }, { status: 400 });
@@ -31,6 +35,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid role." }, { status: 400 });
     }
 
+    if (role === "seller") {
+      if (!businessCategory) {
+        return NextResponse.json({ error: "Please choose a business category." }, { status: 400 });
+      }
+      if (!businessSummary || businessSummary.length < 20) {
+        return NextResponse.json({ error: "Please provide a business summary (at least 20 characters)." }, { status: 400 });
+      }
+    }
+
     await connectDB();
     const existing = await User.findOne({ email }).lean();
     if (existing) {
@@ -43,6 +56,11 @@ export async function POST(req: NextRequest) {
       passwordHash,
       name,
       role,
+      phone: phone || undefined,
+      address: address || undefined,
+      businessCategory: role === "seller" ? businessCategory : undefined,
+      businessSummary: role === "seller" ? businessSummary : undefined,
+      sellerApproved: role === "seller" ? false : true,
     });
 
     return NextResponse.json({

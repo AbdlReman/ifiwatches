@@ -20,15 +20,22 @@ export async function POST(req: NextRequest) {
     }
 
     await connectDB();
-    const user = await User.findOne({ email }).select("+passwordHash").lean();
+    const user = await User.findOne({ email }).select("+passwordHash sellerApproved").lean();
     if (!user) {
       return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
     }
 
-    const u = user as { _id: unknown; email: string; name: string; role: string; passwordHash: string };
+    const u = user as { _id: unknown; email: string; name: string; role: string; passwordHash: string; sellerApproved?: boolean };
     const ok = await verifyPassword(password, u.passwordHash);
     if (!ok) {
       return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
+    }
+
+    if (u.role === "seller" && !u.sellerApproved) {
+      return NextResponse.json(
+        { error: "Seller account is pending admin approval. Please wait for approval before signing in." },
+        { status: 403 }
+      );
     }
 
     const role = u.role as UserRole;
