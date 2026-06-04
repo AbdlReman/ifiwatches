@@ -2,6 +2,7 @@ import { getSession } from "@/lib/auth/session";
 import { connectDB } from "@/lib/mongodb";
 import Product from "@/models/Product";
 import Order from "@/models/Order";
+import User from "@/models/User";
 import { formatPkr } from "@/lib/formatCurrency";
 import { attributedOrderTotal, sellerProductIdSet } from "@/lib/sellerAnalytics";
 import SalesChart from "@/app/admin/_components/SalesChart";
@@ -13,6 +14,9 @@ export default async function SellerDashboardPage() {
   if (!session || session.role !== "seller") return null;
 
   await connectDB();
+  const sellerUser = await User.findById(session.sub).select("commissionRate").lean() as { commissionRate?: number } | null;
+  const commissionRate = Number(sellerUser?.commissionRate ?? 0);
+
   const productDocs = await Product.find({ sellerId: session.sub }).sort({ createdAt: -1 }).lean();
   const productIds = productDocs.map((p) => String((p as { _id: unknown })._id));
   const idSet = sellerProductIdSet(productIds);
@@ -51,6 +55,17 @@ export default async function SellerDashboardPage() {
       <div>
         <h1 className="text-3xl font-black uppercase tracking-tight text-white">Seller dashboard</h1>
         <p className="text-slate-400 text-sm mt-1">Products, orders, and sales for your listings</p>
+      </div>
+
+      <div className="flex items-center gap-3 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-amber-400 shrink-0">
+          <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-11.25a.75.75 0 0 0-1.5 0v2.5h-2.5a.75.75 0 0 0 0 1.5h2.5v2.5a.75.75 0 0 0 1.5 0v-2.5h2.5a.75.75 0 0 0 0-1.5h-2.5v-2.5Z" clipRule="evenodd" />
+        </svg>
+        <p className="text-sm text-amber-200">
+          Platform commission:{" "}
+          <span className="font-bold text-amber-400">{commissionRate}%</span>
+          {" "}deduction on every sale
+        </p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
