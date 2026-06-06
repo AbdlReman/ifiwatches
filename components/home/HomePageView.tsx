@@ -159,57 +159,43 @@ export default function HomePageView({
 
       {/* Categories */}
       {categoryCards.length > 0 ? (
-        <section className="border-t border-zinc-200 bg-zinc-950">
-          <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-            <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Marketplace categories</p>
-                <h2 className="mt-2 text-3xl font-black uppercase tracking-tight text-white md:text-4xl">
-                  Shop by department
-                </h2>
-              </div>
+        <section className="border-y border-zinc-200 bg-white">
+          <div className="mx-auto max-w-[90rem] px-4 py-10 sm:px-6 lg:px-8">
+            <div className="mb-6 flex items-center justify-between gap-4">
+              <h2 className="text-sm font-black uppercase tracking-[0.18em] text-zinc-950">
+                Shop by category
+              </h2>
               <Link
                 href="/shop"
-                className="text-xs font-bold uppercase tracking-widest underline decoration-1 underline-offset-4 transition-colors hover:opacity-80"
-                style={{ color: "rgb(218, 170, 88)" }}
+                className="text-[11px] font-bold uppercase tracking-widest text-zinc-500 underline-offset-4 hover:underline"
               >
-                View all products →
+                View all →
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 gap-px bg-zinc-800 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {categoryCards.map((cat) => (
                 <Link
                   key={cat.name}
                   href={`/shop?category=${encodeURIComponent(cat.name)}`}
-                  className={`group relative flex flex-col justify-between bg-zinc-950 p-6 transition-colors hover:bg-zinc-900 ${
-                    cat.wide ? "lg:col-span-2" : ""
-                  } min-h-[200px]`}
+                  className="group flex flex-col justify-between border border-zinc-200 bg-white p-4 transition-all duration-200 hover:border-transparent hover:shadow-[0_0_0_2px_rgb(218,170,88)]"
                 >
-                  {/* Brand gold top accent */}
                   <span
-                    className="block h-[3px] w-10 transition-all duration-300 group-hover:w-16"
+                    className="mb-3 block h-[2px] w-6 transition-all duration-300 group-hover:w-10"
                     style={{ backgroundColor: "rgb(218, 170, 88)" }}
                   />
-
-                  <div className="mt-auto">
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-zinc-500">
-                      {cat.visual.tagline}
-                    </p>
-                    <h3
-                      className={`font-black uppercase tracking-tight text-white ${
-                        cat.wide ? "text-3xl md:text-4xl" : "text-2xl"
-                      }`}
-                    >
+                  <div>
+                    <h3 className="text-sm font-black uppercase tracking-tight text-zinc-950 leading-snug">
                       {cat.name}
                     </h3>
-                    <span
-                      className="mt-4 inline-block text-[10px] font-bold uppercase tracking-widest opacity-60 transition-opacity duration-300 group-hover:opacity-100"
-                      style={{ color: "rgb(218, 170, 88)" }}
-                    >
-                      Shop now →
-                    </span>
+                    <p className="mt-0.5 text-[10px] font-medium text-zinc-400">{cat.visual.tagline}</p>
                   </div>
+                  <span
+                    className="mt-3 text-[10px] font-bold uppercase tracking-widest opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                    style={{ color: "rgb(218, 170, 88)" }}
+                  >
+                    Shop →
+                  </span>
                 </Link>
               ))}
             </div>
