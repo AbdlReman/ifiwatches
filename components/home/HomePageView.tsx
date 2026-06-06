@@ -139,7 +139,7 @@ export default function HomePageView({
       </section>
 
       {/* Stats */}
-      <section className="border-b border-zinc-800 bg-zinc-950 text-white">
+      {/* <section className="border-b border-zinc-800 bg-zinc-950 text-white">
         <div className="mx-auto grid max-w-[90rem] grid-cols-2 gap-px bg-zinc-800 md:grid-cols-4">
           {[
             { label: "Verified sellers", value: stats.sellerCount },
@@ -155,7 +155,7 @@ export default function HomePageView({
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* Categories bento — from admin categories or live product taxonomy */}
       {categoryCards.length > 0 ? (
