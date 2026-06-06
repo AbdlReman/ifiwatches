@@ -39,6 +39,7 @@ export function serializeProductFromLean(p: Record<string, unknown>): IProduct {
     brand: String(p.brand || ""),
     category: fallbackCategory,
     categories,
+    subCategories: Array.isArray(p.subCategories) ? (p.subCategories as string[]) : [],
     price: Number(p.price || 0),
     description: String(
       p.description ||

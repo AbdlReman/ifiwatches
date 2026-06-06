@@ -36,11 +36,18 @@ function categoriesOf(product: IProduct): string[] {
   return product.category ? [product.category] : [];
 }
 
-export default function ShopClient({ products }: { products: IProduct[] }) {
+export default function ShopClient({
+  products,
+  subCategoriesByCategory = {},
+}: {
+  products: IProduct[];
+  subCategoriesByCategory?: Record<string, string[]>;
+}) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
   const requestedCategory = searchParams.get("category");
+  const requestedSubCategory = searchParams.get("subcategory");
 
   const categories = useMemo(() => {
     const rest = Array.from(new Set([...siteConfig.categories, ...products.flatMap((p) => categoriesOf(p))].filter(Boolean))).sort((a, b) =>
@@ -73,6 +80,18 @@ export default function ShopClient({ products }: { products: IProduct[] }) {
   const category =
     requestedCategory && categories.includes(requestedCategory) ? requestedCategory : "All";
 
+  const availableSubCategories = useMemo(
+    () => (category !== "All" ? (subCategoriesByCategory[category] ?? []) : []),
+    [category, subCategoriesByCategory]
+  );
+
+  const subCategory = useMemo(() => {
+    if (availableSubCategories.length === 0) return "All";
+    return requestedSubCategory && availableSubCategories.includes(requestedSubCategory)
+      ? requestedSubCategory
+      : "All";
+  }, [requestedSubCategory, availableSubCategories]);
+
   const [brand, setBrand] = useState("All");
   const [size, setSize] = useState("All");
   const [color, setColor] = useState("All");
@@ -87,6 +106,16 @@ export default function ShopClient({ products }: { products: IProduct[] }) {
     const params = new URLSearchParams(searchParams.toString());
     if (next === "All") params.delete("category");
     else params.set("category", next);
+    params.delete("subcategory");
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  };
+
+  const setSubCategory = (next: string) => {
+    setPage(1);
+    const params = new URLSearchParams(searchParams.toString());
+    if (next === "All") params.delete("subcategory");
+    else params.set("subcategory", next);
     const qs = params.toString();
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   };
@@ -115,6 +144,11 @@ export default function ShopClient({ products }: { products: IProduct[] }) {
   const filtered = useMemo(() => {
     return products
       .filter((p) => category === "All" || categoriesOf(p).includes(category))
+      .filter(
+        (p) =>
+          subCategory === "All" ||
+          (Array.isArray(p.subCategories) && p.subCategories.includes(subCategory))
+      )
       .filter((p) => brand === "All" || (p.brand?.trim() || "") === brand)
       .filter((p) => size === "All" || p.sizes.includes(size))
       .filter((p) => color === "All" || p.colors.includes(color))
@@ -125,7 +159,7 @@ export default function ShopClient({ products }: { products: IProduct[] }) {
         if (sort === "popular") return b.popularityScore - a.popularityScore;
         return +new Date(b.createdAt) - +new Date(a.createdAt);
       });
-  }, [products, category, brand, size, color, search, sort]);
+  }, [products, category, subCategory, brand, size, color, search, sort]);
 
   const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePage = Math.min(page, pageCount);
@@ -149,6 +183,7 @@ export default function ShopClient({ products }: { products: IProduct[] }) {
 
   const activeFilters =
     (category !== "All" ? 1 : 0) +
+    (subCategory !== "All" ? 1 : 0) +
     (brand !== "All" ? 1 : 0) +
     (size !== "All" ? 1 : 0) +
     (color !== "All" ? 1 : 0) +
@@ -231,11 +266,32 @@ export default function ShopClient({ products }: { products: IProduct[] }) {
           </div>
         </div>
 
+        {availableSubCategories.length > 0 && (
+          <div className="mb-6 flex flex-wrap gap-2">
+            {["All", ...availableSubCategories].map((sc) => (
+              <button
+                key={sc}
+                type="button"
+                onClick={() => setSubCategory(sc)}
+                className={
+                  "border px-4 py-1.5 text-xs font-semibold uppercase tracking-wide transition-colors " +
+                  (subCategory === sc
+                    ? "border-black bg-black text-white"
+                    : "border-neutral-300 bg-white text-black hover:border-black")
+                }
+              >
+                {sc === "All" ? "All" : sc}
+              </button>
+            ))}
+          </div>
+        )}
+
         <div className="min-w-0">
           <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs font-bold uppercase tracking-wider text-neutral-600" aria-live="polite">
               {filtered.length} products
               {category !== "All" ? ` · ${category}` : ""}
+              {subCategory !== "All" ? ` · ${subCategory}` : ""}
             </p>
             <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
               <label className="sr-only" htmlFor="shop-sort-main">
