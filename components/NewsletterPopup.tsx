@@ -27,9 +27,7 @@ export default function NewsletterPopup() {
     setVisible(false);
     try {
       localStorage.setItem(STORAGE_KEY, "1");
-    } catch {
-      /* ignore */
-    }
+    } catch { /* ignore */ }
   };
 
   useEffect(() => {
@@ -38,14 +36,11 @@ export default function NewsletterPopup() {
     } catch {
       return;
     }
-
     const onScroll = () => {
       const total = document.documentElement.scrollHeight - window.innerHeight;
       if (total <= 0) return;
-      const pct = (window.scrollY / total) * 100;
-      if (pct >= 3) trigger();
+      if ((window.scrollY / total) * 100 >= 3) trigger();
     };
-
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,11 +59,7 @@ export default function NewsletterPopup() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to subscribe");
       setSuccess(true);
-      try {
-        localStorage.setItem(STORAGE_KEY, "1");
-      } catch {
-        /* ignore */
-      }
+      try { localStorage.setItem(STORAGE_KEY, "1"); } catch { /* ignore */ }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -80,87 +71,132 @@ export default function NewsletterPopup() {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 px-4"
       onClick={(e) => { if (e.target === e.currentTarget) dismiss(); }}
     >
-      <div className="relative bg-white w-full max-w-[360px] rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up">
-        {/* Close */}
+      {/* Card — no border-radius, matches screenshot */}
+      <div
+        className="relative bg-white w-full shadow-2xl animate-fade-in-up overflow-hidden"
+        style={{ maxWidth: 420 }}
+      >
+        {/* Close X */}
         <button
           onClick={dismiss}
           aria-label="Close"
-          className="absolute top-4 right-4 z-10 text-zinc-400 hover:text-zinc-900 transition-colors"
+          className="absolute top-4 right-4 z-10 p-1 text-zinc-500 hover:text-zinc-900 transition-colors"
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
-        <div className="px-10 pb-10 pt-12 text-center">
-          {/* Brand name */}
-          <p className="text-[11px] font-black tracking-[0.35em] uppercase text-zinc-900 mb-8">
+        {/* Content */}
+        <div className="flex flex-col items-center text-center px-10 pt-14 pb-12">
+
+          {/* Brand name — large, bold, wide tracking */}
+          <p
+            className="font-black uppercase text-zinc-900 tracking-[0.22em] mb-12"
+            style={{ fontSize: "1.65rem", letterSpacing: "0.22em" }}
+          >
             IFI LIFESTYLE
           </p>
 
           {success ? (
-            <div className="py-8 space-y-3">
-              <p className="text-3xl font-black text-zinc-900 tracking-tight">You&apos;re in!</p>
-              <p className="text-sm text-zinc-500 leading-relaxed">
-                Thank you for subscribing. Good luck — we&apos;ll be in touch!
+            <div className="py-10 flex flex-col items-center gap-4">
+              <p
+                className="font-black text-zinc-900"
+                style={{ fontSize: "2rem", fontFamily: "Georgia, 'Times New Roman', serif" }}
+              >
+                You&apos;re in!
+              </p>
+              <p className="text-sm text-zinc-500 leading-relaxed max-w-[260px]">
+                Thank you for subscribing.<br />Good luck — we&apos;ll be in touch!
               </p>
               <button
                 onClick={dismiss}
-                className="mt-4 text-xs font-semibold uppercase tracking-widest text-zinc-400 hover:text-zinc-700 underline"
+                className="mt-4 text-xs uppercase tracking-[0.14em] text-zinc-400 hover:text-zinc-700 underline"
               >
                 Continue shopping
               </button>
             </div>
           ) : (
             <>
-              {/* Headline */}
-              <p className="text-[13px] text-zinc-500 italic mb-2 tracking-wide">
+              {/* "Enter For the Chance to" */}
+              <p
+                className="text-zinc-600 mb-3"
+                style={{
+                  fontSize: "1rem",
+                  fontFamily: "Georgia, 'Times New Roman', serif",
+                  fontStyle: "italic",
+                  fontWeight: 400,
+                }}
+              >
                 Enter For the Chance to
               </p>
+
+              {/* WIN RS 9,500 — hero text */}
               <p
-                className="font-black text-zinc-900 leading-none tracking-tight mb-3"
-                style={{ fontSize: "clamp(2.6rem, 9vw, 3.4rem)" }}
+                className="text-zinc-900 leading-none mb-4"
+                style={{
+                  fontSize: "clamp(3rem, 11vw, 3.75rem)",
+                  fontFamily: "Georgia, 'Times New Roman', serif",
+                  fontWeight: 900,
+                  letterSpacing: "-0.01em",
+                }}
               >
                 WIN RS 9,500
               </p>
-              <p className="text-[13px] text-zinc-600 mb-8 leading-snug">
+
+              {/* Subtitle */}
+              <p
+                className="text-zinc-700 mb-10"
+                style={{
+                  fontSize: "1.05rem",
+                  fontFamily: "Georgia, 'Times New Roman', serif",
+                  fontWeight: 400,
+                }}
+              >
                 Worth of Product by Signing Up for Email
               </p>
 
-              {/* Form */}
-              <form onSubmit={handleSubmit} className="space-y-3">
+              {/* Email input */}
+              <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3">
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email"
-                  className="w-full border border-zinc-300 rounded-md px-4 py-3 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900 transition-shadow"
+                  className="w-full border border-zinc-300 px-4 py-3.5 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-zinc-600 transition-colors"
+                  style={{ borderRadius: 0 }}
                 />
                 {error && (
-                  <p className="text-red-500 text-xs text-left">{error}</p>
+                  <p className="text-red-500 text-xs text-left -mt-1">{error}</p>
                 )}
+
+                {/* CONTINUE button — dark navy like screenshot */}
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-zinc-900 hover:bg-zinc-700 disabled:opacity-60 text-white font-bold tracking-[0.15em] uppercase text-xs py-4 rounded-md transition-colors"
+                  className="w-full text-white font-bold tracking-[0.15em] uppercase text-sm py-4 transition-opacity disabled:opacity-60"
+                  style={{
+                    backgroundColor: "#1a3a6b",
+                    borderRadius: 0,
+                  }}
                 >
                   {loading ? "Please wait…" : "Continue"}
                 </button>
               </form>
 
               {/* Disclaimer */}
-              <p className="mt-5 text-[10px] text-zinc-400 leading-relaxed">
-                Offer valid online only and is subject to change at any time. By subscribing, you agree to receive email updates from IFI Lifestyle. You may unsubscribe at any time.
+              <p className="mt-7 text-zinc-400 leading-relaxed" style={{ fontSize: "0.68rem" }}>
+                Offer valid online only and is subject to change at any time. By subscribing, you agree to
+                receive email updates from IFI Lifestyle. You may unsubscribe at any time.
               </p>
             </>
           )}
         </div>
       </div>
-
     </div>
   );
 }
