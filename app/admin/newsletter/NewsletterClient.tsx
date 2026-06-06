@@ -30,6 +30,7 @@ export default function NewsletterClient() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
   const [newEmail, setNewEmail] = useState("");
   const [newName, setNewName] = useState("");
@@ -140,12 +141,73 @@ export default function NewsletterClient() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Delete failed");
       if (editing?._id === id) setEditing(null);
+      setSelectedIds((prev) => { const next = new Set(prev); next.delete(id); return next; });
       await load();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Delete failed");
     } finally {
       setSaving(false);
     }
+  };
+
+  const allFilteredSelected =
+    filtered.length > 0 && filtered.every((r) => selectedIds.has(r._id));
+  const someFilteredSelected = filtered.some((r) => selectedIds.has(r._id));
+
+  const toggleSelectAll = () => {
+    if (allFilteredSelected) {
+      setSelectedIds((prev) => {
+        const next = new Set(prev);
+        filtered.forEach((r) => next.delete(r._id));
+        return next;
+      });
+    } else {
+      setSelectedIds((prev) => {
+        const next = new Set(prev);
+        filtered.forEach((r) => next.add(r._id));
+        return next;
+      });
+    }
+  };
+
+  const toggleRow = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
+
+  const exportCsv = (which: "selected" | "all") => {
+    const toExport =
+      which === "selected" && selectedIds.size > 0
+        ? filtered.filter((r) => selectedIds.has(r._id))
+        : filtered;
+    if (toExport.length === 0) return;
+    const headers = ["Email", "Name", "Status", "Source", "Subscribed At", "Notes"];
+    const escape = (v: string) => `"${String(v || "").replace(/"/g, '""')}"`;
+    const csvRows = [
+      headers.join(","),
+      ...toExport.map((r) =>
+        [
+          escape(r.email),
+          escape(r.name),
+          escape(r.status),
+          escape(r.source),
+          escape(toDate(r.subscribedAt)),
+          escape(r.notes),
+        ].join(",")
+      ),
+    ];
+    const blob = new Blob([csvRows.join("\n")], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `newsletter-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -217,7 +279,7 @@ export default function NewsletterClient() {
         </button>
       </form>
 
-      <div>
+      <div className="flex flex-col sm:flex-row gap-3">
         <input
           type="text"
           value={search}
@@ -225,12 +287,59 @@ export default function NewsletterClient() {
           placeholder="Search by email, name, status, source..."
           className={input}
         />
+        <div className="flex gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => exportCsv("selected")}
+            disabled={selectedIds.size === 0}
+            title={selectedIds.size === 0 ? "Select rows to export" : `Export ${selectedIds.size} selected`}
+            className="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-600 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors whitespace-nowrap"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+            Export{selectedIds.size > 0 ? ` (${selectedIds.size})` : ""}
+          </button>
+          <button
+            type="button"
+            onClick={() => exportCsv("all")}
+            disabled={filtered.length === 0}
+            title="Export all visible rows"
+            className="inline-flex items-center gap-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors whitespace-nowrap"
+          >
+            Export All
+          </button>
+        </div>
       </div>
+      {selectedIds.size > 0 && (
+        <div className="flex items-center gap-3 text-xs text-slate-400">
+          <span>{selectedIds.size} selected</span>
+          <button
+            type="button"
+            onClick={() => setSelectedIds(new Set())}
+            className="text-slate-500 hover:text-slate-300 underline"
+          >
+            Clear selection
+          </button>
+        </div>
+      )}
 
       <div className="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden">
-        <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 px-5 py-4 border-b border-slate-700">
-          Subscribers
-        </h2>
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400">
+            Subscribers
+            {filtered.length !== rows.length && (
+              <span className="ml-2 text-slate-500 font-normal normal-case tracking-normal">
+                — {filtered.length} of {rows.length} shown
+              </span>
+            )}
+          </h2>
+          {selectedIds.size > 0 && (
+            <span className="text-xs text-indigo-300 font-semibold">
+              {selectedIds.size} selected
+            </span>
+          )}
+        </div>
         {loading ? (
           <p className="p-6 text-slate-500 text-sm">Loading...</p>
         ) : filtered.length === 0 ? (
@@ -240,6 +349,16 @@ export default function NewsletterClient() {
             <table className="w-full text-sm text-left text-slate-300">
               <thead className="bg-slate-900/80 text-[10px] uppercase tracking-widest text-slate-500">
                 <tr>
+                  <th className="px-4 py-3 w-10">
+                    <input
+                      type="checkbox"
+                      checked={allFilteredSelected}
+                      ref={(el) => { if (el) el.indeterminate = someFilteredSelected && !allFilteredSelected; }}
+                      onChange={toggleSelectAll}
+                      className="h-4 w-4 rounded border-slate-500 bg-slate-700 text-indigo-500 focus:ring-indigo-500 cursor-pointer"
+                      title="Select all"
+                    />
+                  </th>
                   <th className="px-4 py-3">Email</th>
                   <th className="px-4 py-3">Name</th>
                   <th className="px-4 py-3">Status</th>
@@ -252,7 +371,7 @@ export default function NewsletterClient() {
                 {filtered.map((r) =>
                   editing?._id === r._id ? (
                     <tr key={r._id} className="bg-slate-900/40">
-                      <td colSpan={6} className="px-4 py-4">
+                      <td colSpan={7} className="px-4 py-4">
                         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
                           <div>
                             <label className={label}>Email</label>
@@ -289,7 +408,15 @@ export default function NewsletterClient() {
                       </td>
                     </tr>
                   ) : (
-                    <tr key={r._id} className="hover:bg-slate-700/20">
+                    <tr key={r._id} className={`hover:bg-slate-700/20 ${selectedIds.has(r._id) ? "bg-indigo-900/10" : ""}`}>
+                      <td className="px-4 py-3">
+                        <input
+                          type="checkbox"
+                          checked={selectedIds.has(r._id)}
+                          onChange={() => toggleRow(r._id)}
+                          className="h-4 w-4 rounded border-slate-500 bg-slate-700 text-indigo-500 focus:ring-indigo-500 cursor-pointer"
+                        />
+                      </td>
                       <td className="px-4 py-3 font-mono text-white">{r.email}</td>
                       <td className="px-4 py-3">{r.name || "—"}</td>
                       <td className="px-4 py-3">
