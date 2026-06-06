@@ -21,10 +21,15 @@ function categoryShopHref(name: string) {
   return `/shop?category=${encodeURIComponent(name)}`;
 }
 
+function subCategoryShopHref(category: string, subCategory: string) {
+  return `/shop?category=${encodeURIComponent(category)}&subcategory=${encodeURIComponent(subCategory)}`;
+}
+
 export default function Navbar() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const activeCategory = searchParams.get("category")?.trim() || "";
+  const activeSubCategory = searchParams.get("subcategory")?.trim() || "";
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [authUser, setAuthUser] = useState<AuthUser | null | undefined>(undefined);
@@ -32,6 +37,7 @@ export default function Navbar() {
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
+  const [subCategoriesByCategory, setSubCategoriesByCategory] = useState<Record<string, string[]>>({});
 
   const refreshAuth = useCallback(async () => {
     try {
@@ -55,8 +61,12 @@ export default function Navbar() {
     fetch("/api/navigation/collections")
       .then((res) => res.json())
       .then((data) => {
-        if (!cancelled && Array.isArray(data.categories)) {
+        if (cancelled) return;
+        if (Array.isArray(data.categories)) {
           setCategories(data.categories.map(String).filter(Boolean));
+        }
+        if (data.subCategoriesByCategory && typeof data.subCategoriesByCategory === "object") {
+          setSubCategoriesByCategory(data.subCategoriesByCategory as Record<string, string[]>);
         }
       })
       .catch(() => {
@@ -84,7 +94,7 @@ export default function Navbar() {
 
   const isHome = pathname === "/";
   const isShop = pathname === "/shop";
-  const isCategoriesActive = isShop && Boolean(activeCategory);
+  const isCategoriesActive = isShop && (Boolean(activeCategory) || Boolean(activeSubCategory));
 
   const linkClass = (active: boolean) =>
     `nav-link text-zinc-700 hover:text-zinc-950 transition-colors ${active ? "border-b-2 border-[rgb(218,170,88)] text-zinc-950" : ""}`;
@@ -123,18 +133,38 @@ export default function Navbar() {
             >
               All products
             </Link>
-            {categories.map((name) => (
-              <Link
-                key={name}
-                href={categoryShopHref(name)}
-                className={`block px-4 py-2 text-sm hover:bg-zinc-50 ${
-                  activeCategory === name ? "font-semibold text-zinc-950 bg-zinc-50" : "text-zinc-700"
-                }`}
-                onClick={() => setCategoriesOpen(false)}
-              >
-                {name}
-              </Link>
-            ))}
+            {categories.map((name) => {
+              const subs = subCategoriesByCategory[name] || [];
+              return (
+                <div key={name}>
+                  <Link
+                    href={categoryShopHref(name)}
+                    className={`block px-4 py-2 text-sm hover:bg-zinc-50 ${
+                      activeCategory === name && !activeSubCategory
+                        ? "font-semibold text-zinc-950 bg-zinc-50"
+                        : "text-zinc-700"
+                    }`}
+                    onClick={() => setCategoriesOpen(false)}
+                  >
+                    {name}
+                  </Link>
+                  {subs.map((sc) => (
+                    <Link
+                      key={sc}
+                      href={subCategoryShopHref(name, sc)}
+                      className={`block pl-7 pr-4 py-1.5 text-xs hover:bg-zinc-50 ${
+                        activeCategory === name && activeSubCategory === sc
+                          ? "font-semibold text-zinc-900"
+                          : "text-zinc-500 hover:text-zinc-800"
+                      }`}
+                      onClick={() => setCategoriesOpen(false)}
+                    >
+                      ↳ {sc}
+                    </Link>
+                  ))}
+                </div>
+              );
+            })}
           </div>
         ) : null}
       </div>
@@ -354,21 +384,38 @@ export default function Navbar() {
                     >
                       All products
                     </Link>
-                    {categories.map((name) => (
-                      <Link
-                        key={name}
-                        href={categoryShopHref(name)}
-                        onClick={() => {
-                          setMenuOpen(false);
-                          setMobileCategoriesOpen(false);
-                        }}
-                        className={`text-sm py-1 ${
-                          activeCategory === name ? "font-semibold text-zinc-950" : "text-zinc-600"
-                        }`}
-                      >
-                        {name}
-                      </Link>
-                    ))}
+                    {categories.map((name) => {
+                      const subs = subCategoriesByCategory[name] || [];
+                      return (
+                        <div key={name}>
+                          <Link
+                            href={categoryShopHref(name)}
+                            onClick={() => { setMenuOpen(false); setMobileCategoriesOpen(false); }}
+                            className={`block text-sm py-1 ${
+                              activeCategory === name && !activeSubCategory
+                                ? "font-semibold text-zinc-950"
+                                : "text-zinc-600"
+                            }`}
+                          >
+                            {name}
+                          </Link>
+                          {subs.map((sc) => (
+                            <Link
+                              key={sc}
+                              href={subCategoryShopHref(name, sc)}
+                              onClick={() => { setMenuOpen(false); setMobileCategoriesOpen(false); }}
+                              className={`block pl-4 text-xs py-0.5 ${
+                                activeCategory === name && activeSubCategory === sc
+                                  ? "font-semibold text-zinc-900"
+                                  : "text-zinc-400 hover:text-zinc-700"
+                              }`}
+                            >
+                              ↳ {sc}
+                            </Link>
+                          ))}
+                        </div>
+                      );
+                    })}
                   </div>
                 ) : null}
               </div>
