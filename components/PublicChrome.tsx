@@ -19,9 +19,14 @@ const Footer = dynamic(() => import("@/components/Footer"), {
   loading: () => <footer className="bg-zinc-50 min-h-[280px]" aria-hidden />,
 });
 
+const NewsletterPopup = dynamic(() => import("@/components/NewsletterPopup"), {
+  ssr: false,
+});
+
 export default function PublicChrome({ children }: { children: React.ReactNode }) {
   return (
     <>
+      <NewsletterPopup />
       <Toaster position="top-center" richColors closeButton duration={3000} />
       <Suspense
         fallback={
