@@ -154,6 +154,7 @@ export async function POST(req: NextRequest) {
       detail: body.detail || "",
       category: primaryCategory,
       categories,
+      subCategories: Array.isArray(body.subCategories) ? body.subCategories.map(String).filter(Boolean) : [],
       sizes: Array.isArray(body.sizes) ? body.sizes : parseCsv(body.sizes),
       colors,
       colorVariants,

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { connectDB } from "@/lib/mongodb";
 import Category from "@/models/Category";
+import SubCategory from "@/models/SubCategory";
 import ProductForm from "../../_components/ProductForm";
 import { siteConfig } from "@/lib/siteConfig";
 
@@ -9,11 +10,18 @@ export const metadata: Metadata = { title: "Add Product — Admin" };
 
 export default async function NewProductPage() {
   await connectDB();
-  const categoriesRaw = await Category.find({ isActive: true }).sort({ name: 1 }).lean();
+  const [categoriesRaw, subCategoriesRaw] = await Promise.all([
+    Category.find({ isActive: true }).sort({ name: 1 }).lean(),
+    SubCategory.find({ isActive: true }).sort({ category: 1, name: 1 }).lean(),
+  ]);
   const categoryOptions = (categoriesRaw as Record<string, unknown>[]).map((c) => String(c.name || "")).filter(Boolean);
   const finalCategoryOptions = Array.from(
     new Set((categoryOptions.length > 0 ? categoryOptions : [...siteConfig.categories]).concat([...siteConfig.categories]))
   );
+  const subCategoryOptions = (subCategoriesRaw as Record<string, unknown>[]).map((sc) => ({
+    name: String(sc.name || ""),
+    category: String(sc.category || ""),
+  }));
 
   return (
     <div>
@@ -32,6 +40,7 @@ export default async function NewProductPage() {
       <ProductForm
         mode="create"
         categoryOptions={finalCategoryOptions}
+        subCategoryOptions={subCategoryOptions}
         showFeaturedField
         showBestSellerField
       />

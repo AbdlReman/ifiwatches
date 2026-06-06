@@ -6,6 +6,7 @@ import { connectDB } from "@/lib/mongodb";
 import Product from "@/models/Product";
 import User from "@/models/User";
 import Category from "@/models/Category";
+import SubCategory from "@/models/SubCategory";
 import ProductForm from "@/app/admin/_components/ProductForm";
 import type { IProduct } from "@/types/product";
 import { sellerOwnsProduct } from "@/lib/productAccess";
@@ -23,9 +24,10 @@ export default async function SellerEditProductPage({
   if (!session || session.role !== "seller") return null;
 
   await connectDB();
-  const [raw, categoriesRaw, sellerDoc] = await Promise.all([
+  const [raw, categoriesRaw, subCategoriesRaw, sellerDoc] = await Promise.all([
     Product.findById(id).lean(),
     Category.find({ isActive: true }).sort({ name: 1 }).lean(),
+    SubCategory.find({ isActive: true }).sort({ category: 1, name: 1 }).lean(),
     User.findById(session.sub).select("assignedCategories").lean(),
   ]);
   if (!raw) notFound();
@@ -41,6 +43,11 @@ export default async function SellerEditProductPage({
     .filter(Boolean);
 
   const currentProductCategory = String((raw as Record<string, unknown>).category || "").trim();
+
+  const subCategoryOptions = (subCategoriesRaw as Record<string, unknown>[]).map((sc) => ({
+    name: String(sc.name || ""),
+    category: String(sc.category || ""),
+  }));
 
   let finalCategoryOptions: string[];
   if (assignedCategories.length > 0) {
@@ -70,6 +77,7 @@ export default async function SellerEditProductPage({
     brand: String(p.brand || ""),
     category: String(p.category || ""),
     categories: mergedCategories,
+    subCategories: Array.isArray(p.subCategories) ? (p.subCategories as string[]) : [],
     price: Number(p.price),
     description: String(p.description || ""),
     detail: String(p.detail || ""),
@@ -120,6 +128,7 @@ export default async function SellerEditProductPage({
         mode="edit"
         initialData={product}
         categoryOptions={finalCategoryOptions}
+        subCategoryOptions={subCategoryOptions}
         showPublishField={false}
         afterSaveRedirect="/seller/products"
       />

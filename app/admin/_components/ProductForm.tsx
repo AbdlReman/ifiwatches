@@ -49,6 +49,7 @@ interface ProductFormProps {
   initialData?: IProduct;
   mode: "create" | "edit";
   categoryOptions: string[];
+  subCategoryOptions?: { name: string; category: string }[];
   /** Admin-only: show Featured drops toggle (homepage). */
   showFeaturedField?: boolean;
   /** Admin-only: show Best seller toggle (homepage slider). */
@@ -63,6 +64,7 @@ export default function ProductForm({
   initialData,
   mode,
   categoryOptions,
+  subCategoryOptions = [],
   showFeaturedField = false,
   showBestSellerField = false,
   showPublishField = true,
@@ -74,6 +76,7 @@ export default function ProductForm({
     name: "",
     brand: "",
     categories: [fallbackCategory],
+    subCategories: [] as string[],
     price: "" as unknown as number,
     description: "",
     detail: "",
@@ -95,6 +98,7 @@ export default function ProductForm({
             Array.isArray(initialData.categories) && initialData.categories.length > 0
               ? initialData.categories
               : [initialData.category || fallbackCategory],
+          subCategories: Array.isArray(initialData.subCategories) ? initialData.subCategories : [],
           price: initialData.price,
           description: initialData.description,
           detail: initialData.detail,
@@ -137,8 +141,25 @@ export default function ProductForm({
     setForm((prev) => ({
       ...prev,
       categories: prev.categories.filter((c) => c !== category),
+      subCategories: prev.subCategories.filter((sc) => {
+        const opt = subCategoryOptions.find((o) => o.name === sc);
+        return !opt || opt.category !== category;
+      }),
     }));
   };
+
+  const toggleSubCategory = (name: string) => {
+    setForm((prev) => ({
+      ...prev,
+      subCategories: prev.subCategories.includes(name)
+        ? prev.subCategories.filter((s) => s !== name)
+        : [...prev.subCategories, name],
+    }));
+  };
+
+  const availableSubCategoryOptions = subCategoryOptions.filter((sc) =>
+    form.categories.includes(sc.category)
+  );
 
   const availableCategoryOptions = categoryOptions
     .filter((c) => !form.categories.includes(c))
@@ -173,11 +194,12 @@ export default function ProductForm({
       const url =
         mode === "create" ? "/api/products" : `/api/products/${initialData!._id}`;
       const method = mode === "create" ? "POST" : "PUT";
-      const { featured, bestSeller, sizesInput, categories: formCategories, publish, ...rest } = form;
+      const { featured, bestSeller, sizesInput, categories: formCategories, subCategories: formSubCategories, publish, ...rest } = form;
       const payload: Record<string, unknown> = {
         ...rest,
         categories: formCategories,
         category: formCategories[0] || fallbackCategory,
+        subCategories: formSubCategories,
         status: publish ? "Published" : "Draft",
         isActive: publish,
         sizes: sizesInput.split(",").map((s) => s.trim()).filter(Boolean),
@@ -324,6 +346,36 @@ export default function ProductForm({
               You can select multiple categories.
             </p>
           </div>
+
+          {availableSubCategoryOptions.length > 0 && (
+            <div className="md:col-span-2">
+              <label className={labelClass}>Sub Categories (optional)</label>
+              <div className="rounded-lg border border-slate-600 bg-slate-900/40 p-3 flex flex-wrap gap-2">
+                {availableSubCategoryOptions.map((sc) => {
+                  const selected = form.subCategories.includes(sc.name);
+                  return (
+                    <button
+                      key={`${sc.category}/${sc.name}`}
+                      type="button"
+                      onClick={() => toggleSubCategory(sc.name)}
+                      className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-semibold transition-colors ${
+                        selected
+                          ? "bg-indigo-500/30 text-indigo-200 ring-1 ring-indigo-400"
+                          : "bg-slate-700 text-slate-400 hover:text-slate-200 hover:bg-slate-600"
+                      }`}
+                    >
+                      <span className="text-[10px] opacity-60">{sc.category} /</span>
+                      {sc.name}
+                      {selected && <span className="ml-0.5">✓</span>}
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="mt-2 text-xs text-slate-400">
+                Showing sub categories for selected categories. Click to toggle selection.
+              </p>
+            </div>
+          )}
 
           <div>
             <label className={labelClass}>Price (PKR) *</label>

@@ -102,6 +102,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
       detail: body.detail || "",
       category: primaryCategory,
       categories,
+      subCategories: Array.isArray(body.subCategories) ? body.subCategories.map(String).filter(Boolean) : [],
       sizes: Array.isArray(body.sizes) ? body.sizes : [],
       colors,
       colorVariants,

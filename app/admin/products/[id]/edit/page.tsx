@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { connectDB } from "@/lib/mongodb";
 import Product from "@/models/Product";
 import Category from "@/models/Category";
+import SubCategory from "@/models/SubCategory";
 import ProductForm from "../../../_components/ProductForm";
 import type { IProduct } from "@/types/product";
 import { siteConfig } from "@/lib/siteConfig";
@@ -18,9 +19,10 @@ export default async function EditProductPage({
   const { id } = await params;
 
   await connectDB();
-  const [raw, categoriesRaw] = await Promise.all([
+  const [raw, categoriesRaw, subCategoriesRaw] = await Promise.all([
     Product.findById(id).lean(),
     Category.find({ isActive: true }).sort({ name: 1 }).lean(),
+    SubCategory.find({ isActive: true }).sort({ category: 1, name: 1 }).lean(),
   ]);
   if (!raw) notFound();
   const categoryOptions = Array.from(
@@ -34,6 +36,10 @@ export default async function EditProductPage({
   const finalCategoryOptions = Array.from(
     new Set((categoryOptions.length > 0 ? categoryOptions : [...siteConfig.categories]).concat([...siteConfig.categories]))
   );
+  const subCategoryOptions = (subCategoriesRaw as Record<string, unknown>[]).map((sc) => ({
+    name: String(sc.name || ""),
+    category: String(sc.category || ""),
+  }));
 
   const p = raw as Record<string, unknown>;
   const categories = Array.isArray(p.categories)
@@ -47,6 +53,7 @@ export default async function EditProductPage({
     brand: String(p.brand || ""),
     category: String(p.category || ""),
     categories: mergedCategories,
+    subCategories: Array.isArray(p.subCategories) ? (p.subCategories as string[]) : [],
     price: Number(p.price),
     description: String(p.description || ""),
     detail: String(p.detail || ""),
@@ -98,6 +105,7 @@ export default async function EditProductPage({
         mode="edit"
         initialData={product}
         categoryOptions={finalCategoryOptions}
+        subCategoryOptions={subCategoryOptions}
         showFeaturedField
         showBestSellerField
       />

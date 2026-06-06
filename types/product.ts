@@ -13,6 +13,7 @@ export interface IProduct {
   brand?: string;
   category: string;
   categories?: string[];
+  subCategories?: string[];
   price: number;
   description: string;
   detail: string;

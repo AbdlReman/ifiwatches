@@ -4,6 +4,7 @@ import { getSession } from "@/lib/auth/session";
 import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
 import Category from "@/models/Category";
+import SubCategory from "@/models/SubCategory";
 import ProductForm from "@/app/admin/_components/ProductForm";
 import { siteConfig } from "@/lib/siteConfig";
 
@@ -14,9 +15,10 @@ export default async function SellerNewProductPage() {
   if (!session || session.role !== "seller") return null;
 
   await connectDB();
-  const [sellerDoc, categoriesRaw] = await Promise.all([
+  const [sellerDoc, categoriesRaw, subCategoriesRaw] = await Promise.all([
     User.findById(session.sub).select("assignedCategories").lean(),
     Category.find({ isActive: true }).sort({ name: 1 }).lean(),
+    SubCategory.find({ isActive: true }).sort({ category: 1, name: 1 }).lean(),
   ]);
 
   const seller = sellerDoc as { assignedCategories?: string[] } | null;
@@ -27,6 +29,11 @@ export default async function SellerNewProductPage() {
   const dbCategories = (categoriesRaw as Record<string, unknown>[])
     .map((c) => String(c.name || ""))
     .filter(Boolean);
+
+  const subCategoryOptions = (subCategoriesRaw as Record<string, unknown>[]).map((sc) => ({
+    name: String(sc.name || ""),
+    category: String(sc.category || ""),
+  }));
 
   // If admin has assigned specific categories to this seller, restrict to those.
   // Otherwise fall back to all active DB categories + siteConfig categories.
@@ -62,6 +69,7 @@ export default async function SellerNewProductPage() {
       <ProductForm
         mode="create"
         categoryOptions={finalCategoryOptions}
+        subCategoryOptions={subCategoryOptions}
         showPublishField={false}
         afterSaveRedirect="/seller/products"
       />
