@@ -157,43 +157,62 @@ export default function HomePageView({
         </div>
       </section> */}
 
-      {/* Categories bento — from admin categories or live product taxonomy */}
+      {/* Categories */}
       {categoryCards.length > 0 ? (
-        <section className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-          <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Marketplace categories</p>
-              <h2 className="mt-2 text-3xl font-black uppercase tracking-tight text-zinc-950 md:text-4xl">
-                Shop by department
-              </h2>
-            </div>
-            <Link
-              href="/shop"
-              className="text-xs font-bold uppercase tracking-widest text-zinc-700 underline decoration-1 underline-offset-4 hover:text-zinc-950"
-            >
-              View all products →
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
-            {categoryCards.map((cat) => (
+        <section className="border-t border-zinc-200 bg-zinc-950">
+          <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+            <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">Marketplace categories</p>
+                <h2 className="mt-2 text-3xl font-black uppercase tracking-tight text-white md:text-4xl">
+                  Shop by department
+                </h2>
+              </div>
               <Link
-                key={cat.name}
-                href={`/shop?category=${encodeURIComponent(cat.name)}`}
-                className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${cat.visual.gradient} ${
-                  cat.wide ? "lg:col-span-2 lg:min-h-[220px]" : "min-h-[180px]"
-                } flex flex-col justify-end p-6 text-white transition-transform hover:-translate-y-0.5`}
+                href="/shop"
+                className="text-xs font-bold uppercase tracking-widest underline decoration-1 underline-offset-4 transition-colors hover:opacity-80"
+                style={{ color: "rgb(218, 170, 88)" }}
               >
-                <span className="absolute right-4 top-4 text-5xl font-black opacity-15">{cat.visual.letter}</span>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-white/60">{cat.visual.tagline}</p>
-                <h3 className={`mt-2 font-black uppercase tracking-tight ${cat.wide ? "text-3xl md:text-4xl" : "text-2xl"}`}>
-                  {cat.name}
-                </h3>
-                <span className="mt-4 text-[10px] font-bold uppercase tracking-widest opacity-70 transition-opacity group-hover:opacity-100">
-                  Explore vendors →
-                </span>
+                View all products →
               </Link>
-            ))}
+            </div>
+
+            <div className="grid grid-cols-1 gap-px bg-zinc-800 sm:grid-cols-2 lg:grid-cols-4">
+              {categoryCards.map((cat) => (
+                <Link
+                  key={cat.name}
+                  href={`/shop?category=${encodeURIComponent(cat.name)}`}
+                  className={`group relative flex flex-col justify-between bg-zinc-950 p-6 transition-colors hover:bg-zinc-900 ${
+                    cat.wide ? "lg:col-span-2" : ""
+                  } min-h-[200px]`}
+                >
+                  {/* Brand gold top accent */}
+                  <span
+                    className="block h-[3px] w-10 transition-all duration-300 group-hover:w-16"
+                    style={{ backgroundColor: "rgb(218, 170, 88)" }}
+                  />
+
+                  <div className="mt-auto">
+                    <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-zinc-500">
+                      {cat.visual.tagline}
+                    </p>
+                    <h3
+                      className={`font-black uppercase tracking-tight text-white ${
+                        cat.wide ? "text-3xl md:text-4xl" : "text-2xl"
+                      }`}
+                    >
+                      {cat.name}
+                    </h3>
+                    <span
+                      className="mt-4 inline-block text-[10px] font-bold uppercase tracking-widest opacity-60 transition-opacity duration-300 group-hover:opacity-100"
+                      style={{ color: "rgb(218, 170, 88)" }}
+                    >
+                      Shop now →
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
       ) : null}
