@@ -109,6 +109,7 @@ export default function ProductTable({
         product.brand,
         product.category,
         ...(Array.isArray(product.categories) ? product.categories : []),
+        ...(Array.isArray(product.subCategories) ? product.subCategories : []),
         product.slug,
       ]
         .map((value) => String(value || "").toLowerCase())
@@ -202,6 +203,7 @@ export default function ProductTable({
               {showBestSellerColumn ? <th className="text-left px-4 py-3">Best seller</th> : null}
               <th className="text-left px-4 py-3">Brand</th>
               <th className="text-left px-4 py-3">Category</th>
+              <th className="text-left px-4 py-3">Sub Category</th>
               <th className="text-left px-4 py-3">Price</th>
               <th className="text-left px-4 py-3">Stock</th>
               <th className="text-left px-4 py-3">Actions</th>
@@ -298,6 +300,24 @@ export default function ProductTable({
                   {Array.isArray(product.categories) && product.categories.length > 0
                     ? product.categories.join(", ")
                     : product.category}
+                </td>
+
+                {/* Sub Category */}
+                <td className="px-4 py-3">
+                  {Array.isArray(product.subCategories) && product.subCategories.length > 0 ? (
+                    <div className="flex flex-wrap gap-1">
+                      {product.subCategories.map((sc) => (
+                        <span
+                          key={sc}
+                          className="inline-flex items-center rounded-md bg-indigo-500/15 px-2 py-0.5 text-xs font-medium text-indigo-300"
+                        >
+                          {sc}
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <span className="text-slate-600 text-xs">—</span>
+                  )}
                 </td>
 
                 {/* Price */}
