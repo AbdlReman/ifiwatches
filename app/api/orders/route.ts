@@ -358,19 +358,37 @@ export async function PATCH(req: NextRequest) {
     const body = await req.json();
     const orderId = String(body.orderId || "").trim();
     const nextStatus = String(body.status || "").toLowerCase();
+    const nextPayment = String(body.paymentStatus || "").toLowerCase();
 
     if (!orderId) {
       return NextResponse.json({ error: "Missing orderId" }, { status: 400 });
     }
 
-    const allowedStatuses = ["pending", "completed", "cancelled"] as const;
-    if (!allowedStatuses.includes(nextStatus as (typeof allowedStatuses)[number])) {
-      return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+    const update: Record<string, string> = {};
+
+    if (nextStatus) {
+      const allowedStatuses = ["pending", "processing", "dispatched", "completed", "cancelled"] as const;
+      if (!allowedStatuses.includes(nextStatus as (typeof allowedStatuses)[number])) {
+        return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+      }
+      update.orderStatus = nextStatus;
+    }
+
+    if (nextPayment) {
+      const allowedPayment = ["pending", "paid", "failed"] as const;
+      if (!allowedPayment.includes(nextPayment as (typeof allowedPayment)[number])) {
+        return NextResponse.json({ error: "Invalid payment status" }, { status: 400 });
+      }
+      update.paymentStatus = nextPayment;
+    }
+
+    if (Object.keys(update).length === 0) {
+      return NextResponse.json({ error: "Nothing to update" }, { status: 400 });
     }
 
     const order = await Order.findByIdAndUpdate(
       orderId,
-      { $set: { orderStatus: nextStatus } },
+      { $set: update },
       { new: true }
     ).lean();
 
@@ -378,7 +396,7 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    if (nextStatus === "completed") {
+    if (update.orderStatus === "completed") {
       await recordSellerCommissionsForOrder(order as {
         _id: unknown;
         orderNumber?: string;
