@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { IProduct } from "@/types/product";
 import { formatPkr } from "@/lib/formatCurrency";
 
@@ -55,6 +55,22 @@ export default function ProductTable({
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const perPage = 10;
+  const [viewProduct, setViewProduct] = useState<IProduct | null>(null);
+  const [imgIdx, setImgIdx] = useState(0);
+
+  useEffect(() => { setImgIdx(0); }, [viewProduct]);
+
+  useEffect(() => {
+    if (!viewProduct) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setViewProduct(null); };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [viewProduct]);
 
   const handleDelete = async (id: string, name: string) => {
     if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
@@ -138,6 +154,7 @@ export default function ProductTable({
   }
 
   return (
+    <>
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
@@ -348,17 +365,13 @@ export default function ProductTable({
                     >
                       Edit
                     </Link>
-                    <Link
-                      href={
-                        useStorefrontProductLink
-                          ? `/shop/${encodeURIComponent(product.slug)}`
-                          : `/admin/products/${product._id}/preview`
-                      }
-                      target="_blank"
+                    <button
+                      type="button"
+                      onClick={() => setViewProduct(product)}
                       className="text-slate-300 hover:text-slate-100 text-xs font-medium transition-colors"
                     >
                       View
-                    </Link>
+                    </button>
                     <button
                       onClick={() => handleDelete(product._id, product.name)}
                       disabled={deletingId === product._id}
@@ -403,5 +416,204 @@ export default function ProductTable({
         </div>
       </div>
     </div>
+
+      {/* Product detail modal */}
+      {viewProduct && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 z-[90] bg-black/70"
+            onClick={() => setViewProduct(null)}
+            aria-hidden="true"
+          />
+          {/* Modal card */}
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={viewProduct.name}
+            className="fixed inset-0 z-[91] flex items-center justify-center p-4"
+            onClick={() => setViewProduct(null)}
+          >
+            <div
+              className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl border border-slate-600 bg-slate-800 shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="flex items-start justify-between gap-4 border-b border-slate-700 px-5 py-4">
+                <div className="min-w-0">
+                  <p className="truncate text-base font-bold text-white">{viewProduct.name}</p>
+                  <p className="mt-0.5 text-xs text-slate-400">{viewProduct.brand}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setViewProduct(null)}
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-slate-600 text-slate-400 hover:border-slate-400 hover:text-white"
+                  aria-label="Close"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Body */}
+              <div className="grid grid-cols-1 gap-0 sm:grid-cols-2">
+                {/* Image gallery */}
+                <div className="relative border-b border-slate-700 bg-slate-900 sm:border-b-0 sm:border-r">
+                  {viewProduct.images.length > 0 ? (
+                    <>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={viewProduct.images[imgIdx]}
+                        alt={viewProduct.name}
+                        className="h-64 w-full object-contain sm:h-80"
+                      />
+                      {viewProduct.images.length > 1 && (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => setImgIdx((i) => (i - 1 + viewProduct.images.length) % viewProduct.images.length)}
+                            className="absolute left-2 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80"
+                            aria-label="Previous image"
+                          >
+                            ‹
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setImgIdx((i) => (i + 1) % viewProduct.images.length)}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80"
+                            aria-label="Next image"
+                          >
+                            ›
+                          </button>
+                          <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
+                            {viewProduct.images.map((_, i) => (
+                              <button
+                                key={i}
+                                type="button"
+                                onClick={() => setImgIdx(i)}
+                                className={`h-1.5 w-1.5 rounded-full transition-colors ${i === imgIdx ? "bg-white" : "bg-white/40"}`}
+                              />
+                            ))}
+                          </div>
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <div className="flex h-64 items-center justify-center text-5xl sm:h-80">👟</div>
+                  )}
+                </div>
+
+                {/* Details */}
+                <div className="space-y-4 px-5 py-5">
+                  {/* Status */}
+                  {(() => {
+                    const badge = productStatusBadge(viewProduct);
+                    return (
+                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${badge.className}`}>
+                        {badge.label}
+                      </span>
+                    );
+                  })()}
+
+                  {/* Price */}
+                  <div>
+                    <p className="text-2xl font-black text-white">
+                      {viewProduct.discount > 0
+                        ? formatPkr(Math.round(viewProduct.price * (1 - viewProduct.discount / 100)))
+                        : formatPkr(viewProduct.price)}
+                    </p>
+                    {viewProduct.discount > 0 && (
+                      <p className="text-sm text-slate-400 line-through">{formatPkr(viewProduct.price)}</p>
+                    )}
+                    {viewProduct.discount > 0 && (
+                      <span className="mt-1 inline-flex items-center rounded-full bg-red-900/60 px-2 py-0.5 text-xs font-bold text-red-300">
+                        {viewProduct.discount}% off
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Stock */}
+                  <div className="flex items-center gap-2">
+                    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                      viewProduct.stockQuantity > 0 ? "bg-green-900/60 text-green-300" : "bg-red-900/60 text-red-300"
+                    }`}>
+                      {viewProduct.stockQuantity > 0 ? `${viewProduct.stockQuantity} in stock` : "Out of stock"}
+                    </span>
+                    <span className="text-xs text-slate-400">{viewProduct.soldCount} sold</span>
+                  </div>
+
+                  {/* Category */}
+                  <div>
+                    <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">Category</p>
+                    <p className="text-sm text-slate-300">
+                      {Array.isArray(viewProduct.categories) && viewProduct.categories.length > 0
+                        ? viewProduct.categories.join(", ")
+                        : viewProduct.category}
+                    </p>
+                    {Array.isArray(viewProduct.subCategories) && viewProduct.subCategories.length > 0 && (
+                      <div className="mt-1 flex flex-wrap gap-1">
+                        {viewProduct.subCategories.map((sc) => (
+                          <span key={sc} className="rounded-md bg-indigo-500/15 px-2 py-0.5 text-xs font-medium text-indigo-300">{sc}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Sizes */}
+                  {viewProduct.sizes.length > 0 && (
+                    <div>
+                      <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">Sizes</p>
+                      <div className="flex flex-wrap gap-1">
+                        {viewProduct.sizes.map((s) => (
+                          <span key={s} className="rounded border border-slate-600 bg-slate-700 px-2 py-0.5 text-xs font-medium text-slate-200">{s}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Colors */}
+                  {viewProduct.colors.length > 0 && (
+                    <div>
+                      <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">Colors</p>
+                      <div className="flex flex-wrap gap-1">
+                        {viewProduct.colors.map((c) => (
+                          <span key={c} className="rounded border border-slate-600 bg-slate-700 px-2 py-0.5 text-xs font-medium text-slate-200">{c}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Description */}
+                  {viewProduct.description && (
+                    <div>
+                      <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">Description</p>
+                      <p className="text-xs leading-relaxed text-slate-400 line-clamp-4">{viewProduct.description}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="flex items-center justify-end gap-3 border-t border-slate-700 px-5 py-4">
+                <button
+                  type="button"
+                  onClick={() => setViewProduct(null)}
+                  className="rounded-lg border border-slate-600 px-4 py-2 text-xs font-semibold text-slate-300 hover:border-slate-400 hover:text-white"
+                >
+                  Close
+                </button>
+                <Link
+                  href={`${productsBasePath}/${viewProduct._id}/edit`}
+                  className="rounded-lg bg-indigo-600 px-4 py-2 text-xs font-semibold text-white hover:bg-indigo-700"
+                >
+                  Edit product
+                </Link>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </>
   );
 }
