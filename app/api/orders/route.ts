@@ -11,11 +11,13 @@ import {
   discountFromPercent,
   isCouponUsable,
 } from "@/lib/couponValidation";
-import { sendOrderEmails } from "@/lib/mailer";
+import { sendOrderEmails, sendSellerOrderNotification } from "@/lib/mailer";
 import { recordSellerCommissionsForOrder } from "@/lib/recordSellerCommissions";
+import User from "@/models/User";
 import {
   buildAdminOrderEmailHtml,
   buildCustomerOrderEmailHtml,
+  buildSellerOrderEmailHtml,
   getOrderNotificationEmail,
   smtpConfigured,
 } from "@/lib/orderEmailHtml";
@@ -282,6 +284,59 @@ export async function POST(req: NextRequest) {
       console.warn(
         "Order confirmation email skipped: set RECIPIENT_EMAIL, EMAIL_USER, and EMAIL_PASS (Gmail App Password on port 587), or full SMTP_* vars."
       );
+    }
+
+    // Send each seller an email with only their items
+    if (smtpConfigured()) {
+      try {
+        // Gather unique seller IDs from the order items
+        const productIds = emailPayload.items.map((i) => i.productId).filter(Boolean);
+        const products = await Product.find({ _id: { $in: productIds } })
+          .select("_id sellerId")
+          .lean() as { _id: unknown; sellerId?: unknown }[];
+
+        // Map productId → sellerId
+        const productSellerMap = new Map<string, string>();
+        for (const p of products) {
+          if (p.sellerId) productSellerMap.set(String(p._id), String(p.sellerId));
+        }
+
+        // Group order items by sellerId
+        const sellerItems = new Map<string, typeof emailPayload.items>();
+        for (const item of emailPayload.items) {
+          const sid = productSellerMap.get(item.productId);
+          if (!sid) continue;
+          if (!sellerItems.has(sid)) sellerItems.set(sid, []);
+          sellerItems.get(sid)!.push(item);
+        }
+
+        if (sellerItems.size > 0) {
+          const sellerUsers = await User.find({ _id: { $in: [...sellerItems.keys()] } })
+            .select("_id email")
+            .lean() as { _id: unknown; email: string }[];
+
+          await Promise.all(
+            sellerUsers.map(async (seller) => {
+              const sid = String(seller._id);
+              const theirItems = sellerItems.get(sid);
+              if (!theirItems || theirItems.length === 0) return;
+              const sellerHtml = buildSellerOrderEmailHtml({
+                orderNumber: emailPayload.orderNumber,
+                customer: emailPayload.customer,
+                items: theirItems,
+                payment: emailPayload.payment,
+              });
+              await sendSellerOrderNotification({
+                sellerEmail: seller.email,
+                subject: `New order ${emailPayload.orderNumber} — prepare for dispatch`,
+                html: sellerHtml,
+              });
+            })
+          );
+        }
+      } catch (sellerMailErr) {
+        console.error("Seller order email failed (order still saved):", sellerMailErr);
+      }
     }
 
     return NextResponse.json({

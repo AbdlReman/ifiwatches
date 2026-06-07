@@ -71,6 +71,20 @@ export function getContactNotifyEmail(): string | undefined {
   return process.env.CONTACT_NOTIFY_EMAIL?.trim() || getRecipientInboxEmail();
 }
 
+export async function sendSellerOrderNotification({
+  sellerEmail,
+  subject,
+  html,
+}: {
+  sellerEmail: string;
+  subject: string;
+  html: string;
+}) {
+  const from =
+    process.env.SMTP_FROM?.trim() || process.env.SMTP_USER?.trim() || process.env.EMAIL_USER?.trim() || "no-reply@example.com";
+  await transporter.sendMail({ from, to: sellerEmail, subject, html });
+}
+
 export async function sendContactNotification(opts: {
   to: string;
   subject: string;
