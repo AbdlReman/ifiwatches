@@ -15,6 +15,7 @@ export default function HomePageContentClient() {
   const [imgUploading, setImgUploading] = useState(false);
   const [vidUploading, setVidUploading] = useState(false);
   const [vidProgress, setVidProgress] = useState(0);
+  const [vidProcessing, setVidProcessing] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const imgFileRef = useRef<HTMLInputElement>(null);
@@ -57,6 +58,7 @@ export default function HomePageContentClient() {
 
   const uploadVideo = async (file: File) => {
     setVidUploading(true);
+    setVidProcessing(false);
     setVidProgress(0);
     setError("");
     try {
@@ -69,20 +71,29 @@ export default function HomePageContentClient() {
         xhr.withCredentials = true;
 
         xhr.upload.onprogress = (e) => {
-          if (e.lengthComputable) setVidProgress(Math.round((e.loaded / e.total) * 100));
-        };
-
-        xhr.onload = () => {
-          const data = JSON.parse(xhr.responseText);
-          if (xhr.status >= 200 && xhr.status < 300) {
-            setVideoUrl(data.url ?? "");
-            resolve();
-          } else {
-            reject(new Error(data.error || "Upload failed"));
+          if (e.lengthComputable) {
+            const pct = Math.round((e.loaded / e.total) * 100);
+            setVidProgress(pct);
+            if (pct === 100) setVidProcessing(true);
           }
         };
 
-        xhr.onerror = () => reject(new Error("Network error during upload"));
+        xhr.onload = () => {
+          setVidProcessing(false);
+          try {
+            const data = JSON.parse(xhr.responseText);
+            if (xhr.status >= 200 && xhr.status < 300) {
+              setVideoUrl(data.url ?? "");
+              resolve();
+            } else {
+              reject(new Error(data.error || "Upload failed"));
+            }
+          } catch {
+            reject(new Error("Invalid server response"));
+          }
+        };
+
+        xhr.onerror = () => { setVidProcessing(false); reject(new Error("Network error during upload")); };
         xhr.send(form);
       });
     } catch (e) {
@@ -90,6 +101,7 @@ export default function HomePageContentClient() {
     } finally {
       setVidUploading(false);
       setVidProgress(0);
+      setVidProcessing(false);
     }
   };
 
@@ -247,16 +259,30 @@ export default function HomePageContentClient() {
 
             {/* Upload progress bar */}
             {vidUploading && (
-              <div className="space-y-1">
-                <p className="text-slate-400 text-xs">
-                  Uploading video… {vidProgress > 0 ? `${vidProgress}%` : ""}
-                </p>
-                <div className="h-2 w-full max-w-lg rounded-full bg-slate-700 overflow-hidden">
+              <div className="space-y-2 max-w-lg">
+                <div className="flex items-center justify-between">
+                  <p className="text-slate-300 text-xs font-medium">
+                    {vidProcessing
+                      ? "Processing on Cloudinary… please wait"
+                      : `Uploading… ${vidProgress}%`}
+                  </p>
+                  {vidProcessing && (
+                    <div className="h-4 w-4 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin" />
+                  )}
+                </div>
+                <div className="h-2 w-full rounded-full bg-slate-700 overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-indigo-500 transition-all duration-200"
-                    style={{ width: `${vidProgress}%` }}
+                    className={`h-full rounded-full transition-all duration-300 ${
+                      vidProcessing ? "w-full animate-pulse bg-indigo-400" : "bg-indigo-500"
+                    }`}
+                    style={vidProcessing ? undefined : { width: `${vidProgress}%` }}
                   />
                 </div>
+                {vidProcessing && (
+                  <p className="text-slate-500 text-xs">
+                    Large videos can take 30–60 seconds. Do not close this page.
+                  </p>
+                )}
               </div>
             )}
 
@@ -277,7 +303,7 @@ export default function HomePageContentClient() {
                 disabled={vidUploading}
                 className="bg-slate-700 hover:bg-slate-600 disabled:opacity-50 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
               >
-                {vidUploading ? "Uploading…" : "Upload Video"}
+                {vidProcessing ? "Processing…" : vidUploading ? `Uploading ${vidProgress}%` : "Upload Video"}
               </button>
             )}
 
