@@ -470,7 +470,7 @@ export default function HomePageView({
       ) : null}
 
       {/* Seller CTA */}
-      <section className="relative overflow-hidden">
+      {/* <section className="relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-20"
           style={{
@@ -502,7 +502,7 @@ export default function HomePageView({
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Promo banner */}
       <section className="relative min-h-[420px] overflow-hidden border-y border-zinc-200 sm:min-h-[480px]">
