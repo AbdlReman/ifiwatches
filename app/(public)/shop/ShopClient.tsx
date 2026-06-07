@@ -200,7 +200,7 @@ export default function ShopClient({
               { label: "Shop" },
             ]}
           />
-          <h1 className="mt-6 text-3xl font-black uppercase tracking-tight sm:text-4xl">Shop</h1>
+          <h1 className="mt-6 text-3xl font-black uppercase tracking-tight sm:text-4xl">IFI PRODUCTS FROM BRANDS YOU LOVE</h1>
           <p className="mt-2 text-sm text-zinc-600">{filtered.length} products</p>
         </div>
       </header>

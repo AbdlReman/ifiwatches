@@ -52,7 +52,7 @@ export default function AboutPage() {
               Our Signature
             </p>
             <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight leading-tight mb-8">
-              IFI Lifestyle — Our Standard, Our Signature
+              IFI Lifestyle
             </h1>
             <blockquote
               className="border-l-4 pl-6 text-zinc-700 text-lg md:text-xl leading-relaxed italic mb-6"
