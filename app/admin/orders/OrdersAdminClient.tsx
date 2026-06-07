@@ -12,6 +12,7 @@ export type AdminOrderItem = {
   image?: string;
   size?: string;
   color?: string;
+  sellerName?: string;
 };
 
 export type AdminOrderRow = {
@@ -560,6 +561,7 @@ export default function OrdersAdminClient({
                       <tr>
                         <th className="px-3 py-2 w-10" />
                         <th className="px-3 py-2">Product</th>
+                        <th className="px-3 py-2">Seller</th>
                         <th className="px-3 py-2">Variant</th>
                         <th className="px-3 py-2 text-center">Qty</th>
                         <th className="px-3 py-2 text-right">Price</th>
@@ -581,6 +583,11 @@ export default function OrdersAdminClient({
                                 : <div className="h-10 w-10 rounded bg-slate-700 border border-slate-600" />}
                             </td>
                             <td className="px-3 py-2 font-medium text-white max-w-[180px]">{item.name}</td>
+                            <td className="px-3 py-2 text-xs">
+                              {item.sellerName
+                                ? <span className="rounded-full bg-indigo-900/60 px-2 py-0.5 text-indigo-300 font-semibold">{item.sellerName}</span>
+                                : <span className="text-slate-600">Store</span>}
+                            </td>
                             <td className="px-3 py-2 text-slate-400 text-xs">
                               {color && <span className="mr-1">{color}</span>}
                               {size && <span>{size}</span>}
@@ -595,19 +602,19 @@ export default function OrdersAdminClient({
                     </tbody>
                     <tfoot className="bg-slate-900/50 text-xs border-t border-slate-700">
                       <tr>
-                        <td colSpan={5} className="px-3 py-2 text-right text-slate-500 uppercase tracking-widest">Subtotal</td>
+                        <td colSpan={6} className="px-3 py-2 text-right text-slate-500 uppercase tracking-widest">Subtotal</td>
                         <td className="px-3 py-2 text-right text-slate-200">{formatPkr(selected.subtotal)}</td>
                       </tr>
                       {selected.discountAmount > 0 && (
                         <tr>
-                          <td colSpan={5} className="px-3 py-2 text-right text-slate-500 uppercase tracking-widest">
+                          <td colSpan={6} className="px-3 py-2 text-right text-slate-500 uppercase tracking-widest">
                             Discount{selected.couponCode ? ` (${selected.couponCode})` : ""}
                           </td>
                           <td className="px-3 py-2 text-right text-red-300">−{formatPkr(selected.discountAmount)}</td>
                         </tr>
                       )}
                       <tr>
-                        <td colSpan={5} className="px-3 py-2 text-right font-bold text-slate-300 uppercase tracking-widest text-sm">Total</td>
+                        <td colSpan={6} className="px-3 py-2 text-right font-bold text-slate-300 uppercase tracking-widest text-sm">Total</td>
                         <td className="px-3 py-2 text-right font-black text-white text-sm">{formatPkr(selected.totalAmount)}</td>
                       </tr>
                     </tfoot>
