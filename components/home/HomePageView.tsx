@@ -263,7 +263,7 @@ export default function HomePageView({
         </div>
 
         {featuredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 sm:gap-8 lg:grid-cols-4">
             {featuredProducts.map((product, idx) => (
               <ProductCard key={product._id} product={product} priority={idx < 2} />
             ))}
@@ -317,7 +317,7 @@ export default function HomePageView({
                 See all deals →
               </Link>
             </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
               {flashSaleProducts.map((product, idx) => {
                 const finalPrice = product.price * (1 - product.discount / 100);
                 return (
@@ -379,7 +379,7 @@ export default function HomePageView({
                 Explore all →
               </Link>
             </div>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-4 sm:gap-8 lg:grid-cols-4">
               {justForYouProducts.map((product, idx) => (
                 <ProductCard key={product._id} product={product} priority={idx < 2} />
               ))}
@@ -418,7 +418,7 @@ export default function HomePageView({
                   </Link>
                 </div>
 
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <div className="grid grid-cols-2 gap-4 sm:gap-5">
                   {group.products.map((product, idx) => (
                     <ProductCard key={`${group.name}-${product._id}`} product={product} priority={idx === 0} />
                   ))}
@@ -479,7 +479,7 @@ export default function HomePageView({
                 Browse all →
               </Link>
             </div>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-4 sm:gap-8 lg:grid-cols-4">
               {vendorProducts.map((product, idx) => (
                 <ProductCard key={product._id} product={product} priority={idx < 2} />
               ))}
