@@ -114,9 +114,12 @@ function fmt(iso: string) {
 export default function OrdersAdminClient({
   orders: initialOrders,
   allowStatusActions = true,
+  sellerMode = false,
 }: {
   orders: AdminOrderRow[];
   allowStatusActions?: boolean;
+  /** When true: hides customer details, restricts actions to Prepare + Cancel only. */
+  sellerMode?: boolean;
 }) {
   const [orders, setOrders] = useState<AdminOrderRow[]>(initialOrders);
   const [openId, setOpenId] = useState<string | null>(null);
@@ -150,6 +153,7 @@ export default function OrdersAdminClient({
     return orders.filter((o) => {
       if (o.orderStatus !== statusFilter) return false;
       if (!q) return true;
+      if (sellerMode) return o.orderNumber.toLowerCase().includes(q);
       return (
         o.orderNumber.toLowerCase().includes(q) ||
         o.customer.name.toLowerCase().includes(q) ||
@@ -157,7 +161,7 @@ export default function OrdersAdminClient({
         o.customer.email.toLowerCase().includes(q)
       );
     });
-  }, [orders, statusFilter, search]);
+  }, [orders, statusFilter, search, sellerMode]);
 
   const totalPages = Math.max(1, Math.ceil(filteredOrders.length / perPage));
   const currentPage = Math.min(page, totalPages);
@@ -264,7 +268,7 @@ export default function OrdersAdminClient({
           type="search"
           value={search}
           onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-          placeholder="Search order #, customer name, phone…"
+          placeholder={sellerMode ? "Search order #…" : "Search order #, customer name, phone…"}
           className="flex-1 min-w-[200px] bg-slate-900 border border-slate-700 text-slate-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-600"
         />
       </div>
@@ -275,7 +279,7 @@ export default function OrdersAdminClient({
           <thead className="bg-slate-900/80 text-[10px] uppercase tracking-widest text-slate-500">
             <tr>
               <th className="px-4 py-3 font-bold">Order</th>
-              <th className="px-4 py-3 font-bold">Customer</th>
+              {!sellerMode && <th className="px-4 py-3 font-bold">Customer</th>}
               <th className="px-4 py-3 font-bold">Items</th>
               <th className="px-4 py-3 font-bold text-right">Total</th>
               <th className="px-4 py-3 font-bold">Payment</th>
@@ -287,12 +291,16 @@ export default function OrdersAdminClient({
           <tbody className="divide-y divide-slate-700">
             {paginatedOrders.length === 0 ? (
               <tr>
-                <td colSpan={8} className="px-6 py-12 text-center text-slate-500 text-sm">
+                <td colSpan={sellerMode ? 7 : 8} className="px-6 py-12 text-center text-slate-500 text-sm">
                   No {statusFilter} orders{search ? ` matching "${search}"` : ""}.
                 </td>
               </tr>
             ) : paginatedOrders.map((order) => {
               const nextActions = NEXT_ACTIONS[order.orderStatus as OrderStatus] ?? [];
+              // Sellers only get Prepare (pending→processing); not Dispatch or Complete
+              const visibleActions = sellerMode
+                ? nextActions.filter((a) => a.status === "processing")
+                : nextActions;
               const isBusy = updatingId === order._id;
               const isTerminal = order.orderStatus === "completed" || order.orderStatus === "cancelled";
               return (
@@ -300,10 +308,12 @@ export default function OrdersAdminClient({
                   <td className="px-4 py-3 whitespace-nowrap">
                     <span className="font-mono font-semibold text-white text-xs">{order.orderNumber}</span>
                   </td>
-                  <td className="px-4 py-3 max-w-[200px]">
-                    <p className="text-white font-medium truncate">{order.customer.name}</p>
-                    <p className="text-slate-500 text-xs truncate">{order.customer.phone}</p>
-                  </td>
+                  {!sellerMode && (
+                    <td className="px-4 py-3 max-w-[200px]">
+                      <p className="text-white font-medium truncate">{order.customer.name}</p>
+                      <p className="text-slate-500 text-xs truncate">{order.customer.phone}</p>
+                    </td>
+                  )}
                   <td className="px-4 py-3 text-slate-400 text-xs">
                     {order.items.length} item{order.items.length === 1 ? "" : "s"}
                   </td>
@@ -328,9 +338,9 @@ export default function OrdersAdminClient({
                       >
                         View
                       </button>
-                      {allowStatusActions && (
+                      {(allowStatusActions || sellerMode) && (
                         <>
-                          {nextActions.map((action) => (
+                          {visibleActions.map((action) => (
                             <button
                               key={action.status}
                               type="button"
@@ -416,7 +426,7 @@ export default function OrdersAdminClient({
             <div className="p-6 space-y-6">
 
               {/* Status pipeline */}
-              {allowStatusActions && (
+              {(allowStatusActions || sellerMode) && (
                 <section className="rounded-xl border border-slate-700 bg-slate-800/60 p-4">
                   <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-3">Order pipeline</p>
                   <div className="flex flex-wrap gap-2">
@@ -452,17 +462,19 @@ export default function OrdersAdminClient({
                   {/* Action buttons */}
                   {selected.orderStatus !== "completed" && selected.orderStatus !== "cancelled" && (
                     <div className="mt-4 flex flex-wrap gap-2 border-t border-slate-700 pt-4">
-                      {(NEXT_ACTIONS[selected.orderStatus as OrderStatus] ?? []).map((action) => (
-                        <button
-                          key={action.status}
-                          type="button"
-                          disabled={updatingId === selected._id}
-                          onClick={() => updateStatus(selected._id, action.status)}
-                          className={`rounded-lg border px-4 py-2 text-xs font-bold uppercase tracking-widest disabled:opacity-50 transition-colors ${action.color}`}
-                        >
-                          {updatingId === selected._id ? "Updating…" : `Mark as ${action.label}`}
-                        </button>
-                      ))}
+                      {(NEXT_ACTIONS[selected.orderStatus as OrderStatus] ?? [])
+                        .filter((action) => !sellerMode || action.status === "processing")
+                        .map((action) => (
+                          <button
+                            key={action.status}
+                            type="button"
+                            disabled={updatingId === selected._id}
+                            onClick={() => updateStatus(selected._id, action.status)}
+                            className={`rounded-lg border px-4 py-2 text-xs font-bold uppercase tracking-widest disabled:opacity-50 transition-colors ${action.color}`}
+                          >
+                            {updatingId === selected._id ? "Updating…" : `Mark as ${action.label}`}
+                          </button>
+                        ))}
                       <button
                         type="button"
                         disabled={updatingId === selected._id}
@@ -476,62 +488,66 @@ export default function OrdersAdminClient({
                 </section>
               )}
 
-              {/* Customer */}
-              <section>
-                <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Customer</p>
-                <div className="rounded-xl border border-slate-700 bg-slate-800/50 p-4 text-sm text-slate-300 space-y-1">
-                  <p className="text-white font-semibold text-base">{selected.customer.name}</p>
-                  <p><span className="text-slate-500">Phone:</span> <a href={`tel:${selected.customer.phone}`} className="text-cyan-400">{selected.customer.phone}</a></p>
-                  <p><span className="text-slate-500">Email:</span> {selected.customer.email}</p>
-                  <p><span className="text-slate-500">Address:</span> {selected.customer.address}, {selected.customer.city}</p>
-                  {(selected.customer.state || "").trim() ? <p><span className="text-slate-500">State:</span> {selected.customer.state}</p> : null}
-                  {(selected.customer.postalCode || "").trim() ? <p><span className="text-slate-500">Postal:</span> {selected.customer.postalCode}</p> : null}
-                  {selected.customer.notes ? (
-                    <p className="pt-2 border-t border-slate-700 mt-2 text-slate-400">
-                      <span className="text-slate-500">Notes:</span> {selected.customer.notes}
-                    </p>
-                  ) : null}
-                </div>
-              </section>
-
-              {/* Payment */}
-              <section>
-                <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Payment</p>
-                <div className="rounded-xl border border-blue-900/40 bg-blue-950/20 p-4 text-sm text-slate-200 space-y-2">
-                  <div className="flex items-center justify-between flex-wrap gap-2">
-                    <p><span className="text-slate-500">Method:</span> <span className="text-white font-medium">{paymentMethodLabel(selected.paymentMethod)}</span></p>
-                    <div className="flex items-center gap-2">
-                      <PayBadge status={selected.paymentStatus} />
-                      {allowStatusActions && selected.paymentStatus !== "paid" && (
-                        <button
-                          type="button"
-                          disabled={updatingId === selected._id}
-                          onClick={() => updatePayment(selected._id, "paid")}
-                          className="rounded-md bg-emerald-700 hover:bg-emerald-600 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white disabled:opacity-50"
-                        >
-                          Mark Paid
-                        </button>
-                      )}
-                    </div>
+              {/* Customer — hidden from sellers */}
+              {!sellerMode && (
+                <section>
+                  <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Customer</p>
+                  <div className="rounded-xl border border-slate-700 bg-slate-800/50 p-4 text-sm text-slate-300 space-y-1">
+                    <p className="text-white font-semibold text-base">{selected.customer.name}</p>
+                    <p><span className="text-slate-500">Phone:</span> <a href={`tel:${selected.customer.phone}`} className="text-cyan-400">{selected.customer.phone}</a></p>
+                    <p><span className="text-slate-500">Email:</span> {selected.customer.email}</p>
+                    <p><span className="text-slate-500">Address:</span> {selected.customer.address}, {selected.customer.city}</p>
+                    {(selected.customer.state || "").trim() ? <p><span className="text-slate-500">State:</span> {selected.customer.state}</p> : null}
+                    {(selected.customer.postalCode || "").trim() ? <p><span className="text-slate-500">Postal:</span> {selected.customer.postalCode}</p> : null}
+                    {selected.customer.notes ? (
+                      <p className="pt-2 border-t border-slate-700 mt-2 text-slate-400">
+                        <span className="text-slate-500">Notes:</span> {selected.customer.notes}
+                      </p>
+                    ) : null}
                   </div>
-                  <p>
-                    <span className="text-slate-500">TRX ID:</span>{" "}
-                    {selected.paymentTransactionId?.trim()
-                      ? <span className="font-mono text-xs text-white break-all">{selected.paymentTransactionId}</span>
-                      : <span className="text-slate-600">—</span>}
-                  </p>
-                  {selected.paymentScreenshotUrl?.trim().startsWith("https://") ? (
-                    <div className="pt-2">
-                      <p className="text-slate-500 text-xs mb-2">Screenshot</p>
-                      <a href={selected.paymentScreenshotUrl} target="_blank" rel="noopener noreferrer"
-                        className="text-cyan-400 text-xs underline">Open full image ↗</a>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={selected.paymentScreenshotUrl} alt="Payment proof"
-                        className="mt-2 max-h-56 w-auto max-w-full rounded-lg border border-slate-600 object-contain" />
+                </section>
+              )}
+
+              {/* Payment — hidden from sellers */}
+              {!sellerMode && (
+                <section>
+                  <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Payment</p>
+                  <div className="rounded-xl border border-blue-900/40 bg-blue-950/20 p-4 text-sm text-slate-200 space-y-2">
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <p><span className="text-slate-500">Method:</span> <span className="text-white font-medium">{paymentMethodLabel(selected.paymentMethod)}</span></p>
+                      <div className="flex items-center gap-2">
+                        <PayBadge status={selected.paymentStatus} />
+                        {allowStatusActions && selected.paymentStatus !== "paid" && (
+                          <button
+                            type="button"
+                            disabled={updatingId === selected._id}
+                            onClick={() => updatePayment(selected._id, "paid")}
+                            className="rounded-md bg-emerald-700 hover:bg-emerald-600 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white disabled:opacity-50"
+                          >
+                            Mark Paid
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  ) : <p className="text-slate-600 text-xs">No screenshot uploaded.</p>}
-                </div>
-              </section>
+                    <p>
+                      <span className="text-slate-500">TRX ID:</span>{" "}
+                      {selected.paymentTransactionId?.trim()
+                        ? <span className="font-mono text-xs text-white break-all">{selected.paymentTransactionId}</span>
+                        : <span className="text-slate-600">—</span>}
+                    </p>
+                    {selected.paymentScreenshotUrl?.trim().startsWith("https://") ? (
+                      <div className="pt-2">
+                        <p className="text-slate-500 text-xs mb-2">Screenshot</p>
+                        <a href={selected.paymentScreenshotUrl} target="_blank" rel="noopener noreferrer"
+                          className="text-cyan-400 text-xs underline">Open full image ↗</a>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={selected.paymentScreenshotUrl} alt="Payment proof"
+                          className="mt-2 max-h-56 w-auto max-w-full rounded-lg border border-slate-600 object-contain" />
+                      </div>
+                    ) : <p className="text-slate-600 text-xs">No screenshot uploaded.</p>}
+                  </div>
+                </section>
+              )}
 
               {/* Items */}
               <section>

@@ -322,9 +322,7 @@ export async function POST(req: NextRequest) {
               if (!theirItems || theirItems.length === 0) return;
               const sellerHtml = buildSellerOrderEmailHtml({
                 orderNumber: emailPayload.orderNumber,
-                customer: emailPayload.customer,
                 items: theirItems,
-                payment: emailPayload.payment,
               });
               await sendSellerOrderNotification({
                 sellerEmail: seller.email,
@@ -351,7 +349,7 @@ export async function POST(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const auth = await requireRoles(["admin"]);
+    const auth = await requireRoles(["admin", "seller"]);
     if (!auth.ok) return auth.response;
 
     await connectDB();
@@ -364,6 +362,11 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "Missing orderId" }, { status: 400 });
     }
 
+    const isSeller = auth.session.role === "seller";
+
+    // Sellers may only set processing (Prepare) or cancelled (Cancel)
+    const SELLER_ALLOWED_STATUSES = ["processing", "cancelled"] as const;
+
     const update: Record<string, string> = {};
 
     if (nextStatus) {
@@ -371,10 +374,16 @@ export async function PATCH(req: NextRequest) {
       if (!allowedStatuses.includes(nextStatus as (typeof allowedStatuses)[number])) {
         return NextResponse.json({ error: "Invalid status" }, { status: 400 });
       }
+      if (isSeller && !SELLER_ALLOWED_STATUSES.includes(nextStatus as (typeof SELLER_ALLOWED_STATUSES)[number])) {
+        return NextResponse.json({ error: "Sellers may only Prepare or Cancel orders." }, { status: 403 });
+      }
       update.orderStatus = nextStatus;
     }
 
     if (nextPayment) {
+      if (isSeller) {
+        return NextResponse.json({ error: "Sellers cannot update payment status." }, { status: 403 });
+      }
       const allowedPayment = ["pending", "paid", "failed"] as const;
       if (!allowedPayment.includes(nextPayment as (typeof allowedPayment)[number])) {
         return NextResponse.json({ error: "Invalid payment status" }, { status: 400 });
@@ -384,6 +393,21 @@ export async function PATCH(req: NextRequest) {
 
     if (Object.keys(update).length === 0) {
       return NextResponse.json({ error: "Nothing to update" }, { status: 400 });
+    }
+
+    // Sellers may only update orders containing their products
+    if (isSeller) {
+      const sellerProductIds = await Product.find({ sellerId: auth.session.sub }).distinct("_id");
+      const strIds = sellerProductIds.map(String);
+      const orderDoc = await Order.findOne({ _id: orderId, "items.productId": { $in: strIds } }).lean();
+      if (!orderDoc) {
+        return NextResponse.json({ error: "Order not found or not yours." }, { status: 404 });
+      }
+      const currentStatus = String((orderDoc as Record<string, unknown>).orderStatus || "");
+      const TERMINAL = ["completed", "cancelled"];
+      if (TERMINAL.includes(currentStatus)) {
+        return NextResponse.json({ error: "Cannot change a completed or cancelled order." }, { status: 400 });
+      }
     }
 
     const order = await Order.findByIdAndUpdate(

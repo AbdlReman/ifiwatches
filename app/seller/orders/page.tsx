@@ -46,7 +46,7 @@ export default async function SellerOrdersPage() {
       {orders.length === 0 ? (
         <p className="text-slate-500 text-sm">No orders yet.</p>
       ) : (
-        <OrdersAdminClient orders={orders} allowStatusActions={false} />
+        <OrdersAdminClient orders={orders} sellerMode={true} />
       )}
     </div>
   );
