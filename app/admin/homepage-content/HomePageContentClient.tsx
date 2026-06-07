@@ -12,10 +12,13 @@ export default function HomePageContentClient() {
   const [videoUrl, setVideoUrl] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [imgUploading, setImgUploading] = useState(false);
+  const [vidUploading, setVidUploading] = useState(false);
+  const [vidProgress, setVidProgress] = useState(0);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const fileRef = useRef<HTMLInputElement>(null);
+  const imgFileRef = useRef<HTMLInputElement>(null);
+  const vidFileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -35,29 +38,68 @@ export default function HomePageContentClient() {
   }, []);
 
   const uploadImage = async (file: File) => {
-    setUploading(true);
+    setImgUploading(true);
     setError("");
     try {
       const form = new FormData();
       form.append("images", file);
       form.append("folder", "homepage");
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: form,
-        credentials: "include",
-      });
+      const res = await fetch("/api/upload", { method: "POST", body: form, credentials: "include" });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Upload failed");
       setSaleImage(data.urls[0] ?? "");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Upload failed");
+      setError(e instanceof Error ? e.message : "Image upload failed");
     } finally {
-      setUploading(false);
+      setImgUploading(false);
     }
   };
 
-  const save = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const uploadVideo = async (file: File) => {
+    setVidUploading(true);
+    setVidProgress(0);
+    setError("");
+    try {
+      const form = new FormData();
+      form.append("video", file);
+
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/api/admin/homepage-content/upload-video");
+        xhr.withCredentials = true;
+
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) setVidProgress(Math.round((e.loaded / e.total) * 100));
+        };
+
+        xhr.onload = () => {
+          const data = JSON.parse(xhr.responseText);
+          if (xhr.status >= 200 && xhr.status < 300) {
+            setVideoUrl(data.url ?? "");
+            resolve();
+          } else {
+            reject(new Error(data.error || "Upload failed"));
+          }
+        };
+
+        xhr.onerror = () => reject(new Error("Network error during upload"));
+        xhr.send(form);
+      });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Video upload failed");
+    } finally {
+      setVidUploading(false);
+      setVidProgress(0);
+    }
+  };
+
+  const deleteVideo = async () => {
+    if (!window.confirm("Remove the homepage video?")) return;
+    setVideoUrl("");
+    await saveContent(saleImage, "");
+  };
+
+  const saveContent = async (img: string, vid: string) => {
     setSaving(true);
     setError("");
     setSuccess(false);
@@ -66,7 +108,7 @@ export default function HomePageContentClient() {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ saleImage, videoUrl }),
+        body: JSON.stringify({ saleImage: img, videoUrl: vid }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Save failed");
@@ -79,13 +121,16 @@ export default function HomePageContentClient() {
     }
   };
 
+  const save = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await saveContent(saleImage, videoUrl);
+  };
+
   return (
     <div className="space-y-8">
       <div>
         <div className="flex items-center gap-2 text-slate-500 text-xs uppercase tracking-widest mb-3">
-          <Link href="/admin" className="hover:text-slate-300">
-            Dashboard
-          </Link>
+          <Link href="/admin" className="hover:text-slate-300">Dashboard</Link>
           <span>/</span>
           <span className="text-slate-400">Home Page Content</span>
         </div>
@@ -96,9 +141,7 @@ export default function HomePageContentClient() {
       </div>
 
       {error && (
-        <div className="bg-red-900/30 border border-red-700 text-red-300 text-sm px-4 py-3 rounded-lg">
-          {error}
-        </div>
+        <div className="bg-red-900/30 border border-red-700 text-red-300 text-sm px-4 py-3 rounded-lg">{error}</div>
       )}
       {success && (
         <div className="bg-green-900/30 border border-green-700 text-green-300 text-sm px-4 py-3 rounded-lg">
@@ -110,13 +153,12 @@ export default function HomePageContentClient() {
         <p className="text-slate-500 text-sm">Loading…</p>
       ) : (
         <form onSubmit={save} className="space-y-6">
-          {/* Sale Image */}
+
+          {/* ── Sale Image ── */}
           <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 space-y-4">
             <div>
               <h2 className="text-sm font-bold uppercase tracking-widest text-slate-300">Sale Banner Image</h2>
-              <p className="text-slate-500 text-xs mt-1">
-                Displayed in the sale banner section on the homepage.
-              </p>
+              <p className="text-slate-500 text-xs mt-1">Displayed in the sale banner section on the homepage.</p>
             </div>
 
             {saleImage && (
@@ -134,24 +176,20 @@ export default function HomePageContentClient() {
             )}
 
             <input
-              ref={fileRef}
+              ref={imgFileRef}
               type="file"
               accept="image/*"
               className="sr-only"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) uploadImage(file);
-                e.target.value = "";
-              }}
-              disabled={uploading}
+              onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadImage(f); e.target.value = ""; }}
+              disabled={imgUploading}
             />
             <button
               type="button"
-              onClick={() => fileRef.current?.click()}
-              disabled={uploading}
+              onClick={() => imgFileRef.current?.click()}
+              disabled={imgUploading}
               className="bg-slate-700 hover:bg-slate-600 disabled:opacity-50 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
             >
-              {uploading ? "Uploading…" : saleImage ? "Replace Image" : "Upload Image"}
+              {imgUploading ? "Uploading…" : saleImage ? "Replace Image" : "Upload Image"}
             </button>
 
             <div>
@@ -166,17 +204,85 @@ export default function HomePageContentClient() {
             </div>
           </div>
 
-          {/* Video */}
+          {/* ── Homepage Video ── */}
           <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 space-y-4">
             <div>
               <h2 className="text-sm font-bold uppercase tracking-widest text-slate-300">Homepage Video</h2>
               <p className="text-slate-500 text-xs mt-1">
-                Autoplays muted and looped below the Featured Drops section. Use a direct video URL (.mp4, .webm, etc.).
+                Autoplays muted and looped below the Featured Drops section.
               </p>
             </div>
 
+            {/* Video preview */}
+            {videoUrl && (
+              <div className="relative group rounded-lg overflow-hidden border border-slate-600 max-w-lg">
+                <video
+                  src={videoUrl}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="w-full block"
+                />
+                <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button
+                    type="button"
+                    onClick={() => vidFileRef.current?.click()}
+                    disabled={vidUploading}
+                    className="bg-slate-700 hover:bg-slate-600 text-white text-xs font-semibold px-3 py-1 rounded-md"
+                  >
+                    Replace
+                  </button>
+                  <button
+                    type="button"
+                    onClick={deleteVideo}
+                    disabled={vidUploading || saving}
+                    className="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-3 py-1 rounded-md"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Upload progress bar */}
+            {vidUploading && (
+              <div className="space-y-1">
+                <p className="text-slate-400 text-xs">
+                  Uploading video… {vidProgress > 0 ? `${vidProgress}%` : ""}
+                </p>
+                <div className="h-2 w-full max-w-lg rounded-full bg-slate-700 overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-indigo-500 transition-all duration-200"
+                    style={{ width: `${vidProgress}%` }}
+                  />
+                </div>
+              </div>
+            )}
+
+            <input
+              ref={vidFileRef}
+              type="file"
+              accept="video/*"
+              className="sr-only"
+              onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadVideo(f); e.target.value = ""; }}
+              disabled={vidUploading}
+            />
+
+            {/* Show upload button only when no video yet */}
+            {!videoUrl && (
+              <button
+                type="button"
+                onClick={() => vidFileRef.current?.click()}
+                disabled={vidUploading}
+                className="bg-slate-700 hover:bg-slate-600 disabled:opacity-50 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
+              >
+                {vidUploading ? "Uploading…" : "Upload Video"}
+              </button>
+            )}
+
             <div>
-              <label className={labelCls}>Video URL</label>
+              <label className={labelCls}>Or paste video URL</label>
               <input
                 className={inputCls}
                 type="url"
@@ -185,24 +291,11 @@ export default function HomePageContentClient() {
                 placeholder="https://res.cloudinary.com/…/video.mp4"
               />
             </div>
-
-            {videoUrl && (
-              <div className="rounded-lg overflow-hidden border border-slate-600 max-w-lg">
-                <video
-                  src={videoUrl}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="w-full"
-                />
-              </div>
-            )}
           </div>
 
           <button
             type="submit"
-            disabled={saving || uploading}
+            disabled={saving || imgUploading || vidUploading}
             className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-semibold px-6 py-2.5 rounded-lg text-sm"
           >
             {saving ? "Saving…" : "Save Changes"}
