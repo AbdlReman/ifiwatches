@@ -99,7 +99,20 @@ export default function ShopClient({
   const [sort, setSort] = useState("latest");
   const [page, setPage] = useState(1);
   const [previewImage, setPreviewImage] = useState<{ src: string; alt: string } | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setDrawerOpen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [drawerOpen]);
 
   const setCategory = (next: string) => {
     setPage(1);
@@ -120,26 +133,11 @@ export default function ShopClient({
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   };
 
-  const setBrandFilter = (v: string) => {
-    setPage(1);
-    setBrand(v);
-  };
-  const setSizeFilter = (v: string) => {
-    setPage(1);
-    setSize(v);
-  };
-  const setColorFilter = (v: string) => {
-    setPage(1);
-    setColor(v);
-  };
-  const setSearchFilter = (v: string) => {
-    setPage(1);
-    setSearch(v);
-  };
-  const setSortFilter = (v: string) => {
-    setPage(1);
-    setSort(v);
-  };
+  const setBrandFilter = (v: string) => { setPage(1); setBrand(v); };
+  const setSizeFilter = (v: string) => { setPage(1); setSize(v); };
+  const setColorFilter = (v: string) => { setPage(1); setColor(v); };
+  const setSearchFilter = (v: string) => { setPage(1); setSearch(v); };
+  const setSortFilter = (v: string) => { setPage(1); setSort(v); };
 
   const filtered = useMemo(() => {
     return products
@@ -178,6 +176,7 @@ export default function ShopClient({
       setSearch("");
       setSort("latest");
       setPage(1);
+      setDrawerOpen(false);
     });
   };
 
@@ -200,13 +199,15 @@ export default function ShopClient({
               { label: "Shop" },
             ]}
           />
-          <h1 className="mt-6 text-3xl font-black uppercase tracking-tight sm:text-4xl">IFI PRODUCTS FROM BRANDS YOU LOVE</h1>
+          <h1 className="mt-6 text-xl font-black uppercase tracking-tight sm:text-3xl lg:text-4xl">IFI BEST PRODUCTS FROM <br/>BRANDS YOU LOVE</h1>
           <p className="mt-2 text-sm text-zinc-600">{filtered.length} products</p>
         </div>
       </header>
 
       <div className="mx-auto max-w-[90rem] px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-        <div className="mb-8 border border-neutral-200 bg-white p-4">
+
+        {/* Desktop filter panel */}
+        <div className="mb-8 hidden border border-neutral-200 bg-white p-4 md:block">
           <div className="mb-3 flex items-center justify-between gap-3 border-b border-neutral-100 pb-2.5">
             <h2 className="text-sm font-black uppercase tracking-wide">Filters</h2>
             {activeFilters > 0 ? (
@@ -266,6 +267,37 @@ export default function ShopClient({
           </div>
         </div>
 
+        {/* Mobile sticky filter bar */}
+        <div className="sticky top-0 z-30 mb-4 flex items-center gap-2 border-b border-neutral-200 bg-white py-3 md:hidden">
+          <button
+            type="button"
+            onClick={() => setDrawerOpen(true)}
+            className="flex items-center gap-1.5 border border-black bg-black px-3 py-2 text-xs font-bold uppercase tracking-widest text-white"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h10M4 18h6" />
+            </svg>
+            Filters
+            {activeFilters > 0 && (
+              <span className="ml-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-white text-[9px] font-black text-black">
+                {activeFilters}
+              </span>
+            )}
+          </button>
+          <div className="flex-1">
+            <select
+              value={sort}
+              onChange={(e) => startTransition(() => setSortFilter(e.target.value))}
+              className={selectClass}
+              aria-label="Sort"
+            >
+              {SORTS.map((s) => (
+                <option key={s.value} value={s.value}>{s.label}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
         {availableSubCategories.length > 0 && (
           <div className="mb-6 flex flex-wrap gap-2">
             {["All", ...availableSubCategories].map((sc) => (
@@ -293,29 +325,30 @@ export default function ShopClient({
               {category !== "All" ? ` · ${category}` : ""}
               {subCategory !== "All" ? ` · ${subCategory}` : ""}
             </p>
-            <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
-              <label className="sr-only" htmlFor="shop-sort-main">
-                Sort
-              </label>
+            <div className="hidden w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center md:flex">
+              <label className="sr-only" htmlFor="shop-sort-main">Sort</label>
               <select
                 id="shop-sort-main"
                 value={sort}
-                onChange={(e) =>
-                  startTransition(() => {
-                    setSortFilter(e.target.value);
-                  })
-                }
+                onChange={(e) => startTransition(() => setSortFilter(e.target.value))}
                 className={`${selectClass} sm:min-w-[12rem]`}
               >
                 {SORTS.map((s) => (
-                  <option key={s.value} value={s.value}>
-                    {s.label}
-                  </option>
+                  <option key={s.value} value={s.value}>{s.label}</option>
                 ))}
               </select>
               <Link
                 href="/cart"
                 className="inline-flex items-center justify-center border border-black bg-black px-4 py-2.5 text-center text-xs font-bold uppercase tracking-widest text-white hover:bg-neutral-800 sm:min-w-[7rem]"
+              >
+                Cart
+              </Link>
+            </div>
+            {/* Cart link visible on mobile in top bar area */}
+            <div className="flex md:hidden">
+              <Link
+                href="/cart"
+                className="inline-flex items-center justify-center border border-black bg-black px-4 py-2 text-center text-xs font-bold uppercase tracking-widest text-white hover:bg-neutral-800"
               >
                 Cart
               </Link>
@@ -362,6 +395,107 @@ export default function ShopClient({
           />
         </div>
       </div>
+
+      {/* Mobile filter drawer */}
+      {drawerOpen && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 z-[80] bg-black/50 md:hidden"
+            onClick={() => setDrawerOpen(false)}
+            aria-hidden="true"
+          />
+          {/* Bottom sheet */}
+          <div
+            className="fixed bottom-0 left-0 right-0 z-[81] flex max-h-[88vh] flex-col rounded-t-2xl bg-white shadow-2xl md:hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Filters"
+          >
+            {/* Drag handle */}
+            <div className="flex justify-center pt-3 pb-1">
+              <span className="h-1 w-10 rounded-full bg-neutral-300" />
+            </div>
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-3">
+              <span className="text-sm font-black uppercase tracking-wide">
+                Filters
+                {activeFilters > 0 && (
+                  <span className="ml-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-black text-[10px] font-black text-white">
+                    {activeFilters}
+                  </span>
+                )}
+              </span>
+              <button
+                type="button"
+                onClick={() => setDrawerOpen(false)}
+                className="flex h-7 w-7 items-center justify-center rounded-full border border-neutral-200 text-neutral-600"
+                aria-label="Close filters"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Scrollable filter fields */}
+            <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+              <div>
+                <label htmlFor="m-filter-search" className={labelClass}>Search</label>
+                <input
+                  id="m-filter-search"
+                  value={search}
+                  onChange={(e) => setSearchFilter(e.target.value)}
+                  placeholder="Search products"
+                  className={filterInputClass}
+                />
+              </div>
+              <div>
+                <label htmlFor="m-filter-category" className={labelClass}>Category</label>
+                <select id="m-filter-category" value={category} onChange={(e) => setCategory(e.target.value)} className={selectClass}>
+                  {categories.map((v) => <option key={v} value={v}>{v}</option>)}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="m-filter-brand" className={labelClass}>Brand</label>
+                <select id="m-filter-brand" value={brand} onChange={(e) => setBrandFilter(e.target.value)} className={selectClass}>
+                  {brands.map((v) => <option key={v} value={v}>{v}</option>)}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="m-filter-size" className={labelClass}>Size</label>
+                <select id="m-filter-size" value={size} onChange={(e) => setSizeFilter(e.target.value)} className={selectClass}>
+                  {sizes.map((v) => <option key={v} value={v}>{v}</option>)}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="m-filter-color" className={labelClass}>Color</label>
+                <select id="m-filter-color" value={color} onChange={(e) => setColorFilter(e.target.value)} className={selectClass}>
+                  {colors.map((v) => <option key={v} value={v}>{v}</option>)}
+                </select>
+              </div>
+            </div>
+
+            {/* Footer actions */}
+            <div className="flex gap-3 border-t border-neutral-100 px-5 py-4">
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="flex-1 border border-neutral-300 py-2.5 text-xs font-bold uppercase tracking-widest text-black"
+              >
+                Clear All
+              </button>
+              <button
+                type="button"
+                onClick={() => setDrawerOpen(false)}
+                className="flex-1 border border-black bg-black py-2.5 text-xs font-bold uppercase tracking-widest text-white"
+              >
+                Show {filtered.length} Results
+              </button>
+            </div>
+          </div>
+        </>
+      )}
 
       {previewImage ? (
         <button
