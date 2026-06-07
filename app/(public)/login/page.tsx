@@ -130,13 +130,13 @@ function LoginForm() {
           {loading ? "Signing in…" : "Sign in"}
         </button>
       </form>
-      <p className="text-zinc-600 text-xs mt-6 text-center">
+      {/* <p className="text-zinc-600 text-xs mt-6 text-center">
         Store admins sign in at{" "}
         <Link href="/admin/login" className="underline hover:text-zinc-400">
           /admin/login
         </Link>
         .
-      </p>
+      </p> */}
     </>
   );
 }

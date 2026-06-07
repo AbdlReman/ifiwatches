@@ -388,19 +388,6 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <div className="grid grid-cols-2 gap-3">
-              {siteConfig.utilityLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="text-sm text-zinc-600 hover:text-zinc-950"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-
             {authUser === undefined ? null : authUser ? (
               <>
                 <Link href="/account" onClick={() => setMenuOpen(false)} className="text-sm py-1 text-zinc-800">
