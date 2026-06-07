@@ -98,16 +98,16 @@ export default function Navbar() {
       >
         <button
           type="button"
-          className={`${linkClass(isCategoriesActive)} inline-flex items-center gap-1 align-middle leading-none`}
+          className={`${linkClass(isCategoriesActive)} flex items-center gap-1`}
           aria-expanded={categoriesOpen}
           aria-haspopup="true"
         >
           Categories
           <svg
-            className="h-3.5 w-3.5 opacity-60"
+            className={`h-3 w-3 opacity-60 transition-transform duration-200 ${categoriesOpen ? "rotate-180" : ""}`}
             fill="none"
             stroke="currentColor"
-            strokeWidth={2}
+            strokeWidth={2.5}
             viewBox="0 0 24 24"
             aria-hidden
           >
@@ -115,7 +115,8 @@ export default function Navbar() {
           </svg>
         </button>
         {categoriesOpen ? (
-          <div className="absolute left-0 top-full z-50 mt-2 min-w-[14rem] max-h-[min(70vh,22rem)] overflow-y-auto rounded-md border border-zinc-200 bg-white py-1 shadow-xl">
+          <div className="absolute left-0 top-full z-50 pt-1.5 min-w-[14rem]">
+          <div className="max-h-[min(70vh,22rem)] overflow-y-auto rounded-md border border-zinc-200 bg-white py-1 shadow-xl">
             <Link
               href="/shop"
               className="block border-b border-zinc-100 px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-zinc-900 hover:bg-zinc-50"
@@ -135,6 +136,7 @@ export default function Navbar() {
                 {name}
               </Link>
             ))}
+          </div>
           </div>
         ) : null}
       </div>
