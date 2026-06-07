@@ -504,7 +504,7 @@ export default function HomePageView({
         </div>
       </section> */}
 
-      {/* Promo banner */}
+      {/* sale banner */}
       <section className="relative min-h-[420px] overflow-hidden border-y border-zinc-200 sm:min-h-[480px]">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
