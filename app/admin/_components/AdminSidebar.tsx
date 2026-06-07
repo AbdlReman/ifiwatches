@@ -113,6 +113,15 @@ const navLinks = [
     ),
   },
   {
+    href: "/admin/homepage-content",
+    label: "Home Content",
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75 9 9l3.75 3.75L16.5 9l5.25 6.75M3 21h18" />
+      </svg>
+    ),
+  },
+  {
     href: "/admin/products/new",
     label: "Add Product",
     icon: (

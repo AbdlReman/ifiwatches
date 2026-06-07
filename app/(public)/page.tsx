@@ -4,6 +4,7 @@ import { getHomeCategories } from "@/lib/homeCategories";
 import { publishedProductFilter } from "@/lib/publishedProductFilter";
 import Product from "@/models/Product";
 import User from "@/models/User";
+import HomePageContent from "@/models/HomePageContent";
 import type { IProduct } from "@/types/product";
 import HomePageView from "@/components/home/HomePageView";
 
@@ -41,6 +42,7 @@ export default async function HomePage() {
     productCount,
     sellerCount,
     categories,
+    homeContent,
   ] = await Promise.all([
     Product.find({ ...publishedProductFilter, isFeatured: true })
       .sort({ updatedAt: -1 })
@@ -67,6 +69,7 @@ export default async function HomePage() {
     Product.countDocuments(publishedProductFilter),
     User.countDocuments({ role: "seller" }),
     getHomeCategories(),
+    HomePageContent.findOne().lean(),
   ]);
 
   const featuredProducts = toProducts(featuredRaw as Record<string, unknown>[]);
@@ -100,6 +103,8 @@ export default async function HomePage() {
     )
   ).filter((entry) => entry.products.length > 0);
 
+  const content = homeContent as { saleImage?: string; videoUrl?: string } | null;
+
   return (
     <HomePageView
       categories={categories}
@@ -114,6 +119,8 @@ export default async function HomePage() {
         productCount,
         categoryCount: categories.length,
       }}
+      saleImage={content?.saleImage || ""}
+      videoUrl={content?.videoUrl || ""}
     />
   );
 }

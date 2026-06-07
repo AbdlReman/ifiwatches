@@ -75,6 +75,8 @@ export default function HomePageView({
   justForYouProducts,
   featuredByCategory,
   stats,
+  saleImage,
+  videoUrl,
 }: {
   categories: HomeCategory[];
   featuredProducts: IProduct[];
@@ -84,6 +86,8 @@ export default function HomePageView({
   justForYouProducts: IProduct[];
   featuredByCategory: HomeCategoryProducts[];
   stats: HomeStats;
+  saleImage?: string;
+  videoUrl?: string;
 }) {
   const categoryCards = buildCategoryCards(categories);
 
@@ -276,6 +280,21 @@ export default function HomePageView({
           </div>
         )}
       </section>
+
+      {/* Homepage Video */}
+      {videoUrl ? (
+        <section className="w-full overflow-hidden">
+          <video
+            src={videoUrl}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full block object-cover"
+          />
+        </section>
+      ) : null}
+
  {/* Flash Sale */}
       {flashSaleProducts.length > 0 ? (
         <section className="border-y border-zinc-200 bg-zinc-950 text-white">
@@ -505,15 +524,16 @@ export default function HomePageView({
       </section> */}
 
       {/* sale banner */}
-      <section className="relative min-h-[420px] overflow-hidden border-y border-zinc-200 sm:min-h-[480px]">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${siteConfig.images.hero})` }}
-          role="img"
-          aria-label=""
-        />
-       
-      </section>
+      {(saleImage || siteConfig.images.hero) && (
+        <section className="relative min-h-[420px] overflow-hidden border-y border-zinc-200 sm:min-h-[480px]">
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${saleImage || siteConfig.images.hero})` }}
+            role="img"
+            aria-label=""
+          />
+        </section>
+      )}
 
       {/* Trust grid */}
       <section className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
