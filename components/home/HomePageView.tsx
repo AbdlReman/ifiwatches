@@ -283,7 +283,7 @@ export default function HomePageView({
 
       {/* Homepage Video */}
       {videoUrl ? (
-        <section className="relative h-screen w-full overflow-hidden mt-16 mb-16">
+        <section className="relative h-screen w-full overflow-hidden">
           <video
             src={videoUrl}
             autoPlay
