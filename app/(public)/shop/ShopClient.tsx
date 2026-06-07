@@ -190,7 +190,7 @@ export default function ShopClient({
 
   return (
     <div className="min-h-screen bg-white text-black">
-      <header className="border-b border-zinc-200 bg-white text-zinc-900">
+      <header className="sm:border-b border-zinc-200 bg-white text-zinc-900">
         <div className="mx-auto max-w-[90rem] px-4 py-8 sm:px-6 lg:px-8">
           <Breadcrumbs
             className="text-zinc-500 [&_a]:text-zinc-800 [&_a:hover]:underline [&_span]:text-zinc-500"
@@ -320,7 +320,7 @@ export default function ShopClient({
 
         <div className="min-w-0">
           <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-xs font-bold uppercase tracking-wider text-neutral-600" aria-live="polite">
+            <p className="hidden text-xs font-bold uppercase tracking-wider text-neutral-600 sm:block" aria-live="polite">
               {filtered.length} products
               {category !== "All" ? ` · ${category}` : ""}
               {subCategory !== "All" ? ` · ${subCategory}` : ""}
