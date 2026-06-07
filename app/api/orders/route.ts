@@ -57,7 +57,7 @@ export async function GET() {
   }
 }
 
-const VALID_PAYMENT_METHODS = ["easypaisa", "jazzcash", "raast"] as const;
+const VALID_PAYMENT_METHODS = ["easypaisa", "jazzcash", "raast", "cod"] as const;
 
 export async function POST(req: NextRequest) {
   try {
@@ -90,17 +90,19 @@ export async function POST(req: NextRequest) {
     if (!VALID_PAYMENT_METHODS.includes(paymentMethod as (typeof VALID_PAYMENT_METHODS)[number])) {
       return NextResponse.json({ error: "Select a payment method." }, { status: 400 });
     }
-    if (!paymentTransactionId && !paymentScreenshotUrl) {
-      return NextResponse.json(
-        {
-          error:
-            "Please provide either your Transaction ID or a payment screenshot (at least one is required).",
-        },
-        { status: 400 }
-      );
-    }
-    if (paymentScreenshotUrl && !paymentScreenshotUrl.startsWith("https://")) {
-      return NextResponse.json({ error: "Invalid payment screenshot link." }, { status: 400 });
+    if (paymentMethod !== "cod") {
+      if (!paymentTransactionId && !paymentScreenshotUrl) {
+        return NextResponse.json(
+          {
+            error:
+              "Please provide either your Transaction ID or a payment screenshot (at least one is required).",
+          },
+          { status: 400 }
+        );
+      }
+      if (paymentScreenshotUrl && !paymentScreenshotUrl.startsWith("https://")) {
+        return NextResponse.json({ error: "Invalid payment screenshot link." }, { status: 400 });
+      }
     }
 
     if (!Array.isArray(items) || items.length === 0) {

@@ -79,4 +79,9 @@ export const paymentMethods = [
       },
     ],
   },
+  {
+    value: "cod",
+    label: "Cash on Delivery",
+    accounts: [],
+  },
 ] as const;

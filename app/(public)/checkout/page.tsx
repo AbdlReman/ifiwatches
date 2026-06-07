@@ -160,12 +160,12 @@ export default function CheckoutPage() {
       return;
     }
     if (!paymentMethod) {
-      toast.error("Payment method required", { description: "Choose Easy Paisa, Jazz Cash, or Raast Payment." });
+      toast.error("Payment method required", { description: "Choose a payment method." });
       return;
     }
     const trx = paymentTransactionId.trim();
     const shot = paymentScreenshotUrl.trim();
-    if (!trx && !shot) {
+    if (paymentMethod !== "cod" && !trx && !shot) {
       toast.error("Payment proof required", {
         description: "Enter your Transaction ID / TRX ID or upload a payment screenshot (at least one).",
       });
@@ -420,7 +420,12 @@ export default function CheckoutPage() {
               ))}
             </fieldset>
 
-            {selectedPaymentDetails ? (
+            {paymentMethod === "cod" ? (
+              <div className="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-slate-900">
+                <p className="font-bold mb-1">Cash on Delivery</p>
+                <p className="text-slate-700">You will pay <strong>{formatPkr(totalAmount)}</strong> in cash when your order arrives. No payment now required.</p>
+              </div>
+            ) : selectedPaymentDetails && selectedPaymentDetails.accounts.length > 0 ? (
               <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-slate-900">
                 <p className="font-bold mb-3">{selectedPaymentDetails.label} transfer details</p>
                 <div className="space-y-3">
@@ -449,36 +454,40 @@ export default function CheckoutPage() {
               </div>
             ) : null}
 
-            <div>
-              <label className={labelClass}>Transaction ID / TRX ID</label>
-              <input
-                placeholder="Enter your transaction ID"
-                value={paymentTransactionId}
-                onChange={(e) => setPaymentTransactionId(e.target.value)}
-                className={inputClass}
-                autoComplete="off"
-              />
-            </div>
+            {paymentMethod !== "cod" ? (
+              <>
+                <div>
+                  <label className={labelClass}>Transaction ID / TRX ID</label>
+                  <input
+                    placeholder="Enter your transaction ID"
+                    value={paymentTransactionId}
+                    onChange={(e) => setPaymentTransactionId(e.target.value)}
+                    className={inputClass}
+                    autoComplete="off"
+                  />
+                </div>
 
-            <div>
-              <label className={labelClass}>Payment screenshot</label>
-              <input
-                type="file"
-                accept="image/*"
-                disabled={uploadingShot}
-                onChange={(e) => void onScreenshotChange(e)}
-                className="text-sm w-full"
-              />
-              {uploadingShot ? <p className="text-xs text-gray-500 mt-1">Uploading…</p> : null}
-              {paymentScreenshotUrl ? (
-                <p className="text-xs text-green-700 mt-2">Screenshot attached — ready to submit.</p>
-              ) : null}
-            </div>
+                <div>
+                  <label className={labelClass}>Payment screenshot</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    disabled={uploadingShot}
+                    onChange={(e) => void onScreenshotChange(e)}
+                    className="text-sm w-full"
+                  />
+                  {uploadingShot ? <p className="text-xs text-gray-500 mt-1">Uploading…</p> : null}
+                  {paymentScreenshotUrl ? (
+                    <p className="text-xs text-green-700 mt-2">Screenshot attached — ready to submit.</p>
+                  ) : null}
+                </div>
 
-            <p className="text-xs text-gray-600 bg-amber-50 border border-amber-200 rounded px-3 py-2">
-              <strong>Note:</strong> Please provide either your Transaction ID <strong>or</strong> a payment screenshot (at
-              least one is required).
-            </p>
+                <p className="text-xs text-gray-600 bg-amber-50 border border-amber-200 rounded px-3 py-2">
+                  <strong>Note:</strong> Please provide either your Transaction ID <strong>or</strong> a payment screenshot (at
+                  least one is required).
+                </p>
+              </>
+            ) : null}
 
             <button
               disabled={loading}

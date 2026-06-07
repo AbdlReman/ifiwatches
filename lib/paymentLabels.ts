@@ -7,6 +7,8 @@ export function paymentMethodLabel(code: string): string {
       return "Jazz Cash";
     case "raast":
       return "Raast Payment";
+    case "cod":
+      return "Cash on Delivery";
     default:
       return (code || "").trim() || "—";
   }
