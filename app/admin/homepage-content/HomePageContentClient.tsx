@@ -15,8 +15,8 @@ export default function HomePageContentClient() {
   const [imgUploading, setImgUploading] = useState(false);
   const [vidUploading, setVidUploading] = useState(false);
   const [vidProgress, setVidProgress] = useState(0);
-  const [vidProcessing, setVidProcessing] = useState(false);
   const [error, setError] = useState("");
+  const [vidError, setVidError] = useState("");
   const [success, setSuccess] = useState(false);
   const imgFileRef = useRef<HTMLInputElement>(null);
   const vidFileRef = useRef<HTMLInputElement>(null);
@@ -56,52 +56,61 @@ export default function HomePageContentClient() {
     }
   };
 
+  // Uploads directly from browser → Cloudinary (bypasses Next.js body size limit)
   const uploadVideo = async (file: File) => {
     setVidUploading(true);
-    setVidProcessing(false);
     setVidProgress(0);
-    setError("");
+    setVidError("");
     try {
+      // 1. Get a signed upload credential from our server
+      const sigRes = await fetch("/api/admin/homepage-content/upload-signature", {
+        credentials: "include",
+      });
+      const sigData = await sigRes.json();
+      if (!sigRes.ok) throw new Error(sigData.error || "Could not get upload credentials");
+
+      const { signature, timestamp, folder, cloudName, apiKey } = sigData;
+
+      // 2. Upload the file directly to Cloudinary
       const form = new FormData();
-      form.append("video", file);
+      form.append("file", file);
+      form.append("api_key", apiKey);
+      form.append("timestamp", String(timestamp));
+      form.append("signature", signature);
+      form.append("folder", folder);
 
       await new Promise<void>((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "/api/admin/homepage-content/upload-video");
-        xhr.withCredentials = true;
+        xhr.open("POST", `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`);
 
         xhr.upload.onprogress = (e) => {
           if (e.lengthComputable) {
-            const pct = Math.round((e.loaded / e.total) * 100);
-            setVidProgress(pct);
-            if (pct === 100) setVidProcessing(true);
+            setVidProgress(Math.round((e.loaded / e.total) * 100));
           }
         };
 
         xhr.onload = () => {
-          setVidProcessing(false);
           try {
             const data = JSON.parse(xhr.responseText);
             if (xhr.status >= 200 && xhr.status < 300) {
-              setVideoUrl(data.url ?? "");
+              setVideoUrl(data.secure_url ?? "");
               resolve();
             } else {
-              reject(new Error(data.error || "Upload failed"));
+              reject(new Error(data.error?.message || "Cloudinary upload failed"));
             }
           } catch {
-            reject(new Error("Invalid server response"));
+            reject(new Error("Invalid response from Cloudinary"));
           }
         };
 
-        xhr.onerror = () => { setVidProcessing(false); reject(new Error("Network error during upload")); };
+        xhr.onerror = () => reject(new Error("Network error — check your connection"));
         xhr.send(form);
       });
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Video upload failed");
+      setVidError(e instanceof Error ? e.message : "Video upload failed");
     } finally {
       setVidUploading(false);
       setVidProgress(0);
-      setVidProcessing(false);
     }
   };
 
@@ -133,7 +142,7 @@ export default function HomePageContentClient() {
     }
   };
 
-  const save = async (e: React.FormEvent) => {
+  const save = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await saveContent(saleImage, videoUrl);
   };
@@ -225,10 +234,17 @@ export default function HomePageContentClient() {
               </p>
             </div>
 
+            {vidError && (
+              <div className="bg-red-900/30 border border-red-700 text-red-300 text-xs px-3 py-2 rounded-lg">
+                {vidError}
+              </div>
+            )}
+
             {/* Video preview */}
-            {videoUrl && (
+            {videoUrl && !vidUploading && (
               <div className="relative group rounded-lg overflow-hidden border border-slate-600 max-w-lg">
                 <video
+                  key={videoUrl}
                   src={videoUrl}
                   autoPlay
                   muted
@@ -240,7 +256,6 @@ export default function HomePageContentClient() {
                   <button
                     type="button"
                     onClick={() => vidFileRef.current?.click()}
-                    disabled={vidUploading}
                     className="bg-slate-700 hover:bg-slate-600 text-white text-xs font-semibold px-3 py-1 rounded-md"
                   >
                     Replace
@@ -248,7 +263,7 @@ export default function HomePageContentClient() {
                   <button
                     type="button"
                     onClick={deleteVideo}
-                    disabled={vidUploading || saving}
+                    disabled={saving}
                     className="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-3 py-1 rounded-md"
                   >
                     Delete
@@ -257,32 +272,23 @@ export default function HomePageContentClient() {
               </div>
             )}
 
-            {/* Upload progress bar */}
+            {/* Upload progress */}
             {vidUploading && (
               <div className="space-y-2 max-w-lg">
                 <div className="flex items-center justify-between">
                   <p className="text-slate-300 text-xs font-medium">
-                    {vidProcessing
-                      ? "Processing on Cloudinary… please wait"
-                      : `Uploading… ${vidProgress}%`}
+                    {vidProgress < 100
+                      ? `Uploading to Cloudinary… ${vidProgress}%`
+                      : "Upload complete ✓"}
                   </p>
-                  {vidProcessing && (
-                    <div className="h-4 w-4 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin" />
-                  )}
+                  <span className="text-slate-400 text-xs">{vidProgress}%</span>
                 </div>
                 <div className="h-2 w-full rounded-full bg-slate-700 overflow-hidden">
                   <div
-                    className={`h-full rounded-full transition-all duration-300 ${
-                      vidProcessing ? "w-full animate-pulse bg-indigo-400" : "bg-indigo-500"
-                    }`}
-                    style={vidProcessing ? undefined : { width: `${vidProgress}%` }}
+                    className="h-full rounded-full bg-indigo-500 transition-all duration-150"
+                    style={{ width: `${vidProgress}%` }}
                   />
                 </div>
-                {vidProcessing && (
-                  <p className="text-slate-500 text-xs">
-                    Large videos can take 30–60 seconds. Do not close this page.
-                  </p>
-                )}
               </div>
             )}
 
@@ -295,7 +301,6 @@ export default function HomePageContentClient() {
               disabled={vidUploading}
             />
 
-            {/* Show upload button only when no video yet */}
             {!videoUrl && (
               <button
                 type="button"
@@ -303,7 +308,7 @@ export default function HomePageContentClient() {
                 disabled={vidUploading}
                 className="bg-slate-700 hover:bg-slate-600 disabled:opacity-50 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
               >
-                {vidProcessing ? "Processing…" : vidUploading ? `Uploading ${vidProgress}%` : "Upload Video"}
+                {vidUploading ? `Uploading… ${vidProgress}%` : "Upload Video"}
               </button>
             )}
 
