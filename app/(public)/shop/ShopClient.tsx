@@ -405,19 +405,17 @@ export default function ShopClient({
             onClick={() => setDrawerOpen(false)}
             aria-hidden="true"
           />
-          {/* Bottom sheet */}
-          <div
-            className="fixed bottom-0 left-0 right-0 z-[81] flex max-h-[88vh] flex-col rounded-t-2xl bg-white shadow-2xl md:hidden"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Filters"
-          >
-            {/* Drag handle */}
-            <div className="flex justify-center pt-3 pb-1">
-              <span className="h-1 w-10 rounded-full bg-neutral-300" />
-            </div>
+          {/* Centered modal */}
+          <div className="fixed inset-0 z-[81] flex items-center justify-center p-5 md:hidden">
+            <div
+              className="flex w-full max-w-sm flex-col rounded-xl bg-white shadow-2xl"
+              style={{ maxHeight: "85vh" }}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Filters"
+            >
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-3">
+            <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-3.5">
               <span className="text-sm font-black uppercase tracking-wide">
                 Filters
                 {activeFilters > 0 && (
@@ -492,6 +490,7 @@ export default function ShopClient({
               >
                 Show {filtered.length} Results
               </button>
+            </div>
             </div>
           </div>
         </>
