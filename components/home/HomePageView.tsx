@@ -283,14 +283,14 @@ export default function HomePageView({
 
       {/* Homepage Video */}
       {videoUrl ? (
-        <section className="relative h-screen w-full overflow-hidden">
+        <section className="relative w-full overflow-hidden sm:h-screen">
           <video
             src={videoUrl}
             autoPlay
             muted
             loop
             playsInline
-            className="absolute inset-0 h-full w-full object-cover"
+            className="block h-auto w-full sm:absolute sm:inset-0 sm:h-full sm:object-cover"
           />
         </section>
       ) : null}
@@ -525,12 +525,12 @@ export default function HomePageView({
 
       {/* sale banner */}
       {(saleImage || siteConfig.images.hero) && (
-        <section className="relative h-screen w-full overflow-hidden">
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${saleImage || siteConfig.images.hero})` }}
-            role="img"
-            aria-label=""
+        <section className="relative w-full overflow-hidden sm:h-screen">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={saleImage || siteConfig.images.hero}
+            alt=""
+            className="block h-auto w-full sm:absolute sm:inset-0 sm:h-full sm:w-full sm:object-cover"
           />
         </section>
       )}
