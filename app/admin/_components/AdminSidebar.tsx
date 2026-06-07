@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import BrandLogoMark from "@/components/BrandLogoMark";
 
 const navLinks = [
   {
@@ -163,17 +162,17 @@ export default function AdminSidebar() {
   };
 
   return (
-    <aside className="w-16 lg:w-64 bg-slate-800 flex flex-col flex-shrink-0 border-r border-slate-700">
-      {/* Logo */}
-      <div className="h-16 flex items-center px-4 border-b border-slate-700">
-        <BrandLogoMark size="sm" className="rounded" />
-        <span className="ml-3 font-black text-sm uppercase tracking-widest text-white hidden lg:block">
+    <aside className="w-12 lg:w-60 bg-slate-800 flex flex-col flex-shrink-0 border-r border-slate-700">
+      {/* Brand */}
+      <div className="h-14 flex items-center justify-center lg:justify-start px-3 border-b border-slate-700">
+        <span className="font-black text-base tracking-widest text-white">IFI</span>
+        <span className="ml-2 font-semibold text-xs uppercase tracking-widest text-slate-400 hidden lg:block">
           Admin Panel
         </span>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 py-6 flex flex-col gap-1 px-2">
+      <nav className="flex-1 py-3 flex flex-col gap-0.5 px-1.5 lg:px-2 overflow-y-auto">
         <p className="text-slate-500 text-xs uppercase tracking-widest font-bold px-2 mb-2 hidden lg:block">
           Manage
         </p>
@@ -198,16 +197,16 @@ export default function AdminSidebar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`flex items-center justify-center lg:justify-start gap-2 px-2 py-2 lg:px-3 lg:py-2 rounded-lg text-xs font-medium transition-colors ${
                 active
                   ? "bg-slate-700 text-white"
                   : "text-slate-400 hover:text-white hover:bg-slate-700/50"
               }`}
             >
-              {link.icon}
-              <span className="hidden lg:block flex-1">{link.label}</span>
+              <span className="[&_svg]:w-4 [&_svg]:h-4 lg:[&_svg]:w-5 lg:[&_svg]:h-5 flex-shrink-0">{link.icon}</span>
+              <span className="hidden lg:block flex-1 truncate">{link.label}</span>
               {link.href === "/admin/approvals" && pendingApprovals > 0 ? (
-                <span className="ml-auto inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-amber-500 px-1.5 py-0.5 text-[10px] font-black text-zinc-950">
+                <span className="hidden lg:inline-flex ml-auto min-w-[1.25rem] items-center justify-center rounded-full bg-amber-500 px-1.5 py-0.5 text-[10px] font-black text-zinc-950">
                   {pendingApprovals > 99 ? "99+" : pendingApprovals}
                 </span>
               ) : null}

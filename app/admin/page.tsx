@@ -36,10 +36,10 @@ export default async function AdminPage() {
   }));
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5 sm:space-y-8">
       <div>
-        <h1 className="text-3xl font-black uppercase tracking-tight text-white">Dashboard</h1>
-        <p className="text-slate-400 text-sm mt-1">Orders, revenue, and inventory overview</p>
+        <h1 className="text-xl sm:text-3xl font-black uppercase tracking-tight text-white">Dashboard</h1>
+        <p className="text-slate-400 text-xs sm:text-sm mt-1">Orders, revenue, and inventory overview</p>
       </div>
 
       {pendingApprovals > 0 ? (
@@ -61,16 +61,16 @@ export default async function AdminPage() {
         </div>
       ) : null}
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
         {[
           { label: "Total Orders", value: totalOrders },
           { label: "Pending Orders", value: pendingOrders },
           { label: "Completed Orders", value: completedOrders },
           { label: "Revenue", value: formatPkr(revenue) },
         ].map((stat) => (
-          <div key={stat.label} className="bg-slate-800 border border-slate-700 rounded-xl p-4">
-            <p className="text-xs text-slate-500 uppercase tracking-widest">{stat.label}</p>
-            <p className="text-2xl font-black text-white mt-1">{stat.value}</p>
+          <div key={stat.label} className="bg-slate-800 border border-slate-700 rounded-lg p-3 sm:p-4">
+            <p className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest leading-snug">{stat.label}</p>
+            <p className="text-lg sm:text-2xl font-black text-white mt-1">{stat.value}</p>
           </div>
         ))}
       </div>
