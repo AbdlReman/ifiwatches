@@ -297,9 +297,9 @@ export default function OrdersAdminClient({
               </tr>
             ) : paginatedOrders.map((order) => {
               const nextActions = NEXT_ACTIONS[order.orderStatus as OrderStatus] ?? [];
-              // Sellers only get Prepare (pending→processing); not Dispatch or Complete
+              // Sellers cannot Prepare (admin-only); they can Dispatch and Complete
               const visibleActions = sellerMode
-                ? nextActions.filter((a) => a.status === "processing")
+                ? nextActions.filter((a) => a.status !== "processing")
                 : nextActions;
               const isBusy = updatingId === order._id;
               const isTerminal = order.orderStatus === "completed" || order.orderStatus === "cancelled";
@@ -463,7 +463,7 @@ export default function OrdersAdminClient({
                   {selected.orderStatus !== "completed" && selected.orderStatus !== "cancelled" && (
                     <div className="mt-4 flex flex-wrap gap-2 border-t border-slate-700 pt-4">
                       {(NEXT_ACTIONS[selected.orderStatus as OrderStatus] ?? [])
-                        .filter((action) => !sellerMode || action.status === "processing")
+                        .filter((action) => !sellerMode || action.status !== "processing")
                         .map((action) => (
                           <button
                             key={action.status}

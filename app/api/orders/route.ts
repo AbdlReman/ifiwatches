@@ -364,8 +364,8 @@ export async function PATCH(req: NextRequest) {
 
     const isSeller = auth.session.role === "seller";
 
-    // Sellers may only set processing (Prepare) or cancelled (Cancel)
-    const SELLER_ALLOWED_STATUSES = ["processing", "cancelled"] as const;
+    // Sellers may Dispatch, Complete, or Cancel — but not Prepare (admin-only)
+    const SELLER_ALLOWED_STATUSES = ["dispatched", "completed", "cancelled"] as const;
 
     const update: Record<string, string> = {};
 
