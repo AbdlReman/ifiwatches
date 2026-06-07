@@ -512,18 +512,7 @@ export default function HomePageView({
           role="img"
           aria-label=""
         />
-        <div className="relative z-10 mx-auto flex min-h-[420px] max-w-3xl flex-col items-center justify-center px-4 py-20 text-center sm:min-h-[480px] sm:px-6">
-          <h2 className="text-3xl font-black uppercase tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.65)] md:text-5xl">
-            The future of digital lifestyle
-          </h2>
-          <p className="mx-auto mt-5 max-w-xl leading-relaxed text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]">
-            One seller per product. Trusted vendors only. Free shipping above Rs. 3,000 and discreet packaging across
-            Pakistan.
-          </p>
-          <Link href="/shop" className="btn-primary mt-8 inline-block shadow-lg">
-            Shop the marketplace
-          </Link>
-        </div>
+       
       </section>
 
       {/* Trust grid */}
