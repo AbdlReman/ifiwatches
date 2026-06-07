@@ -283,14 +283,14 @@ export default function HomePageView({
 
       {/* Homepage Video */}
       {videoUrl ? (
-        <section className="w-full overflow-hidden">
+        <section className="relative h-screen w-full overflow-hidden">
           <video
             src={videoUrl}
             autoPlay
             muted
             loop
             playsInline
-            className="w-full block object-cover"
+            className="absolute inset-0 h-full w-full object-cover"
           />
         </section>
       ) : null}
@@ -525,7 +525,7 @@ export default function HomePageView({
 
       {/* sale banner */}
       {(saleImage || siteConfig.images.hero) && (
-        <section className="relative min-h-[420px] overflow-hidden border-y border-zinc-200 sm:min-h-[480px]">
+        <section className="relative h-screen w-full overflow-hidden">
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url(${saleImage || siteConfig.images.hero})` }}
