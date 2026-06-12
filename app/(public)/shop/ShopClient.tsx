@@ -48,6 +48,7 @@ export default function ShopClient({
   const router = useRouter();
   const requestedCategory = searchParams.get("category");
   const requestedSubCategory = searchParams.get("subcategory");
+  const onSale = searchParams.get("sale") === "1";
 
   const categories = useMemo(() => {
     const rest = Array.from(new Set([...siteConfig.categories, ...products.flatMap((p) => categoriesOf(p))].filter(Boolean))).sort((a, b) =>
@@ -133,6 +134,15 @@ export default function ShopClient({
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   };
 
+  const setOnSaleFilter = (v: boolean) => {
+    setPage(1);
+    const params = new URLSearchParams(searchParams.toString());
+    if (v) params.set("sale", "1");
+    else params.delete("sale");
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  };
+
   const setBrandFilter = (v: string) => { setPage(1); setBrand(v); };
   const setSizeFilter = (v: string) => { setPage(1); setSize(v); };
   const setColorFilter = (v: string) => { setPage(1); setColor(v); };
@@ -151,6 +161,7 @@ export default function ShopClient({
       .filter((p) => size === "All" || p.sizes.includes(size))
       .filter((p) => color === "All" || p.colors.includes(color))
       .filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
+      .filter((p) => !onSale || Number(p.discount || 0) > 0)
       .sort((a, b) => {
         if (sort === "priceLow") return a.price - b.price;
         if (sort === "priceHigh") return b.price - a.price;
@@ -186,7 +197,8 @@ export default function ShopClient({
     (brand !== "All" ? 1 : 0) +
     (size !== "All" ? 1 : 0) +
     (color !== "All" ? 1 : 0) +
-    (search.trim() !== "" ? 1 : 0);
+    (search.trim() !== "" ? 1 : 0) +
+    (onSale ? 1 : 0);
 
   return (
     <div className="min-h-screen bg-white text-black">
@@ -264,6 +276,18 @@ export default function ShopClient({
                 ))}
               </select>
             </div>
+            <div className="flex-none">
+              <p className={labelClass}>Sale</p>
+              <button
+                type="button"
+                onClick={() => setOnSaleFilter(!onSale)}
+                className={`border px-3 py-2 text-xs font-bold uppercase tracking-widest ${
+                  onSale ? "border-black bg-black text-white" : "border-neutral-200 bg-white text-black hover:border-black"
+                }`}
+              >
+                {onSale ? "✓ On Sale" : "On Sale"}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -324,6 +348,7 @@ export default function ShopClient({
               {filtered.length} products
               {category !== "All" ? ` · ${category}` : ""}
               {subCategory !== "All" ? ` · ${subCategory}` : ""}
+              {onSale ? " · On Sale" : ""}
             </p>
             <div className="hidden w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center md:flex">
               <label className="sr-only" htmlFor="shop-sort-main">Sort</label>
@@ -471,6 +496,18 @@ export default function ShopClient({
                 <select id="m-filter-color" value={color} onChange={(e) => setColorFilter(e.target.value)} className={selectClass}>
                   {colors.map((v) => <option key={v} value={v}>{v}</option>)}
                 </select>
+              </div>
+              <div>
+                <p className={labelClass}>Sale</p>
+                <button
+                  type="button"
+                  onClick={() => setOnSaleFilter(!onSale)}
+                  className={`w-full border py-2 text-xs font-bold uppercase tracking-widest ${
+                    onSale ? "border-black bg-black text-white" : "border-neutral-200 bg-white text-black"
+                  }`}
+                >
+                  {onSale ? "✓ On Sale Only" : "On Sale Only"}
+                </button>
               </div>
             </div>
 

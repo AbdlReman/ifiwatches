@@ -109,9 +109,9 @@ export default function HomePageView({
               Multi-vendor marketplace
             </span>
             <h1 className="text-4xl font-black uppercase leading-[0.95] tracking-tight text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.7)] sm:text-5xl lg:text-6xl">
-              Shop lifestyle.
+              One Product.
               <br />
-              <span style={{ color: siteConfig.brandColor }}>Trust every seller.</span>
+              <span style={{ color: siteConfig.brandColor }}>One Trusted Seller. Zero Confusion..</span>
             </h1>
             <p className="mt-5 max-w-lg text-base leading-relaxed text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.65)] md:text-lg">
               IFI Lifestyle brings verified vendors together under one standard — premium watches, perfumes,
@@ -311,7 +311,7 @@ export default function HomePageView({
                 <p className="mt-2 text-sm text-zinc-400">Biggest discounts, handpicked for you today.</p>
               </div>
               <Link
-                href="/shop"
+                href="/shop?sale=1"
                 className="shrink-0 text-xs font-bold uppercase tracking-widest text-zinc-400 underline decoration-1 underline-offset-4 hover:text-white"
               >
                 See all deals →
