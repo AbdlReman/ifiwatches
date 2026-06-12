@@ -20,20 +20,30 @@ export async function POST(req: NextRequest) {
     }
 
     await connectDB();
-    const user = await User.findOne({ email }).select("+passwordHash").lean();
+    const user = await User.findOne({ email }).select("+passwordHash sellerEnabled sellerApproved").lean();
     if (!user) {
       return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
     }
 
-    const u = user as { _id: unknown; email: string; name: string; role: string; passwordHash: string; sellerApproved?: boolean };
+    const u = user as { _id: unknown; email: string; name: string; role: string; passwordHash: string; sellerApproved?: boolean; sellerEnabled?: boolean };
     const ok = await verifyPassword(password, u.passwordHash);
     if (!ok) {
       return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
     }
 
+    if (u.role === "seller" && u.sellerEnabled === false) {
+      return NextResponse.json(
+        {
+          error: "Your account has been disabled by the administrator. Please contact support for further assistance.",
+          reason: "account_disabled",
+        },
+        { status: 403 }
+      );
+    }
+
     if (u.role === "seller" && !u.sellerApproved) {
       return NextResponse.json(
-        { error: "Seller account is pending admin approval. Please wait for approval before signing in." },
+        { error: "Seller account is pending admin approval. Please wait for approval before signing in.", reason: "pending_approval" },
         { status: 403 }
       );
     }

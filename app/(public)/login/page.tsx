@@ -12,12 +12,18 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [pendingApproval, setPendingApproval] = useState(false);
+  const [accountDisabled, setAccountDisabled] = useState(() =>
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("disabled") === "1"
+      : false
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     setPendingApproval(false);
+    setAccountDisabled(false);
 
     try {
       const res = await fetch("/api/auth/login", {
@@ -29,7 +35,11 @@ function LoginForm() {
       const data = await res.json();
 
       if (res.status === 403) {
-        setPendingApproval(true);
+        if (data.reason === "account_disabled") {
+          setAccountDisabled(true);
+        } else {
+          setPendingApproval(true);
+        }
         return;
       }
 
@@ -60,6 +70,41 @@ function LoginForm() {
       setLoading(false);
     }
   };
+
+  if (accountDisabled) {
+    return (
+      <div className="public-card space-y-4">
+        <div className="flex items-start gap-3">
+          <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-red-100">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-red-600">
+              <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <div>
+            <p className="font-bold text-zinc-900 text-sm">Account disabled</p>
+            <p className="text-sm text-zinc-600 mt-1">
+              Your account has been disabled by the administrator. Please contact support for further assistance.
+            </p>
+          </div>
+        </div>
+        <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2.5">
+          <p className="text-xs text-red-700">
+            For help, contact us at{" "}
+            <a href="mailto:support@ifilifestyle.com" className="underline">
+              support@ifilifestyle.com
+            </a>
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => { setAccountDisabled(false); setError(""); }}
+          className="w-full rounded-xl border border-zinc-200 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50 transition-colors"
+        >
+          Try a different account
+        </button>
+      </div>
+    );
+  }
 
   if (pendingApproval) {
     return (

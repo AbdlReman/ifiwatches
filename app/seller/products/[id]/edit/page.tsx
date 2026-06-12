@@ -13,6 +13,7 @@ import { sellerOwnsProduct } from "@/lib/productAccess";
 import { siteConfig } from "@/lib/siteConfig";
 
 export const metadata: Metadata = { title: "Edit Product — Seller" };
+export const dynamic = "force-dynamic";
 
 export default async function SellerEditProductPage({
   params,

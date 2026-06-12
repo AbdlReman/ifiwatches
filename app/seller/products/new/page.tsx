@@ -9,6 +9,7 @@ import ProductForm from "@/app/admin/_components/ProductForm";
 import { siteConfig } from "@/lib/siteConfig";
 
 export const metadata: Metadata = { title: "Add Product — Seller" };
+export const dynamic = "force-dynamic";
 
 export default async function SellerNewProductPage() {
   const session = await getSession();

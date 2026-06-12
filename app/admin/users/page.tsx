@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
+import Category from "@/models/Category";
 import type { UserRole } from "@/lib/auth/jwt";
 import UsersTable from "./UsersTable";
 import { siteConfig } from "@/lib/siteConfig";
@@ -10,12 +11,15 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminUsersPage() {
   await connectDB();
-  const rows = await User.find({})
+  const [rows, categoriesRaw] = await Promise.all([
+    User.find({})
     .sort({ createdAt: -1 })
     .select(
       "email name role createdAt phone address businessName businessCategory businessSummary sellerApproved sellerEnabled assignedCategories commissionRate sellerCode"
     )
-    .lean();
+    .lean(),
+    Category.find({ isActive: true }).sort({ name: 1 }).select("name").lean(),
+  ]);
 
   const users = rows.map((r) => {
     const u = r as {
@@ -62,7 +66,13 @@ export default async function AdminUsersPage() {
           Approve seller applications, assign categories, set commission rates and manage all accounts.
         </p>
       </div>
-      <UsersTable initialUsers={users} allCategories={[...siteConfig.categories]} />
+      <UsersTable
+        initialUsers={users}
+        allCategories={Array.from(new Set([
+          ...(categoriesRaw as { name: string }[]).map((c) => c.name).filter(Boolean),
+          ...siteConfig.categories,
+        ]))}
+      />
     </div>
   );
 }
