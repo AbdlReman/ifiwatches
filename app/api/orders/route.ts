@@ -397,7 +397,9 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "Nothing to update" }, { status: 400 });
     }
 
-    // Sellers may only update orders containing their products
+    // Pre-fetch the order to get current status and items (needed for stock restoration on cancel)
+    let preOrder: Record<string, unknown> | null = null;
+
     if (isSeller) {
       const sellerProductIds = await Product.find({ sellerId: auth.session.sub }).distinct("_id");
       const strIds = sellerProductIds.map(String);
@@ -410,7 +412,16 @@ export async function PATCH(req: NextRequest) {
       if (TERMINAL.includes(currentStatus)) {
         return NextResponse.json({ error: "Cannot change a completed or cancelled order." }, { status: 400 });
       }
+      preOrder = orderDoc as Record<string, unknown>;
+    } else {
+      const orderDoc = await Order.findById(orderId).lean();
+      if (!orderDoc) {
+        return NextResponse.json({ error: "Order not found" }, { status: 404 });
+      }
+      preOrder = orderDoc as Record<string, unknown>;
     }
+
+    const previousStatus = String(preOrder.orderStatus || "");
 
     const order = await Order.findByIdAndUpdate(
       orderId,
@@ -420,6 +431,25 @@ export async function PATCH(req: NextRequest) {
 
     if (!order) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
+    }
+
+    // Restore stock when order is cancelled (and wasn't already cancelled)
+    if (update.orderStatus === "cancelled" && previousStatus !== "cancelled") {
+      const items = (preOrder.items as Array<Record<string, unknown>>) ?? [];
+      for (const item of items) {
+        const productId = String(item.productId || "");
+        const qty = Number(item.quantity || 0);
+        if (!productId || qty <= 0) continue;
+        const restored = await Product.findByIdAndUpdate(
+          productId,
+          { $inc: { stockQuantity: qty, soldCount: -qty, popularityScore: -qty } },
+          { new: true }
+        ).lean();
+        if (restored) {
+          const newStock = Number((restored as Record<string, unknown>).stockQuantity || 0);
+          await Product.findByIdAndUpdate(productId, { $set: { inStock: newStock > 0 } });
+        }
+      }
     }
 
     if (update.orderStatus === "completed") {
