@@ -13,7 +13,7 @@ export default async function AdminUsersPage() {
   const rows = await User.find({})
     .sort({ createdAt: -1 })
     .select(
-      "email name role createdAt phone address businessName businessCategory businessSummary sellerApproved sellerEnabled assignedCategories commissionRate"
+      "email name role createdAt phone address businessName businessCategory businessSummary sellerApproved sellerEnabled assignedCategories commissionRate sellerCode"
     )
     .lean();
 
@@ -33,6 +33,7 @@ export default async function AdminUsersPage() {
       sellerEnabled?: boolean;
       assignedCategories?: string[];
       commissionRate?: number;
+      sellerCode?: string;
     };
     return {
       id: String(u._id),
@@ -48,6 +49,7 @@ export default async function AdminUsersPage() {
       sellerEnabled: u.sellerEnabled !== false,
       assignedCategories: u.assignedCategories || [],
       commissionRate: u.commissionRate || 0,
+      sellerCode: u.sellerCode || "",
       createdAt: u.createdAt ? u.createdAt.toLocaleString() : "—",
     };
   });

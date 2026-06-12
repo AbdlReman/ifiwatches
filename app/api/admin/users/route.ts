@@ -5,7 +5,7 @@ import { isAdmin } from "@/lib/isAdmin";
 import type { UserRole } from "@/lib/auth/jwt";
 
 const SELECT_FIELDS =
-  "email name role createdAt phone address businessName businessCategory businessSummary sellerApproved sellerEnabled assignedCategories commissionRate";
+  "email name role createdAt phone address businessName businessCategory businessSummary sellerApproved sellerEnabled assignedCategories commissionRate sellerCode";
 
 function formatUser(r: Record<string, unknown>) {
   return {
@@ -22,8 +22,14 @@ function formatUser(r: Record<string, unknown>) {
     sellerEnabled: r.sellerEnabled !== false,
     assignedCategories: Array.isArray(r.assignedCategories) ? (r.assignedCategories as string[]) : [],
     commissionRate: Number(r.commissionRate || 0),
+    sellerCode: (r.sellerCode as string) || "",
     createdAt: r.createdAt ? String(r.createdAt) : "",
   };
+}
+
+async function generateSellerCode(): Promise<string> {
+  const count = await User.countDocuments({ sellerCode: { $exists: true, $ne: null, $ne: "" } });
+  return `IFI-S-${String(count + 1).padStart(4, "0")}`;
 }
 
 export async function GET() {
@@ -64,6 +70,15 @@ export async function PATCH(req: NextRequest) {
     }
 
     await connectDB();
+
+    // Auto-generate a unique Seller ID when approving a seller for the first time
+    if (update.sellerApproved === true) {
+      const existing = await User.findById(id).select("sellerCode").lean() as { sellerCode?: string } | null;
+      if (existing && !existing.sellerCode) {
+        update.sellerCode = await generateSellerCode();
+      }
+    }
+
     const updated = await User.findByIdAndUpdate(id, { $set: update }, { new: true })
       .select(SELECT_FIELDS)
       .lean();

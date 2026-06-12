@@ -13,6 +13,7 @@ export type AdminOrderItem = {
   size?: string;
   color?: string;
   sellerName?: string;
+  sellerCode?: string;
 };
 
 export type AdminOrderRow = {
@@ -584,9 +585,16 @@ export default function OrdersAdminClient({
                             </td>
                             <td className="px-3 py-2 font-medium text-white max-w-[180px]">{item.name}</td>
                             <td className="px-3 py-2 text-xs">
-                              {item.sellerName
-                                ? <span className="rounded-full bg-indigo-900/60 px-2 py-0.5 text-indigo-300 font-semibold">{item.sellerName}</span>
-                                : <span className="text-slate-600">Store</span>}
+                              {item.sellerName ? (
+                                <div className="flex flex-col gap-0.5">
+                                  <span className="rounded-full bg-indigo-900/60 px-2 py-0.5 text-indigo-300 font-semibold inline-block">{item.sellerName}</span>
+                                  {item.sellerCode ? (
+                                    <span className="font-mono text-[10px] text-amber-400 font-bold px-1">{item.sellerCode}</span>
+                                  ) : null}
+                                </div>
+                              ) : (
+                                <span className="text-slate-600">Store</span>
+                              )}
                             </td>
                             <td className="px-3 py-2 text-slate-400 text-xs">
                               {color && <span className="mr-1">{color}</span>}

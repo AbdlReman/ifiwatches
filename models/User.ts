@@ -19,6 +19,7 @@ const UserSchema = new Schema(
     businessSummary: { type: String, trim: true, maxlength: 1000 },
     sellerApproved: { type: Boolean, default: true, index: true },
     sellerEnabled: { type: Boolean, default: true },
+    sellerCode: { type: String, unique: true, sparse: true, trim: true },
     assignedCategories: { type: [String], default: [] },
     commissionRate: { type: Number, default: 0, min: 0, max: 100 },
   },

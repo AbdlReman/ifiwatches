@@ -17,6 +17,7 @@ type AdminUser = {
   sellerEnabled: boolean;
   assignedCategories: string[];
   commissionRate: number;
+  sellerCode: string;
   createdAt: string;
 };
 
@@ -208,6 +209,9 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
                       </div>
                       {seller.businessName ? (
                         <p className="text-slate-400 text-xs mt-0.5 truncate">{seller.businessName}</p>
+                      ) : null}
+                      {seller.sellerCode ? (
+                        <p className="text-[11px] font-mono font-bold text-amber-400 mt-0.5">{seller.sellerCode}</p>
                       ) : null}
                       <p className="text-slate-500 text-xs truncate">{seller.email}</p>
                       {seller.phone ? <p className="text-slate-500 text-xs">{seller.phone}</p> : null}
@@ -437,6 +441,9 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
                         Pending approval
                       </span>
                       <p className="font-bold text-white text-lg mt-1">{seller.name}</p>
+                      {seller.sellerCode ? (
+                        <p className="text-[11px] font-mono font-bold text-amber-400">{seller.sellerCode}</p>
+                      ) : null}
                       {seller.businessName ? (
                         <p className="text-slate-300 text-sm font-medium">{seller.businessName}</p>
                       ) : null}

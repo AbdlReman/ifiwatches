@@ -32,13 +32,17 @@ export default async function AdminOrdersPage() {
     if (p.sellerId) productSellerMap.set(String(p._id), String(p.sellerId));
   }
 
-  // Map sellerId → seller name
+  // Map sellerId → seller name + seller code
   const sellerIds = [...new Set([...productSellerMap.values()])];
   const sellers = sellerIds.length
-    ? await User.find({ _id: { $in: sellerIds } }).select("_id name").lean() as { _id: unknown; name?: string }[]
+    ? await User.find({ _id: { $in: sellerIds } }).select("_id name sellerCode").lean() as { _id: unknown; name?: string; sellerCode?: string }[]
     : [];
   const sellerNameMap = new Map<string, string>();
-  for (const s of sellers) sellerNameMap.set(String(s._id), String(s.name || "Seller"));
+  const sellerCodeMap = new Map<string, string>();
+  for (const s of sellers) {
+    sellerNameMap.set(String(s._id), String(s.name || "Seller"));
+    if (s.sellerCode) sellerCodeMap.set(String(s._id), s.sellerCode);
+  }
 
   const orders: AdminOrderRow[] = (raw as Record<string, unknown>[]).map((o) => ({
     _id: String(o._id),
@@ -50,6 +54,7 @@ export default async function AdminOrdersPage() {
       return {
         ...(i as AdminOrderItem),
         sellerName: sid ? sellerNameMap.get(sid) : undefined,
+        sellerCode: sid ? sellerCodeMap.get(sid) : undefined,
       };
     }) as AdminOrderItem[],
     subtotal: Number(o.subtotal ?? 0),
