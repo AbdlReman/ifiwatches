@@ -37,6 +37,17 @@ export default async function AdminOrdersPage() {
   const sellers = sellerIds.length
     ? await User.find({ _id: { $in: sellerIds } }).select("_id name sellerCode").lean() as { _id: unknown; name?: string; sellerCode?: string }[]
     : [];
+
+  // Backfill: assign sellerCode to any seller that is missing one
+  for (const s of sellers) {
+    if (!s.sellerCode) {
+      const count = await User.countDocuments({ sellerCode: { $exists: true, $nin: [null, ""] } });
+      const code = `IFI-S-${String(count + 1).padStart(4, "0")}`;
+      await User.findByIdAndUpdate(s._id, { $set: { sellerCode: code } });
+      s.sellerCode = code;
+    }
+  }
+
   const sellerNameMap = new Map<string, string>();
   const sellerCodeMap = new Map<string, string>();
   for (const s of sellers) {

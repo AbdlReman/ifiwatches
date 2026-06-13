@@ -38,6 +38,18 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     await connectDB();
+
+    // Backfill: assign sellerCodes to approved sellers that don't have one yet
+    const missing = await User.find({
+      role: "seller",
+      sellerApproved: true,
+      $or: [{ sellerCode: { $exists: false } }, { sellerCode: null }, { sellerCode: "" }],
+    }).select("_id").lean() as { _id: unknown }[];
+    for (const u of missing) {
+      const code = await generateSellerCode();
+      await User.findByIdAndUpdate(u._id, { $set: { sellerCode: code } });
+    }
+
     const rows = await User.find({}).sort({ createdAt: -1 }).select(SELECT_FIELDS).lean();
     return NextResponse.json({ users: rows.map((r) => formatUser(r as Record<string, unknown>)) });
   } catch (e) {

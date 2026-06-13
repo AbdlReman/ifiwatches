@@ -326,17 +326,18 @@ export default function OrdersAdminClient({
                       ).values()
                     );
                     return (
-                      <td className="px-4 py-3 max-w-[180px]">
+                      <td className="px-4 py-3 max-w-[200px]">
                         {sellers.length === 0 ? (
-                          <span className="text-slate-600 text-xs">Store</span>
+                          <span className="text-slate-600 text-xs italic">Store</span>
                         ) : (
-                          <div className="flex flex-col gap-1">
+                          <div className="flex flex-col gap-2">
                             {sellers.map((s) => (
-                              <div key={s.code || s.name}>
-                                <p className="text-white text-xs font-medium truncate">{s.name}</p>
-                                {s.code && (
-                                  <p className="font-mono text-[10px] text-amber-400 font-bold">{s.code}</p>
-                                )}
+                              <div key={s.code || s.name} className="flex flex-col gap-0.5">
+                                <p className="text-white text-xs font-semibold truncate">{s.name}</p>
+                                <span className="inline-flex items-center gap-1 font-mono text-[10px] font-black text-amber-400">
+                                  <span className="opacity-50">#</span>
+                                  {s.code ?? <span className="text-slate-600 font-normal">No ID</span>}
+                                </span>
                               </div>
                             ))}
                           </div>
