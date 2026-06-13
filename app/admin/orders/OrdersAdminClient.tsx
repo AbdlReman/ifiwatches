@@ -277,11 +277,12 @@ export default function OrdersAdminClient({
 
       {/* ── Table ────────────────────────────────────────────────── */}
       <div className="overflow-x-auto rounded-xl border border-slate-700 bg-slate-800/50">
-        <table className="w-full text-sm text-left text-slate-300 min-w-[760px]">
+        <table className="w-full text-sm text-left text-slate-300 min-w-[900px]">
           <thead className="bg-slate-900/80 text-[10px] uppercase tracking-widest text-slate-500">
             <tr>
               <th className="px-4 py-3 font-bold">Order</th>
               {!sellerMode && <th className="px-4 py-3 font-bold">Customer</th>}
+              {!sellerMode && <th className="px-4 py-3 font-bold">Seller</th>}
               <th className="px-4 py-3 font-bold">Items</th>
               <th className="px-4 py-3 font-bold text-right">Total</th>
               <th className="px-4 py-3 font-bold">Payment</th>
@@ -293,7 +294,7 @@ export default function OrdersAdminClient({
           <tbody className="divide-y divide-slate-700">
             {paginatedOrders.length === 0 ? (
               <tr>
-                <td colSpan={sellerMode ? 7 : 8} className="px-6 py-12 text-center text-slate-500 text-sm">
+                <td colSpan={sellerMode ? 7 : 9} className="px-6 py-12 text-center text-slate-500 text-sm">
                   No {statusFilter} orders{search ? ` matching "${search}"` : ""}.
                 </td>
               </tr>
@@ -316,6 +317,33 @@ export default function OrdersAdminClient({
                       <p className="text-slate-500 text-xs truncate">{order.customer.phone}</p>
                     </td>
                   )}
+                  {!sellerMode && (() => {
+                    const sellers = Array.from(
+                      new Map(
+                        order.items
+                          .filter((i) => i.sellerName)
+                          .map((i) => [i.sellerCode || i.sellerName, { name: i.sellerName!, code: i.sellerCode }])
+                      ).values()
+                    );
+                    return (
+                      <td className="px-4 py-3 max-w-[180px]">
+                        {sellers.length === 0 ? (
+                          <span className="text-slate-600 text-xs">Store</span>
+                        ) : (
+                          <div className="flex flex-col gap-1">
+                            {sellers.map((s) => (
+                              <div key={s.code || s.name}>
+                                <p className="text-white text-xs font-medium truncate">{s.name}</p>
+                                {s.code && (
+                                  <p className="font-mono text-[10px] text-amber-400 font-bold">{s.code}</p>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </td>
+                    );
+                  })()}
                   <td className="px-4 py-3 text-slate-400 text-xs">
                     {order.items.length} item{order.items.length === 1 ? "" : "s"}
                   </td>
