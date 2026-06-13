@@ -561,38 +561,6 @@ export default function CheckoutPage() {
                     </>
                   )}
 
-                  {/* Coupon */}
-                  <div className="border-t border-gray-100 pt-5 space-y-3">
-                    <p className={labelClass}>Coupon Code</p>
-                    <div className="flex gap-2">
-                      <input
-                        value={couponInput}
-                        onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
-                        placeholder="ENTER CODE"
-                        className={inputClass + " font-mono tracking-widest"}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => void applyCoupon(couponInput)}
-                        className="shrink-0 rounded-xl border border-gray-300 px-4 text-xs font-bold uppercase text-gray-700 hover:border-gray-400 hover:bg-gray-50 transition-colors"
-                      >
-                        Apply
-                      </button>
-                    </div>
-                    {appliedCoupon && (
-                      <div className="flex items-center justify-between rounded-lg bg-emerald-50 border border-emerald-200 px-3 py-2 text-sm">
-                        <span className="font-semibold text-emerald-700">{appliedCoupon} · {discountPercent}% off</span>
-                        <button
-                          type="button"
-                          onClick={() => { setAppliedCoupon(""); setDiscountPercent(0); setCouponInput(""); toast.message("Coupon removed"); }}
-                          className="text-xs text-gray-400 underline hover:text-gray-600"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
                   <div className="pt-2 flex items-center justify-between gap-3">
                     <button
                       type="button"
@@ -676,6 +644,38 @@ export default function CheckoutPage() {
                 <span>Total</span>
                 <span>{formatPkr(totalAmount)}</span>
               </div>
+            </div>
+
+            {/* Coupon */}
+            <div className="border-t border-gray-100 mt-5 pt-5 space-y-3">
+              <p className="text-xs font-bold uppercase tracking-wide text-gray-500">Coupon Code</p>
+              <div className="flex gap-2">
+                <input
+                  value={couponInput}
+                  onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                  placeholder="ENTER CODE"
+                  className="flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-mono tracking-widest text-gray-900 placeholder:text-gray-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10 transition"
+                />
+                <button
+                  type="button"
+                  onClick={() => void applyCoupon(couponInput)}
+                  className="shrink-0 rounded-lg border border-gray-300 px-3 text-xs font-bold uppercase text-gray-700 hover:border-gray-400 hover:bg-gray-50 transition-colors"
+                >
+                  Apply
+                </button>
+              </div>
+              {appliedCoupon && (
+                <div className="flex items-center justify-between rounded-lg bg-emerald-50 border border-emerald-200 px-3 py-2 text-sm">
+                  <span className="font-semibold text-emerald-700">{appliedCoupon} · {discountPercent}% off</span>
+                  <button
+                    type="button"
+                    onClick={() => { setAppliedCoupon(""); setDiscountPercent(0); setCouponInput(""); toast.message("Coupon removed"); }}
+                    className="text-xs text-gray-400 underline hover:text-gray-600"
+                  >
+                    Remove
+                  </button>
+                </div>
+              )}
             </div>
 
             {step === 3 && (
