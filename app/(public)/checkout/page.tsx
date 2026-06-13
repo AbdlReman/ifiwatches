@@ -58,6 +58,8 @@ export default function CheckoutPage() {
     notes: "",
   });
 
+  const [deliveryPreviewOpen, setDeliveryPreviewOpen] = useState(false);
+
   const [couponInput, setCouponInput] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState("");
   const [discountPercent, setDiscountPercent] = useState(0);
@@ -441,20 +443,22 @@ export default function CheckoutPage() {
                   </div>
                   <hr className="border-gray-100" />
 
-                  {/* Review summary chips */}
+                  {/* Review summary chips — click to preview full details */}
                   <div className="flex flex-wrap gap-2">
                     <button
                       type="button"
-                      onClick={() => setStep(1)}
+                      onClick={() => setDeliveryPreviewOpen(true)}
                       className="flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-200 px-3 py-1 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 transition-colors"
+                      title="View delivery details"
                     >
                       <CheckIcon />
                       {form.name}
                     </button>
                     <button
                       type="button"
-                      onClick={() => setStep(2)}
+                      onClick={() => setDeliveryPreviewOpen(true)}
                       className="flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-200 px-3 py-1 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 transition-colors"
+                      title="View delivery details"
                     >
                       <CheckIcon />
                       {form.address}, {form.city}
@@ -686,6 +690,83 @@ export default function CheckoutPage() {
           </div>
         </div>
       </div>
+
+      {/* ── Delivery details preview popup ── */}
+      {deliveryPreviewOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          onClick={() => setDeliveryPreviewOpen(false)}
+        >
+          <div
+            className="w-full max-w-md rounded-2xl border border-gray-200 bg-white shadow-2xl p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-base font-black text-gray-900">Order Details</h3>
+              <button
+                type="button"
+                onClick={() => setDeliveryPreviewOpen(false)}
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 text-gray-400 hover:text-gray-700 transition-colors"
+                aria-label="Close"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Customer info */}
+            <div className="rounded-xl border border-gray-100 bg-gray-50 p-4 mb-3">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Customer</p>
+                <button
+                  type="button"
+                  onClick={() => { setDeliveryPreviewOpen(false); setStep(1); }}
+                  className="text-[11px] font-semibold text-blue-600 hover:underline"
+                >
+                  Edit
+                </button>
+              </div>
+              <p className="font-bold text-gray-900 text-sm">{form.name}</p>
+              <p className="text-sm text-gray-600 mt-0.5">{form.phone}</p>
+              <p className="text-sm text-gray-500">{form.email}</p>
+            </div>
+
+            {/* Delivery address */}
+            <div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Delivery Address</p>
+                <button
+                  type="button"
+                  onClick={() => { setDeliveryPreviewOpen(false); setStep(2); }}
+                  className="text-[11px] font-semibold text-blue-600 hover:underline"
+                >
+                  Edit
+                </button>
+              </div>
+              <p className="text-sm font-semibold text-gray-900">{form.address}</p>
+              <p className="text-sm text-gray-700">
+                {form.city}{form.state ? `, ${form.state}` : ""}
+                {form.postalCode ? ` — ${form.postalCode}` : ""}
+              </p>
+              {form.notes && (
+                <p className="text-xs text-gray-500 mt-2 border-t border-gray-200 pt-2">
+                  <span className="font-semibold">Note:</span> {form.notes}
+                </p>
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setDeliveryPreviewOpen(false)}
+              className="mt-4 w-full rounded-xl bg-gray-900 py-2.5 text-sm font-bold text-white hover:bg-gray-700 transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

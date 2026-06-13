@@ -518,8 +518,8 @@ export default function OrdersAdminClient({
                 </section>
               )}
 
-              {/* Customer — hidden from sellers */}
-              {!sellerMode && (
+              {/* Customer info — full details for admin, delivery address only for sellers */}
+              {!sellerMode ? (
                 <section>
                   <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Customer</p>
                   <div className="rounded-xl border border-slate-700 bg-slate-800/50 p-4 text-sm text-slate-300 space-y-1">
@@ -532,6 +532,27 @@ export default function OrdersAdminClient({
                     {selected.customer.notes ? (
                       <p className="pt-2 border-t border-slate-700 mt-2 text-slate-400">
                         <span className="text-slate-500">Notes:</span> {selected.customer.notes}
+                      </p>
+                    ) : null}
+                  </div>
+                </section>
+              ) : (
+                <section>
+                  <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Delivery Address</p>
+                  <div className="rounded-xl border border-slate-700 bg-slate-800/50 p-4 text-sm text-slate-300 space-y-1.5">
+                    <p>
+                      <span className="text-slate-500">Address:</span>{" "}
+                      <span className="text-white">{selected.customer.address}, {selected.customer.city}</span>
+                    </p>
+                    {(selected.customer.state || "").trim() ? (
+                      <p><span className="text-slate-500">State:</span> {selected.customer.state}</p>
+                    ) : null}
+                    {(selected.customer.postalCode || "").trim() ? (
+                      <p><span className="text-slate-500">Postal Code:</span> {selected.customer.postalCode}</p>
+                    ) : null}
+                    {selected.customer.notes ? (
+                      <p className="pt-2 border-t border-slate-700 mt-2 text-slate-400">
+                        <span className="text-slate-500">Delivery Notes:</span> {selected.customer.notes}
                       </p>
                     ) : null}
                   </div>
