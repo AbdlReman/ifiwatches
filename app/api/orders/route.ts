@@ -325,6 +325,7 @@ export async function POST(req: NextRequest) {
               const sellerHtml = buildSellerOrderEmailHtml({
                 orderNumber: emailPayload.orderNumber,
                 items: theirItems,
+                customer: emailPayload.customer,
               });
               await sendSellerOrderNotification({
                 sellerEmail: seller.email,

@@ -177,14 +177,20 @@ export function buildAdminOrderEmailHtml(opts: {
 export function buildSellerOrderEmailHtml(opts: {
   orderNumber: string;
   items: OrderItemInput[];
+  customer?: CustomerInput;
 }): string {
   const subtotal = opts.items.reduce(
     (sum, i) => sum + Number(i.price || 0) * Number(i.quantity || 1),
     0
   );
+  const deliveryBlock = opts.customer
+    ? `<h2 style="font-size:14px;text-transform:uppercase;letter-spacing:0.06em;color:#6b7280;margin:20px 0 8px;">Delivery Address</h2>
+${customerBlock(opts.customer)}`
+    : "";
   return `<div style="font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:640px;margin:0 auto;padding:24px;color:#111827;">
   <h1 style="font-size:20px;margin:0 0 4px;">New order — ${esc(opts.orderNumber)}</h1>
   <p style="margin:0 0 20px;color:#6b7280;font-size:14px;">A new order has been placed containing your products. Please prepare the items below for dispatch.</p>
+  ${deliveryBlock}
   <h2 style="font-size:14px;text-transform:uppercase;letter-spacing:0.06em;color:#6b7280;margin:0 0 8px;">Your items in this order</h2>
   ${itemsTable(opts.items)}
   <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;max-width:320px;margin-left:auto;font-size:14px;">
