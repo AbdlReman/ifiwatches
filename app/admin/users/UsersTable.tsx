@@ -13,7 +13,7 @@ type SellerStats = {
   totalRevenue: number;
   totalCommission: number;
   totalNet: number;
-  recentOrders: { orderNumber: string; grossAmount: number; commissionAmount: number; netAmount: number; status: string; createdAt: string }[];
+  recentOrders: { orderNumber: string; grossAmount: number; commissionRate: number; commissionAmount: number; netAmount: number; status: string; createdAt: string }[];
   topProducts: { name: string; soldCount: number; price: number }[];
 };
 
@@ -731,6 +731,7 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
                               <tr>
                                 <th className="px-3 py-2 font-bold">Order #</th>
                                 <th className="px-3 py-2 font-bold text-right">Revenue</th>
+                                <th className="px-3 py-2 font-bold text-right text-amber-400">Rate</th>
                                 <th className="px-3 py-2 font-bold text-right text-amber-400">Commission</th>
                                 <th className="px-3 py-2 font-bold text-right text-emerald-400">Net</th>
                               </tr>
@@ -740,6 +741,9 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
                                 <tr key={o.orderNumber} className="hover:bg-slate-800/60">
                                   <td className="px-3 py-2 font-mono text-white">{o.orderNumber}</td>
                                   <td className="px-3 py-2 text-right tabular-nums">{formatPkr(o.grossAmount)}</td>
+                                  <td className="px-3 py-2 text-right tabular-nums text-amber-400/70 font-mono">
+                                    {(o.commissionRate * 100).toFixed(2)}%
+                                  </td>
                                   <td className="px-3 py-2 text-right tabular-nums text-amber-400">{formatPkr(o.commissionAmount)}</td>
                                   <td className="px-3 py-2 text-right tabular-nums text-emerald-400">{formatPkr(o.netAmount)}</td>
                                 </tr>

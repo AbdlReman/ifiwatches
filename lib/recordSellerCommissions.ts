@@ -1,11 +1,7 @@
 import mongoose from "mongoose";
 import Product from "@/models/Product";
+import User from "@/models/User";
 import SellerEarning from "@/models/SellerEarning";
-import {
-  PLATFORM_COMMISSION_RATE,
-  commissionFromGross,
-  sellerNetFromGross,
-} from "@/lib/commission";
 import { attributedOrderTotal, sellerProductIdSet } from "@/lib/sellerAnalytics";
 
 type OrderItem = { productId?: string; price?: number; quantity?: number };
@@ -36,6 +32,19 @@ export async function recordSellerCommissionsForOrder(order: {
   }
 
   const sellerIds = [...new Set(sellerByProduct.values())];
+  if (sellerIds.length === 0) return;
+
+  // Fetch each seller's individual commission rate (stored as 0–100 in User model)
+  const sellerUsers = await User.find({ _id: { $in: sellerIds } })
+    .select("_id commissionRate")
+    .lean() as { _id: unknown; commissionRate?: number }[];
+  const sellerRateMap = new Map<string, number>();
+  for (const u of sellerUsers) {
+    // commissionRate in User is 0–100 (percent); convert to decimal 0–1
+    const rateDecimal = Math.max(0, Math.min(100, Number(u.commissionRate ?? 0))) / 100;
+    sellerRateMap.set(String(u._id), rateDecimal);
+  }
+
   for (const sellerId of sellerIds) {
     const sellerProductIds = productIds.filter((pid) => sellerByProduct.get(pid) === sellerId);
     const idSet = sellerProductIdSet(sellerProductIds);
@@ -48,14 +57,18 @@ export async function recordSellerCommissionsForOrder(order: {
     }).lean();
     if (existing) continue;
 
+    const rate = sellerRateMap.get(sellerId) ?? 0;
+    const commissionAmount = Math.round(gross * rate * 100) / 100;
+    const netAmount = Math.round((gross - commissionAmount) * 100) / 100;
+
     await SellerEarning.create({
       sellerId: new mongoose.Types.ObjectId(sellerId),
       orderId: new mongoose.Types.ObjectId(orderId),
       orderNumber,
       grossAmount: gross,
-      commissionRate: PLATFORM_COMMISSION_RATE,
-      commissionAmount: commissionFromGross(gross),
-      netAmount: sellerNetFromGross(gross),
+      commissionRate: rate,
+      commissionAmount,
+      netAmount,
       status: "available",
     });
   }

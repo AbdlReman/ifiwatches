@@ -45,6 +45,7 @@ export async function GET(req: NextRequest) {
       return {
         orderNumber: String(rec.orderNumber || ""),
         grossAmount: Number(rec.grossAmount || 0),
+        commissionRate: Number(rec.commissionRate ?? 0),
         commissionAmount: Number(rec.commissionAmount || 0),
         netAmount: Number(rec.netAmount || 0),
         status: String(rec.status || ""),
