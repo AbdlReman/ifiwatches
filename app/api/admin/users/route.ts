@@ -28,7 +28,7 @@ function formatUser(r: Record<string, unknown>) {
 }
 
 async function generateSellerCode(): Promise<string> {
-  const count = await User.countDocuments({ sellerCode: { $exists: true, $ne: null, $ne: "" } });
+  const count = await User.countDocuments({ sellerCode: { $exists: true, $nin: [null, ""] } });
   return `IFI-S-${String(count + 1).padStart(4, "0")}`;
 }
 
