@@ -158,6 +158,7 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
   ];
 
   return (
+    <>
     <div className="space-y-6">
       {error ? (
         <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
@@ -759,6 +760,6 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
           </div>
         </>
       )}
-    </div>
+    </>
   );
 }
