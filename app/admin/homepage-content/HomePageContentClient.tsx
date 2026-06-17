@@ -7,18 +7,48 @@ const inputCls =
   "w-full bg-slate-900 border border-slate-600 text-slate-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500";
 const labelCls = "block text-slate-400 text-xs font-semibold uppercase mb-1";
 
+type HeroState = {
+  image: string;
+  badgeText: string;
+  heading: string;
+  headingAccent: string;
+  subheading: string;
+  primaryBtnText: string;
+  primaryBtnHref: string;
+  secondaryBtnText: string;
+  secondaryBtnHref: string;
+  pillsRaw: string; // comma-separated
+};
+
+const DEFAULT_HERO: HeroState = {
+  image: "",
+  badgeText: "Multi-vendor marketplace",
+  heading: "One Product.",
+  headingAccent: "One Trusted Seller. Zero Confusion..",
+  subheading:
+    "IFI Lifestyle brings verified vendors together under one standard — premium watches, perfumes, eyewear, gadgets, and fashion with one seller per product.",
+  primaryBtnText: "Explore marketplace",
+  primaryBtnHref: "/shop",
+  secondaryBtnText: "Become a seller",
+  secondaryBtnHref: "/register",
+  pillsRaw: "Verified vendors, One seller per SKU, Nationwide delivery",
+};
+
 export default function HomePageContentClient() {
   const [saleImage, setSaleImage] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
+  const [hero, setHero] = useState<HeroState>(DEFAULT_HERO);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [imgUploading, setImgUploading] = useState(false);
+  const [heroImgUploading, setHeroImgUploading] = useState(false);
   const [vidUploading, setVidUploading] = useState(false);
   const [vidProgress, setVidProgress] = useState(0);
   const [error, setError] = useState("");
   const [vidError, setVidError] = useState("");
   const [success, setSuccess] = useState(false);
   const imgFileRef = useRef<HTMLInputElement>(null);
+  const heroImgFileRef = useRef<HTMLInputElement>(null);
   const vidFileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -29,6 +59,21 @@ export default function HomePageContentClient() {
         if (!res.ok) throw new Error(data.error || "Failed to load");
         setSaleImage(data.content?.saleImage ?? "");
         setVideoUrl(data.content?.videoUrl ?? "");
+        const h = data.content?.hero ?? {};
+        setHero({
+          image: h.image ?? "",
+          badgeText: h.badgeText ?? DEFAULT_HERO.badgeText,
+          heading: h.heading ?? DEFAULT_HERO.heading,
+          headingAccent: h.headingAccent ?? DEFAULT_HERO.headingAccent,
+          subheading: h.subheading ?? DEFAULT_HERO.subheading,
+          primaryBtnText: h.primaryBtnText ?? DEFAULT_HERO.primaryBtnText,
+          primaryBtnHref: h.primaryBtnHref ?? DEFAULT_HERO.primaryBtnHref,
+          secondaryBtnText: h.secondaryBtnText ?? DEFAULT_HERO.secondaryBtnText,
+          secondaryBtnHref: h.secondaryBtnHref ?? DEFAULT_HERO.secondaryBtnHref,
+          pillsRaw: Array.isArray(h.pills) && h.pills.length > 0
+            ? h.pills.join(", ")
+            : DEFAULT_HERO.pillsRaw,
+        });
       } catch (e) {
         setError(e instanceof Error ? e.message : "Failed to load");
       } finally {
@@ -38,8 +83,9 @@ export default function HomePageContentClient() {
     load();
   }, []);
 
-  const uploadImage = async (file: File) => {
-    setImgUploading(true);
+  const uploadImage = async (file: File, target: "sale" | "hero") => {
+    if (target === "sale") setImgUploading(true);
+    else setHeroImgUploading(true);
     setError("");
     try {
       const form = new FormData();
@@ -48,11 +94,13 @@ export default function HomePageContentClient() {
       const res = await fetch("/api/upload", { method: "POST", body: form, credentials: "include" });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Upload failed");
-      setSaleImage(data.urls[0] ?? "");
+      if (target === "sale") setSaleImage(data.urls[0] ?? "");
+      else setHero((prev) => ({ ...prev, image: data.urls[0] ?? "" }));
     } catch (e) {
       setError(e instanceof Error ? e.message : "Image upload failed");
     } finally {
-      setImgUploading(false);
+      if (target === "sale") setImgUploading(false);
+      else setHeroImgUploading(false);
     }
   };
 
@@ -62,7 +110,6 @@ export default function HomePageContentClient() {
     setVidProgress(0);
     setVidError("");
     try {
-      // 1. Get a signed upload credential from our server
       const sigRes = await fetch("/api/admin/homepage-content/upload-signature", {
         credentials: "include",
       });
@@ -71,7 +118,6 @@ export default function HomePageContentClient() {
 
       const { signature, timestamp, folder, cloudName, apiKey } = sigData;
 
-      // 2. Upload the file directly to Cloudinary
       const form = new FormData();
       form.append("file", file);
       form.append("api_key", apiKey);
@@ -125,11 +171,31 @@ export default function HomePageContentClient() {
     setError("");
     setSuccess(false);
     try {
+      const pills = hero.pillsRaw
+        .split(",")
+        .map((p) => p.trim())
+        .filter(Boolean);
+
       const res = await fetch("/api/admin/homepage-content", {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ saleImage: img, videoUrl: vid }),
+        body: JSON.stringify({
+          saleImage: img,
+          videoUrl: vid,
+          hero: {
+            image: hero.image,
+            badgeText: hero.badgeText,
+            heading: hero.heading,
+            headingAccent: hero.headingAccent,
+            subheading: hero.subheading,
+            primaryBtnText: hero.primaryBtnText,
+            primaryBtnHref: hero.primaryBtnHref,
+            secondaryBtnText: hero.secondaryBtnText,
+            secondaryBtnHref: hero.secondaryBtnHref,
+            pills,
+          },
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Save failed");
@@ -147,6 +213,10 @@ export default function HomePageContentClient() {
     await saveContent(saleImage, videoUrl);
   };
 
+  const setHeroField = (field: keyof HeroState) => (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => setHero((prev) => ({ ...prev, [field]: e.target.value }));
+
   return (
     <div className="space-y-8">
       <div>
@@ -157,7 +227,7 @@ export default function HomePageContentClient() {
         </div>
         <h1 className="text-3xl font-black uppercase tracking-tight text-white">Home Page Content</h1>
         <p className="text-slate-400 text-sm mt-1">
-          Control the sale banner image and the autoplay video shown on the homepage.
+          Control the hero section, sale banner image, and the autoplay video shown on the homepage.
         </p>
       </div>
 
@@ -174,6 +244,165 @@ export default function HomePageContentClient() {
         <p className="text-slate-500 text-sm">Loading…</p>
       ) : (
         <form onSubmit={save} className="space-y-6">
+
+          {/* ── Hero Section ── */}
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 space-y-5">
+            <div>
+              <h2 className="text-sm font-bold uppercase tracking-widest text-slate-300">Hero Section</h2>
+              <p className="text-slate-500 text-xs mt-1">The full-screen banner at the top of the homepage.</p>
+            </div>
+
+            {/* Hero background image */}
+            <div className="space-y-3">
+              <h3 className="text-xs font-semibold uppercase tracking-widest text-slate-400">Background Image</h3>
+              {hero.image && (
+                <div className="relative group w-full max-w-lg overflow-hidden rounded-lg border border-slate-600 aspect-[16/7]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={hero.image} alt="Hero preview" className="w-full h-full object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => setHero((prev) => ({ ...prev, image: "" }))}
+                    className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    Remove
+                  </button>
+                </div>
+              )}
+              <input
+                ref={heroImgFileRef}
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadImage(f, "hero"); e.target.value = ""; }}
+                disabled={heroImgUploading}
+              />
+              <button
+                type="button"
+                onClick={() => heroImgFileRef.current?.click()}
+                disabled={heroImgUploading}
+                className="bg-slate-700 hover:bg-slate-600 disabled:opacity-50 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
+              >
+                {heroImgUploading ? "Uploading…" : hero.image ? "Replace Image" : "Upload Image"}
+              </button>
+              <div>
+                <label className={labelCls}>Or paste image URL</label>
+                <input
+                  className={inputCls}
+                  type="url"
+                  value={hero.image}
+                  onChange={setHeroField("image")}
+                  placeholder="https://res.cloudinary.com/… (leave blank to use default)"
+                />
+              </div>
+            </div>
+
+            <div className="border-t border-slate-700 pt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {/* Badge text */}
+              <div>
+                <label className={labelCls}>Badge Text</label>
+                <input
+                  className={inputCls}
+                  type="text"
+                  value={hero.badgeText}
+                  onChange={setHeroField("badgeText")}
+                  placeholder="Multi-vendor marketplace"
+                />
+              </div>
+
+              {/* Heading line 1 */}
+              <div>
+                <label className={labelCls}>Heading</label>
+                <input
+                  className={inputCls}
+                  type="text"
+                  value={hero.heading}
+                  onChange={setHeroField("heading")}
+                  placeholder="One Product."
+                />
+              </div>
+
+              {/* Heading accent (colored line) */}
+              <div className="sm:col-span-2">
+                <label className={labelCls}>Heading Accent (colored line)</label>
+                <input
+                  className={inputCls}
+                  type="text"
+                  value={hero.headingAccent}
+                  onChange={setHeroField("headingAccent")}
+                  placeholder="One Trusted Seller. Zero Confusion.."
+                />
+              </div>
+
+              {/* Subheading */}
+              <div className="sm:col-span-2">
+                <label className={labelCls}>Subheading Paragraph</label>
+                <textarea
+                  className={inputCls + " resize-none"}
+                  rows={3}
+                  value={hero.subheading}
+                  onChange={setHeroField("subheading")}
+                  placeholder="IFI Lifestyle brings verified vendors…"
+                />
+              </div>
+
+              {/* Primary button */}
+              <div>
+                <label className={labelCls}>Primary Button Text</label>
+                <input
+                  className={inputCls}
+                  type="text"
+                  value={hero.primaryBtnText}
+                  onChange={setHeroField("primaryBtnText")}
+                  placeholder="Explore marketplace"
+                />
+              </div>
+              <div>
+                <label className={labelCls}>Primary Button Link</label>
+                <input
+                  className={inputCls}
+                  type="text"
+                  value={hero.primaryBtnHref}
+                  onChange={setHeroField("primaryBtnHref")}
+                  placeholder="/shop"
+                />
+              </div>
+
+              {/* Secondary button */}
+              <div>
+                <label className={labelCls}>Secondary Button Text</label>
+                <input
+                  className={inputCls}
+                  type="text"
+                  value={hero.secondaryBtnText}
+                  onChange={setHeroField("secondaryBtnText")}
+                  placeholder="Become a seller"
+                />
+              </div>
+              <div>
+                <label className={labelCls}>Secondary Button Link</label>
+                <input
+                  className={inputCls}
+                  type="text"
+                  value={hero.secondaryBtnHref}
+                  onChange={setHeroField("secondaryBtnHref")}
+                  placeholder="/register"
+                />
+              </div>
+
+              {/* Pills */}
+              <div className="sm:col-span-2">
+                <label className={labelCls}>Trust Pills (comma-separated)</label>
+                <input
+                  className={inputCls}
+                  type="text"
+                  value={hero.pillsRaw}
+                  onChange={setHeroField("pillsRaw")}
+                  placeholder="Verified vendors, One seller per SKU, Nationwide delivery"
+                />
+                <p className="text-slate-500 text-xs mt-1">Separate each pill with a comma.</p>
+              </div>
+            </div>
+          </div>
 
           {/* ── Sale Image ── */}
           <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 space-y-4">
@@ -201,7 +430,7 @@ export default function HomePageContentClient() {
               type="file"
               accept="image/*"
               className="sr-only"
-              onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadImage(f); e.target.value = ""; }}
+              onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadImage(f, "sale"); e.target.value = ""; }}
               disabled={imgUploading}
             />
             <button
@@ -240,7 +469,6 @@ export default function HomePageContentClient() {
               </div>
             )}
 
-            {/* Video preview */}
             {videoUrl && !vidUploading && (
               <div className="relative group rounded-lg overflow-hidden border border-slate-600 max-w-lg">
                 <video
@@ -272,7 +500,6 @@ export default function HomePageContentClient() {
               </div>
             )}
 
-            {/* Upload progress */}
             {vidUploading && (
               <div className="space-y-2 max-w-lg">
                 <div className="flex items-center justify-between">
@@ -326,7 +553,7 @@ export default function HomePageContentClient() {
 
           <button
             type="submit"
-            disabled={saving || imgUploading || vidUploading}
+            disabled={saving || imgUploading || heroImgUploading || vidUploading}
             className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-semibold px-6 py-2.5 rounded-lg text-sm"
           >
             {saving ? "Saving…" : "Save Changes"}

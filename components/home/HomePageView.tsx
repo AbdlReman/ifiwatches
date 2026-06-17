@@ -14,6 +14,19 @@ export type HomeStats = {
   categoryCount: number;
 };
 
+export type HeroContent = {
+  image?: string;
+  badgeText?: string;
+  heading?: string;
+  headingAccent?: string;
+  subheading?: string;
+  primaryBtnText?: string;
+  primaryBtnHref?: string;
+  secondaryBtnText?: string;
+  secondaryBtnHref?: string;
+  pills?: string[];
+};
+
 type HomeCategoryProducts = {
   name: string;
   productCount: number;
@@ -77,6 +90,7 @@ export default function HomePageView({
   stats,
   saleImage,
   videoUrl,
+  heroContent,
 }: {
   categories: HomeCategory[];
   featuredProducts: IProduct[];
@@ -88,8 +102,27 @@ export default function HomePageView({
   stats: HomeStats;
   saleImage?: string;
   videoUrl?: string;
+  heroContent?: HeroContent;
 }) {
   const categoryCards = buildCategoryCards(categories);
+
+  const hero = {
+    image: heroContent?.image || siteConfig.images.hero,
+    badgeText: heroContent?.badgeText || "Multi-vendor marketplace",
+    heading: heroContent?.heading || "One Product.",
+    headingAccent: heroContent?.headingAccent || "One Trusted Seller. Zero Confusion..",
+    subheading:
+      heroContent?.subheading ||
+      "IFI Lifestyle brings verified vendors together under one standard — premium watches, perfumes, eyewear, gadgets, and fashion with one seller per product.",
+    primaryBtnText: heroContent?.primaryBtnText || "Explore marketplace",
+    primaryBtnHref: heroContent?.primaryBtnHref || "/shop",
+    secondaryBtnText: heroContent?.secondaryBtnText || "Become a seller",
+    secondaryBtnHref: heroContent?.secondaryBtnHref || "/register",
+    pills:
+      heroContent?.pills && heroContent.pills.length > 0
+        ? heroContent.pills
+        : ["Verified vendors", "One seller per SKU", "Nationwide delivery"],
+  };
 
   return (
     <div className="bg-white">
@@ -97,7 +130,7 @@ export default function HomePageView({
       <section className="relative min-h-[min(88vh,720px)] overflow-hidden border-b border-zinc-200">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${siteConfig.images.hero})` }}
+          style={{ backgroundImage: `url(${hero.image})` }}
           role="img"
           aria-label=""
         />
@@ -106,30 +139,29 @@ export default function HomePageView({
           <div className="max-w-2xl">
             <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/30 bg-black/35 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white shadow-sm backdrop-blur-[2px]">
               <span className="h-1.5 w-1.5 rounded-full" style={{ background: siteConfig.brandColor }} />
-              Multi-vendor marketplace
+              {hero.badgeText}
             </span>
             <h1 className="text-4xl font-black uppercase leading-[0.95] tracking-tight text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.7)] sm:text-5xl lg:text-6xl">
-              One Product.
+              {hero.heading}
               <br />
-              <span style={{ color: siteConfig.brandColor }}>One Trusted Seller. Zero Confusion..</span>
+              <span style={{ color: siteConfig.brandColor }}>{hero.headingAccent}</span>
             </h1>
             <p className="mt-5 max-w-lg text-base leading-relaxed text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.65)] md:text-lg">
-              IFI Lifestyle brings verified vendors together under one standard — premium watches, perfumes,
-              eyewear, gadgets, and fashion with one seller per product.
+              {hero.subheading}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/shop" className="btn-primary shadow-lg">
-                Explore marketplace
+              <Link href={hero.primaryBtnHref} className="btn-primary shadow-lg">
+                {hero.primaryBtnText}
               </Link>
               <Link
-                href="/register"
+                href={hero.secondaryBtnHref}
                 className="border-2 border-white bg-transparent px-10 py-3 text-xs font-bold uppercase tracking-widest text-white shadow-lg transition hover:bg-white hover:text-zinc-950"
               >
-                Become a seller
+                {hero.secondaryBtnText}
               </Link>
             </div>
             <div className="mt-8 flex flex-wrap gap-2">
-              {["Verified vendors", "One seller per SKU", "Nationwide delivery"].map((pill) => (
+              {hero.pills.map((pill) => (
                 <span
                   key={pill}
                   className="rounded-full border border-white/35 bg-black/30 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-[2px]"

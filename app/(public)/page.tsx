@@ -103,7 +103,22 @@ export default async function HomePage() {
     )
   ).filter((entry) => entry.products.length > 0);
 
-  const content = homeContent as { saleImage?: string; videoUrl?: string } | null;
+  const content = homeContent as {
+    saleImage?: string;
+    videoUrl?: string;
+    hero?: {
+      image?: string;
+      badgeText?: string;
+      heading?: string;
+      headingAccent?: string;
+      subheading?: string;
+      primaryBtnText?: string;
+      primaryBtnHref?: string;
+      secondaryBtnText?: string;
+      secondaryBtnHref?: string;
+      pills?: string[];
+    };
+  } | null;
 
   return (
     <HomePageView
@@ -121,6 +136,7 @@ export default async function HomePage() {
       }}
       saleImage={content?.saleImage || ""}
       videoUrl={content?.videoUrl || ""}
+      heroContent={content?.hero}
     />
   );
 }
