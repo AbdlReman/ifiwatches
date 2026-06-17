@@ -202,20 +202,61 @@ export default function ShopClient({
 
   return (
     <div className="min-h-screen bg-white text-black">
-      <header className="sm:border-b border-zinc-200 bg-white text-zinc-900">
-        <div className="mx-auto max-w-[90rem] px-4 py-1 sm:px-6 sm:py-8 lg:px-8">
+      <header
+        className={
+          category === "All"
+            ? "relative overflow-hidden border-b border-zinc-200"
+            : "sm:border-b border-zinc-200 bg-white text-zinc-900"
+        }
+      >
+        {category === "All" && (
+          <>
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${siteConfig.images.hero})` }}
+              aria-hidden="true"
+            />
+            <div className="absolute inset-0 bg-black/55" aria-hidden="true" />
+          </>
+        )}
+        <div
+          className={
+            "relative mx-auto max-w-[90rem] px-4 lg:px-8 " +
+            (category === "All"
+              ? "py-16 sm:py-20 lg:py-24 sm:px-6"
+              : "py-1 sm:px-6 sm:py-8")
+          }
+        >
           <Breadcrumbs
-            className="text-zinc-500 [&_a]:text-zinc-800 [&_a:hover]:underline [&_span]:text-zinc-500"
+            className={
+              category === "All"
+                ? "text-white/70 [&_a]:text-white [&_a:hover]:underline [&_span]:text-white/70"
+                : "text-zinc-500 [&_a]:text-zinc-800 [&_a:hover]:underline [&_span]:text-zinc-500"
+            }
             items={[
               { label: "Home", href: "/" },
               { label: "Shop", href: category !== "All" ? "/shop" : undefined },
               ...(category !== "All" ? [{ label: category }] : []),
             ]}
           />
-          <h1 className="mt-6 text-xl font-black uppercase tracking-tight sm:text-3xl lg:text-4xl">
+          <h1
+            className={
+              "mt-6 text-xl font-black uppercase tracking-tight sm:text-3xl lg:text-4xl " +
+              (category === "All"
+                ? "text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.7)]"
+                : "text-zinc-900")
+            }
+          >
             {category !== "All" ? category : <>IFI BEST PRODUCTS FROM <br />BRANDS YOU LOVE</>}
           </h1>
-          <p className="mt-2 text-sm text-zinc-600">{filtered.length} products</p>
+          <p
+            className={
+              "mt-2 text-sm " +
+              (category === "All" ? "text-white/80" : "text-zinc-600")
+            }
+          >
+            {filtered.length} products
+          </p>
         </div>
       </header>
 
