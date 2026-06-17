@@ -7,6 +7,18 @@ const inputCls =
   "w-full bg-slate-900 border border-slate-600 text-slate-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500";
 const labelCls = "block text-slate-400 text-xs font-semibold uppercase mb-1";
 
+type ShopHeroState = {
+  image: string;
+  heading: string;
+  subheading: string;
+};
+
+const DEFAULT_SHOP_HERO: ShopHeroState = {
+  image: "",
+  heading: "IFI BEST PRODUCTS FROM BRANDS YOU LOVE",
+  subheading: "",
+};
+
 type HeroState = {
   image: string;
   badgeText: string;
@@ -38,10 +50,12 @@ export default function HomePageContentClient() {
   const [saleImage, setSaleImage] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [hero, setHero] = useState<HeroState>(DEFAULT_HERO);
+  const [shopHero, setShopHero] = useState<ShopHeroState>(DEFAULT_SHOP_HERO);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [imgUploading, setImgUploading] = useState(false);
   const [heroImgUploading, setHeroImgUploading] = useState(false);
+  const [shopHeroImgUploading, setShopHeroImgUploading] = useState(false);
   const [vidUploading, setVidUploading] = useState(false);
   const [vidProgress, setVidProgress] = useState(0);
   const [error, setError] = useState("");
@@ -49,6 +63,7 @@ export default function HomePageContentClient() {
   const [success, setSuccess] = useState(false);
   const imgFileRef = useRef<HTMLInputElement>(null);
   const heroImgFileRef = useRef<HTMLInputElement>(null);
+  const shopHeroImgFileRef = useRef<HTMLInputElement>(null);
   const vidFileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -59,6 +74,12 @@ export default function HomePageContentClient() {
         if (!res.ok) throw new Error(data.error || "Failed to load");
         setSaleImage(data.content?.saleImage ?? "");
         setVideoUrl(data.content?.videoUrl ?? "");
+        const sh = data.content?.shopHero ?? {};
+        setShopHero({
+          image: sh.image ?? "",
+          heading: sh.heading ?? DEFAULT_SHOP_HERO.heading,
+          subheading: sh.subheading ?? "",
+        });
         const h = data.content?.hero ?? {};
         setHero({
           image: h.image ?? "",
@@ -83,9 +104,10 @@ export default function HomePageContentClient() {
     load();
   }, []);
 
-  const uploadImage = async (file: File, target: "sale" | "hero") => {
+  const uploadImage = async (file: File, target: "sale" | "hero" | "shopHero") => {
     if (target === "sale") setImgUploading(true);
-    else setHeroImgUploading(true);
+    else if (target === "hero") setHeroImgUploading(true);
+    else setShopHeroImgUploading(true);
     setError("");
     try {
       const form = new FormData();
@@ -95,12 +117,14 @@ export default function HomePageContentClient() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Upload failed");
       if (target === "sale") setSaleImage(data.urls[0] ?? "");
-      else setHero((prev) => ({ ...prev, image: data.urls[0] ?? "" }));
+      else if (target === "hero") setHero((prev) => ({ ...prev, image: data.urls[0] ?? "" }));
+      else setShopHero((prev) => ({ ...prev, image: data.urls[0] ?? "" }));
     } catch (e) {
       setError(e instanceof Error ? e.message : "Image upload failed");
     } finally {
       if (target === "sale") setImgUploading(false);
-      else setHeroImgUploading(false);
+      else if (target === "hero") setHeroImgUploading(false);
+      else setShopHeroImgUploading(false);
     }
   };
 
@@ -194,6 +218,11 @@ export default function HomePageContentClient() {
             secondaryBtnText: hero.secondaryBtnText,
             secondaryBtnHref: hero.secondaryBtnHref,
             pills,
+          },
+          shopHero: {
+            image: shopHero.image,
+            heading: shopHero.heading,
+            subheading: shopHero.subheading,
           },
         }),
       });
@@ -404,6 +433,83 @@ export default function HomePageContentClient() {
             </div>
           </div>
 
+          {/* ── Shop Page Hero ── */}
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 space-y-5">
+            <div>
+              <h2 className="text-sm font-bold uppercase tracking-widest text-slate-300">Shop Page Hero</h2>
+              <p className="text-slate-500 text-xs mt-1">
+                The banner shown at the top of the Shop page (not shown when a category is selected).
+              </p>
+            </div>
+
+            {/* Shop hero background image */}
+            <div className="space-y-3">
+              <h3 className="text-xs font-semibold uppercase tracking-widest text-slate-400">Background Image</h3>
+              {shopHero.image && (
+                <div className="relative group w-full max-w-lg overflow-hidden rounded-lg border border-slate-600 aspect-[16/7]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={shopHero.image} alt="Shop hero preview" className="w-full h-full object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => setShopHero((prev) => ({ ...prev, image: "" }))}
+                    className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    Remove
+                  </button>
+                </div>
+              )}
+              <input
+                ref={shopHeroImgFileRef}
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadImage(f, "shopHero"); e.target.value = ""; }}
+                disabled={shopHeroImgUploading}
+              />
+              <button
+                type="button"
+                onClick={() => shopHeroImgFileRef.current?.click()}
+                disabled={shopHeroImgUploading}
+                className="bg-slate-700 hover:bg-slate-600 disabled:opacity-50 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
+              >
+                {shopHeroImgUploading ? "Uploading…" : shopHero.image ? "Replace Image" : "Upload Image"}
+              </button>
+              <div>
+                <label className={labelCls}>Or paste image URL</label>
+                <input
+                  className={inputCls}
+                  type="url"
+                  value={shopHero.image}
+                  onChange={(e) => setShopHero((prev) => ({ ...prev, image: e.target.value }))}
+                  placeholder="https://res.cloudinary.com/… (leave blank to use default)"
+                />
+              </div>
+            </div>
+
+            <div className="border-t border-slate-700 pt-5 grid grid-cols-1 gap-4">
+              <div>
+                <label className={labelCls}>Heading</label>
+                <input
+                  className={inputCls}
+                  type="text"
+                  value={shopHero.heading}
+                  onChange={(e) => setShopHero((prev) => ({ ...prev, heading: e.target.value }))}
+                  placeholder="IFI BEST PRODUCTS FROM BRANDS YOU LOVE"
+                />
+              </div>
+              <div>
+                <label className={labelCls}>Subheading (optional)</label>
+                <input
+                  className={inputCls}
+                  type="text"
+                  value={shopHero.subheading}
+                  onChange={(e) => setShopHero((prev) => ({ ...prev, subheading: e.target.value }))}
+                  placeholder="Discover premium products from verified sellers across Pakistan"
+                />
+              </div>
+            </div>
+          </div>
+
           {/* ── Sale Image ── */}
           <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 space-y-4">
             <div>
@@ -553,7 +659,7 @@ export default function HomePageContentClient() {
 
           <button
             type="submit"
-            disabled={saving || imgUploading || heroImgUploading || vidUploading}
+            disabled={saving || imgUploading || heroImgUploading || shopHeroImgUploading || vidUploading}
             className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-semibold px-6 py-2.5 rounded-lg text-sm"
           >
             {saving ? "Saving…" : "Save Changes"}

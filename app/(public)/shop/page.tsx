@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/mongodb";
 import { serializeProductFromLean } from "@/lib/serializeProduct";
 import Product from "@/models/Product";
 import SubCategory from "@/models/SubCategory";
+import HomePageContent from "@/models/HomePageContent";
 import type { IProduct } from "@/types/product";
 import ShopClient from "./ShopClient";
 
@@ -9,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 export default async function ShopPage() {
   await connectDB();
-  const [raw, subCatsRaw] = await Promise.all([
+  const [raw, subCatsRaw, homeContent] = await Promise.all([
     Product.find({
       isActive: true,
       $or: [{ status: "Published" }, { status: { $exists: false } }],
@@ -17,6 +18,7 @@ export default async function ShopPage() {
       .sort({ createdAt: -1 })
       .lean(),
     SubCategory.find({ isActive: true }).sort({ category: 1, name: 1 }).lean(),
+    HomePageContent.findOne().lean(),
   ]);
 
   const products: IProduct[] = (raw as Record<string, unknown>[]).map(serializeProductFromLean);
@@ -40,5 +42,13 @@ export default async function ShopPage() {
     subCategoriesByCategory[category].push(name);
   }
 
-  return <ShopClient products={products} subCategoriesByCategory={subCategoriesByCategory} />;
+  const content = homeContent as { shopHero?: { image?: string; heading?: string; subheading?: string } } | null;
+
+  return (
+    <ShopClient
+      products={products}
+      subCategoriesByCategory={subCategoriesByCategory}
+      shopHero={content?.shopHero}
+    />
+  );
 }

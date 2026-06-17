@@ -19,15 +19,14 @@ export async function PUT(req: NextRequest) {
   if (!auth.ok) return auth.response;
 
   await connectDB();
-  const { saleImage, videoUrl, hero } = await req.json();
+  const { saleImage, videoUrl, hero, shopHero } = await req.json();
 
   const update: Record<string, unknown> = {
     saleImage: saleImage ?? "",
     videoUrl: videoUrl ?? "",
   };
-  if (hero !== undefined) {
-    update.hero = hero;
-  }
+  if (hero !== undefined) update.hero = hero;
+  if (shopHero !== undefined) update.shopHero = shopHero;
 
   const doc = await HomePageContent.findOneAndUpdate({}, update, {
     new: true,

@@ -23,11 +23,21 @@ const HeroSchema = new Schema(
   { _id: false }
 );
 
+const ShopHeroSchema = new Schema(
+  {
+    image: { type: String, default: "" },
+    heading: { type: String, default: "IFI BEST PRODUCTS FROM BRANDS YOU LOVE" },
+    subheading: { type: String, default: "" },
+  },
+  { _id: false }
+);
+
 const HomePageContentSchema = new Schema(
   {
     saleImage: { type: String, default: "" },
     videoUrl: { type: String, default: "" },
     hero: { type: HeroSchema, default: () => ({}) },
+    shopHero: { type: ShopHeroSchema, default: () => ({}) },
   },
   { timestamps: true }
 );

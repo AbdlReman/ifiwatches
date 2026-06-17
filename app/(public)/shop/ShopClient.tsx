@@ -36,12 +36,16 @@ function categoriesOf(product: IProduct): string[] {
   return product.category ? [product.category] : [];
 }
 
+type ShopHero = { image?: string; heading?: string; subheading?: string };
+
 export default function ShopClient({
   products,
   subCategoriesByCategory = {},
+  shopHero,
 }: {
   products: IProduct[];
   subCategoriesByCategory?: Record<string, string[]>;
+  shopHero?: ShopHero;
 }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -213,7 +217,9 @@ export default function ShopClient({
           <>
             <div
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${siteConfig.images.hero})` }}
+              style={{
+                backgroundImage: `url(${shopHero?.image || siteConfig.images.hero})`,
+              }}
               aria-hidden="true"
             />
             <div className="absolute inset-0 bg-black/55" aria-hidden="true" />
@@ -247,12 +253,19 @@ export default function ShopClient({
                 : "text-zinc-900")
             }
           >
-            {category !== "All" ? category : <>IFI BEST PRODUCTS FROM <br />BRANDS YOU LOVE</>}
+            {category !== "All"
+              ? category
+              : (shopHero?.heading || "IFI BEST PRODUCTS FROM BRANDS YOU LOVE")}
           </h1>
+          {category === "All" && shopHero?.subheading && (
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/85 drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)]">
+              {shopHero.subheading}
+            </p>
+          )}
           <p
             className={
               "mt-2 text-sm " +
-              (category === "All" ? "text-white/80" : "text-zinc-600")
+              (category === "All" ? "text-white/70" : "text-zinc-600")
             }
           >
             {filtered.length} products
