@@ -208,10 +208,13 @@ export default function ShopClient({
             className="text-zinc-500 [&_a]:text-zinc-800 [&_a:hover]:underline [&_span]:text-zinc-500"
             items={[
               { label: "Home", href: "/" },
-              { label: "Shop" },
+              { label: "Shop", href: category !== "All" ? "/shop" : undefined },
+              ...(category !== "All" ? [{ label: category }] : []),
             ]}
           />
-          <h1 className="mt-6 text-xl font-black uppercase tracking-tight sm:text-3xl lg:text-4xl">IFI BEST PRODUCTS FROM <br/>BRANDS YOU LOVE</h1>
+          <h1 className="mt-6 text-xl font-black uppercase tracking-tight sm:text-3xl lg:text-4xl">
+            {category !== "All" ? category : <>IFI BEST PRODUCTS FROM <br />BRANDS YOU LOVE</>}
+          </h1>
           <p className="mt-2 text-sm text-zinc-600">{filtered.length} products</p>
         </div>
       </header>
