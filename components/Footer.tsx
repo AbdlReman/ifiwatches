@@ -194,12 +194,16 @@ export default function Footer() {
           <p className="text-zinc-500 text-xs">
             © {new Date().getFullYear()} {siteConfig.brandName}. All rights reserved.
           </p>
-          <div className="flex gap-6">
-            {["Privacy Policy", "Terms of Service", "Cookie Policy"].map((item) => (
-              <Link key={item} href="#" className="text-zinc-500 text-xs hover:text-zinc-950 transition-colors">
-                {item}
-              </Link>
-            ))}
+          <div className="flex flex-wrap justify-center gap-6">
+            <Link href="/privacy-policy" className="text-zinc-500 text-xs hover:text-zinc-950 transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms-of-service" className="text-zinc-500 text-xs hover:text-zinc-950 transition-colors">
+              Terms of Service
+            </Link>
+            <Link href="/cookie-policy" className="text-zinc-500 text-xs hover:text-zinc-950 transition-colors">
+              Cookie Policy
+            </Link>
           </div>
         </div>
       </div>
