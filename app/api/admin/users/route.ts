@@ -5,7 +5,7 @@ import { isAdmin } from "@/lib/isAdmin";
 import type { UserRole } from "@/lib/auth/jwt";
 
 const SELECT_FIELDS =
-  "email name role createdAt phone address businessName businessCategory businessSummary sellerApproved sellerEnabled assignedCategories commissionRate sellerCode";
+  "email name role createdAt phone whatsapp address businessName businessCategory businessSummary sellerApproved sellerEnabled assignedCategories commissionRate sellerCode";
 
 function formatUser(r: Record<string, unknown>) {
   return {
@@ -14,6 +14,7 @@ function formatUser(r: Record<string, unknown>) {
     name: r.name as string,
     role: r.role as UserRole,
     phone: (r.phone as string) || "",
+    whatsapp: (r.whatsapp as string) || "",
     address: (r.address as string) || "",
     businessName: (r.businessName as string) || "",
     businessCategory: (r.businessCategory as string) || "",

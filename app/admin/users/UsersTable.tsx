@@ -23,6 +23,7 @@ type AdminUser = {
   name: string;
   role: UserRole;
   phone: string;
+  whatsapp: string;
   address: string;
   businessName: string;
   businessCategory: string;
@@ -261,6 +262,11 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
                       ) : null}
                       <p className="text-slate-500 text-xs truncate">{seller.email}</p>
                       {seller.phone ? <p className="text-slate-500 text-xs">{seller.phone}</p> : null}
+                      {seller.whatsapp ? (
+                        <p className="text-slate-500 text-xs flex items-center gap-1">
+                          <span className="font-semibold text-emerald-400">WA:</span> {seller.whatsapp}
+                        </p>
+                      ) : null}
                       {seller.businessCategory ? (
                         <span className="mt-1 inline-flex rounded-full bg-indigo-900/50 px-2 py-0.5 text-[10px] font-medium text-indigo-300">
                           {seller.businessCategory}
@@ -495,6 +501,11 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
                       ) : null}
                       <p className="text-slate-400 text-sm">{seller.email}</p>
                       {seller.phone ? <p className="text-slate-500 text-sm">{seller.phone}</p> : null}
+                      {seller.whatsapp ? (
+                        <p className="text-slate-500 text-sm flex items-center gap-1">
+                          <span className="font-semibold text-emerald-400">WA:</span> {seller.whatsapp}
+                        </p>
+                      ) : null}
                       {seller.address ? <p className="text-slate-500 text-sm">{seller.address}</p> : null}
                       {seller.businessCategory ? (
                         <span className="mt-1 inline-flex rounded-full bg-indigo-900/50 px-2.5 py-0.5 text-[11px] font-medium text-indigo-300">
@@ -650,6 +661,17 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
                   {viewingSeller.businessName && (
                     <p className="text-slate-400 text-xs mt-0.5">{viewingSeller.businessName}</p>
                   )}
+                  <div className="flex flex-wrap gap-3 mt-1">
+                    {viewingSeller.phone && (
+                      <p className="text-slate-400 text-xs">{viewingSeller.phone}</p>
+                    )}
+                    {viewingSeller.whatsapp && (
+                      <p className="text-xs flex items-center gap-1">
+                        <span className="font-semibold text-emerald-400">WA:</span>
+                        <span className="text-slate-400">{viewingSeller.whatsapp}</span>
+                      </p>
+                    )}
+                  </div>
                 </div>
                 <button
                   type="button"

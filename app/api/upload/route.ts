@@ -11,8 +11,9 @@ export async function POST(req: NextRequest) {
       .slice(0, 40);
     const cloudFolder = `ifilifestyle/${folderSlug || "products"}`;
 
-    const isPaymentScreenshot = folderSlug === "payment-screenshots";
-    if (!isPaymentScreenshot) {
+    const isPublicUpload =
+      folderSlug === "payment-screenshots" || folderSlug === "seller-kyc";
+    if (!isPublicUpload) {
       const auth = await requireRoles(["admin", "seller"]);
       if (!auth.ok) return auth.response;
     }
