@@ -103,7 +103,9 @@ export default function CheckoutPage() {
 
   const subtotal = useMemo(() => items.reduce((sum, item) => sum + item.price * item.quantity, 0), [items]);
   const discountAmount = useMemo(() => discountFromPercent(subtotal, discountPercent), [subtotal, discountPercent]);
-  const totalAmount = useMemo(() => Math.round((subtotal - discountAmount) * 100) / 100, [subtotal, discountAmount]);
+  const discountedSubtotal = useMemo(() => Math.round((subtotal - discountAmount) * 100) / 100, [subtotal, discountAmount]);
+  const deliveryCharges = useMemo(() => (discountedSubtotal >= 5999 ? 0 : 299), [discountedSubtotal]);
+  const totalAmount = useMemo(() => Math.round((discountedSubtotal + deliveryCharges) * 100) / 100, [discountedSubtotal, deliveryCharges]);
 
   const emptyWarned = useRef(false);
   useEffect(() => {
@@ -643,6 +645,19 @@ export default function CheckoutPage() {
                   <span>Discount{appliedCoupon ? ` (${appliedCoupon})` : ""}</span>
                   <span>-{formatPkr(discountAmount)}</span>
                 </div>
+              )}
+              <div className="flex justify-between text-gray-500">
+                <span>Delivery</span>
+                {deliveryCharges === 0 ? (
+                  <span className="text-emerald-600 font-semibold">FREE</span>
+                ) : (
+                  <span>{formatPkr(deliveryCharges)}</span>
+                )}
+              </div>
+              {deliveryCharges > 0 && (
+                <p className="text-[11px] text-gray-400">
+                  Free delivery on orders PKR 5,999+
+                </p>
               )}
               <div className="flex justify-between font-black text-base pt-3 border-t border-gray-100 text-gray-900">
                 <span>Total</span>

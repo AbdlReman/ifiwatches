@@ -22,6 +22,7 @@ export interface IOrder {
   items: CartItem[];
   subtotal: number;
   discountAmount: number;
+  deliveryCharges: number;
   totalAmount: number;
   couponCode?: string;
   paymentMethod?: PaymentMethodCode;

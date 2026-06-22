@@ -142,7 +142,9 @@ export async function POST(req: NextRequest) {
       couponIdToIncrement = String(c._id);
     }
 
-    const totalAmount = Math.round((serverSubtotal - discountAmount) * 100) / 100;
+    const discountedSubtotal = Math.round((serverSubtotal - discountAmount) * 100) / 100;
+    const deliveryCharges = discountedSubtotal >= 5999 ? 0 : 299;
+    const totalAmount = Math.round((discountedSubtotal + deliveryCharges) * 100) / 100;
     const reservedProducts: { productId: string; quantity: number }[] = [];
 
     for (const rawItem of items) {
@@ -199,6 +201,7 @@ export async function POST(req: NextRequest) {
         items,
         subtotal: serverSubtotal,
         discountAmount,
+        deliveryCharges,
         totalAmount,
         couponCode: couponCodeSaved,
         paymentMethod,
@@ -258,6 +261,7 @@ export async function POST(req: NextRequest) {
       ),
       subtotal: serverSubtotal,
       discountAmount,
+      deliveryCharges,
       totalAmount,
       couponCode: couponCodeSaved,
       payment: {

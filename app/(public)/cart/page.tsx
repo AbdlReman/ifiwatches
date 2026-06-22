@@ -36,7 +36,9 @@ export default function CartPage() {
     () => discountFromPercent(subtotal, discountPercent),
     [subtotal, discountPercent]
   );
-  const total = useMemo(() => Math.round((subtotal - discountAmount) * 100) / 100, [subtotal, discountAmount]);
+  const discountedSubtotal = useMemo(() => Math.round((subtotal - discountAmount) * 100) / 100, [subtotal, discountAmount]);
+  const deliveryCharges = useMemo(() => (discountedSubtotal >= 5999 ? 0 : 299), [discountedSubtotal]);
+  const total = useMemo(() => Math.round((discountedSubtotal + deliveryCharges) * 100) / 100, [discountedSubtotal, deliveryCharges]);
 
   const saveItems = (next: CartItem[]) => {
     setItems(next);
@@ -121,11 +123,24 @@ export default function CartPage() {
                 <span>Subtotal</span>
                 <span>{formatPkr(subtotal)}</span>
               </p>
+              {discountAmount > 0 && (
+                <p className="flex justify-between text-emerald-600">
+                  <span>Discount{discountPercent ? ` (${discountPercent}%)` : ""}</span>
+                  <span>-{formatPkr(discountAmount)}</span>
+                </p>
+              )}
               <p className="flex justify-between">
-                <span>Discount{discountPercent ? ` (${discountPercent}%)` : ""}</span>
-                <span>-{formatPkr(discountAmount)}</span>
+                <span>Delivery</span>
+                {deliveryCharges === 0 ? (
+                  <span className="text-emerald-600 font-semibold">FREE</span>
+                ) : (
+                  <span>{formatPkr(deliveryCharges)}</span>
+                )}
               </p>
-              <p className="flex justify-between font-bold text-base">
+              {deliveryCharges > 0 && (
+                <p className="text-[11px] text-gray-400">Free delivery on orders PKR 5,999+</p>
+              )}
+              <p className="flex justify-between font-bold text-base border-t pt-2">
                 <span>Total</span>
                 <span>{formatPkr(total)}</span>
               </p>

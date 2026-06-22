@@ -42,7 +42,7 @@ export const siteConfig = {
   trustBadges: [
     {
       title: "Free Shipping",
-      description: "Free shipping on all orders above Rs. 3000 across Pakistan",
+      description: "Free shipping on all orders above Rs. 5,999 across Pakistan",
     },
     {
       title: "Discreet Packaging",

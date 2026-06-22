@@ -143,7 +143,7 @@ export default function ContactPage() {
               <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Quick Answers</p>
               <div className="space-y-4">
                 {[
-                  { q: "How much is shipping?", a: "Shipping is free on all orders above Rs. 3000 across Pakistan." },
+                  { q: "How much is shipping?", a: "Shipping is free on all orders above Rs. 5,999 across Pakistan." },
                   { q: "Is packaging private?", a: "Yes. Orders are delivered in plain, discreet packaging for your privacy." },
                   { q: "Can I sell on ifilifestyle?", a: "Yes. Create a seller account and list products through the seller dashboard." },
                 ].map(({ q, a }) => (

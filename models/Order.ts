@@ -28,6 +28,7 @@ const OrderSchema = new Schema(
     ],
     subtotal: { type: Number, required: true, min: 0 },
     discountAmount: { type: Number, default: 0, min: 0 },
+    deliveryCharges: { type: Number, default: 0, min: 0 },
     totalAmount: { type: Number, required: true, min: 0 },
     couponCode: { type: String, default: "" },
     paymentMethod: {
