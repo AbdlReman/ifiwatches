@@ -435,18 +435,45 @@ export default function ProductDetailClient({
           </div>
         </div>
 
-        <section className="mt-14 grid gap-4 border-t border-neutral-200 pt-10 text-sm md:grid-cols-3">
-          <div>
-            <h2 className="text-xs font-black uppercase tracking-widest text-black">Shipping</h2>
-            <p className="mt-2 leading-relaxed text-neutral-600">Standard and express options at checkout.</p>
-          </div>
-          <div>
-            <h2 className="text-xs font-black uppercase tracking-widest text-black">Returns</h2>
-            <p className="mt-2 leading-relaxed text-neutral-600">Easy returns within policy. See terms at checkout.</p>
-          </div>
-          <div>
-            <h2 className="text-xs font-black uppercase tracking-widest text-black">Authentic</h2>
-            <p className="mt-2 leading-relaxed text-neutral-600">Products sourced with quality you can trust.</p>
+        {/* Trust bar */}
+        <section className="mt-14 border-t border-neutral-200 pt-10">
+          <div className="grid gap-px bg-neutral-200 border border-neutral-200 sm:grid-cols-3">
+            {/* Shipping */}
+            <div className="flex items-start gap-4 bg-white px-6 py-6 sm:py-7">
+              <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center bg-black text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+                </svg>
+              </span>
+              <div>
+                <h2 className="text-xs font-black uppercase tracking-widest text-black">Shipping</h2>
+                <p className="mt-1.5 text-sm leading-relaxed text-neutral-500">Standard and express delivery options available at checkout.</p>
+              </div>
+            </div>
+            {/* Returns */}
+            <div className="flex items-start gap-4 bg-white px-6 py-6 sm:py-7">
+              <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center bg-black text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                </svg>
+              </span>
+              <div>
+                <h2 className="text-xs font-black uppercase tracking-widest text-black">Returns</h2>
+                <p className="mt-1.5 text-sm leading-relaxed text-neutral-500">Easy returns within our policy window. Full terms shown at checkout.</p>
+              </div>
+            </div>
+            {/* Authentic */}
+            <div className="flex items-start gap-4 bg-white px-6 py-6 sm:py-7">
+              <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center bg-black text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                </svg>
+              </span>
+              <div>
+                <h2 className="text-xs font-black uppercase tracking-widest text-black">Authentic</h2>
+                <p className="mt-1.5 text-sm leading-relaxed text-neutral-500">Every product is quality-sourced and verified before it reaches you.</p>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -533,47 +560,72 @@ function TabbedProductSections({
   productName: string;
 }) {
   const [tab, setTab] = useState<"details" | "reviews">("details");
-  const tabBtn = (active: boolean) =>
-    `border-b-2 pb-3 text-xs font-black uppercase tracking-widest ${
-      active ? "border-black text-black" : "border-transparent text-neutral-500 hover:text-black"
-    }`;
+  const [reviewCount, setReviewCount] = useState<number | null>(null);
+
   return (
-    <div className="border border-neutral-300 bg-white p-5 sm:p-8">
-      <div className="flex gap-8 border-b border-neutral-200">
+    <div className="border border-neutral-200 bg-white">
+      {/* Tab bar */}
+      <div className="flex border-b border-neutral-200" role="tablist">
         <button
           type="button"
-          onClick={() => setTab("details")}
-          className={tabBtn(tab === "details")}
-          aria-selected={tab === "details"}
           role="tab"
+          aria-selected={tab === "details"}
+          onClick={() => setTab("details")}
+          className={`relative px-6 py-4 text-xs font-black uppercase tracking-widest transition-colors ${
+            tab === "details"
+              ? "text-black after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black"
+              : "text-neutral-400 hover:text-neutral-700"
+          }`}
         >
           Description
         </button>
         <button
           type="button"
-          onClick={() => setTab("reviews")}
-          className={tabBtn(tab === "reviews")}
-          aria-selected={tab === "reviews"}
           role="tab"
+          aria-selected={tab === "reviews"}
+          onClick={() => setTab("reviews")}
+          className={`relative flex items-center gap-2 px-6 py-4 text-xs font-black uppercase tracking-widest transition-colors ${
+            tab === "reviews"
+              ? "text-black after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black"
+              : "text-neutral-400 hover:text-neutral-700"
+          }`}
         >
           Reviews
+          {reviewCount !== null && (
+            <span className={`inline-flex items-center justify-center rounded-full px-1.5 py-0.5 text-[10px] font-black min-w-[1.2rem] ${
+              tab === "reviews" ? "bg-black text-white" : "bg-neutral-200 text-neutral-600"
+            }`}>
+              {reviewCount}
+            </span>
+          )}
         </button>
       </div>
 
-      <div className="mt-6" role="tabpanel">
+      {/* Panel */}
+      <div className="p-6 sm:p-10" role="tabpanel">
         {tab === "details" ? (
           detailHtml ? (
             <div
-              className="prose prose-neutral prose-sm max-w-none prose-headings:font-semibold prose-p:text-neutral-600"
+              className="prose prose-neutral max-w-none
+                prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tight prose-headings:text-black
+                prose-p:text-neutral-600 prose-p:leading-relaxed
+                prose-li:text-neutral-600 prose-li:leading-relaxed
+                prose-strong:text-black prose-strong:font-bold
+                prose-a:text-black prose-a:underline
+                prose-img:rounded-none prose-img:border prose-img:border-neutral-200"
               dangerouslySetInnerHTML={{ __html: detailHtml }}
             />
           ) : (
-            <p className="text-neutral-600 leading-relaxed">
-              Detailed specifications for {productName} will appear here when provided.
-            </p>
+            <div className="flex flex-col items-center py-10 text-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-neutral-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+              </svg>
+              <p className="text-sm font-semibold text-neutral-400">No description yet</p>
+              <p className="mt-1 text-xs text-neutral-400">Detailed specifications for {productName} will appear here when provided.</p>
+            </div>
           )
         ) : (
-          <ProductReviewsPanel productId={productId} />
+          <ProductReviewsPanel productId={productId} onCountChange={setReviewCount} />
         )}
       </div>
     </div>
