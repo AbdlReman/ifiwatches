@@ -4,7 +4,9 @@
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Hp\\\\Desktop\\\\ifilifestyle\" -Force)",
       "Bash(Select-Object Name, PSIsContainer)",
       "Bash(npx tsc *)",
-      "Bash(xargs grep -l \"localStorage.*cart\")"
+      "Bash(xargs grep -l \"localStorage.*cart\")",
+      "Bash(Get-ChildItem -Recurse -Directory)",
+      "Bash(Select-Object -First 50 FullName)"
     ]
   }
 }

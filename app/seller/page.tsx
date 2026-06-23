@@ -51,10 +51,10 @@ export default async function SellerDashboardPage() {
   const pendingOrders = orders.filter((o) => String(o.orderStatus) === "pending").length;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5 sm:space-y-8">
       <div>
-        <h1 className="text-3xl font-black uppercase tracking-tight text-white">Seller dashboard</h1>
-        <p className="text-slate-400 text-sm mt-1">Products, orders, and sales for your listings</p>
+        <h1 className="text-xl sm:text-3xl font-black uppercase tracking-tight text-white">Seller dashboard</h1>
+        <p className="text-slate-400 text-xs sm:text-sm mt-1">Products, orders, and sales for your listings</p>
       </div>
 
       <div className="flex items-center gap-3 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3">
@@ -68,16 +68,16 @@ export default async function SellerDashboardPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
         {[
           { label: "My products", value: productDocs.length },
           { label: "Units sold", value: unitsSold },
           { label: "Orders (any)", value: orders.length },
           { label: "Attributed sales", value: formatPkr(attributedRevenue) },
         ].map((stat) => (
-          <div key={stat.label} className="bg-slate-800 border border-slate-700 rounded-xl p-4">
-            <p className="text-xs text-slate-500 uppercase tracking-widest">{stat.label}</p>
-            <p className="text-2xl font-black text-white mt-1">{stat.value}</p>
+          <div key={stat.label} className="bg-slate-800 border border-slate-700 rounded-lg p-3 sm:p-4">
+            <p className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest leading-snug">{stat.label}</p>
+            <p className="text-lg sm:text-2xl font-black text-white mt-1">{stat.value}</p>
           </div>
         ))}
       </div>

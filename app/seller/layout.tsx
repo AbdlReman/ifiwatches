@@ -34,7 +34,7 @@ export default async function SellerLayout({ children }: { children: React.React
         <div className="min-h-full flex bg-slate-950 text-slate-100">
           <SellerSidebar />
           <div className="flex-1 flex flex-col min-h-screen overflow-auto bg-slate-950">
-            <main className="flex-1 p-6 lg:p-8 bg-slate-950">{children}</main>
+            <main className="flex-1 pt-14 px-3 pb-3 sm:px-5 sm:pb-5 sm:pt-14 lg:p-8 bg-slate-950">{children}</main>
           </div>
         </div>
       </body>

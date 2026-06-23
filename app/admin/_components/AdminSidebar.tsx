@@ -9,7 +9,7 @@ const navLinks = [
     href: "/admin/users",
     label: "Users",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -22,7 +22,7 @@ const navLinks = [
     href: "/admin",
     label: "Dashboard",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.5h8.25V3H3v10.5Zm0 7.5h8.25v-4.5H3V21Zm9.75 0H21V10.5h-8.25V21Zm0-12H21V3h-8.25v6Z" />
       </svg>
     ),
@@ -31,7 +31,7 @@ const navLinks = [
     href: "/admin/approvals",
     label: "Approvals",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -44,7 +44,7 @@ const navLinks = [
     href: "/admin/products",
     label: "Products",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
       </svg>
     ),
@@ -53,7 +53,7 @@ const navLinks = [
     href: "/admin/orders",
     label: "Orders",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M6.75 3.75v3m10.5-3v3M5.25 10.5h13.5M6 20.25h12a2.25 2.25 0 0 0 2.25-2.25v-8.25H3.75V18A2.25 2.25 0 0 0 6 20.25Z" />
       </svg>
     ),
@@ -62,7 +62,7 @@ const navLinks = [
     href: "/admin/coupons",
     label: "Coupons",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -75,7 +75,7 @@ const navLinks = [
     href: "/admin/reviews",
     label: "Reviews",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -88,7 +88,7 @@ const navLinks = [
     href: "/admin/newsletter",
     label: "Newsletter",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 7.5v9A2.25 2.25 0 0 1 19.5 18.75h-15A2.25 2.25 0 0 1 2.25 16.5v-9A2.25 2.25 0 0 1 4.5 5.25h15A2.25 2.25 0 0 1 21.75 7.5Zm-18 0 8.25 5.25L20.25 7.5" />
       </svg>
     ),
@@ -97,7 +97,7 @@ const navLinks = [
     href: "/admin/categories",
     label: "Categories",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75A2.25 2.25 0 0 1 6 4.5h4.5a2.25 2.25 0 0 1 2.25 2.25v4.5A2.25 2.25 0 0 1 10.5 13.5H6a2.25 2.25 0 0 1-2.25-2.25v-4.5Zm7.5 0A2.25 2.25 0 0 1 13.5 4.5H18a2.25 2.25 0 0 1 2.25 2.25v4.5A2.25 2.25 0 0 1 18 13.5h-4.5a2.25 2.25 0 0 1-2.25-2.25v-4.5Zm-7.5 7.5A2.25 2.25 0 0 1 6 12h4.5a2.25 2.25 0 0 1 2.25 2.25v4.5A2.25 2.25 0 0 1 10.5 21H6a2.25 2.25 0 0 1-2.25-2.25v-4.5Zm7.5 0A2.25 2.25 0 0 1 13.5 12H18a2.25 2.25 0 0 1 2.25 2.25v4.5A2.25 2.25 0 0 1 18 21h-4.5a2.25 2.25 0 0 1-2.25-2.25v-4.5Z" />
       </svg>
     ),
@@ -106,7 +106,7 @@ const navLinks = [
     href: "/admin/subcategories",
     label: "Sub Categories",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h7.5M8.25 12h7.5m-7.5 5.25h4.5M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
       </svg>
     ),
@@ -115,7 +115,7 @@ const navLinks = [
     href: "/admin/homepage-content",
     label: "Pages Content",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75 9 9l3.75 3.75L16.5 9l5.25 6.75M3 21h18" />
       </svg>
     ),
@@ -124,7 +124,7 @@ const navLinks = [
     href: "/admin/products/new",
     label: "Add Product",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
       </svg>
     ),
@@ -135,7 +135,14 @@ export default function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const [pendingApprovals, setPendingApprovals] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
 
+  // Close drawer on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
+  // Fetch pending approvals count
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
@@ -162,81 +169,122 @@ export default function AdminSidebar() {
   };
 
   return (
-    <aside className="w-12 lg:w-60 bg-slate-800 flex flex-col flex-shrink-0 border-r border-slate-700">
-      {/* Brand */}
-      <div className="h-14 flex items-center justify-center lg:justify-start px-3 border-b border-slate-700">
-        <span className="font-black text-base tracking-widest text-white">IFI</span>
-        <span className="ml-2 font-semibold text-xs uppercase tracking-widest text-slate-400 hidden lg:block">
-          Admin Panel
-        </span>
-      </div>
+    <>
+      {/* Mobile hamburger button */}
+      <button
+        type="button"
+        onClick={() => setIsOpen(true)}
+        className="fixed top-3 left-3 z-[60] flex items-center justify-center w-9 h-9 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-colors lg:hidden"
+        aria-label="Open menu"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+        </svg>
+      </button>
 
-      {/* Nav */}
-      <nav className="flex-1 py-3 flex flex-col gap-0.5 px-1.5 lg:px-2 overflow-y-auto">
-        <p className="text-slate-500 text-xs uppercase tracking-widest font-bold px-2 mb-2 hidden lg:block">
-          Manage
-        </p>
-        {navLinks.map((link) => {
-          const active =
-            link.href === "/admin/products"
-              ? pathname === "/admin/products" || pathname.startsWith("/admin/products/")
-              : link.href === "/admin/users"
-              ? pathname === "/admin/users"
-              : link.href === "/admin"
-              ? pathname === "/admin"
-              : link.href === "/admin/approvals"
-              ? pathname === "/admin/approvals"
-              : link.href === "/admin/reviews"
-              ? pathname === "/admin/reviews" || pathname.startsWith("/admin/reviews/")
-              : link.href === "/admin/coupons"
-              ? pathname === "/admin/coupons"
-              : link.href === "/admin/newsletter"
-              ? pathname === "/admin/newsletter"
-              : pathname === link.href;
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`flex items-center justify-center lg:justify-start gap-2 px-2 py-2 lg:px-3 lg:py-2 rounded-lg text-xs font-medium transition-colors ${
-                active
-                  ? "bg-slate-700 text-white"
-                  : "text-slate-400 hover:text-white hover:bg-slate-700/50"
-              }`}
-            >
-              <span className="[&_svg]:w-4 [&_svg]:h-4 lg:[&_svg]:w-5 lg:[&_svg]:h-5 flex-shrink-0">{link.icon}</span>
-              <span className="hidden lg:block flex-1 truncate">{link.label}</span>
-              {link.href === "/admin/approvals" && pendingApprovals > 0 ? (
-                <span className="hidden lg:inline-flex ml-auto min-w-[1.25rem] items-center justify-center rounded-full bg-amber-500 px-1.5 py-0.5 text-[10px] font-black text-zinc-950">
-                  {pendingApprovals > 99 ? "99+" : pendingApprovals}
-                </span>
-              ) : null}
-            </Link>
-          );
-        })}
-      </nav>
+      {/* Backdrop overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-[58] bg-black/60 backdrop-blur-sm lg:hidden"
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
 
-      {/* Footer actions */}
-      <div className="px-2 py-4 border-t border-slate-700 flex flex-col gap-1">
-        <Link
-          href="/"
-          target="_blank"
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-700/50 transition-colors"
-        >
-          <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-          </svg>
-          <span className="hidden lg:block">View Store</span>
-        </Link>
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-red-400 hover:bg-red-900/20 transition-colors w-full text-left"
-        >
-          <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
-          </svg>
-          <span className="hidden lg:block">Logout</span>
-        </button>
-      </div>
-    </aside>
+      {/* Sidebar */}
+      <aside
+        className={`
+          fixed inset-y-0 left-0 z-[59] w-64
+          lg:static lg:w-60 lg:translate-x-0
+          bg-slate-800 flex flex-col flex-shrink-0 border-r border-slate-700
+          transition-transform duration-200 ease-in-out
+          ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+        `}
+      >
+        {/* Brand */}
+        <div className="h-14 flex items-center justify-between px-4 border-b border-slate-700">
+          <div className="flex items-center gap-2">
+            <span className="font-black text-base tracking-widest text-white">IFI</span>
+            <span className="font-semibold text-xs uppercase tracking-widest text-slate-400">Admin Panel</span>
+          </div>
+          {/* Close button (mobile only) */}
+          <button
+            type="button"
+            onClick={() => setIsOpen(false)}
+            className="lg:hidden flex items-center justify-center w-7 h-7 rounded-full border border-slate-600 text-slate-400 hover:text-white hover:border-slate-400 transition-colors"
+            aria-label="Close menu"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Nav */}
+        <nav className="flex-1 py-3 flex flex-col gap-0.5 px-2 overflow-y-auto">
+          <p className="text-slate-500 text-xs uppercase tracking-widest font-bold px-2 mb-2">Manage</p>
+          {navLinks.map((link) => {
+            const active =
+              link.href === "/admin/products"
+                ? pathname === "/admin/products" || pathname.startsWith("/admin/products/")
+                : link.href === "/admin/users"
+                ? pathname === "/admin/users"
+                : link.href === "/admin"
+                ? pathname === "/admin"
+                : link.href === "/admin/approvals"
+                ? pathname === "/admin/approvals"
+                : link.href === "/admin/reviews"
+                ? pathname === "/admin/reviews" || pathname.startsWith("/admin/reviews/")
+                : link.href === "/admin/coupons"
+                ? pathname === "/admin/coupons"
+                : link.href === "/admin/newsletter"
+                ? pathname === "/admin/newsletter"
+                : pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors ${
+                  active
+                    ? "bg-slate-700 text-white"
+                    : "text-slate-400 hover:text-white hover:bg-slate-700/50"
+                }`}
+              >
+                {link.icon}
+                <span className="flex-1 truncate">{link.label}</span>
+                {link.href === "/admin/approvals" && pendingApprovals > 0 ? (
+                  <span className="ml-auto min-w-[1.25rem] inline-flex items-center justify-center rounded-full bg-amber-500 px-1.5 py-0.5 text-[10px] font-black text-zinc-950">
+                    {pendingApprovals > 99 ? "99+" : pendingApprovals}
+                  </span>
+                ) : null}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Footer actions */}
+        <div className="px-2 py-4 border-t border-slate-700 flex flex-col gap-1">
+          <Link
+            href="/"
+            target="_blank"
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-700/50 transition-colors"
+          >
+            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+            </svg>
+            <span>View Store</span>
+          </Link>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-red-400 hover:bg-red-900/20 transition-colors w-full text-left"
+          >
+            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+            </svg>
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+    </>
   );
 }
