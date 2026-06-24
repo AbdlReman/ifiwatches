@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import BrandLogoMark from "@/components/BrandLogoMark";
 
 const navLinks = [
   {
@@ -107,9 +106,8 @@ export default function SellerSidebar() {
       >
         {/* Brand */}
         <div className="h-16 flex items-center justify-between px-4 border-b border-slate-800">
-          <div className="flex items-center gap-3">
-            <BrandLogoMark size="sm" className="rounded" />
-            <span className="font-black text-sm uppercase tracking-widest text-white">Seller</span>
+          <div className="flex items-center gap-2">
+            <span className="font-black text-base uppercase tracking-widest text-white">Seller Dashboard</span>
           </div>
           {/* Close button (mobile only) */}
           <button
