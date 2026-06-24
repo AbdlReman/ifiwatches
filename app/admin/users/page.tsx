@@ -15,7 +15,7 @@ export default async function AdminUsersPage() {
     User.find({})
     .sort({ createdAt: -1 })
     .select(
-      "email name role createdAt phone whatsapp address businessName businessCategory businessSummary sellerApproved sellerEnabled assignedCategories commissionRate sellerCode"
+      "email name role createdAt phone whatsapp address businessName businessCategory businessSummary cnic cnicFront cnicBack sellerImage sellerApproved sellerEnabled assignedCategories commissionRate sellerCode"
     )
     .lean(),
     Category.find({ isActive: true }).sort({ name: 1 }).select("name").lean(),
@@ -34,6 +34,10 @@ export default async function AdminUsersPage() {
       businessName?: string;
       businessCategory?: string;
       businessSummary?: string;
+      cnic?: string;
+      cnicFront?: string;
+      cnicBack?: string;
+      sellerImage?: string;
       sellerApproved?: boolean;
       sellerEnabled?: boolean;
       assignedCategories?: string[];
@@ -51,6 +55,10 @@ export default async function AdminUsersPage() {
       businessName: u.businessName || "",
       businessCategory: u.businessCategory || "",
       businessSummary: u.businessSummary || "",
+      cnic: u.cnic || "",
+      cnicFront: u.cnicFront || "",
+      cnicBack: u.cnicBack || "",
+      sellerImage: u.sellerImage || "",
       sellerApproved: Boolean(u.sellerApproved),
       sellerEnabled: u.sellerEnabled !== false,
       assignedCategories: u.assignedCategories || [],
