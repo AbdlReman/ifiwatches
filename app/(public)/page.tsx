@@ -106,6 +106,7 @@ export default async function HomePage() {
   const content = homeContent as {
     saleImage?: string;
     videoUrl?: string;
+    heroImages?: string[];
     hero?: {
       image?: string;
       badgeText?: string;
@@ -119,6 +120,12 @@ export default async function HomePage() {
       pills?: string[];
     };
   } | null;
+
+  const heroImages: string[] = Array.isArray(content?.heroImages) && content.heroImages.length > 0
+    ? content.heroImages.filter(Boolean)
+    : content?.hero?.image
+    ? [content.hero.image]
+    : [];
 
   return (
     <HomePageView
@@ -137,6 +144,7 @@ export default async function HomePage() {
       saleImage={content?.saleImage || ""}
       videoUrl={content?.videoUrl || ""}
       heroContent={content?.hero}
+      heroImages={heroImages}
     />
   );
 }

@@ -46,9 +46,13 @@ const DEFAULT_HERO: HeroState = {
   pillsRaw: "Verified vendors, One seller per SKU, Nationwide delivery",
 };
 
+const MAX_HERO_SLIDES = 4;
+
 export default function HomePageContentClient() {
   const [saleImage, setSaleImage] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
+  const [heroImages, setHeroImages] = useState<string[]>([]);
+  const [heroImagesUploading, setHeroImagesUploading] = useState(false);
   const [hero, setHero] = useState<HeroState>(DEFAULT_HERO);
   const [shopHero, setShopHero] = useState<ShopHeroState>(DEFAULT_SHOP_HERO);
   const [loading, setLoading] = useState(true);
@@ -64,6 +68,7 @@ export default function HomePageContentClient() {
   const imgFileRef = useRef<HTMLInputElement>(null);
   const heroImgFileRef = useRef<HTMLInputElement>(null);
   const shopHeroImgFileRef = useRef<HTMLInputElement>(null);
+  const heroSlideFileRef = useRef<HTMLInputElement>(null);
   const vidFileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -74,6 +79,7 @@ export default function HomePageContentClient() {
         if (!res.ok) throw new Error(data.error || "Failed to load");
         setSaleImage(data.content?.saleImage ?? "");
         setVideoUrl(data.content?.videoUrl ?? "");
+        setHeroImages(Array.isArray(data.content?.heroImages) ? data.content.heroImages.filter(Boolean) : []);
         const sh = data.content?.shopHero ?? {};
         setShopHero({
           image: sh.image ?? "",
@@ -103,6 +109,25 @@ export default function HomePageContentClient() {
     };
     load();
   }, []);
+
+  const uploadHeroSlide = async (file: File) => {
+    if (heroImages.length >= MAX_HERO_SLIDES) return;
+    setHeroImagesUploading(true);
+    setError("");
+    try {
+      const form = new FormData();
+      form.append("images", file);
+      form.append("folder", "homepage/slides");
+      const res = await fetch("/api/upload", { method: "POST", body: form, credentials: "include" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Upload failed");
+      setHeroImages((prev) => [...prev, data.urls[0]].filter(Boolean).slice(0, MAX_HERO_SLIDES));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Image upload failed");
+    } finally {
+      setHeroImagesUploading(false);
+    }
+  };
 
   const uploadImage = async (file: File, target: "sale" | "hero" | "shopHero") => {
     if (target === "sale") setImgUploading(true);
@@ -207,6 +232,7 @@ export default function HomePageContentClient() {
         body: JSON.stringify({
           saleImage: img,
           videoUrl: vid,
+          heroImages,
           hero: {
             image: hero.image,
             badgeText: hero.badgeText,
@@ -273,6 +299,89 @@ export default function HomePageContentClient() {
         <p className="text-slate-500 text-sm">Loading…</p>
       ) : (
         <form onSubmit={save} className="space-y-6">
+
+          {/* ── Hero Slider Images ── */}
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 space-y-5">
+            <div>
+              <h2 className="text-sm font-bold uppercase tracking-widest text-slate-300">Hero Slider Images</h2>
+              <p className="text-slate-500 text-xs mt-1">
+                Upload 1–4 full-screen images for the homepage hero slider. These replace the single hero image below.
+              </p>
+            </div>
+
+            {/* Slide previews */}
+            {heroImages.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {heroImages.map((url, idx) => (
+                  <div key={url} className="relative group rounded-lg overflow-hidden border border-slate-600 aspect-video">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={url} alt={`Slide ${idx + 1}`} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                      {idx > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => setHeroImages((prev) => { const a = [...prev]; [a[idx - 1], a[idx]] = [a[idx], a[idx - 1]]; return a; })}
+                          className="bg-slate-700 hover:bg-slate-600 text-white text-xs px-2 py-1 rounded"
+                        >
+                          ←
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => setHeroImages((prev) => prev.filter((_, i) => i !== idx))}
+                        className="bg-red-600 hover:bg-red-700 text-white text-xs px-2 py-1 rounded"
+                      >
+                        Remove
+                      </button>
+                      {idx < heroImages.length - 1 && (
+                        <button
+                          type="button"
+                          onClick={() => setHeroImages((prev) => { const a = [...prev]; [a[idx], a[idx + 1]] = [a[idx + 1], a[idx]]; return a; })}
+                          className="bg-slate-700 hover:bg-slate-600 text-white text-xs px-2 py-1 rounded"
+                        >
+                          →
+                        </button>
+                      )}
+                    </div>
+                    <span className="absolute bottom-1 left-1 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded font-bold">
+                      {idx + 1}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <input
+              ref={heroSlideFileRef}
+              type="file"
+              accept="image/*"
+              className="sr-only"
+              onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadHeroSlide(f); e.target.value = ""; }}
+              disabled={heroImagesUploading || heroImages.length >= MAX_HERO_SLIDES}
+            />
+            <div className="flex items-center gap-3 flex-wrap">
+              <button
+                type="button"
+                onClick={() => heroSlideFileRef.current?.click()}
+                disabled={heroImagesUploading || heroImages.length >= MAX_HERO_SLIDES}
+                className="bg-slate-700 hover:bg-slate-600 disabled:opacity-40 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
+              >
+                {heroImagesUploading ? "Uploading…" : `Add Slide (${heroImages.length}/${MAX_HERO_SLIDES})`}
+              </button>
+              {heroImages.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => { if (window.confirm("Remove all hero slides?")) setHeroImages([]); }}
+                  className="text-red-400 hover:text-red-300 text-xs font-semibold underline"
+                >
+                  Clear all slides
+                </button>
+              )}
+            </div>
+            <p className="text-slate-500 text-xs">
+              Tip: hover over a slide to reorder or remove it. Slides auto-advance every 5 seconds on the homepage.
+            </p>
+          </div>
 
           {/* ── Hero Section ── */}
           <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 space-y-5">

@@ -3,6 +3,7 @@ import { siteConfig } from "@/lib/siteConfig";
 import { getCategoryVisual } from "@/components/home/categoryStyles";
 import ProductCard from "@/components/shop/ProductCard";
 import ProductSlider from "@/components/home/ProductSlider";
+import HeroSlider from "@/components/home/HeroSlider";
 import type { IProduct } from "@/types/product";
 import type { HomeCategory } from "@/lib/homeCategories";
 import { formatPkr } from "@/lib/formatCurrency";
@@ -117,6 +118,7 @@ export default function HomePageView({
   saleImage,
   videoUrl,
   heroContent,
+  heroImages = [],
 }: {
   categories: HomeCategory[];
   featuredProducts: IProduct[];
@@ -129,76 +131,18 @@ export default function HomePageView({
   saleImage?: string;
   videoUrl?: string;
   heroContent?: HeroContent;
+  heroImages?: string[];
 }) {
   const categoryCards = buildCategoryCards(categories);
-
-  const hero = {
-    image: heroContent?.image || siteConfig.images.hero,
-    badgeText: heroContent?.badgeText || "Multi-vendor marketplace",
-    heading: heroContent?.heading || "One Product.",
-    headingAccent: heroContent?.headingAccent || "One Trusted Seller. Zero Confusion..",
-    subheading:
-      heroContent?.subheading ||
-      "IFI Lifestyle brings verified vendors together under one standard — premium watches, perfumes, eyewear, gadgets, and fashion with one seller per product.",
-    primaryBtnText: heroContent?.primaryBtnText || "Explore marketplace",
-    primaryBtnHref: heroContent?.primaryBtnHref || "/shop",
-    secondaryBtnText: heroContent?.secondaryBtnText || "Become a seller",
-    secondaryBtnHref: heroContent?.secondaryBtnHref || "/register",
-    pills:
-      heroContent?.pills && heroContent.pills.length > 0
-        ? heroContent.pills
-        : ["Verified vendors", "One seller per SKU", "Nationwide delivery"],
-  };
+  const fallbackHeroImage = heroContent?.image || siteConfig.images.hero;
 
   return (
     <div className="bg-white">
-      {/* Hero */}
-      <section className="relative min-h-[min(88vh,720px)] overflow-hidden border-b border-zinc-200">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${hero.image})` }}
-          role="img"
-          aria-label=""
-        />
+      {/* Hero — full-screen image slider */}
+      <HeroSlider images={heroImages} fallback={fallbackHeroImage} />
 
-        <div className="relative mx-auto flex min-h-[min(88vh,720px)] max-w-[90rem] items-center px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-          <div className="max-w-2xl">
-            <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/30 bg-black/35 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white shadow-sm backdrop-blur-[2px]">
-              <span className="h-1.5 w-1.5 rounded-full" style={{ background: siteConfig.brandColor }} />
-              {hero.badgeText}
-            </span>
-            <h1 className="text-4xl font-black uppercase leading-[0.95] tracking-tight text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.7)] sm:text-5xl lg:text-6xl">
-              {hero.heading}
-              <br />
-              <span style={{ color: siteConfig.brandColor }}>{hero.headingAccent}</span>
-            </h1>
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.65)] md:text-lg">
-              {hero.subheading}
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href={hero.primaryBtnHref} className="btn-primary shadow-lg">
-                {hero.primaryBtnText}
-              </Link>
-              <Link
-                href={hero.secondaryBtnHref}
-                className="border-2 border-white bg-transparent px-10 py-3 text-xs font-bold uppercase tracking-widest text-white shadow-lg transition hover:bg-white hover:text-zinc-950"
-              >
-                {hero.secondaryBtnText}
-              </Link>
-            </div>
-            <div className="mt-8 flex flex-wrap gap-2">
-              {hero.pills.map((pill) => (
-                <span
-                  key={pill}
-                  className="rounded-full border border-white/35 bg-black/30 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-[2px]"
-                >
-                  {pill}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Invisible h1 for SEO */}
+      <h1 className="sr-only">IFI Lifestyle — Premium Multi-Vendor Marketplace Pakistan</h1>
 
       {/* Stats */}
       {/* <section className="border-b border-zinc-800 bg-zinc-950 text-white">
