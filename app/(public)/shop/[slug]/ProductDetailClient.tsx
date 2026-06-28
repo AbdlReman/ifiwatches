@@ -156,7 +156,7 @@ export default function ProductDetailClient({
 
       {/* ── Main grid ── */}
       <div className="mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8 lg:py-10">
-        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_480px] lg:items-stretch lg:gap-14 xl:gap-20">
+        <div className="lg:grid lg:grid-cols-2 lg:items-stretch lg:gap-10 xl:gap-14">
 
           {/* LEFT — Gallery */}
           <div className="flex flex-col lg:sticky lg:top-6 lg:self-start">
