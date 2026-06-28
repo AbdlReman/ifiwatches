@@ -159,7 +159,7 @@ export default function ProductDetailClient({
         <div className="lg:grid lg:grid-cols-2 lg:items-stretch lg:gap-10 xl:gap-14">
 
           {/* LEFT — Gallery */}
-          <div className="flex flex-col lg:sticky lg:top-6 lg:self-start">
+          <div className="flex flex-col lg:sticky lg:top-6">
             <div className="flex flex-1 gap-2.5">
 
               {/* Vertical thumbnail strip — desktop only */}
