@@ -61,10 +61,10 @@ export default function ProductSlider({ products, priorityCount = 2 }: ProductSl
 
       <div
         ref={trackRef}
-        className="flex gap-6 overflow-x-auto scroll-smooth pb-2 snap-x snap-mandatory [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex items-stretch gap-6 overflow-x-auto scroll-smooth pb-2 snap-x snap-mandatory [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {products.map((product, idx) => (
-          <div key={product._id} className="w-[min(44vw,220px)] shrink-0 snap-start sm:w-[300px]">
+          <div key={product._id} className="w-[min(44vw,220px)] shrink-0 snap-start sm:w-[300px] h-full">
             <ProductCard product={product} priority={idx < priorityCount} />
           </div>
         ))}

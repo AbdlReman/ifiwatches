@@ -67,7 +67,7 @@ export default function ProductCard({
   const extraColors = colorList.length > 4 ? colorList.length - 4 : 0;
 
   return (
-    <Link href={`/shop/${product.slug}`} className="group block">
+    <Link href={`/shop/${product.slug}`} className="group flex h-full flex-col">
       <article className="flex flex-col bg-white rounded-2xl border border-zinc-100 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden h-full">
 
         {/* Image area */}
