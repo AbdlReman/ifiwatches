@@ -160,62 +160,92 @@ export default function ProductDetailClient({
 
           {/* LEFT — Gallery */}
           <div className="lg:sticky lg:top-6 lg:self-start">
+            <div className="flex gap-2.5">
 
-            {/* Main image */}
-            <div className="relative overflow-hidden rounded-2xl bg-neutral-50 aspect-square">
-              {/* Sale badge */}
-              {hasDiscount && (
-                <span
-                  className="absolute left-4 top-4 z-10 rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-widest text-white"
-                  style={{ backgroundColor: SALE_RED }}
-                >
-                  −{discPct}%
-                </span>
-              )}
-              {/* Stock badge */}
-              {oos && (
-                <span className="absolute right-4 top-4 z-10 rounded-full bg-neutral-800 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white">
-                  Sold Out
-                </span>
-              )}
-              {lowStock && (
-                <span
-                  className="absolute right-4 top-4 z-10 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-black"
-                  style={{ background: BRAND_GOLD }}
-                >
-                  Only {stock} left
-                </span>
-              )}
-
-              {/* Image click → lightbox */}
-              <button
-                type="button"
-                onClick={() => setLightbox(true)}
-                className="relative block h-full w-full cursor-zoom-in outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-                style={{ "--tw-ring-color": BRAND_GOLD } as React.CSSProperties}
-                aria-label="Enlarge image"
-              >
-                {mainImg && isCloud(mainImg) ? (
-                  <Image src={mainImg} alt={product.name} fill priority className="object-contain p-6 transition-transform duration-500 hover:scale-[1.03]" sizes="(max-width:1024px) 100vw, 55vw" />
-                ) : mainImg ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={mainImg} alt={product.name} className="absolute inset-0 h-full w-full object-contain p-6 transition-transform duration-500 hover:scale-[1.03]" />
-                ) : (
-                  <div className="flex h-full items-center justify-center text-xs uppercase tracking-widest text-neutral-300">No image</div>
-                )}
-              </button>
-
-              {/* Image counter */}
+              {/* Vertical thumbnail strip — desktop only */}
               {thumbs.length > 1 && (
-                <span className="absolute bottom-4 right-4 rounded-full bg-black/50 px-2.5 py-0.5 text-[10px] font-bold text-white tabular-nums backdrop-blur-sm">
-                  {imgIdx + 1} / {thumbs.length}
-                </span>
+                <div className="hidden lg:flex flex-col gap-2 overflow-y-auto max-h-[400px] w-[76px] shrink-0 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  {thumbs.map((img, i) => {
+                    const active = mainImg === img;
+                    return (
+                      <button
+                        key={`${img}-${i}`}
+                        type="button"
+                        onClick={() => setMainImg(img)}
+                        className={`relative h-[70px] w-[70px] shrink-0 overflow-hidden rounded-xl border-2 transition-all duration-150 ${
+                          active ? "opacity-100" : "border-transparent opacity-60 hover:opacity-90"
+                        }`}
+                        style={active ? { borderColor: BRAND_GOLD } : undefined}
+                        aria-label={`View image ${i + 1}`}
+                      >
+                        {isCloud(img) ? (
+                          <Image src={img} alt="" fill className="object-cover" sizes="76px" />
+                        ) : (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={img} alt="" className="absolute inset-0 h-full w-full object-cover" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
               )}
+
+              {/* Main image */}
+              <div className="relative flex-1 overflow-hidden rounded-2xl bg-neutral-50 h-[280px] sm:h-[360px] lg:h-[400px]">
+                {/* Sale badge */}
+                {hasDiscount && (
+                  <span
+                    className="absolute left-4 top-4 z-10 rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-widest text-white"
+                    style={{ backgroundColor: SALE_RED }}
+                  >
+                    −{discPct}%
+                  </span>
+                )}
+                {/* Stock badge */}
+                {oos && (
+                  <span className="absolute right-4 top-4 z-10 rounded-full bg-neutral-800 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white">
+                    Sold Out
+                  </span>
+                )}
+                {lowStock && (
+                  <span
+                    className="absolute right-4 top-4 z-10 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-black"
+                    style={{ background: BRAND_GOLD }}
+                  >
+                    Only {stock} left
+                  </span>
+                )}
+
+                {/* Image click → lightbox */}
+                <button
+                  type="button"
+                  onClick={() => setLightbox(true)}
+                  className="relative block h-full w-full cursor-zoom-in outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                  style={{ "--tw-ring-color": BRAND_GOLD } as React.CSSProperties}
+                  aria-label="Enlarge image"
+                >
+                  {mainImg && isCloud(mainImg) ? (
+                    <Image src={mainImg} alt={product.name} fill priority className="object-contain p-4 transition-transform duration-500 hover:scale-[1.03]" sizes="(max-width:1024px) 100vw, 50vw" />
+                  ) : mainImg ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={mainImg} alt={product.name} className="absolute inset-0 h-full w-full object-contain p-4 transition-transform duration-500 hover:scale-[1.03]" />
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-xs uppercase tracking-widest text-neutral-300">No image</div>
+                  )}
+                </button>
+
+                {/* Image counter */}
+                {thumbs.length > 1 && (
+                  <span className="absolute bottom-3 right-3 rounded-full bg-black/50 px-2.5 py-0.5 text-[10px] font-bold text-white tabular-nums backdrop-blur-sm">
+                    {imgIdx + 1} / {thumbs.length}
+                  </span>
+                )}
+              </div>
             </div>
 
-            {/* Thumbnails row */}
+            {/* Horizontal thumbnail strip — mobile only */}
             {thumbs.length > 1 && (
-              <div className="mt-3 flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="mt-3 flex gap-2 overflow-x-auto pb-1 lg:hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {thumbs.map((img, i) => {
                   const active = mainImg === img;
                   return (
@@ -224,7 +254,7 @@ export default function ProductDetailClient({
                       type="button"
                       onClick={() => setMainImg(img)}
                       className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border-2 transition-all duration-150 ${
-                        active ? "opacity-100" : "border-transparent opacity-50 hover:opacity-80"
+                        active ? "opacity-100" : "border-transparent opacity-60 hover:opacity-90"
                       }`}
                       style={active ? { borderColor: BRAND_GOLD } : undefined}
                       aria-label={`View image ${i + 1}`}
