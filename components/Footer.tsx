@@ -206,6 +206,19 @@ export default function Footer() {
             </Link>
           </div>
         </div>
+        <div className="mt-4 text-center">
+          <p className="text-zinc-400 text-xs">
+            Made by{" "}
+            <a
+              href="https://elightsol.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-zinc-500 hover:text-zinc-950 transition-colors"
+            >
+              Elight Solutions
+            </a>
+          </p>
+        </div>
       </div>
     </footer>
   );
