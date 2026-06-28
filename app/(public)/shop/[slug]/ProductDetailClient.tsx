@@ -156,15 +156,15 @@ export default function ProductDetailClient({
 
       {/* ── Main grid ── */}
       <div className="mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8 lg:py-10">
-        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_480px] lg:gap-14 xl:gap-20">
+        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_480px] lg:items-stretch lg:gap-14 xl:gap-20">
 
           {/* LEFT — Gallery */}
-          <div className="lg:sticky lg:top-6 lg:self-start">
-            <div className="flex gap-2.5">
+          <div className="flex flex-col lg:sticky lg:top-6 lg:self-start">
+            <div className="flex flex-1 gap-2.5">
 
               {/* Vertical thumbnail strip — desktop only */}
               {thumbs.length > 1 && (
-                <div className="hidden lg:flex flex-col gap-2 overflow-y-auto max-h-[400px] w-[76px] shrink-0 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <div className="hidden lg:flex flex-col gap-2 overflow-y-auto max-h-full w-[76px] shrink-0 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                   {thumbs.map((img, i) => {
                     const active = mainImg === img;
                     return (
@@ -191,7 +191,7 @@ export default function ProductDetailClient({
               )}
 
               {/* Main image */}
-              <div className="relative flex-1 overflow-hidden rounded-2xl bg-neutral-50 h-[280px] sm:h-[360px] lg:h-[400px]">
+              <div className="relative flex-1 overflow-hidden rounded-2xl bg-neutral-50 h-[280px] sm:h-[360px] lg:h-full lg:min-h-[400px]">
                 {/* Sale badge */}
                 {hasDiscount && (
                   <span
