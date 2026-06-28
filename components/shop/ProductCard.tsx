@@ -6,7 +6,6 @@ import { useState } from "react";
 import type { IProduct } from "@/types/product";
 import { formatPkr } from "@/lib/formatCurrency";
 
-/** Puma-style sale red */
 const SALE_RED = "#e4002b";
 
 function cardPrice(product: IProduct) {
@@ -20,88 +19,120 @@ function cardPrice(product: IProduct) {
 
 export default function ProductCard({
   product,
-  onOpenImage,
   priority,
 }: {
   product: IProduct;
   onOpenImage?: (src: string, alt: string) => void;
   priority?: boolean;
 }) {
-  const [selectedColor] = useState(product.colorVariants[0]?.color || product.colors[0] || "");
-  const activeVariant =
-    product.colorVariants.find((variant) => variant.color === selectedColor) || product.colorVariants[0];
+  const [hovered, setHovered] = useState(false);
+
+  const activeVariant = product.colorVariants[0];
   const mainImage = activeVariant?.images?.[0] || product.images[0] || "";
-  const displayColor = selectedColor || product.colors[0] || "";
+  const hoverImage = activeVariant?.images?.[1] || product.images[1] || "";
   const { hasDiscount, finalPrice, discountPercent } = cardPrice(product);
   const cloudinary = mainImage.startsWith("https://res.cloudinary.com");
 
   return (
-    <article className="group flex h-full flex-col">
-      <Link
-        href={`/shop/${product.slug}`}
-        className="relative block overflow-hidden bg-neutral-100 outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
-      >
-        <div className="relative aspect-[4/5]">
-          {hasDiscount ? (
-            <span
-              className="absolute right-2 top-2 z-10 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-white"
-              style={{ backgroundColor: SALE_RED }}
-            >
-              −{discountPercent}%
-            </span>
-          ) : null}
-          {onOpenImage && mainImage ? (
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                onOpenImage(mainImage, product.name);
-              }}
-              className="absolute bottom-2 right-2 z-10 border border-black/10 bg-white px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-black opacity-0 transition-opacity group-hover:opacity-100"
-              aria-label={`Enlarge ${product.name}`}
-            >
-              View
-            </button>
-          ) : null}
-          {mainImage ? (
-            cloudinary ? (
-              <Image
-                src={mainImage}
-                alt={product.name}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                className="object-cover"
-                priority={priority}
-              />
-            ) : (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={mainImage} alt={product.name} className="absolute inset-0 h-full w-full object-cover" />
-            )
-          ) : (
-            <div className="flex h-full w-full items-center justify-center text-xs uppercase tracking-widest text-neutral-400">
-              No image
-            </div>
-          )}
-        </div>
-      </Link>
+    <Link
+      href={`/shop/${product.slug}`}
+      className="group block"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {/* Image */}
+      <div className="relative overflow-hidden bg-neutral-100 aspect-[3/4]">
+        {/* Discount badge */}
+        {hasDiscount && (
+          <span
+            className="absolute left-0 top-3 z-10 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-white"
+            style={{ backgroundColor: SALE_RED }}
+          >
+            −{discountPercent}%
+          </span>
+        )}
 
-      <div className="mt-2.5 flex flex-1 flex-col">
-        {product.brand ? (
-          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-500">{product.brand}</p>
-        ) : null}
-        <Link href={`/shop/${product.slug}`} className="mt-1 block">
-          <h3 className="text-[12px] font-bold uppercase leading-snug tracking-wide text-black line-clamp-2">
-            {product.name}
-          </h3>
-        </Link>
-        {displayColor ? <p className="mt-0.5 text-[11px] text-neutral-600">{displayColor}</p> : null}
-        <div className="mt-1.5 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-          <span className="text-[13px] font-bold tabular-nums text-black">{formatPkr(finalPrice)}</span>
-          {hasDiscount ? (
-            <span className="text-xs text-neutral-400 line-through tabular-nums">{formatPkr(product.price)}</span>
-          ) : null}
+        {/* New badge */}
+        {!hasDiscount && product.isFeatured && (
+          <span className="absolute left-0 top-3 z-10 bg-black px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-white">
+            New
+          </span>
+        )}
+
+        {/* Main image */}
+        {mainImage ? (
+          cloudinary ? (
+            <Image
+              src={hovered && hoverImage ? hoverImage : mainImage}
+              alt={product.name}
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="object-cover transition-all duration-500 group-hover:scale-[1.03]"
+              priority={priority}
+            />
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={hovered && hoverImage ? hoverImage : mainImage}
+              alt={product.name}
+              className="absolute inset-0 h-full w-full object-cover transition-all duration-500 group-hover:scale-[1.03]"
+            />
+          )
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-[11px] uppercase tracking-widest text-neutral-400">
+            No image
+          </div>
+        )}
+
+        {/* Hover overlay — "Quick View" bar */}
+        <div className="absolute inset-x-0 bottom-0 translate-y-full bg-black/90 py-3 text-center text-[10px] font-black uppercase tracking-[0.18em] text-white transition-transform duration-300 group-hover:translate-y-0">
+          View Product
         </div>
       </div>
-    </article>
+
+      {/* Info */}
+      <div className="mt-3 space-y-0.5 px-0.5">
+        {product.brand && (
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-neutral-400">
+            {product.brand}
+          </p>
+        )}
+        <h3 className="text-[13px] font-semibold leading-snug text-neutral-900 line-clamp-1 group-hover:text-black">
+          {product.name}
+        </h3>
+
+        {/* Price row */}
+        <div className="flex items-baseline gap-2 pt-0.5">
+          <span
+            className="text-[13px] font-black tabular-nums"
+            style={hasDiscount ? { color: SALE_RED } : { color: "#000" }}
+          >
+            {formatPkr(finalPrice)}
+          </span>
+          {hasDiscount && (
+            <span className="text-[11px] tabular-nums text-neutral-400 line-through">
+              {formatPkr(product.price)}
+            </span>
+          )}
+        </div>
+
+        {/* Color dots */}
+        {product.colorVariants.length > 1 && (
+          <div className="flex items-center gap-1 pt-1">
+            {product.colorVariants.slice(0, 5).map((v) => (
+              <span
+                key={v.color}
+                title={v.color}
+                className="h-2.5 w-2.5 rounded-full border border-neutral-200"
+                style={{ backgroundColor: v.color.toLowerCase() }}
+              />
+            ))}
+            {product.colorVariants.length > 5 && (
+              <span className="text-[10px] text-neutral-400">+{product.colorVariants.length - 5}</span>
+            )}
+          </div>
+        )}
+      </div>
+    </Link>
   );
 }

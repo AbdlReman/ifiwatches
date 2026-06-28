@@ -295,7 +295,7 @@ export default function HomePageView({
         </div>
 
         {featuredProducts.length > 0 ? (
-          <div className="grid grid-cols-2 gap-4 sm:gap-8 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
             {featuredProducts.map((product, idx) => (
               <ProductCard key={product._id} product={product} priority={idx < 2} />
             ))}
@@ -349,39 +349,44 @@ export default function HomePageView({
                 See all deals →
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
               {flashSaleProducts.map((product, idx) => {
                 const finalPrice = product.price * (1 - product.discount / 100);
                 return (
                   <Link
                     key={product._id}
                     href={`/shop/${product.slug}`}
-                    className="group relative flex flex-col overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900 transition hover:border-zinc-600 hover:shadow-xl"
+                    className="group block"
                   >
-                    <div className="relative aspect-square overflow-hidden bg-zinc-800">
+                    {/* Image */}
+                    <div className="relative overflow-hidden bg-zinc-800 aspect-[3/4]">
                       {product.images[0] ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
                           src={product.images[0]}
                           alt={product.name}
-                          className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                           loading={idx < 2 ? "eager" : "lazy"}
                         />
                       ) : (
-                        <div className="flex h-full items-center justify-center text-4xl text-zinc-700">🛍</div>
+                        <div className="flex h-full items-center justify-center text-zinc-600 text-xs uppercase tracking-widest">No image</div>
                       )}
-                      <span className="absolute left-3 top-3 rounded-full bg-red-500 px-2.5 py-0.5 text-[11px] font-black text-white shadow">
+                      <span className="absolute left-0 top-3 bg-red-500 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-white">
                         −{product.discount}%
                       </span>
+                      <div className="absolute inset-x-0 bottom-0 translate-y-full bg-white/95 py-3 text-center text-[10px] font-black uppercase tracking-[0.18em] text-black transition-transform duration-300 group-hover:translate-y-0">
+                        View Product
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-1 p-4">
-                      {product.brand ? (
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">{product.brand}</p>
-                      ) : null}
-                      <p className="text-sm font-semibold leading-snug text-white line-clamp-2">{product.name}</p>
-                      <div className="mt-2 flex items-baseline gap-2">
-                        <span className="text-base font-black text-white">{formatPkr(finalPrice)}</span>
-                        <span className="text-xs text-zinc-500 line-through">{formatPkr(product.price)}</span>
+                    {/* Info */}
+                    <div className="mt-3 space-y-0.5 px-0.5">
+                      {product.brand && (
+                        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-zinc-500">{product.brand}</p>
+                      )}
+                      <p className="text-[13px] font-semibold leading-snug text-white line-clamp-1">{product.name}</p>
+                      <div className="flex items-baseline gap-2 pt-0.5">
+                        <span className="text-[13px] font-black tabular-nums text-red-400">{formatPkr(finalPrice)}</span>
+                        <span className="text-[11px] tabular-nums text-zinc-500 line-through">{formatPkr(product.price)}</span>
                       </div>
                     </div>
                   </Link>
@@ -411,7 +416,7 @@ export default function HomePageView({
                 Explore all →
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-4 sm:gap-8 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
               {justForYouProducts.map((product, idx) => (
                 <ProductCard key={product._id} product={product} priority={idx < 2} />
               ))}
@@ -450,7 +455,7 @@ export default function HomePageView({
                   </Link>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 sm:gap-5">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   {group.products.map((product, idx) => (
                     <ProductCard key={`${group.name}-${product._id}`} product={product} priority={idx === 0} />
                   ))}
@@ -511,7 +516,7 @@ export default function HomePageView({
                 Browse all →
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-4 sm:gap-8 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
               {vendorProducts.map((product, idx) => (
                 <ProductCard key={product._id} product={product} priority={idx < 2} />
               ))}

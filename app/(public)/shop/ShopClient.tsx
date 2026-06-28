@@ -103,7 +103,6 @@ export default function ShopClient({
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("latest");
   const [page, setPage] = useState(1);
-  const [previewImage, setPreviewImage] = useState<{ src: string; alt: string } | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [, startTransition] = useTransition();
 
@@ -451,12 +450,11 @@ export default function ShopClient({
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
+              <div className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 md:grid-cols-3 lg:grid-cols-4">
                 {paginated.map((product, idx) => (
                   <ProductCard
                     key={product._id}
                     product={product}
-                    onOpenImage={(src, alt) => setPreviewImage({ src, alt })}
                     priority={safePage === 1 && idx < 4}
                   />
                 ))}
@@ -590,28 +588,6 @@ export default function ShopClient({
         </>
       )}
 
-      {previewImage ? (
-        <button
-          type="button"
-          className="fixed inset-0 z-[90] flex cursor-zoom-out items-center justify-center bg-black/85 p-4"
-          onClick={() => setPreviewImage(null)}
-          aria-label="Close preview"
-        >
-          <span
-            className="absolute right-4 top-4 border border-white px-3 py-1 text-sm font-bold uppercase tracking-wider text-white"
-            onClick={(e) => e.stopPropagation()}
-          >
-            Close
-          </span>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={previewImage.src}
-            alt={previewImage.alt}
-            className="max-h-[90vh] max-w-[92vw] bg-white object-contain"
-            onClick={(e) => e.stopPropagation()}
-          />
-        </button>
-      ) : null}
     </div>
   );
 }
