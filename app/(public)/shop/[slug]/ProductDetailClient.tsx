@@ -305,7 +305,7 @@ export default function ProductDetailClient({
             </div>
 
             {/* Price */}
-            <div className="mt-5 flex flex-wrap items-end gap-3">
+            <div className="mt-3 flex flex-wrap items-end gap-3">
               {hasDiscount ? (
                 <>
                   <span className="text-3xl font-black tabular-nums sm:text-4xl" style={{ color: SALE_RED }}>
@@ -326,7 +326,7 @@ export default function ProductDetailClient({
             </div>
 
             {/* Stock status */}
-            <div className="mt-3 flex items-center gap-2">
+            <div className="mt-2 flex items-center gap-2">
               {oos ? (
                 <>
                   <span className="h-2 w-2 rounded-full bg-red-500" />
@@ -348,16 +348,16 @@ export default function ProductDetailClient({
 
             {/* Description */}
             {product.description && (
-              <p className="mt-5 border-l-[3px] pl-4 text-sm leading-relaxed text-neutral-600" style={{ borderColor: BRAND_GOLD }}>
+              <p className="mt-3 border-l-[3px] pl-4 text-sm leading-relaxed text-neutral-600" style={{ borderColor: BRAND_GOLD }}>
                 {product.description}
               </p>
             )}
 
-            <div className="my-6 h-px bg-neutral-100" />
+            <div className="my-4 h-px bg-neutral-100" />
 
             {/* Color */}
             {variants.some((v) => v.color !== "Default") && (
-              <div className="mb-6">
+              <div className="mb-4">
                 <div className="mb-3 flex items-center gap-2">
                   <span className="text-[11px] font-black uppercase tracking-widest text-neutral-500">Color</span>
                   <span className="text-[11px] font-semibold text-zinc-950">{selColor}</span>
@@ -385,7 +385,7 @@ export default function ProductDetailClient({
 
             {/* Size */}
             {sizes.length > 0 && (
-              <div className="mb-6">
+              <div className="mb-4">
                 <div className="mb-3 flex items-center justify-between">
                   <span className="text-[11px] font-black uppercase tracking-widest text-neutral-500">Size</span>
                   {selSize && <span className="text-[11px] font-semibold text-zinc-950">Selected: {selSize}</span>}
@@ -412,24 +412,24 @@ export default function ProductDetailClient({
             )}
 
             {/* Quantity */}
-            <div className="mb-7">
-              <span className="mb-3 block text-[11px] font-black uppercase tracking-widest text-neutral-500">Quantity</span>
+            <div className="mb-5">
+              <span className="mb-2 block text-[11px] font-black uppercase tracking-widest text-neutral-500">Quantity</span>
               <div className="inline-flex items-center overflow-hidden rounded-full border border-neutral-200 bg-neutral-50">
                 <button
                   type="button"
                   onClick={() => setQty((q) => Math.max(1, q - 1))}
                   disabled={qty <= 1}
-                  className="flex h-11 w-11 items-center justify-center text-lg font-bold text-zinc-950 transition hover:bg-neutral-100 disabled:opacity-30"
+                  className="flex h-9 w-9 items-center justify-center text-base font-bold text-zinc-950 transition hover:bg-neutral-100 disabled:opacity-30"
                   aria-label="Decrease"
                 >
                   −
                 </button>
-                <span className="min-w-[2.5rem] text-center text-sm font-black tabular-nums text-zinc-950">{lineQty}</span>
+                <span className="min-w-[2rem] text-center text-sm font-black tabular-nums text-zinc-950">{lineQty}</span>
                 <button
                   type="button"
                   onClick={() => setQty((q) => Math.min(maxQty, q + 1))}
                   disabled={oos || qty >= maxQty}
-                  className="flex h-11 w-11 items-center justify-center text-lg font-bold text-zinc-950 transition hover:bg-neutral-100 disabled:opacity-30"
+                  className="flex h-9 w-9 items-center justify-center text-base font-bold text-zinc-950 transition hover:bg-neutral-100 disabled:opacity-30"
                   aria-label="Increase"
                 >
                   +
@@ -443,8 +443,8 @@ export default function ProductDetailClient({
                 type="button"
                 disabled={oos}
                 onClick={onAddToCart}
-                className="flex h-13 flex-1 items-center justify-center rounded-full text-sm font-black uppercase tracking-widest text-zinc-950 transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
-                style={{ background: oos ? "#e5e7eb" : BRAND_GRADIENT, height: "3.25rem" }}
+                className="flex flex-1 items-center justify-center rounded-full text-xs font-black uppercase tracking-widest text-zinc-950 transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+                style={{ background: oos ? "#e5e7eb" : BRAND_GRADIENT, height: "2.625rem" }}
               >
                 {oos ? "Sold Out" : "Add to Cart"}
               </button>
@@ -452,47 +452,24 @@ export default function ProductDetailClient({
                 type="button"
                 disabled={oos}
                 onClick={onBuyNow}
-                className="flex h-13 flex-1 items-center justify-center rounded-full border-2 border-zinc-950 bg-zinc-950 text-sm font-black uppercase tracking-widest text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:border-neutral-300 disabled:bg-neutral-300"
-                style={{ height: "3.25rem" }}
+                className="flex flex-1 items-center justify-center rounded-full border-2 border-zinc-950 bg-zinc-950 text-xs font-black uppercase tracking-widest text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:border-neutral-300 disabled:bg-neutral-300"
+                style={{ height: "2.625rem" }}
               >
                 {oos ? "Sold Out" : "Buy Now"}
               </button>
             </div>
 
-            {/* Trust badges */}
-            <div className="mt-7 grid grid-cols-3 gap-3 rounded-2xl bg-neutral-50 p-4">
-              {[
-                { label: "Fast Delivery", sub: "Nationwide", icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" /></svg> },
-                { label: "Easy Returns", sub: "Policy applies", icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" /></svg> },
-                { label: "Authentic", sub: "Verified seller", icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg> },
-              ].map((item) => (
-                <div key={item.label} className="flex flex-col items-center gap-1.5 text-center">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full text-zinc-950" style={{ background: BRAND_GRADIENT }}>
-                    {item.icon}
-                  </span>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-zinc-900">{item.label}</span>
-                  <span className="text-[9px] text-neutral-400">{item.sub}</span>
-                </div>
-              ))}
-            </div>
-
             {/* Meta table */}
-            {(product.brand || product.category || product.soldCount > 0) && (
-              <div className="mt-6 divide-y divide-neutral-100 rounded-2xl border border-neutral-100 overflow-hidden">
+            {(product.brand || product.soldCount > 0) && (
+              <div className="mt-4 divide-y divide-neutral-100 rounded-2xl border border-neutral-100 overflow-hidden">
                 {product.brand && (
-                  <div className="flex items-center justify-between px-4 py-3 text-xs">
+                  <div className="flex items-center justify-between px-4 py-2.5 text-xs">
                     <span className="font-semibold uppercase tracking-widest text-neutral-400">Brand</span>
                     <span className="font-black text-zinc-950">{product.brand}</span>
                   </div>
                 )}
-                {product.category && (
-                  <div className="flex items-center justify-between px-4 py-3 text-xs">
-                    <span className="font-semibold uppercase tracking-widest text-neutral-400">Category</span>
-                    <span className="font-black text-zinc-950">{product.category}</span>
-                  </div>
-                )}
                 {product.soldCount > 0 && (
-                  <div className="flex items-center justify-between px-4 py-3 text-xs">
+                  <div className="flex items-center justify-between px-4 py-2.5 text-xs">
                     <span className="font-semibold uppercase tracking-widest text-neutral-400">Sold</span>
                     <span className="font-black text-zinc-950">{product.soldCount.toLocaleString()} units</span>
                   </div>
@@ -500,6 +477,24 @@ export default function ProductDetailClient({
               </div>
             )}
           </div>
+        </div>
+
+        {/* ── Trust badges row — below both columns ── */}
+        <div className="mt-6 flex items-stretch divide-x divide-neutral-200 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50">
+          {[
+            { label: "Fast Delivery", icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" /></svg> },
+            { label: "Nationwide", icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg> },
+            { label: "Easy Returns", icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" /></svg> },
+            { label: "Policy Applies", icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg> },
+            { label: "Authentic", icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg> },
+            { label: "Verified Seller", icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" /></svg> },
+          ].map((item) => (
+            <div key={item.label} className="flex flex-1 items-center justify-center gap-2 px-2 py-3 sm:px-4">
+              <span style={{ color: BRAND_GOLD }}>{item.icon}</span>
+              <span className="text-[10px] font-black uppercase tracking-wide text-zinc-800 whitespace-nowrap hidden sm:block">{item.label}</span>
+              <span className="text-[9px] font-black uppercase tracking-wide text-zinc-800 whitespace-nowrap sm:hidden">{item.label}</span>
+            </div>
+          ))}
         </div>
 
         {/* ── Description / Reviews tabs ── */}
