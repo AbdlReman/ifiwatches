@@ -358,24 +358,38 @@ export default function ProductDetailClient({
             {/* Color */}
             {variants.some((v) => v.color !== "Default") && (
               <div className="mb-4">
-                <div className="mb-3 flex items-center gap-2">
-                  <span className="text-[11px] font-black uppercase tracking-widest text-neutral-500">Color</span>
-                  <span className="text-[11px] font-semibold text-zinc-950">{selColor}</span>
+                <div className="mb-2 flex items-center gap-1.5">
+                  <span className="text-[11px] font-black uppercase tracking-widest text-neutral-500">Color:</span>
+                  <span className="text-[11px] font-bold text-zinc-950">{selColor}</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {variants.map((v) => {
                     const on = selColor === v.color;
+                    const vImg = v.images?.[0] || "";
                     return (
                       <button
                         key={v.color}
                         type="button"
                         onClick={() => changeColor(v.color)}
-                        className={`rounded-full border-2 px-4 py-1.5 text-xs font-bold transition-all duration-150 ${
-                          on ? "text-zinc-950" : "border-neutral-200 text-neutral-500 hover:border-neutral-400"
+                        title={v.color}
+                        aria-label={`Select color ${v.color}`}
+                        className={`relative h-[54px] w-[54px] overflow-hidden rounded-lg border-2 transition-all duration-150 ${
+                          on ? "" : "border-neutral-200 opacity-60 hover:opacity-95 hover:border-neutral-300"
                         }`}
-                        style={on ? { borderColor: BRAND_GOLD, backgroundColor: "rgba(218,170,88,0.08)" } : undefined}
+                        style={on ? { borderColor: BRAND_GOLD } : undefined}
                       >
-                        {v.color}
+                        {vImg ? (
+                          isCloud(vImg) ? (
+                            <Image src={vImg} alt={v.color} fill className="object-cover" sizes="54px" />
+                          ) : (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={vImg} alt={v.color} className="absolute inset-0 h-full w-full object-cover" />
+                          )
+                        ) : (
+                          <span className="flex h-full w-full items-center justify-center bg-neutral-100 p-1 text-center text-[8px] font-bold uppercase leading-tight text-neutral-600">
+                            {v.color}
+                          </span>
+                        )}
                       </button>
                     );
                   })}
