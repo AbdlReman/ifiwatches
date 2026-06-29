@@ -275,24 +275,14 @@ export default function ProductDetailClient({
           {/* RIGHT — Product info */}
           <div className="mt-8 lg:mt-0">
 
-            {/* Brand pill + badges */}
-            <div className="flex flex-wrap items-center gap-2 mb-3">
-              {product.brand && (
+            {/* Brand pill */}
+            {product.brand && (
+              <div className="mb-3">
                 <span className="rounded-full border px-3 py-0.5 text-[10px] font-black uppercase tracking-[0.18em]" style={{ borderColor: BRAND_GOLD, color: BRAND_GOLD }}>
                   {product.brand}
                 </span>
-              )}
-              {product.isBestSeller && (
-                <span className="rounded-full px-3 py-0.5 text-[10px] font-black uppercase tracking-widest text-black" style={{ background: BRAND_GRADIENT }}>
-                  Best Seller
-                </span>
-              )}
-              {product.isFeatured && (
-                <span className="rounded-full bg-black px-3 py-0.5 text-[10px] font-black uppercase tracking-widest text-white">
-                  Featured
-                </span>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* Product name */}
             <h1 className="text-2xl font-black leading-tight tracking-tight text-zinc-950 sm:text-3xl">
