@@ -276,13 +276,13 @@ export default function ProductDetailClient({
           <div className="mt-8 lg:mt-0">
 
             {/* Brand pill */}
-            {product.brand && (
+            {/* {product.brand && (
               <div className="mb-3">
                 <span className="rounded-full border px-3 py-0.5 text-[10px] font-black uppercase tracking-[0.18em]" style={{ borderColor: BRAND_GOLD, color: BRAND_GOLD }}>
                   {product.brand}
                 </span>
               </div>
-            )}
+            )} */}
 
             {/* Product name */}
             <h1 className="text-2xl font-black leading-tight tracking-tight text-zinc-950 sm:text-3xl">
