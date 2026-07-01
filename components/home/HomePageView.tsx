@@ -172,7 +172,7 @@ export default function HomePageView({
                   className="group flex-shrink-0 flex flex-col items-center gap-2 sm:gap-3"
                 >
                   {/* Circle */}
-                  <div className="relative h-16 w-16 sm:h-24 sm:w-24 lg:h-28 lg:w-28 rounded-full overflow-hidden bg-zinc-100 shadow-sm ring-2 ring-transparent transition-all duration-200 group-hover:ring-[rgb(218,170,88)] group-hover:shadow-md">
+                  <div className="relative h-16 w-16 sm:h-[67px] sm:w-[67px] lg:h-[78px] lg:w-[78px] rounded-full overflow-hidden bg-zinc-100 shadow-sm ring-2 ring-transparent transition-all duration-200 group-hover:ring-[rgb(218,170,88)] group-hover:shadow-md">
                     {cat.image ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -189,7 +189,7 @@ export default function HomePageView({
                     )}
                   </div>
                   {/* Label */}
-                  <span className="text-center text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-zinc-700 group-hover:text-zinc-950 transition-colors duration-200 max-w-[64px] sm:max-w-[96px] leading-tight">
+                  <span className="text-center text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-zinc-700 group-hover:text-zinc-950 transition-colors duration-200 max-w-[64px] sm:max-w-[67px] leading-tight">
                     {cat.name}
                   </span>
                 </Link>
