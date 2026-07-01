@@ -119,6 +119,7 @@ export default function HomePageView({
   videoUrl,
   heroContent,
   heroImages = [],
+  mobileHeroImages = [],
 }: {
   categories: HomeCategory[];
   featuredProducts: IProduct[];
@@ -132,6 +133,7 @@ export default function HomePageView({
   videoUrl?: string;
   heroContent?: HeroContent;
   heroImages?: string[];
+  mobileHeroImages?: string[];
 }) {
   const categoryCards = buildCategoryCards(categories);
   const fallbackHeroImage = heroContent?.image || siteConfig.images.hero;
@@ -139,7 +141,7 @@ export default function HomePageView({
   return (
     <div className="bg-white">
       {/* Hero — full-screen image slider */}
-      <HeroSlider images={heroImages} fallback={fallbackHeroImage} />
+      <HeroSlider images={heroImages} mobileImages={mobileHeroImages} fallback={fallbackHeroImage} />
 
       {/* Invisible h1 for SEO */}
       <h1 className="sr-only">IFI Lifestyle — Premium Multi-Vendor Marketplace Pakistan</h1>

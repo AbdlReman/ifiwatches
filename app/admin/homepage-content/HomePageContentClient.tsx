@@ -53,6 +53,8 @@ export default function HomePageContentClient() {
   const [videoUrl, setVideoUrl] = useState("");
   const [heroImages, setHeroImages] = useState<string[]>([]);
   const [heroImagesUploading, setHeroImagesUploading] = useState(false);
+  const [mobileHeroImages, setMobileHeroImages] = useState<string[]>([]);
+  const [mobileHeroImagesUploading, setMobileHeroImagesUploading] = useState(false);
   const [shopHero, setShopHero] = useState<ShopHeroState>(DEFAULT_SHOP_HERO);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -66,6 +68,7 @@ export default function HomePageContentClient() {
   const imgFileRef = useRef<HTMLInputElement>(null);
   const shopHeroImgFileRef = useRef<HTMLInputElement>(null);
   const heroSlideFileRef = useRef<HTMLInputElement>(null);
+  const mobileHeroSlideFileRef = useRef<HTMLInputElement>(null);
   const vidFileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -77,6 +80,7 @@ export default function HomePageContentClient() {
         setSaleImage(data.content?.saleImage ?? "");
         setVideoUrl(data.content?.videoUrl ?? "");
         setHeroImages(Array.isArray(data.content?.heroImages) ? data.content.heroImages.filter(Boolean) : []);
+        setMobileHeroImages(Array.isArray(data.content?.mobileHeroImages) ? data.content.mobileHeroImages.filter(Boolean) : []);
         const sh = data.content?.shopHero ?? {};
         setShopHero({
           image: sh.image ?? "",
@@ -108,6 +112,25 @@ export default function HomePageContentClient() {
       setError(e instanceof Error ? e.message : "Image upload failed");
     } finally {
       setHeroImagesUploading(false);
+    }
+  };
+
+  const uploadMobileHeroSlide = async (file: File) => {
+    if (mobileHeroImages.length >= MAX_HERO_SLIDES) return;
+    setMobileHeroImagesUploading(true);
+    setError("");
+    try {
+      const form = new FormData();
+      form.append("images", file);
+      form.append("folder", "homepage/mobile-slides");
+      const res = await fetch("/api/upload", { method: "POST", body: form, credentials: "include" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Upload failed");
+      setMobileHeroImages((prev) => [...prev, data.urls[0]].filter(Boolean).slice(0, MAX_HERO_SLIDES));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Image upload failed");
+    } finally {
+      setMobileHeroImagesUploading(false);
     }
   };
 
@@ -207,6 +230,7 @@ export default function HomePageContentClient() {
           saleImage: img,
           videoUrl: vid,
           heroImages,
+          mobileHeroImages,
           shopHero: {
             image: shopHero.image,
             heading: shopHero.heading,
@@ -338,6 +362,90 @@ export default function HomePageContentClient() {
             </div>
             <p className="text-slate-500 text-xs">
               Tip: hover over a slide to reorder or remove it. Slides auto-advance every 5 seconds on the homepage.
+            </p>
+          </div>
+
+          {/* ── Mobile Hero Slider Images ── */}
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 space-y-5">
+            <div>
+              <h2 className="text-sm font-bold uppercase tracking-widest text-slate-300">Mobile Hero Slider Images</h2>
+              <p className="text-slate-500 text-xs mt-1">
+                Upload 1–4 portrait/square images optimised for phones. These replace the desktop slides on screens narrower than 640 px.
+                Leave empty to reuse the desktop slides on mobile.
+              </p>
+            </div>
+
+            {/* Mobile slide previews */}
+            {mobileHeroImages.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {mobileHeroImages.map((url, idx) => (
+                  <div key={url} className="relative group rounded-lg overflow-hidden border border-slate-600 aspect-[9/16]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={url} alt={`Mobile slide ${idx + 1}`} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                      {idx > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => setMobileHeroImages((prev) => { const a = [...prev]; [a[idx - 1], a[idx]] = [a[idx], a[idx - 1]]; return a; })}
+                          className="bg-slate-700 hover:bg-slate-600 text-white text-xs px-2 py-1 rounded"
+                        >
+                          ←
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => setMobileHeroImages((prev) => prev.filter((_, i) => i !== idx))}
+                        className="bg-red-600 hover:bg-red-700 text-white text-xs px-2 py-1 rounded"
+                      >
+                        Remove
+                      </button>
+                      {idx < mobileHeroImages.length - 1 && (
+                        <button
+                          type="button"
+                          onClick={() => setMobileHeroImages((prev) => { const a = [...prev]; [a[idx], a[idx + 1]] = [a[idx + 1], a[idx]]; return a; })}
+                          className="bg-slate-700 hover:bg-slate-600 text-white text-xs px-2 py-1 rounded"
+                        >
+                          →
+                        </button>
+                      )}
+                    </div>
+                    <span className="absolute bottom-1 left-1 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded font-bold">
+                      {idx + 1}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <input
+              ref={mobileHeroSlideFileRef}
+              type="file"
+              accept="image/*"
+              className="sr-only"
+              onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadMobileHeroSlide(f); e.target.value = ""; }}
+              disabled={mobileHeroImagesUploading || mobileHeroImages.length >= MAX_HERO_SLIDES}
+            />
+            <div className="flex items-center gap-3 flex-wrap">
+              <button
+                type="button"
+                onClick={() => mobileHeroSlideFileRef.current?.click()}
+                disabled={mobileHeroImagesUploading || mobileHeroImages.length >= MAX_HERO_SLIDES}
+                className="bg-slate-700 hover:bg-slate-600 disabled:opacity-40 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
+              >
+                {mobileHeroImagesUploading ? "Uploading…" : `Add Mobile Slide (${mobileHeroImages.length}/${MAX_HERO_SLIDES})`}
+              </button>
+              {mobileHeroImages.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => { if (window.confirm("Remove all mobile hero slides?")) setMobileHeroImages([]); }}
+                  className="text-red-400 hover:text-red-300 text-xs font-semibold underline"
+                >
+                  Clear all mobile slides
+                </button>
+              )}
+            </div>
+            <p className="text-slate-500 text-xs">
+              Tip: use portrait (9:16) or square images for best results on phones. Hover a slide to reorder or remove it.
             </p>
           </div>
 
@@ -567,7 +675,7 @@ export default function HomePageContentClient() {
 
           <button
             type="submit"
-            disabled={saving || imgUploading || heroImagesUploading || shopHeroImgUploading || vidUploading}
+            disabled={saving || imgUploading || heroImagesUploading || mobileHeroImagesUploading || shopHeroImgUploading || vidUploading}
             className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-semibold px-6 py-2.5 rounded-lg text-sm"
           >
             {saving ? "Saving…" : "Save Changes"}

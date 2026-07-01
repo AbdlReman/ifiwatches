@@ -37,6 +37,7 @@ const HomePageContentSchema = new Schema(
     saleImage: { type: String, default: "" },
     videoUrl: { type: String, default: "" },
     heroImages: { type: [String], default: [] },
+    mobileHeroImages: { type: [String], default: [] },
     hero: { type: HeroSchema, default: () => ({}) },
     shopHero: { type: ShopHeroSchema, default: () => ({}) },
   },

@@ -5,8 +5,27 @@ import { siteConfig } from "@/lib/siteConfig";
 
 const INTERVAL = 5000;
 
-export default function HeroSlider({ images, fallback }: { images: string[]; fallback: string }) {
-  const slides = images.length > 0 ? images : [fallback];
+export default function HeroSlider({
+  images,
+  mobileImages = [],
+  fallback,
+}: {
+  images: string[];
+  mobileImages?: string[];
+  fallback: string;
+}) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  const effectiveImages = isMobile && mobileImages.length > 0 ? mobileImages : images;
+  const slides = effectiveImages.length > 0 ? effectiveImages : [fallback];
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
