@@ -6,6 +6,7 @@ import { publishedProductFilter } from "@/lib/publishedProductFilter";
 export type HomeCategory = {
   name: string;
   productCount: number;
+  image?: string;
 };
 
 function categoryNamesFromProducts(raw: Record<string, unknown>[]): string[] {
@@ -49,10 +50,18 @@ export async function getHomeCategories(): Promise<HomeCategory[]> {
 
   const uniqueNames = [...new Set(names)];
 
+  const imageMap = new Map<string, string>(
+    dbRows.map((row) => {
+      const r = row as { name?: string; image?: string };
+      return [String(r.name || "").trim(), String(r.image || "").trim()];
+    })
+  );
+
   return Promise.all(
     uniqueNames.map(async (name) => ({
       name,
       productCount: await countProductsInCategory(name),
+      image: imageMap.get(name) || "",
     }))
   );
 }

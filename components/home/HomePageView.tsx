@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/siteConfig";
-import { getCategoryVisual } from "@/components/home/categoryStyles";
+
 import ProductCard from "@/components/shop/ProductCard";
 import ProductSlider from "@/components/home/ProductSlider";
 import HeroSlider from "@/components/home/HeroSlider";
@@ -90,21 +90,6 @@ const TRUST_FEATURES = [
   },
 ];
 
-function buildCategoryCards(categories: HomeCategory[]) {
-  return categories.map((cat, index) => {
-    const visual = getCategoryVisual(cat.name);
-    const tagline =
-      cat.productCount > 0
-        ? `${cat.productCount} live listing${cat.productCount === 1 ? "" : "s"}`
-        : visual.tagline;
-    return {
-      name: cat.name,
-      productCount: cat.productCount,
-      visual: { ...visual, tagline },
-      wide: index === 0,
-    };
-  });
-}
 
 export default function HomePageView({
   categories,
@@ -114,7 +99,6 @@ export default function HomePageView({
   flashSaleProducts,
   justForYouProducts,
   featuredByCategory,
-  stats,
   saleImage,
   videoUrl,
   heroContent,
@@ -128,14 +112,12 @@ export default function HomePageView({
   flashSaleProducts: IProduct[];
   justForYouProducts: IProduct[];
   featuredByCategory: HomeCategoryProducts[];
-  stats: HomeStats;
   saleImage?: string;
   videoUrl?: string;
   heroContent?: HeroContent;
   heroImages?: string[];
   mobileHeroImages?: string[];
 }) {
-  const categoryCards = buildCategoryCards(categories);
   const fallbackHeroImage = heroContent?.image || siteConfig.images.hero;
 
   return (
@@ -166,9 +148,9 @@ export default function HomePageView({
       </section> */}
 
       {/* Categories */}
-      {categoryCards.length > 0 ? (
+      {categories.length > 0 ? (
         <section className="border-y border-zinc-200 bg-white">
-          <div className="mx-auto max-w-[90rem] px-3 py-5 sm:px-6 sm:py-10 lg:px-8">
+          <div className="mx-auto max-w-[90rem] px-3 py-5 sm:px-6 sm:py-8 lg:px-8">
             <div className="mb-4 sm:mb-6 flex items-center justify-between gap-4">
               <h2 className="text-xs sm:text-sm font-black uppercase tracking-[0.18em] text-zinc-950">
                 Shop by category
@@ -181,28 +163,34 @@ export default function HomePageView({
               </Link>
             </div>
 
-            <div className="grid grid-cols-3 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 xl:grid-cols-5">
-              {categoryCards.map((cat) => (
+            {/* Horizontal scrollable circles row */}
+            <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-2 scrollbar-hide">
+              {categories.map((cat) => (
                 <Link
                   key={cat.name}
                   href={`/shop?category=${encodeURIComponent(cat.name)}`}
-                  className="group flex flex-col justify-between border border-zinc-200 bg-white p-2 sm:p-4 transition-all duration-200 hover:border-transparent hover:shadow-[0_0_0_2px_rgb(218,170,88)]"
+                  className="group flex-shrink-0 flex flex-col items-center gap-2 sm:gap-3"
                 >
-                  <span
-                    className="mb-2 sm:mb-3 block h-[2px] w-4 sm:w-6 transition-all duration-300 group-hover:w-8 sm:group-hover:w-10"
-                    style={{ backgroundColor: "rgb(218, 170, 88)" }}
-                  />
-                  <div>
-                    <h3 className="text-[10px] sm:text-sm font-black uppercase tracking-tight text-zinc-950 leading-snug">
-                      {cat.name}
-                    </h3>
-                    <p className="mt-0.5 text-[9px] sm:text-[10px] font-medium text-zinc-400 hidden sm:block">{cat.visual.tagline}</p>
+                  {/* Circle */}
+                  <div className="relative h-16 w-16 sm:h-24 sm:w-24 lg:h-28 lg:w-28 rounded-full overflow-hidden bg-zinc-100 shadow-sm ring-2 ring-transparent transition-all duration-200 group-hover:ring-[rgb(218,170,88)] group-hover:shadow-md">
+                    {cat.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={cat.image}
+                        alt={cat.name}
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-zinc-100">
+                        <span className="text-xl sm:text-3xl font-black uppercase text-zinc-300">
+                          {cat.name.charAt(0)}
+                        </span>
+                      </div>
+                    )}
                   </div>
-                  <span
-                    className="mt-2 sm:mt-3 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                    style={{ color: "rgb(218, 170, 88)" }}
-                  >
-                    Shop →
+                  {/* Label */}
+                  <span className="text-center text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-zinc-700 group-hover:text-zinc-950 transition-colors duration-200 max-w-[64px] sm:max-w-[96px] leading-tight">
+                    {cat.name}
                   </span>
                 </Link>
               ))}
