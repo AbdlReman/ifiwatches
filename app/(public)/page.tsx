@@ -3,7 +3,6 @@ import { serializeProductFromLean } from "@/lib/serializeProduct";
 import { getHomeCategories } from "@/lib/homeCategories";
 import { publishedProductFilter } from "@/lib/publishedProductFilter";
 import Product from "@/models/Product";
-import User from "@/models/User";
 import HomePageContent from "@/models/HomePageContent";
 import type { IProduct } from "@/types/product";
 import HomePageView from "@/components/home/HomePageView";
@@ -39,8 +38,6 @@ export default async function HomePage() {
     vendorRaw,
     flashSalePool,
     justForYouPool,
-    productCount,
-    sellerCount,
     categories,
     homeContent,
   ] = await Promise.all([
@@ -66,8 +63,6 @@ export default async function HomePage() {
       .sort({ createdAt: -1 })
       .limit(30)
       .lean(),
-    Product.countDocuments(publishedProductFilter),
-    User.countDocuments({ role: "seller" }),
     getHomeCategories(),
     HomePageContent.findOne().lean(),
   ]);
@@ -141,11 +136,6 @@ export default async function HomePage() {
       flashSaleProducts={flashSaleProducts}
       justForYouProducts={justForYouProducts}
       featuredByCategory={featuredByCategory}
-      stats={{
-        sellerCount,
-        productCount,
-        categoryCount: categories.length,
-      }}
       saleImage={content?.saleImage || ""}
       videoUrl={content?.videoUrl || ""}
       heroContent={content?.hero}
