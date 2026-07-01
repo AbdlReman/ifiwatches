@@ -166,38 +166,38 @@ export default function HomePageView({
       {/* Categories */}
       {categoryCards.length > 0 ? (
         <section className="border-y border-zinc-200 bg-white">
-          <div className="mx-auto max-w-[90rem] px-4 py-10 sm:px-6 lg:px-8">
-            <div className="mb-6 flex items-center justify-between gap-4">
-              <h2 className="text-sm font-black uppercase tracking-[0.18em] text-zinc-950">
+          <div className="mx-auto max-w-[90rem] px-3 py-5 sm:px-6 sm:py-10 lg:px-8">
+            <div className="mb-4 sm:mb-6 flex items-center justify-between gap-4">
+              <h2 className="text-xs sm:text-sm font-black uppercase tracking-[0.18em] text-zinc-950">
                 Shop by category
               </h2>
               <Link
                 href="/shop"
-                className="text-[11px] font-bold uppercase tracking-widest text-zinc-500 underline-offset-4 hover:underline"
+                className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-zinc-500 underline-offset-4 hover:underline"
               >
                 View all →
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 xl:grid-cols-5">
               {categoryCards.map((cat) => (
                 <Link
                   key={cat.name}
                   href={`/shop?category=${encodeURIComponent(cat.name)}`}
-                  className="group flex flex-col justify-between border border-zinc-200 bg-white p-4 transition-all duration-200 hover:border-transparent hover:shadow-[0_0_0_2px_rgb(218,170,88)]"
+                  className="group flex flex-col justify-between border border-zinc-200 bg-white p-2 sm:p-4 transition-all duration-200 hover:border-transparent hover:shadow-[0_0_0_2px_rgb(218,170,88)]"
                 >
                   <span
-                    className="mb-3 block h-[2px] w-6 transition-all duration-300 group-hover:w-10"
+                    className="mb-2 sm:mb-3 block h-[2px] w-4 sm:w-6 transition-all duration-300 group-hover:w-8 sm:group-hover:w-10"
                     style={{ backgroundColor: "rgb(218, 170, 88)" }}
                   />
                   <div>
-                    <h3 className="text-sm font-black uppercase tracking-tight text-zinc-950 leading-snug">
+                    <h3 className="text-[10px] sm:text-sm font-black uppercase tracking-tight text-zinc-950 leading-snug">
                       {cat.name}
                     </h3>
-                    <p className="mt-0.5 text-[10px] font-medium text-zinc-400">{cat.visual.tagline}</p>
+                    <p className="mt-0.5 text-[9px] sm:text-[10px] font-medium text-zinc-400 hidden sm:block">{cat.visual.tagline}</p>
                   </div>
                   <span
-                    className="mt-3 text-[10px] font-bold uppercase tracking-widest opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                    className="mt-2 sm:mt-3 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest opacity-0 transition-opacity duration-200 group-hover:opacity-100"
                     style={{ color: "rgb(218, 170, 88)" }}
                   >
                     Shop →

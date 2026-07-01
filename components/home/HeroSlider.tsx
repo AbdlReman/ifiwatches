@@ -37,7 +37,16 @@ export default function HeroSlider({ images, fallback }: { images: string[]; fal
   }, [current, slides.length, next]);
 
   return (
-    <section className="relative w-full overflow-hidden" style={{ height: "min(92vh, 780px)" }}>
+    <section className="relative w-full overflow-hidden sm:h-[min(92vh,780px)]">
+      {/* Mobile height anchor — invisible but occupies natural image height so slides fill it correctly */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={slides[current]}
+        alt=""
+        aria-hidden="true"
+        className="invisible w-full h-auto sm:hidden"
+      />
+
       {/* Slides */}
       {slides.map((src, idx) => (
         <div
@@ -50,7 +59,7 @@ export default function HeroSlider({ images, fallback }: { images: string[]; fal
           <img
             src={src}
             alt={`Hero slide ${idx + 1}`}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-contain sm:object-cover"
             loading={idx === 0 ? "eager" : "lazy"}
           />
           {/* Very subtle dark vignette bottom-only */}
@@ -58,14 +67,14 @@ export default function HeroSlider({ images, fallback }: { images: string[]; fal
         </div>
       ))}
 
-      {/* Arrows — only when more than 1 slide */}
+      {/* Arrows — only when more than 1 slide, hidden on mobile */}
       {slides.length > 1 && (
         <>
           <button
             type="button"
             onClick={prev}
             aria-label="Previous slide"
-            className="absolute left-4 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-white/40 bg-black/30 text-white backdrop-blur-sm transition hover:bg-black/50 sm:left-6 sm:h-12 sm:w-12"
+            className="absolute left-6 top-1/2 z-10 -translate-y-1/2 hidden sm:flex h-12 w-12 items-center justify-center rounded-full border border-white/40 bg-black/30 text-white backdrop-blur-sm transition hover:bg-black/50"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -75,7 +84,7 @@ export default function HeroSlider({ images, fallback }: { images: string[]; fal
             type="button"
             onClick={next}
             aria-label="Next slide"
-            className="absolute right-4 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-white/40 bg-black/30 text-white backdrop-blur-sm transition hover:bg-black/50 sm:right-6 sm:h-12 sm:w-12"
+            className="absolute right-6 top-1/2 z-10 -translate-y-1/2 hidden sm:flex h-12 w-12 items-center justify-center rounded-full border border-white/40 bg-black/30 text-white backdrop-blur-sm transition hover:bg-black/50"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
