@@ -11,7 +11,8 @@ export default async function AdminCategoriesPage() {
     _id: String(c._id),
     name: String(c.name || ""),
     isActive: c.isActive !== false,
+    image: String(c.image || ""),
   }));
 
-  return <TaxonomyManager title="Categories" apiBase="/api/categories" initialItems={categories} />;
+  return <TaxonomyManager title="Categories" apiBase="/api/categories" initialItems={categories} imageEnabled />;
 }

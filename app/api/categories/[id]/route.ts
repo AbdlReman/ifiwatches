@@ -14,6 +14,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
       {
         name: String(body.name || "").trim(),
         isActive: body.isActive !== false,
+        image: String(body.image || "").trim(),
       },
       { new: true, runValidators: true }
     ).lean();

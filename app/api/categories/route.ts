@@ -26,6 +26,7 @@ export async function POST(req: NextRequest) {
     const category = await Category.create({
       name: String(body.name || "").trim(),
       isActive: body.isActive !== false,
+      image: String(body.image || "").trim(),
     });
     return NextResponse.json(
       { category: { ...category.toObject(), _id: String(category._id) } },
