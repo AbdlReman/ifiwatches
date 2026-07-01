@@ -164,29 +164,32 @@ export default function HomePageView({
             </div>
 
             {/* Horizontal scrollable circles row */}
-            <div className="flex justify-center gap-4 sm:gap-6 overflow-x-auto pb-2 scrollbar-hide">
+            <div className="flex justify-center gap-4 sm:gap-6 overflow-x-auto py-3 scrollbar-hide">
               {categories.map((cat) => (
                 <Link
                   key={cat.name}
                   href={`/shop?category=${encodeURIComponent(cat.name)}`}
                   className="group flex-shrink-0 flex flex-col items-center gap-2 sm:gap-3"
                 >
-                  {/* Circle */}
-                  <div className="relative h-16 w-16 sm:h-[67px] sm:w-[67px] lg:h-[78px] lg:w-[78px] rounded-full overflow-hidden bg-zinc-100 shadow-sm ring-2 ring-transparent transition-all duration-200 group-hover:ring-[rgb(218,170,88)] group-hover:shadow-md">
-                    {cat.image ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={cat.image}
-                        alt={cat.name}
-                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center bg-zinc-100">
-                        <span className="text-xl sm:text-3xl font-black uppercase text-zinc-300">
-                          {cat.name.charAt(0)}
-                        </span>
-                      </div>
-                    )}
+                  {/* Outer ring wrapper — no overflow-hidden so ring/shadow are never clipped */}
+                  <div className="relative h-16 w-16 sm:h-[67px] sm:w-[67px] lg:h-[78px] lg:w-[78px] rounded-full shadow-sm ring-2 ring-transparent transition-all duration-200 group-hover:ring-[rgb(218,170,88)] group-hover:shadow-md">
+                    {/* Inner clip — overflow-hidden stays here for the zoom effect */}
+                    <div className="h-full w-full rounded-full overflow-hidden bg-zinc-100">
+                      {cat.image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={cat.image}
+                          alt={cat.name}
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center bg-zinc-100">
+                          <span className="text-xl sm:text-3xl font-black uppercase text-zinc-300">
+                            {cat.name.charAt(0)}
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                   {/* Label */}
                   <span className="text-center text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-zinc-700 group-hover:text-zinc-950 transition-colors duration-200 max-w-[64px] sm:max-w-[67px] leading-tight">
