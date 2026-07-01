@@ -164,7 +164,7 @@ export default function HomePageView({
             </div>
 
             {/* Horizontal scrollable circles row */}
-            <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-2 scrollbar-hide">
+            <div className="flex justify-center gap-4 sm:gap-6 overflow-x-auto pb-2 scrollbar-hide">
               {categories.map((cat) => (
                 <Link
                   key={cat.name}
