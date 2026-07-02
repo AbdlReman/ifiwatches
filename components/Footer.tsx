@@ -47,7 +47,7 @@ export default function Footer() {
               <BrandLogoMark size="md" />
             </Link>
             <p className="text-zinc-600 text-sm leading-relaxed">
-              IFI Lifestyle — Iconic Futures Innovations. A trusted lifestyle platform: one product, one seller, quality
+              IFI Lifestyle - A trusted lifestyle platform: one product, one seller, quality
               and standards first.
             </p>
             <div className="mt-5 space-y-3">
