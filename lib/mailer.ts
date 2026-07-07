@@ -1,27 +1,17 @@
 import nodemailer from "nodemailer";
 
-/** Prefer SMTP_*; fall back to Gmail-style EMAIL_USER / EMAIL_PASS from .env.local */
-function smtpAuthUser() {
-  return process.env.SMTP_USER?.trim() || process.env.EMAIL_USER?.trim();
-}
-
-function smtpAuthPass() {
-  return process.env.SMTP_PASS?.trim() || process.env.EMAIL_PASS?.trim();
-}
-
-function smtpHost() {
-  const h = process.env.SMTP_HOST?.trim();
-  if (h) return h;
-  return smtpAuthUser() ? "smtp.gmail.com" : "";
-}
+const authUser = process.env.SMTP_USER?.trim() || process.env.EMAIL_USER?.trim();
+const authPass = process.env.SMTP_PASS?.trim() || process.env.EMAIL_PASS?.trim();
 
 const transporter = nodemailer.createTransport({
-  host: smtpHost() || "smtp.gmail.com",
-  port: Number(process.env.SMTP_PORT || 587),
-  secure: String(process.env.SMTP_SECURE || "false") === "true",
+  host: process.env.SMTP_HOST?.trim() || "smtp.hostinger.com",
+  port: Number(process.env.SMTP_PORT ?? 465),
+  secure: process.env.SMTP_SECURE !== undefined
+    ? process.env.SMTP_SECURE.trim() === "true"
+    : true,
   auth: {
-    user: smtpAuthUser(),
-    pass: smtpAuthPass(),
+    user: authUser,
+    pass: authPass,
   },
 });
 
@@ -39,7 +29,7 @@ export async function sendOrderEmails({
   adminHtml: string;
 }) {
   const from =
-    process.env.SMTP_FROM?.trim() || process.env.SMTP_USER?.trim() || process.env.EMAIL_USER?.trim() || "no-reply@example.com";
+    process.env.SMTP_FROM?.trim() || authUser || "no-reply@ifilifestyle.com";
   await Promise.all([
     transporter.sendMail({
       from,
@@ -58,7 +48,7 @@ export async function sendOrderEmails({
 
 /** True when Nodemailer can authenticate (SMTP_* or EMAIL_USER + EMAIL_PASS). */
 export function smtpCredentialsReady(): boolean {
-  return Boolean(smtpAuthUser() && smtpAuthPass());
+  return Boolean(authUser && authPass);
 }
 
 /** Inbox for order notifications and default contact inbox. Set `RECIPIENT_EMAIL` in `.env.local`. */
@@ -81,7 +71,7 @@ export async function sendSellerOrderNotification({
   html: string;
 }) {
   const from =
-    process.env.SMTP_FROM?.trim() || process.env.SMTP_USER?.trim() || process.env.EMAIL_USER?.trim() || "no-reply@example.com";
+    process.env.SMTP_FROM?.trim() || authUser || "no-reply@ifilifestyle.com";
   await transporter.sendMail({ from, to: sellerEmail, subject, html });
 }
 
@@ -92,7 +82,7 @@ export async function sendContactNotification(opts: {
   replyTo?: string;
 }) {
   const from =
-    process.env.SMTP_FROM?.trim() || process.env.SMTP_USER?.trim() || process.env.EMAIL_USER?.trim() || "no-reply@example.com";
+    process.env.SMTP_FROM?.trim() || authUser || "no-reply@ifilifestyle.com";
   await transporter.sendMail({
     from,
     to: opts.to,
