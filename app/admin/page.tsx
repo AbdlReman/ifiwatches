@@ -21,7 +21,9 @@ export default async function AdminPage() {
   const totalOrders = orders.length;
   const pendingOrders = orders.filter((o) => String(o.orderStatus) === "pending").length;
   const completedOrders = orders.filter((o) => String(o.orderStatus) === "completed").length;
-  const revenue = orders.reduce((sum, o) => sum + Number(o.totalAmount || 0), 0);
+  const revenue = orders
+    .filter((o) => String(o.orderStatus) !== "cancelled")
+    .reduce((sum, o) => sum + Number(o.totalAmount || 0), 0);
   const lowStockProducts = products
     .filter((p) => Number(p.stockQuantity || 0) <= 5)
     .sort((a, b) => Number(a.stockQuantity || 0) - Number(b.stockQuantity || 0))

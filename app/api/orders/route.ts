@@ -13,6 +13,7 @@ import {
 } from "@/lib/couponValidation";
 import { sendOrderEmails, sendSellerOrderNotification } from "@/lib/mailer";
 import { recordSellerCommissionsForOrder } from "@/lib/recordSellerCommissions";
+import SellerEarning from "@/models/SellerEarning";
 import User from "@/models/User";
 import {
   buildAdminOrderEmailHtml,
@@ -438,7 +439,7 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    // Restore stock when order is cancelled (and wasn't already cancelled)
+    // Restore stock and remove earnings when order is cancelled
     if (update.orderStatus === "cancelled" && previousStatus !== "cancelled") {
       const items = (preOrder.items as Array<Record<string, unknown>>) ?? [];
       for (const item of items) {
@@ -455,6 +456,8 @@ export async function PATCH(req: NextRequest) {
           await Product.findByIdAndUpdate(productId, { $set: { inStock: newStock > 0 } });
         }
       }
+      // Remove any earnings recorded when this order was completed
+      await SellerEarning.deleteMany({ orderId: new mongoose.Types.ObjectId(orderId) });
     }
 
     if (update.orderStatus === "completed") {

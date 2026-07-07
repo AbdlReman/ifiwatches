@@ -23,7 +23,19 @@ export async function GET(req: NextRequest) {
 
     const [products, earnings, sellerProductIds] = await Promise.all([
       Product.find({ sellerId }).select("name soldCount stockQuantity price approvalStatus isActive").lean(),
-      SellerEarning.find({ sellerId: sellerObjId }).sort({ createdAt: -1 }).lean(),
+      SellerEarning.find({ sellerId: sellerObjId })
+        .sort({ createdAt: -1 })
+        .lean()
+        .then(async (rows) => {
+          // Exclude earnings for cancelled orders (guards against stale data)
+          const orderIds = rows.map((r) => (r as Record<string, unknown>).orderId);
+          const cancelledIds = await Order.distinct("_id", {
+            _id: { $in: orderIds },
+            orderStatus: "cancelled",
+          });
+          const cancelledSet = new Set(cancelledIds.map(String));
+          return rows.filter((r) => !cancelledSet.has(String((r as Record<string, unknown>).orderId)));
+        }),
       Product.find({ sellerId }).distinct("_id"),
     ]);
 
