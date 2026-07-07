@@ -29,7 +29,7 @@ export async function sendOrderEmails({
   adminHtml: string;
 }) {
   const from =
-    process.env.SMTP_FROM?.trim() || authUser || "no-reply@ifilifestyle.com";
+    process.env.SMTP_FROM?.trim() || (authUser ? `"IFI Lifestyle" <${authUser}>` : "no-reply@ifilifestyle.com");
   await Promise.all([
     transporter.sendMail({
       from,
@@ -71,7 +71,7 @@ export async function sendSellerOrderNotification({
   html: string;
 }) {
   const from =
-    process.env.SMTP_FROM?.trim() || authUser || "no-reply@ifilifestyle.com";
+    process.env.SMTP_FROM?.trim() || (authUser ? `"IFI Lifestyle" <${authUser}>` : "no-reply@ifilifestyle.com");
   await transporter.sendMail({ from, to: sellerEmail, subject, html });
 }
 
@@ -82,7 +82,7 @@ export async function sendContactNotification(opts: {
   replyTo?: string;
 }) {
   const from =
-    process.env.SMTP_FROM?.trim() || authUser || "no-reply@ifilifestyle.com";
+    process.env.SMTP_FROM?.trim() || (authUser ? `"IFI Lifestyle" <${authUser}>` : "no-reply@ifilifestyle.com");
   await transporter.sendMail({
     from,
     to: opts.to,
