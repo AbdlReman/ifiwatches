@@ -19,7 +19,7 @@ export async function PUT(req: NextRequest) {
   if (!auth.ok) return auth.response;
 
   await connectDB();
-  const { saleImage, videoUrl, hero, shopHero, heroImages, mobileHeroImages, topbarText, topbarEnabled } = await req.json();
+  const { saleImage, videoUrl, hero, shopHero, heroImages, mobileHeroImages, topbarText, topbarEnabled, topbarPhone, topbarEmail } = await req.json();
 
   const update: Record<string, unknown> = {
     saleImage: saleImage ?? "",
@@ -31,6 +31,8 @@ export async function PUT(req: NextRequest) {
   if (Array.isArray(mobileHeroImages)) update.mobileHeroImages = mobileHeroImages.slice(0, 4);
   if (topbarText !== undefined) update.topbarText = String(topbarText).trim();
   if (topbarEnabled !== undefined) update.topbarEnabled = Boolean(topbarEnabled);
+  if (topbarPhone !== undefined) update.topbarPhone = String(topbarPhone).trim();
+  if (topbarEmail !== undefined) update.topbarEmail = String(topbarEmail).trim();
 
   const doc = await HomePageContent.findOneAndUpdate({}, update, {
     new: true,

@@ -33,6 +33,8 @@ export default function Navbar() {
   const [categories, setCategories] = useState<string[]>([]);
   const [topbarText, setTopbarText] = useState("Free shipping on orders above Rs. 5,999 across Pakistan");
   const [topbarEnabled, setTopbarEnabled] = useState(true);
+  const [topbarPhone, setTopbarPhone] = useState(siteConfig.contact.phone || "");
+  const [topbarEmail, setTopbarEmail] = useState(siteConfig.contact.email || "");
 
   const refreshAuth = useCallback(async () => {
     try {
@@ -57,6 +59,8 @@ export default function Navbar() {
       .then((data) => {
         if (data.topbarText) setTopbarText(data.topbarText);
         setTopbarEnabled(data.topbarEnabled !== false);
+        if (data.topbarPhone) setTopbarPhone(data.topbarPhone);
+        if (data.topbarEmail) setTopbarEmail(data.topbarEmail);
       })
       .catch(() => {});
   }, []);
@@ -163,9 +167,11 @@ export default function Navbar() {
         <div className="hidden sm:block bg-zinc-950 text-white py-2 text-xs font-bold tracking-widest uppercase border-b border-zinc-800">
           <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-1">
             <span>{topbarText}</span>
-            <span className="text-[11px] text-white/80">
-              {siteConfig.contact.phone} | {siteConfig.contact.email}
-            </span>
+            {(topbarPhone || topbarEmail) && (
+              <span className="text-[11px] text-white/80">
+                {topbarPhone}{topbarPhone && topbarEmail ? " | " : ""}{topbarEmail}
+              </span>
+            )}
           </div>
         </div>
       )}

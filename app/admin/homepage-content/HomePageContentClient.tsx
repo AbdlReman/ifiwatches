@@ -58,6 +58,8 @@ export default function HomePageContentClient() {
   const [shopHero, setShopHero] = useState<ShopHeroState>(DEFAULT_SHOP_HERO);
   const [topbarText, setTopbarText] = useState("Free shipping on orders above Rs. 5,999 across Pakistan");
   const [topbarEnabled, setTopbarEnabled] = useState(true);
+  const [topbarPhone, setTopbarPhone] = useState("");
+  const [topbarEmail, setTopbarEmail] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [imgUploading, setImgUploading] = useState(false);
@@ -85,6 +87,8 @@ export default function HomePageContentClient() {
         setMobileHeroImages(Array.isArray(data.content?.mobileHeroImages) ? data.content.mobileHeroImages.filter(Boolean) : []);
         if (data.content?.topbarText) setTopbarText(data.content.topbarText);
         setTopbarEnabled(data.content?.topbarEnabled !== false);
+        setTopbarPhone(data.content?.topbarPhone ?? "");
+        setTopbarEmail(data.content?.topbarEmail ?? "");
         const sh = data.content?.shopHero ?? {};
         setShopHero({
           image: sh.image ?? "",
@@ -242,6 +246,8 @@ export default function HomePageContentClient() {
           },
           topbarText,
           topbarEnabled,
+          topbarPhone,
+          topbarEmail,
         }),
       });
       const data = await res.json();
@@ -318,6 +324,28 @@ export default function HomePageContentClient() {
                 maxLength={160}
               />
               <p className="text-[11px] text-slate-500 mt-1">{topbarText.length}/160 characters</p>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label className={labelCls}>Phone Number</label>
+                <input
+                  type="text"
+                  className={inputCls}
+                  value={topbarPhone}
+                  onChange={(e) => setTopbarPhone(e.target.value)}
+                  placeholder="+92 300 000 0000"
+                />
+              </div>
+              <div>
+                <label className={labelCls}>Email</label>
+                <input
+                  type="email"
+                  className={inputCls}
+                  value={topbarEmail}
+                  onChange={(e) => setTopbarEmail(e.target.value)}
+                  placeholder="support@ifilifestyle.com"
+                />
+              </div>
             </div>
           </div>
 

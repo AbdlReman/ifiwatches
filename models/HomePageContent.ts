@@ -42,6 +42,8 @@ const HomePageContentSchema = new Schema(
     shopHero: { type: ShopHeroSchema, default: () => ({}) },
     topbarText: { type: String, default: "Free shipping on orders above Rs. 5,999 across Pakistan" },
     topbarEnabled: { type: Boolean, default: true },
+    topbarPhone: { type: String, default: "" },
+    topbarEmail: { type: String, default: "" },
   },
   { timestamps: true }
 );
