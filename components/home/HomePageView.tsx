@@ -163,13 +163,13 @@ export default function HomePageView({
               </Link>
             </div>
 
-            {/* Grid: 5 per row on mobile, more on larger screens */}
-            <div className="grid grid-cols-5 sm:grid-cols-6 lg:grid-cols-8 gap-x-3 gap-y-5 sm:gap-x-6 py-3">
+            {/* Flex wrap: 5 per row mobile (w-1/5), 12 per row desktop (w-[8.333%]), always centered */}
+            <div className="flex flex-wrap justify-center gap-y-5 py-3" style={{ rowGap: "1.25rem" }}>
               {categories.map((cat) => (
                 <Link
                   key={cat.name}
                   href={`/shop?category=${encodeURIComponent(cat.name)}`}
-                  className="group flex flex-col items-center gap-2 sm:gap-3"
+                  className="group flex w-1/5 sm:w-[16.666%] lg:w-[8.333%] flex-col items-center gap-2 sm:gap-3 px-1"
                 >
                   {/* Outer ring wrapper — no overflow-hidden so ring/shadow are never clipped */}
                   <div className="relative h-16 w-16 sm:h-[67px] sm:w-[67px] lg:h-[78px] lg:w-[78px] rounded-full shadow-sm ring-2 ring-transparent transition-all duration-200 group-hover:ring-[rgb(218,170,88)] group-hover:shadow-md">
