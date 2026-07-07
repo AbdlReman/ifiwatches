@@ -12,7 +12,16 @@ const PRIMARY_LINKS = [
   { href: "/shop", label: "Shop" },
 ];
 
+const GENDER_LINKS = [
+  { href: "/shop?category=Men", label: "Men", category: "Men" },
+  { href: "/shop?category=Women", label: "Women", category: "Women" },
+];
+
+// Categories that are exposed as top-level nav links and hidden from the dropdown
+const TOP_LEVEL_CATEGORIES = new Set(["Men", "Women"]);
+
 const SECONDARY_LINKS = [
+  { href: "/shop?sale=true", label: "Sale", sale: true },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
@@ -82,15 +91,18 @@ export default function Navbar() {
     };
   }, []);
 
+  const activeSale = searchParams.get("sale") === "true";
   const isHome = pathname === "/";
   const isShop = pathname === "/shop";
-  const isCategoriesActive = isShop && Boolean(activeCategory);
+  const isCategoriesActive = isShop && Boolean(activeCategory) && !TOP_LEVEL_CATEGORIES.has(activeCategory);
 
   const linkClass = (active: boolean) =>
     `nav-link text-zinc-700 hover:text-zinc-950 transition-colors ${active ? "border-b-2 border-[rgb(218,170,88)] text-zinc-950" : ""}`;
 
+  const dropdownCategories = categories.filter((c) => !TOP_LEVEL_CATEGORIES.has(c));
+
   const categoriesDropdown =
-    categories.length > 0 ? (
+    dropdownCategories.length > 0 ? (
       <div
         className="relative"
         onMouseEnter={() => setCategoriesOpen(true)}
@@ -124,7 +136,7 @@ export default function Navbar() {
             >
               All products
             </Link>
-            {categories.map((name) => (
+            {dropdownCategories.map((name) => (
               <Link
                 key={name}
                 href={categoryShopHref(name)}
@@ -166,15 +178,32 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={linkClass(
-                  link.href === "/" ? isHome : link.href === "/shop" ? isShop && !activeCategory : false
+                  link.href === "/" ? isHome : link.href === "/shop" ? isShop && !activeCategory && !activeSale : false
                 )}
+              >
+                {link.label}
+              </Link>
+            ))}
+            {GENDER_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={linkClass(isShop && activeCategory === link.category)}
               >
                 {link.label}
               </Link>
             ))}
             {categoriesDropdown}
             {SECONDARY_LINKS.map((link) => (
-              <Link key={link.href} href={link.href} className={linkClass(pathname === link.href)}>
+              <Link
+                key={link.href}
+                href={link.href}
+                className={
+                  link.sale
+                    ? `nav-link font-bold transition-colors ${activeSale ? "text-red-600 border-b-2 border-red-500" : "text-red-500 hover:text-red-600"}`
+                    : linkClass(pathname === link.href)
+                }
+              >
                 {link.label}
               </Link>
             ))}
@@ -314,7 +343,7 @@ export default function Navbar() {
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
                 className={`nav-link text-sm py-1 text-zinc-800 hover:text-zinc-950 transition-colors ${
-                  (link.href === "/" ? isHome : link.href === "/shop" ? isShop && !activeCategory : false)
+                  (link.href === "/" ? isHome : link.href === "/shop" ? isShop && !activeCategory && !activeSale : false)
                     ? "border-b-2 border-[rgb(218,170,88)] w-fit text-zinc-950"
                     : ""
                 }`}
@@ -323,7 +352,20 @@ export default function Navbar() {
               </Link>
             ))}
 
-            {categories.length > 0 ? (
+            {GENDER_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className={`nav-link text-sm py-1 text-zinc-800 hover:text-zinc-950 transition-colors ${
+                  isShop && activeCategory === link.category ? "border-b-2 border-[rgb(218,170,88)] w-fit text-zinc-950" : ""
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+
+            {dropdownCategories.length > 0 ? (
               <div>
                 <button
                   type="button"
@@ -348,22 +390,16 @@ export default function Navbar() {
                   <div className="mt-2 flex flex-col gap-1 border-l-2 border-zinc-200 pl-3">
                     <Link
                       href="/shop"
-                      onClick={() => {
-                        setMenuOpen(false);
-                        setMobileCategoriesOpen(false);
-                      }}
+                      onClick={() => { setMenuOpen(false); setMobileCategoriesOpen(false); }}
                       className="text-sm font-semibold text-zinc-900 py-1"
                     >
                       All products
                     </Link>
-                    {categories.map((name) => (
+                    {dropdownCategories.map((name) => (
                       <Link
                         key={name}
                         href={categoryShopHref(name)}
-                        onClick={() => {
-                          setMenuOpen(false);
-                          setMobileCategoriesOpen(false);
-                        }}
+                        onClick={() => { setMenuOpen(false); setMobileCategoriesOpen(false); }}
                         className={`text-sm py-1 ${
                           activeCategory === name ? "font-semibold text-zinc-950" : "text-zinc-600"
                         }`}
@@ -381,9 +417,11 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className={`nav-link text-sm py-1 text-zinc-800 hover:text-zinc-950 transition-colors ${
-                  pathname === link.href ? "border-b-2 border-[rgb(218,170,88)] w-fit text-zinc-950" : ""
-                }`}
+                className={
+                  link.sale
+                    ? `nav-link text-sm py-1 font-bold transition-colors ${activeSale ? "text-red-600 border-b-2 border-red-500 w-fit" : "text-red-500 hover:text-red-600"}`
+                    : `nav-link text-sm py-1 text-zinc-800 hover:text-zinc-950 transition-colors ${pathname === link.href ? "border-b-2 border-[rgb(218,170,88)] w-fit text-zinc-950" : ""}`
+                }
               >
                 {link.label}
               </Link>

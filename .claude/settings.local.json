@@ -6,7 +6,8 @@
       "Bash(npx tsc *)",
       "Bash(xargs grep -l \"localStorage.*cart\")",
       "Bash(Get-ChildItem -Recurse -Directory)",
-      "Bash(Select-Object -First 50 FullName)"
+      "Bash(Select-Object -First 50 FullName)",
+      "Bash(select-string \"sale\" -i)"
     ]
   }
 }
