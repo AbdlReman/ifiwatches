@@ -205,8 +205,6 @@ export default function Footer() {
               Cookie Policy
             </Link>
           </div>
-        </div>
-        <div className="mt-4 text-center">
           <p className="text-zinc-400 text-xs">
             Made by{" "}
             <a
