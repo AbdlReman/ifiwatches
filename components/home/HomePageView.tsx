@@ -163,13 +163,13 @@ export default function HomePageView({
               </Link>
             </div>
 
-            {/* Horizontal scrollable circles row */}
-            <div className="flex justify-center gap-4 sm:gap-6 overflow-x-auto py-3 scrollbar-hide">
+            {/* Grid: 5 per row on mobile, more on larger screens */}
+            <div className="grid grid-cols-5 sm:grid-cols-6 lg:grid-cols-8 gap-x-3 gap-y-5 sm:gap-x-6 py-3">
               {categories.map((cat) => (
                 <Link
                   key={cat.name}
                   href={`/shop?category=${encodeURIComponent(cat.name)}`}
-                  className="group flex-shrink-0 flex flex-col items-center gap-2 sm:gap-3"
+                  className="group flex flex-col items-center gap-2 sm:gap-3"
                 >
                   {/* Outer ring wrapper — no overflow-hidden so ring/shadow are never clipped */}
                   <div className="relative h-16 w-16 sm:h-[67px] sm:w-[67px] lg:h-[78px] lg:w-[78px] rounded-full shadow-sm ring-2 ring-transparent transition-all duration-200 group-hover:ring-[rgb(218,170,88)] group-hover:shadow-md">
