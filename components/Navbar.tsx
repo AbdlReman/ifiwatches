@@ -93,7 +93,7 @@ export default function Navbar() {
     };
   }, []);
 
-  const activeSale = searchParams.get("sale") === "true";
+  const activeSale = searchParams.get("sale") === "1";
   const isHome = pathname === "/";
   const isShop = pathname === "/shop";
   const isCategoriesActive = isShop && Boolean(activeCategory) && !TOP_LEVEL_CATEGORIES.has(activeCategory);
@@ -189,7 +189,7 @@ export default function Navbar() {
             <Link href="/shop" className={linkClass(isShop && !activeCategory && !activeSale)}>Shop</Link>
             {/* Sale */}
             <Link
-              href="/shop?sale=true"
+              href="/shop?sale=1"
               className={`nav-link font-bold transition-colors ${activeSale ? "text-red-600 border-b-2 border-red-500" : "text-red-500 hover:text-red-600"}`}
             >
               Sale
@@ -340,7 +340,7 @@ export default function Navbar() {
             {/* Shop */}
             <Link href="/shop" onClick={() => setMenuOpen(false)} className={`nav-link text-sm py-1 text-zinc-800 hover:text-zinc-950 transition-colors ${isShop && !activeCategory && !activeSale ? "border-b-2 border-[rgb(218,170,88)] w-fit text-zinc-950" : ""}`}>Shop</Link>
             {/* Sale */}
-            <Link href="/shop?sale=true" onClick={() => setMenuOpen(false)} className={`nav-link text-sm py-1 font-bold transition-colors ${activeSale ? "text-red-600 border-b-2 border-red-500 w-fit" : "text-red-500 hover:text-red-600"}`}>Sale</Link>
+            <Link href="/shop?sale=1" onClick={() => setMenuOpen(false)} className={`nav-link text-sm py-1 font-bold transition-colors ${activeSale ? "text-red-600 border-b-2 border-red-500 w-fit" : "text-red-500 hover:text-red-600"}`}>Sale</Link>
             {/* Categories dropdown */}
             {dropdownCategories.length > 0 ? (
               <div>
