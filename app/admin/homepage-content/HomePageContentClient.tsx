@@ -56,6 +56,8 @@ export default function HomePageContentClient() {
   const [mobileHeroImages, setMobileHeroImages] = useState<string[]>([]);
   const [mobileHeroImagesUploading, setMobileHeroImagesUploading] = useState(false);
   const [shopHero, setShopHero] = useState<ShopHeroState>(DEFAULT_SHOP_HERO);
+  const [topbarText, setTopbarText] = useState("Free shipping on orders above Rs. 5,999 across Pakistan");
+  const [topbarEnabled, setTopbarEnabled] = useState(true);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [imgUploading, setImgUploading] = useState(false);
@@ -81,6 +83,8 @@ export default function HomePageContentClient() {
         setVideoUrl(data.content?.videoUrl ?? "");
         setHeroImages(Array.isArray(data.content?.heroImages) ? data.content.heroImages.filter(Boolean) : []);
         setMobileHeroImages(Array.isArray(data.content?.mobileHeroImages) ? data.content.mobileHeroImages.filter(Boolean) : []);
+        if (data.content?.topbarText) setTopbarText(data.content.topbarText);
+        setTopbarEnabled(data.content?.topbarEnabled !== false);
         const sh = data.content?.shopHero ?? {};
         setShopHero({
           image: sh.image ?? "",
@@ -236,6 +240,8 @@ export default function HomePageContentClient() {
             heading: shopHero.heading,
             subheading: shopHero.subheading,
           },
+          topbarText,
+          topbarEnabled,
         }),
       });
       const data = await res.json();
@@ -281,6 +287,39 @@ export default function HomePageContentClient() {
         <p className="text-slate-500 text-sm">Loading…</p>
       ) : (
         <form onSubmit={save} className="space-y-6">
+
+          {/* ── Top Promo Bar ── */}
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 space-y-4">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <h2 className="text-sm font-bold uppercase tracking-widest text-slate-300">Top Promo Bar</h2>
+                <p className="text-slate-500 text-xs mt-1">The announcement bar shown at the very top of every page.</p>
+              </div>
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <span className="text-xs font-semibold text-slate-400">{topbarEnabled ? "Visible" : "Hidden"}</span>
+                <button
+                  type="button"
+                  onClick={() => setTopbarEnabled((v) => !v)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${topbarEnabled ? "bg-indigo-500" : "bg-slate-600"}`}
+                  aria-pressed={topbarEnabled}
+                >
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${topbarEnabled ? "translate-x-6" : "translate-x-1"}`} />
+                </button>
+              </label>
+            </div>
+            <div>
+              <label className={labelCls}>Promo Text</label>
+              <input
+                type="text"
+                className={inputCls}
+                value={topbarText}
+                onChange={(e) => setTopbarText(e.target.value)}
+                placeholder="Free shipping on orders above Rs. 5,999 across Pakistan"
+                maxLength={160}
+              />
+              <p className="text-[11px] text-slate-500 mt-1">{topbarText.length}/160 characters</p>
+            </div>
+          </div>
 
           {/* ── Hero Slider Images ── */}
           <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 space-y-5">

@@ -31,6 +31,8 @@ export default function Navbar() {
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
+  const [topbarText, setTopbarText] = useState("Free shipping on orders above Rs. 5,999 across Pakistan");
+  const [topbarEnabled, setTopbarEnabled] = useState(true);
 
   const refreshAuth = useCallback(async () => {
     try {
@@ -48,6 +50,16 @@ export default function Navbar() {
     }, 0);
     return () => window.clearTimeout(timer);
   }, [refreshAuth]);
+
+  useEffect(() => {
+    fetch("/api/navigation/topbar")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.topbarText) setTopbarText(data.topbarText);
+        setTopbarEnabled(data.topbarEnabled !== false);
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -147,14 +159,16 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-zinc-200 shadow-sm">
       {/* Top promo bar */}
-      <div className="hidden sm:block bg-zinc-950 text-white py-2 text-xs font-bold tracking-widest uppercase border-b border-zinc-800">
-        <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-1">
-          <span>Free shipping on orders above Rs. 5,999 across Pakistan</span>
-          <span className="text-[11px] text-white/80">
-            {siteConfig.contact.phone} | {siteConfig.contact.email}
-          </span>
+      {topbarEnabled && (
+        <div className="hidden sm:block bg-zinc-950 text-white py-2 text-xs font-bold tracking-widest uppercase border-b border-zinc-800">
+          <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-1">
+            <span>{topbarText}</span>
+            <span className="text-[11px] text-white/80">
+              {siteConfig.contact.phone} | {siteConfig.contact.email}
+            </span>
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-5 min-h-16 py-3">
