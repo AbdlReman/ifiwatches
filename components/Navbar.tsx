@@ -7,11 +7,6 @@ import BrandLogoMark from "@/components/BrandLogoMark";
 
 type AuthUser = { id: string; email: string; name: string; role: string };
 
-const PRIMARY_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/shop", label: "Shop" },
-];
-
 const GENDER_LINKS = [
   { href: "/shop?category=Men", label: "Men", category: "Men" },
   { href: "/shop?category=Women", label: "Women", category: "Women" },
@@ -20,11 +15,6 @@ const GENDER_LINKS = [
 // Categories that are exposed as top-level nav links and hidden from the dropdown
 const TOP_LEVEL_CATEGORIES = new Set(["Men", "Women"]);
 
-const SECONDARY_LINKS = [
-  { href: "/shop?sale=true", label: "Sale", sale: true },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-];
 
 function categoryShopHref(name: string) {
   return `/shop?category=${encodeURIComponent(name)}`;
@@ -173,40 +163,28 @@ export default function Navbar() {
           </Link>
 
           <nav className="hidden xl:flex items-center gap-5">
-            {PRIMARY_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={linkClass(
-                  link.href === "/" ? isHome : link.href === "/shop" ? isShop && !activeCategory && !activeSale : false
-                )}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {/* Home */}
+            <Link href="/" className={linkClass(isHome)}>Home</Link>
+            {/* Men / Women */}
             {GENDER_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={linkClass(isShop && activeCategory === link.category)}
-              >
+              <Link key={link.href} href={link.href} className={linkClass(isShop && activeCategory === link.category)}>
                 {link.label}
               </Link>
             ))}
+            {/* Shop */}
+            <Link href="/shop" className={linkClass(isShop && !activeCategory && !activeSale)}>Shop</Link>
+            {/* Sale */}
+            <Link
+              href="/shop?sale=true"
+              className={`nav-link font-bold transition-colors ${activeSale ? "text-red-600 border-b-2 border-red-500" : "text-red-500 hover:text-red-600"}`}
+            >
+              Sale
+            </Link>
+            {/* Categories dropdown */}
             {categoriesDropdown}
-            {SECONDARY_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={
-                  link.sale
-                    ? `nav-link font-bold transition-colors ${activeSale ? "text-red-600 border-b-2 border-red-500" : "text-red-500 hover:text-red-600"}`
-                    : linkClass(pathname === link.href)
-                }
-              >
-                {link.label}
-              </Link>
-            ))}
+            {/* About / Contact */}
+            <Link href="/about" className={linkClass(pathname === "/about")}>About</Link>
+            <Link href="/contact" className={linkClass(pathname === "/contact")}>Contact</Link>
           </nav>
 
           <div className="flex items-center gap-4">
@@ -337,73 +315,37 @@ export default function Navbar() {
       {menuOpen && (
         <div className="xl:hidden border-t border-zinc-200 bg-white">
           <nav className="flex flex-col px-4 py-4 gap-4">
-            {PRIMARY_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMenuOpen(false)}
-                className={`nav-link text-sm py-1 text-zinc-800 hover:text-zinc-950 transition-colors ${
-                  (link.href === "/" ? isHome : link.href === "/shop" ? isShop && !activeCategory && !activeSale : false)
-                    ? "border-b-2 border-[rgb(218,170,88)] w-fit text-zinc-950"
-                    : ""
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-
+            {/* Home */}
+            <Link href="/" onClick={() => setMenuOpen(false)} className={`nav-link text-sm py-1 text-zinc-800 hover:text-zinc-950 transition-colors ${isHome ? "border-b-2 border-[rgb(218,170,88)] w-fit text-zinc-950" : ""}`}>Home</Link>
+            {/* Men / Women */}
             {GENDER_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMenuOpen(false)}
-                className={`nav-link text-sm py-1 text-zinc-800 hover:text-zinc-950 transition-colors ${
-                  isShop && activeCategory === link.category ? "border-b-2 border-[rgb(218,170,88)] w-fit text-zinc-950" : ""
-                }`}
-              >
+              <Link key={link.href} href={link.href} onClick={() => setMenuOpen(false)} className={`nav-link text-sm py-1 text-zinc-800 hover:text-zinc-950 transition-colors ${isShop && activeCategory === link.category ? "border-b-2 border-[rgb(218,170,88)] w-fit text-zinc-950" : ""}`}>
                 {link.label}
               </Link>
             ))}
-
+            {/* Shop */}
+            <Link href="/shop" onClick={() => setMenuOpen(false)} className={`nav-link text-sm py-1 text-zinc-800 hover:text-zinc-950 transition-colors ${isShop && !activeCategory && !activeSale ? "border-b-2 border-[rgb(218,170,88)] w-fit text-zinc-950" : ""}`}>Shop</Link>
+            {/* Sale */}
+            <Link href="/shop?sale=true" onClick={() => setMenuOpen(false)} className={`nav-link text-sm py-1 font-bold transition-colors ${activeSale ? "text-red-600 border-b-2 border-red-500 w-fit" : "text-red-500 hover:text-red-600"}`}>Sale</Link>
+            {/* Categories dropdown */}
             {dropdownCategories.length > 0 ? (
               <div>
                 <button
                   type="button"
                   onClick={() => setMobileCategoriesOpen((v) => !v)}
-                  className={`nav-link flex w-full items-center justify-between text-sm py-1 text-zinc-800 hover:text-zinc-950 ${
-                    isCategoriesActive ? "border-b-2 border-[rgb(218,170,88)] w-fit text-zinc-950" : ""
-                  }`}
+                  className={`nav-link flex w-full items-center justify-between text-sm py-1 text-zinc-800 hover:text-zinc-950 ${isCategoriesActive ? "border-b-2 border-[rgb(218,170,88)] w-fit text-zinc-950" : ""}`}
                   aria-expanded={mobileCategoriesOpen}
                 >
                   Categories
-                  <svg
-                    className={`h-4 w-4 transition-transform ${mobileCategoriesOpen ? "rotate-180" : ""}`}
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    viewBox="0 0 24 24"
-                  >
+                  <svg className={`h-4 w-4 transition-transform ${mobileCategoriesOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
                 {mobileCategoriesOpen ? (
                   <div className="mt-2 flex flex-col gap-1 border-l-2 border-zinc-200 pl-3">
-                    <Link
-                      href="/shop"
-                      onClick={() => { setMenuOpen(false); setMobileCategoriesOpen(false); }}
-                      className="text-sm font-semibold text-zinc-900 py-1"
-                    >
-                      All products
-                    </Link>
+                    <Link href="/shop" onClick={() => { setMenuOpen(false); setMobileCategoriesOpen(false); }} className="text-sm font-semibold text-zinc-900 py-1">All products</Link>
                     {dropdownCategories.map((name) => (
-                      <Link
-                        key={name}
-                        href={categoryShopHref(name)}
-                        onClick={() => { setMenuOpen(false); setMobileCategoriesOpen(false); }}
-                        className={`text-sm py-1 ${
-                          activeCategory === name ? "font-semibold text-zinc-950" : "text-zinc-600"
-                        }`}
-                      >
+                      <Link key={name} href={categoryShopHref(name)} onClick={() => { setMenuOpen(false); setMobileCategoriesOpen(false); }} className={`text-sm py-1 ${activeCategory === name ? "font-semibold text-zinc-950" : "text-zinc-600"}`}>
                         {name}
                       </Link>
                     ))}
@@ -411,21 +353,9 @@ export default function Navbar() {
                 ) : null}
               </div>
             ) : null}
-
-            {SECONDARY_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMenuOpen(false)}
-                className={
-                  link.sale
-                    ? `nav-link text-sm py-1 font-bold transition-colors ${activeSale ? "text-red-600 border-b-2 border-red-500 w-fit" : "text-red-500 hover:text-red-600"}`
-                    : `nav-link text-sm py-1 text-zinc-800 hover:text-zinc-950 transition-colors ${pathname === link.href ? "border-b-2 border-[rgb(218,170,88)] w-fit text-zinc-950" : ""}`
-                }
-              >
-                {link.label}
-              </Link>
-            ))}
+            {/* About / Contact */}
+            <Link href="/about" onClick={() => setMenuOpen(false)} className={`nav-link text-sm py-1 text-zinc-800 hover:text-zinc-950 transition-colors ${pathname === "/about" ? "border-b-2 border-[rgb(218,170,88)] w-fit text-zinc-950" : ""}`}>About</Link>
+            <Link href="/contact" onClick={() => setMenuOpen(false)} className={`nav-link text-sm py-1 text-zinc-800 hover:text-zinc-950 transition-colors ${pathname === "/contact" ? "border-b-2 border-[rgb(218,170,88)] w-fit text-zinc-950" : ""}`}>Contact</Link>
             {authUser === undefined ? null : authUser ? (
               <>
                 <Link href="/account" onClick={() => setMenuOpen(false)} className="text-sm py-1 text-zinc-800">
