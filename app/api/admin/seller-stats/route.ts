@@ -6,6 +6,12 @@ import Product from "@/models/Product";
 import SellerEarning from "@/models/SellerEarning";
 import Order from "@/models/Order";
 
+function periodStart(period: string): Date | null {
+  if (period === "7d") return new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  if (period === "30d") return new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+  return null;
+}
+
 export async function GET(req: NextRequest) {
   try {
     if (!(await isAdmin())) {
@@ -17,17 +23,23 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Invalid sellerId" }, { status: 400 });
     }
 
+    const period = req.nextUrl.searchParams.get("period") ?? "lifetime";
+    const from = periodStart(period);
+
     await connectDB();
 
     const sellerObjId = new mongoose.Types.ObjectId(sellerId);
 
+    const earningsFilter: Record<string, unknown> = { sellerId: sellerObjId };
+    if (from) earningsFilter.createdAt = { $gte: from };
+
     const [products, earnings, sellerProductIds] = await Promise.all([
       Product.find({ sellerId }).select("name soldCount stockQuantity price approvalStatus isActive").lean(),
-      SellerEarning.find({ sellerId: sellerObjId })
+      SellerEarning.find(earningsFilter)
         .sort({ createdAt: -1 })
         .lean()
         .then(async (rows) => {
-          // Exclude earnings for cancelled orders (guards against stale data)
+          // Exclude earnings for cancelled orders
           const orderIds = rows.map((r) => (r as Record<string, unknown>).orderId);
           const cancelledIds = await Order.distinct("_id", {
             _id: { $in: orderIds },
@@ -39,14 +51,25 @@ export async function GET(req: NextRequest) {
       Product.find({ sellerId }).distinct("_id"),
     ]);
 
-    // Count orders containing seller's products (all statuses)
+    const ordersFilter: Record<string, unknown> = {
+      "items.productId": { $in: sellerProductIds.map(String) },
+    };
+    if (from) ordersFilter.createdAt = { $gte: from };
+
     const totalOrdersRaw = sellerProductIds.length
-      ? await Order.countDocuments({ "items.productId": { $in: sellerProductIds.map(String) } })
+      ? await Order.countDocuments(ordersFilter)
       : 0;
 
     const totalProducts = products.length;
-    const activeProducts = products.filter((p) => (p as Record<string, unknown>).isActive !== false && (p as Record<string, unknown>).approvalStatus === "approved").length;
-    const totalSold = products.reduce((sum, p) => sum + Number((p as Record<string, unknown>).soldCount || 0), 0);
+    const activeProducts = products.filter(
+      (p) =>
+        (p as Record<string, unknown>).isActive !== false &&
+        (p as Record<string, unknown>).approvalStatus === "approved"
+    ).length;
+    const totalSold = products.reduce(
+      (sum, p) => sum + Number((p as Record<string, unknown>).soldCount || 0),
+      0
+    );
 
     const totalRevenue = earnings.reduce((sum, e) => sum + Number((e as Record<string, unknown>).grossAmount || 0), 0);
     const totalCommission = earnings.reduce((sum, e) => sum + Number((e as Record<string, unknown>).commissionAmount || 0), 0);
@@ -66,7 +89,11 @@ export async function GET(req: NextRequest) {
     });
 
     const topProducts = [...products]
-      .sort((a, b) => Number((b as Record<string, unknown>).soldCount || 0) - Number((a as Record<string, unknown>).soldCount || 0))
+      .sort(
+        (a, b) =>
+          Number((b as Record<string, unknown>).soldCount || 0) -
+          Number((a as Record<string, unknown>).soldCount || 0)
+      )
       .slice(0, 5)
       .map((p) => {
         const rec = p as Record<string, unknown>;

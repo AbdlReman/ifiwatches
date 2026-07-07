@@ -75,6 +75,7 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
   const [sellerStats, setSellerStats] = useState<SellerStats | null>(null);
   const [statsLoading, setStatsLoading] = useState(false);
   const [statsError, setStatsError] = useState("");
+  const [statsPeriod, setStatsPeriod] = useState<"7d" | "30d" | "lifetime">("lifetime");
   const [lightboxUrl, setLightboxUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -82,7 +83,7 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
     setSellerStats(null);
     setStatsError("");
     setStatsLoading(true);
-    fetch(`/api/admin/seller-stats?sellerId=${viewingSeller.id}`)
+    fetch(`/api/admin/seller-stats?sellerId=${viewingSeller.id}&period=${statsPeriod}`)
       .then((r) => r.json())
       .then((data) => {
         if (data.error) setStatsError(data.error);
@@ -90,7 +91,7 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
       })
       .catch(() => setStatsError("Failed to load stats"))
       .finally(() => setStatsLoading(false));
-  }, [viewingSeller]);
+  }, [viewingSeller, statsPeriod]);
 
   const approvedSellers = users.filter((u) => u.role === "seller" && u.sellerApproved);
   const pendingSellers = users.filter((u) => u.role === "seller" && !u.sellerApproved);
@@ -293,7 +294,7 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
                     </div>
                     <button
                       type="button"
-                      onClick={() => setViewingSeller(seller)}
+                      onClick={() => { setStatsPeriod("lifetime"); setViewingSeller(seller); }}
                       title="View seller stats"
                       className="shrink-0 flex items-center gap-1.5 rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-2.5 py-1.5 text-[11px] font-semibold text-cyan-300 hover:bg-cyan-500/20 transition-colors"
                     >
@@ -889,6 +890,24 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
                 )}
                 {sellerStats && !statsLoading && (
                   <>
+                    {/* Period filter */}
+                    <div className="flex gap-2">
+                      {(["7d", "30d", "lifetime"] as const).map((p) => (
+                        <button
+                          key={p}
+                          type="button"
+                          onClick={() => setStatsPeriod(p)}
+                          className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-widest transition-colors ${
+                            statsPeriod === p
+                              ? "bg-amber-500 text-zinc-950"
+                              : "bg-slate-700 text-slate-400 hover:bg-slate-600 hover:text-white"
+                          }`}
+                        >
+                          {p === "7d" ? "Last 7 Days" : p === "30d" ? "Last Month" : "Lifetime"}
+                        </button>
+                      ))}
+                    </div>
+
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                       {[
                         { label: "Total Orders", value: sellerStats.totalOrders, sub: `${sellerStats.completedOrders} completed` },
