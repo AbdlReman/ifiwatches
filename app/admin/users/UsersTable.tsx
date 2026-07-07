@@ -882,6 +882,130 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
 
               {/* Modal body */}
               <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
+
+                {/* ── Seller Full Details ── */}
+                <div className="rounded-xl border border-slate-700 bg-slate-800/50 divide-y divide-slate-700">
+                  {/* Contact */}
+                  <div className="px-4 py-3 space-y-2">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Contact Info</p>
+                    {viewingSeller.email && (
+                      <div className="flex gap-2">
+                        <span className="shrink-0 text-[11px] font-bold uppercase tracking-widest text-slate-500 w-28">Email</span>
+                        <span className="text-sm text-slate-200 break-all">{viewingSeller.email}</span>
+                      </div>
+                    )}
+                    {viewingSeller.phone && (
+                      <div className="flex gap-2">
+                        <span className="shrink-0 text-[11px] font-bold uppercase tracking-widest text-slate-500 w-28">Phone</span>
+                        <span className="text-sm text-slate-200">{viewingSeller.phone}</span>
+                      </div>
+                    )}
+                    {viewingSeller.whatsapp && (
+                      <div className="flex gap-2">
+                        <span className="shrink-0 text-[11px] font-bold uppercase tracking-widest text-slate-500 w-28">WhatsApp</span>
+                        <span className="text-sm text-emerald-300">{viewingSeller.whatsapp}</span>
+                      </div>
+                    )}
+                    {viewingSeller.address && (
+                      <div className="flex gap-2">
+                        <span className="shrink-0 text-[11px] font-bold uppercase tracking-widest text-slate-500 w-28">Address</span>
+                        <span className="text-sm text-slate-200">{viewingSeller.address}</span>
+                      </div>
+                    )}
+                    {viewingSeller.createdAt && (
+                      <div className="flex gap-2">
+                        <span className="shrink-0 text-[11px] font-bold uppercase tracking-widest text-slate-500 w-28">Joined</span>
+                        <span className="text-sm text-slate-200">{new Date(viewingSeller.createdAt).toLocaleDateString("en-PK", { day: "numeric", month: "short", year: "numeric" })}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Business */}
+                  <div className="px-4 py-3 space-y-2">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Business Info</p>
+                    {viewingSeller.businessName && (
+                      <div className="flex gap-2">
+                        <span className="shrink-0 text-[11px] font-bold uppercase tracking-widest text-slate-500 w-28">Business</span>
+                        <span className="text-sm text-slate-200">{viewingSeller.businessName}</span>
+                      </div>
+                    )}
+                    {viewingSeller.businessCategory && (
+                      <div className="flex gap-2">
+                        <span className="shrink-0 text-[11px] font-bold uppercase tracking-widest text-slate-500 w-28">Category</span>
+                        <span className="text-sm text-slate-200">{viewingSeller.businessCategory}</span>
+                      </div>
+                    )}
+                    {viewingSeller.businessSummary && (
+                      <div className="flex gap-2">
+                        <span className="shrink-0 text-[11px] font-bold uppercase tracking-widest text-slate-500 w-28">Summary</span>
+                        <span className="text-sm text-slate-200">{viewingSeller.businessSummary}</span>
+                      </div>
+                    )}
+                    {viewingSeller.sellerCode && (
+                      <div className="flex gap-2">
+                        <span className="shrink-0 text-[11px] font-bold uppercase tracking-widest text-slate-500 w-28">Seller Code</span>
+                        <span className="text-sm font-mono font-bold text-amber-400">{viewingSeller.sellerCode}</span>
+                      </div>
+                    )}
+                    <div className="flex gap-2">
+                      <span className="shrink-0 text-[11px] font-bold uppercase tracking-widest text-slate-500 w-28">Commission</span>
+                      <span className="text-sm font-bold text-amber-300">{viewingSeller.commissionRate ?? 0}%</span>
+                    </div>
+                    <div className="flex gap-2">
+                      <span className="shrink-0 text-[11px] font-bold uppercase tracking-widest text-slate-500 w-28">Status</span>
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${viewingSeller.sellerApproved ? "bg-emerald-500/20 text-emerald-300" : "bg-amber-500/20 text-amber-300"}`}>
+                        {viewingSeller.sellerApproved ? "Approved" : "Pending"}
+                      </span>
+                      {!viewingSeller.sellerEnabled && (
+                        <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 ml-1">Disabled</span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* CNIC */}
+                  {(viewingSeller.cnic || viewingSeller.cnicFront || viewingSeller.cnicBack) && (
+                    <div className="px-4 py-3 space-y-3">
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">CNIC</p>
+                      {viewingSeller.cnic && (
+                        <div className="flex gap-2">
+                          <span className="shrink-0 text-[11px] font-bold uppercase tracking-widest text-slate-500 w-28">CNIC No.</span>
+                          <span className="text-sm font-mono text-slate-200">{viewingSeller.cnic}</span>
+                        </div>
+                      )}
+                      {(viewingSeller.cnicFront || viewingSeller.cnicBack) && (
+                        <div className="flex gap-3 mt-2">
+                          {viewingSeller.cnicFront && (
+                            <button type="button" onClick={() => setLightboxUrl(viewingSeller.cnicFront)} className="group relative rounded-lg overflow-hidden border border-slate-600 hover:border-amber-400 transition-colors">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={viewingSeller.cnicFront} alt="CNIC Front" className="h-20 w-36 object-cover" />
+                              <span className="absolute bottom-0 left-0 right-0 bg-black/60 text-[10px] font-bold uppercase tracking-widest text-slate-300 text-center py-0.5 group-hover:text-white">Front</span>
+                            </button>
+                          )}
+                          {viewingSeller.cnicBack && (
+                            <button type="button" onClick={() => setLightboxUrl(viewingSeller.cnicBack)} className="group relative rounded-lg overflow-hidden border border-slate-600 hover:border-amber-400 transition-colors">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={viewingSeller.cnicBack} alt="CNIC Back" className="h-20 w-36 object-cover" />
+                              <span className="absolute bottom-0 left-0 right-0 bg-black/60 text-[10px] font-bold uppercase tracking-widest text-slate-300 text-center py-0.5 group-hover:text-white">Back</span>
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Assigned Categories */}
+                  {viewingSeller.assignedCategories?.length > 0 && (
+                    <div className="px-4 py-3">
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Assigned Categories</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {viewingSeller.assignedCategories.map((cat) => (
+                          <span key={cat} className="px-2 py-0.5 rounded-full bg-slate-700 text-xs text-slate-300">{cat}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
                 {statsLoading && (
                   <p className="text-slate-400 text-sm text-center py-8">Loading stats…</p>
                 )}
