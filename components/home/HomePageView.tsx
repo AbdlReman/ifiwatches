@@ -202,7 +202,51 @@ export default function HomePageView({
         </section>
       ) : null}
 
-     
+      {/* Become a Vendor CTA */}
+      <section className="border-b border-zinc-200 bg-zinc-950 text-white">
+        <div className="mx-auto max-w-[90rem] px-4 py-10 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
+            <div className="flex items-center gap-5">
+              <span
+                className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-zinc-950"
+                style={{ background: siteConfig.brandGradient }}
+              >
+                <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016 2.993 2.993 0 0 0 2.25-1.016 3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
+                </svg>
+              </span>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-1">For Brands &amp; Sellers</p>
+                <h2 className="text-xl font-black uppercase tracking-tight text-white sm:text-2xl">
+                  Become a Vendor on IFI Lifestyle
+                </h2>
+                <p className="mt-1 text-sm text-zinc-400 max-w-lg">
+                  List your products, reach thousands of customers across Pakistan, and grow your business on our trusted marketplace.
+                </p>
+              </div>
+            </div>
+            <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+              <Link
+                href="/become-a-seller"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-700 px-6 py-3 text-[11px] font-black uppercase tracking-widest text-zinc-300 transition-colors hover:border-zinc-400 hover:text-white"
+              >
+                Learn More
+              </Link>
+              <Link
+                href="/register"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-[11px] font-black uppercase tracking-widest text-zinc-950 transition-opacity hover:opacity-90"
+                style={{ background: siteConfig.brandGradient }}
+              >
+                Start Selling
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Best sellers */}
       <section className="border-b border-zinc-200 bg-white">
         <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
