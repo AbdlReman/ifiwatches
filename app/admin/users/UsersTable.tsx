@@ -77,6 +77,10 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
   const [statsError, setStatsError] = useState("");
   const [statsPeriod, setStatsPeriod] = useState<"7d" | "30d" | "lifetime">("lifetime");
   const [lightboxUrl, setLightboxUrl] = useState<string | null>(null);
+  const [editingUser, setEditingUser] = useState<AdminUser | null>(null);
+  const [editForm, setEditForm] = useState({ name: "", email: "", phone: "", whatsapp: "", address: "", password: "" });
+  const [editSaving, setEditSaving] = useState(false);
+  const [editError, setEditError] = useState("");
 
   useEffect(() => {
     if (!viewingSeller) return;
@@ -166,6 +170,44 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
     if (!user) return;
     await patch(userId, { assignedCategories: user.assignedCategories });
     setAssigningId(null);
+  };
+
+  const openEdit = (user: AdminUser) => {
+    setEditForm({ name: user.name, email: user.email, phone: user.phone, whatsapp: user.whatsapp, address: user.address, password: "" });
+    setEditError("");
+    setEditingUser(user);
+  };
+
+  const saveEdit = async () => {
+    if (!editingUser) return;
+    if (!editForm.name.trim()) { setEditError("Name is required."); return; }
+    if (!editForm.email.trim()) { setEditError("Email is required."); return; }
+    if (editForm.password && editForm.password.length < 6) { setEditError("Password must be at least 6 characters."); return; }
+    setEditSaving(true);
+    setEditError("");
+    try {
+      const payload: Record<string, string> = {
+        name: editForm.name.trim(),
+        email: editForm.email.trim(),
+        phone: editForm.phone.trim(),
+        whatsapp: editForm.whatsapp.trim(),
+        address: editForm.address.trim(),
+      };
+      if (editForm.password) payload.password = editForm.password;
+      const res = await fetch("/api/admin/users", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: editingUser.id, ...payload }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Update failed.");
+      setUsers((prev) => prev.map((u) => (u.id === editingUser.id ? { ...u, ...data.user } : u)));
+      setEditingUser(null);
+    } catch (err) {
+      setEditError(err instanceof Error ? err.message : "Update failed.");
+    } finally {
+      setEditSaving(false);
+    }
   };
 
   const TAB_CONFIG: { key: Tab; label: string; count: number }[] = [
@@ -292,18 +334,31 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
                         </span>
                       ) : null}
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => { setStatsPeriod("lifetime"); setViewingSeller(seller); }}
-                      title="View seller stats"
-                      className="shrink-0 flex items-center gap-1.5 rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-2.5 py-1.5 text-[11px] font-semibold text-cyan-300 hover:bg-cyan-500/20 transition-colors"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
-                        <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
-                        <path fillRule="evenodd" d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
-                      </svg>
-                      View
-                    </button>
+                    <div className="flex flex-col gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => { setStatsPeriod("lifetime"); setViewingSeller(seller); }}
+                        title="View seller stats"
+                        className="flex items-center gap-1.5 rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-2.5 py-1.5 text-[11px] font-semibold text-cyan-300 hover:bg-cyan-500/20 transition-colors"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
+                          <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+                          <path fillRule="evenodd" d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                        </svg>
+                        View
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => openEdit(seller)}
+                        title="Edit user details"
+                        className="flex items-center gap-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 px-2.5 py-1.5 text-[11px] font-semibold text-amber-300 hover:bg-amber-500/20 transition-colors"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
+                          <path d="M2.695 14.763l-1.262 3.154a.5.5 0 00.65.65l3.155-1.262a4 4 0 001.343-.885L17.5 5.5a2.121 2.121 0 00-3-3L3.58 13.42a4 4 0 00-.885 1.343z" />
+                        </svg>
+                        Edit
+                      </button>
+                    </div>
                   </div>
 
                   <hr className="border-slate-700" />
@@ -765,33 +820,42 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
                       </td>
                       <td className="px-4 py-3 text-slate-500 text-xs whitespace-nowrap">{user.createdAt}</td>
                       <td className="px-4 py-3">
-                        {deletingId === user.id ? (
-                          <div className="flex items-center gap-2">
-                            <button
-                              type="button"
-                              disabled={saving === user.id}
-                              onClick={() => deleteUser(user.id)}
-                              className="rounded-lg bg-red-600 px-2.5 py-1 text-[11px] font-semibold text-white hover:bg-red-500 disabled:opacity-50"
-                            >
-                              {saving === user.id ? "Deleting…" : "Confirm"}
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => setDeletingId(null)}
-                              className="rounded-lg bg-slate-700 px-2.5 py-1 text-[11px] text-slate-300 hover:bg-slate-600"
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        ) : (
+                        <div className="flex items-center gap-2">
                           <button
                             type="button"
-                            onClick={() => setDeletingId(user.id)}
-                            className="rounded-lg border border-red-500/30 bg-red-500/10 px-2.5 py-1 text-[11px] text-red-400 hover:bg-red-500/20 transition-colors"
+                            onClick={() => openEdit(user)}
+                            className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-[11px] font-semibold text-amber-300 hover:bg-amber-500/20 transition-colors"
                           >
-                            Delete
+                            Edit
                           </button>
-                        )}
+                          {deletingId === user.id ? (
+                            <>
+                              <button
+                                type="button"
+                                disabled={saving === user.id}
+                                onClick={() => deleteUser(user.id)}
+                                className="rounded-lg bg-red-600 px-2.5 py-1 text-[11px] font-semibold text-white hover:bg-red-500 disabled:opacity-50"
+                              >
+                                {saving === user.id ? "Deleting…" : "Confirm"}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setDeletingId(null)}
+                                className="rounded-lg bg-slate-700 px-2.5 py-1 text-[11px] text-slate-300 hover:bg-slate-600"
+                              >
+                                Cancel
+                              </button>
+                            </>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => setDeletingId(user.id)}
+                              className="rounded-lg border border-red-500/30 bg-red-500/10 px-2.5 py-1 text-[11px] text-red-400 hover:bg-red-500/20 transition-colors"
+                            >
+                              Delete
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -802,6 +866,145 @@ export default function UsersTable({ initialUsers, allCategories }: UsersTablePr
         </div>
       )}
     </div>
+
+      {/* ── Edit User Modal ── */}
+      {editingUser && (
+        <>
+          <div className="fixed inset-0 z-[90] bg-black/60" onClick={() => setEditingUser(null)} aria-hidden="true" />
+          <div className="fixed inset-0 z-[91] flex items-center justify-center p-4">
+            <div className="w-full max-w-md rounded-2xl border border-slate-700 bg-slate-900 shadow-2xl">
+              {/* Header */}
+              <div className="flex items-center justify-between border-b border-slate-700 px-6 py-4">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Edit User</p>
+                  <h2 className="text-base font-black text-white mt-0.5">{editingUser.name}</h2>
+                  <p className="text-xs text-slate-500">{editingUser.email}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setEditingUser(null)}
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-700 text-slate-400 hover:text-white"
+                  aria-label="Close"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Body */}
+              <div className="px-6 py-5 space-y-4">
+                {editError && (
+                  <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+                    {editError}
+                  </div>
+                )}
+
+                {/* Profile fields */}
+                <div className="space-y-3">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Profile Details</p>
+
+                  <div>
+                    <label className="mb-1 block text-[11px] font-bold uppercase tracking-widest text-slate-400">Name</label>
+                    <input
+                      type="text"
+                      value={editForm.name}
+                      onChange={(e) => setEditForm((f) => ({ ...f, name: e.target.value }))}
+                      className="w-full rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-white placeholder-slate-500 focus:border-amber-500 focus:outline-none"
+                      placeholder="Full name"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-1 block text-[11px] font-bold uppercase tracking-widest text-slate-400">Email</label>
+                    <input
+                      type="email"
+                      value={editForm.email}
+                      onChange={(e) => setEditForm((f) => ({ ...f, email: e.target.value }))}
+                      className="w-full rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-white placeholder-slate-500 focus:border-amber-500 focus:outline-none"
+                      placeholder="email@example.com"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-1 block text-[11px] font-bold uppercase tracking-widest text-slate-400">Phone</label>
+                    <input
+                      type="text"
+                      value={editForm.phone}
+                      onChange={(e) => setEditForm((f) => ({ ...f, phone: e.target.value }))}
+                      className="w-full rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-white placeholder-slate-500 focus:border-amber-500 focus:outline-none"
+                      placeholder="+92..."
+                    />
+                  </div>
+
+                  {editingUser.role === "seller" && (
+                    <>
+                      <div>
+                        <label className="mb-1 block text-[11px] font-bold uppercase tracking-widest text-slate-400">WhatsApp</label>
+                        <input
+                          type="text"
+                          value={editForm.whatsapp}
+                          onChange={(e) => setEditForm((f) => ({ ...f, whatsapp: e.target.value }))}
+                          className="w-full rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-white placeholder-slate-500 focus:border-amber-500 focus:outline-none"
+                          placeholder="+92..."
+                        />
+                      </div>
+                      <div>
+                        <label className="mb-1 block text-[11px] font-bold uppercase tracking-widest text-slate-400">Address</label>
+                        <input
+                          type="text"
+                          value={editForm.address}
+                          onChange={(e) => setEditForm((f) => ({ ...f, address: e.target.value }))}
+                          className="w-full rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-white placeholder-slate-500 focus:border-amber-500 focus:outline-none"
+                          placeholder="Full address"
+                        />
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {/* Password section */}
+                <div className="space-y-3 border-t border-slate-700 pt-4">
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Change Password</p>
+                    <p className="text-[11px] text-slate-600 mt-0.5">Leave blank to keep the current password.</p>
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-[11px] font-bold uppercase tracking-widest text-slate-400">New Password</label>
+                    <input
+                      type="password"
+                      value={editForm.password}
+                      onChange={(e) => setEditForm((f) => ({ ...f, password: e.target.value }))}
+                      className="w-full rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-white placeholder-slate-500 focus:border-amber-500 focus:outline-none"
+                      placeholder="Min. 6 characters"
+                      autoComplete="new-password"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="flex items-center justify-end gap-3 border-t border-slate-700 px-6 py-4">
+                <button
+                  type="button"
+                  onClick={() => setEditingUser(null)}
+                  className="rounded-lg bg-slate-700 px-4 py-2 text-sm font-semibold text-slate-300 hover:bg-slate-600"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  disabled={editSaving}
+                  onClick={saveEdit}
+                  className="rounded-lg bg-amber-500 px-5 py-2 text-sm font-black uppercase tracking-widest text-zinc-950 hover:bg-amber-400 disabled:opacity-50 transition-colors"
+                >
+                  {editSaving ? "Saving…" : "Save Changes"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
 
       {/* ── Image Lightbox ── */}
       {lightboxUrl && (

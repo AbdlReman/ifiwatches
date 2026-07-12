@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
 import { isAdmin } from "@/lib/isAdmin";
+import { hashPassword } from "@/lib/auth/password";
 import type { UserRole } from "@/lib/auth/jwt";
 
 const SELECT_FIELDS =
@@ -76,6 +77,14 @@ export async function PATCH(req: NextRequest) {
     }
     if (typeof body.commissionRate === "number") {
       update.commissionRate = Math.max(0, Math.min(100, body.commissionRate));
+    }
+    if (typeof body.name === "string" && body.name.trim()) update.name = body.name.trim().slice(0, 120);
+    if (typeof body.email === "string" && body.email.trim()) update.email = body.email.trim().toLowerCase();
+    if (typeof body.phone === "string") update.phone = body.phone.trim().slice(0, 40);
+    if (typeof body.whatsapp === "string") update.whatsapp = body.whatsapp.trim().slice(0, 40);
+    if (typeof body.address === "string") update.address = body.address.trim().slice(0, 240);
+    if (typeof body.password === "string" && body.password.length >= 6) {
+      update.passwordHash = await hashPassword(body.password);
     }
 
     if (Object.keys(update).length === 0) {
