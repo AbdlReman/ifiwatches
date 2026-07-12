@@ -464,7 +464,7 @@ export default function ProductDetailClient({
             </div>
 
             {/* Confidence line */}
-            <p className="hidden lg:block mt-3 text-[11px] leading-relaxed text-neutral-400">
+            <p className="mt-3 text-[11px] leading-relaxed text-neutral-400">
               🛡️ Shop with confidence. Every seller is verified, every category is carefully managed, and every order is backed by our commitment to quality and trust.
             </p>
 
