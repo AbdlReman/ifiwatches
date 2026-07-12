@@ -32,6 +32,7 @@ export type AdminOrderRow = {
   items: AdminOrderItem[];
   subtotal: number;
   discountAmount: number;
+  deliveryCharges: number;
   totalAmount: number;
   couponCode: string;
   paymentMethod: string;
@@ -669,6 +670,12 @@ export default function OrdersAdminClient({
                             Discount{selected.couponCode ? ` (${selected.couponCode})` : ""}
                           </td>
                           <td className="px-3 py-2 text-right text-red-300">−{formatPkr(selected.discountAmount)}</td>
+                        </tr>
+                      )}
+                      {selected.deliveryCharges > 0 && (
+                        <tr>
+                          <td colSpan={6} className="px-3 py-2 text-right text-slate-500 uppercase tracking-widest">Delivery charges</td>
+                          <td className="px-3 py-2 text-right text-slate-200">{formatPkr(selected.deliveryCharges)}</td>
                         </tr>
                       )}
                       <tr>

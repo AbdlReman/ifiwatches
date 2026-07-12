@@ -70,6 +70,7 @@ export default async function AdminOrdersPage() {
     }) as AdminOrderItem[],
     subtotal: Number(o.subtotal ?? 0),
     discountAmount: Number(o.discountAmount ?? 0),
+    deliveryCharges: Number(o.deliveryCharges ?? 0),
     totalAmount: Number(o.totalAmount || 0),
     couponCode: String(o.couponCode || ""),
     paymentMethod: String(o.paymentMethod || ""),

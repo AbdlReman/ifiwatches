@@ -68,13 +68,16 @@ function itemsTable(items: OrderItemInput[]): string {
 function totalsBlock(opts: {
   subtotal: number;
   discountAmount: number;
+  deliveryCharges: number;
   totalAmount: number;
   couponCode: string;
 }): string {
   const coupon = (opts.couponCode || "").trim();
+  const delivery = Number(opts.deliveryCharges || 0);
   return `<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;max-width:320px;margin-left:auto;font-size:14px;">
   <tr><td style="padding:4px 0;color:#6b7280;">Subtotal</td><td align="right" style="padding:4px 0;">${formatPkr(opts.subtotal)}</td></tr>
   <tr><td style="padding:4px 0;color:#6b7280;">Discount${coupon ? ` (${esc(coupon)})` : ""}</td><td align="right" style="padding:4px 0;">-${formatPkr(opts.discountAmount)}</td></tr>
+  ${delivery > 0 ? `<tr><td style="padding:4px 0;color:#6b7280;">Delivery charges</td><td align="right" style="padding:4px 0;">${formatPkr(delivery)}</td></tr>` : ""}
   <tr><td style="padding:10px 0 4px;font-weight:700;font-size:16px;">Total</td><td align="right" style="padding:10px 0 4px;font-weight:700;font-size:16px;">${formatPkr(opts.totalAmount)}</td></tr>
 </table>`;
 }
@@ -140,6 +143,7 @@ export function buildCustomerOrderEmailHtml(opts: {
   items: OrderItemInput[];
   subtotal: number;
   discountAmount: number;
+  deliveryCharges: number;
   totalAmount: number;
   couponCode: string;
   payment?: OrderEmailPayment;
@@ -161,6 +165,7 @@ export function buildAdminOrderEmailHtml(opts: {
   items: OrderItemInput[];
   subtotal: number;
   discountAmount: number;
+  deliveryCharges: number;
   totalAmount: number;
   couponCode: string;
   payment?: OrderEmailPayment;
