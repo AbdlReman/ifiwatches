@@ -222,7 +222,8 @@ export default function Navbar() {
                   Account
                 </button>
                 {accountOpen && (
-                  <div className="absolute right-0 top-full mt-2 min-w-[12rem] rounded-md border border-zinc-200 bg-white py-1 shadow-xl z-50">
+                  <div className="absolute right-0 top-full z-50 pt-2 min-w-[12rem]">
+                  <div className="rounded-md border border-zinc-200 bg-white py-1 shadow-xl">
                     <Link
                       href="/account"
                       className="block px-3 py-2 text-sm text-zinc-800 hover:bg-zinc-50"
@@ -267,6 +268,7 @@ export default function Navbar() {
                     >
                       Sign out
                     </button>
+                  </div>
                   </div>
                 )}
               </div>
