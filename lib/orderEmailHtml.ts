@@ -189,8 +189,19 @@ export function buildSellerOrderEmailHtml(opts: {
     0
   );
   const deliveryBlock = opts.customer
-    ? `<h2 style="font-size:14px;text-transform:uppercase;letter-spacing:0.06em;color:#6b7280;margin:20px 0 8px;">Delivery Address</h2>
-${customerBlock(opts.customer)}`
+    ? (() => {
+        const c = opts.customer;
+        const state = (c.state || "").trim();
+        const postal = (c.postalCode || "").trim();
+        const notes = (c.notes || "").trim();
+        return `<h2 style="font-size:14px;text-transform:uppercase;letter-spacing:0.06em;color:#6b7280;margin:20px 0 8px;">Delivery Address</h2>
+<div style="margin:0 0 20px;padding:16px;background:#f9fafb;border-radius:8px;font-size:14px;line-height:1.6;color:#374151;">
+  <p style="margin:0;"><strong>Address:</strong> ${esc(c.address)}, ${esc(c.city)}</p>
+  ${state ? `<p style="margin:4px 0 0;"><strong>State / Province:</strong> ${esc(state)}</p>` : ""}
+  ${postal ? `<p style="margin:0;"><strong>Postal code:</strong> ${esc(postal)}</p>` : ""}
+  ${notes ? `<p style="margin:8px 0 0;"><strong>Delivery notes:</strong> ${esc(notes)}</p>` : ""}
+</div>`;
+      })()
     : "";
   return `<div style="font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:640px;margin:0 auto;padding:24px;color:#111827;">
   <h1 style="font-size:20px;margin:0 0 4px;">New order — ${esc(opts.orderNumber)}</h1>
