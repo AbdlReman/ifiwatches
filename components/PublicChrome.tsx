@@ -23,6 +23,10 @@ const NewsletterPopup = dynamic(() => import("@/components/NewsletterPopup"), {
   ssr: false,
 });
 
+const WhatsAppWidget = dynamic(() => import("@/components/WhatsAppWidget"), {
+  ssr: false,
+});
+
 export default function PublicChrome({ children }: { children: React.ReactNode }) {
   return (
     <>
@@ -40,6 +44,7 @@ export default function PublicChrome({ children }: { children: React.ReactNode }
       </Suspense>
       <main className="flex-1">{children}</main>
       <Footer />
+      <WhatsAppWidget />
     </>
   );
 }
