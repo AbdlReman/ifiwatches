@@ -202,7 +202,7 @@ export default function HomePageView({
         </section>
       ) : null}
 
-      {/* Become a Vendor CTA */}
+      {/* Become  Vendor CTA */}
       <section className="border-b border-zinc-200 bg-zinc-950 text-white">
         <div className="mx-auto max-w-[90rem] px-4 py-10 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
