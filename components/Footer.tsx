@@ -107,7 +107,6 @@ export default function Footer() {
               </a>
             </div>
           </div>
-
           {/* Shop */}
           <div>
             <h4 className="font-bold uppercase tracking-widest text-xs mb-5">Shop</h4>
