@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "../globals.css";
 import PublicChrome from "@/components/PublicChrome";
 import { siteConfig } from "@/lib/siteConfig";
@@ -18,6 +19,16 @@ export default function PublicLayout({
   return (
     <html lang="en-PK" className="h-full" suppressHydrationWarning>
       <body className="min-h-full flex flex-col antialiased bg-white text-zinc-900" suppressHydrationWarning>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-G1LNNJ7X91"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-G1LNNJ7X91');`}
+        </Script>
         <PublicChrome>{children}</PublicChrome>
       </body>
     </html>
