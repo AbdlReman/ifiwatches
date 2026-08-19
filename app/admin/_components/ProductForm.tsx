@@ -492,17 +492,17 @@ export default function ProductForm({
         </h2>
         <div className="space-y-5">
           <div>
-            <label className={labelClass}>Description * (max 1000 chars)</label>
+            <label className={labelClass}>Short Description * (max 150 chars)</label>
             <textarea
               required
-              rows={5}
-              maxLength={1000}
+              rows={3}
+              maxLength={150}
               value={form.description}
               onChange={(e) => set("description", e.target.value)}
               placeholder="Brief product summary shown in listings…"
               className={`${inputClass} resize-none`}
             />
-            <p className="text-slate-500 text-xs mt-1">{form.description.length}/1000</p>
+            <p className="text-slate-500 text-xs mt-1">{form.description.length}/150</p>
           </div>
 
           <div>
