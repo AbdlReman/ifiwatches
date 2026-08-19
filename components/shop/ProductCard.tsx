@@ -103,12 +103,12 @@ export default function ProductCard({
           {/* Name + discount badge */}
           <div className="flex items-start justify-between gap-1">
             <h3 className="flex-1 min-w-0 font-black leading-snug text-zinc-900 line-clamp-2
-                           text-[13px] max-[400px]:text-[10px]">
+                           text-[11px] sm:text-[13px] max-[400px]:text-[9px]">
               {product.name}
             </h3>
             {hasDiscount && (
               <span className="shrink-0 font-black text-red-500 whitespace-nowrap ml-1
-                               text-[11px] max-[400px]:text-[8px]">
+                               text-[9px] sm:text-[11px] max-[400px]:text-[7px]">
                 {discountPercent}% OFF
               </span>
             )}
