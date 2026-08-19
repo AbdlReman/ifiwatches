@@ -59,7 +59,7 @@ export default function ProductCard({
       <article className="flex flex-col bg-white rounded-2xl border border-zinc-100 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden h-full">
 
         {/* Image */}
-        <div className="relative bg-zinc-50 overflow-hidden w-full h-[226px] sm:h-[316px]">
+        <div className="relative bg-zinc-50 overflow-hidden w-full h-[170px] sm:h-[316px]">
           {promo && (
             <span
               className="absolute left-2 top-2 z-10 font-black uppercase tracking-wider leading-tight max-w-[80%] line-clamp-1
@@ -109,7 +109,7 @@ export default function ProductCard({
             {hasDiscount && (
               <span className="shrink-0 font-black text-red-500 whitespace-nowrap ml-1
                                text-[9px] sm:text-[11px] max-[400px]:text-[7px]">
-                {discountPercent}% OFF
+                -{discountPercent}%
               </span>
             )}
           </div>
