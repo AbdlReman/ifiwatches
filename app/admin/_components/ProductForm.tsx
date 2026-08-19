@@ -506,7 +506,7 @@ export default function ProductForm({
           </div>
 
           <div>
-            <label className={labelClass}>Detail (Rich Text)</label>
+            <label className={labelClass}>Detail Description (Rich Text) </label>
             <RichTextEditor
               value={form.detail}
               onChange={(content) => set("detail", content)}
