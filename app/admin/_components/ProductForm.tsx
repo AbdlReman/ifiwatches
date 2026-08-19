@@ -552,7 +552,7 @@ export default function ProductForm({
       {/* Color wise images */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
         <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-5">
-          Color Variants & Images
+          Color Variants & Images  (Recommended upload size: 800 × 1000 px (portrait, 4:5 ratio))
         </h2>
         <div className="space-y-6">
           {colorVariants.map((variant, index) => (
