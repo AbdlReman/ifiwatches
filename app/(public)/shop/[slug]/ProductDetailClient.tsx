@@ -191,7 +191,7 @@ export default function ProductDetailClient({
               )}
 
               {/* Main image */}
-              <div className="relative flex-1 overflow-hidden rounded-2xl bg-neutral-50 h-[280px] sm:h-[360px] lg:h-full lg:min-h-[400px]">
+              <div className="relative flex-1 overflow-hidden rounded-2xl bg-neutral-50 h-[360px] sm:h-[480px] lg:h-full lg:min-h-[520px]">
                 {/* Sale badge */}
                 {hasDiscount && (
                   <span
@@ -225,10 +225,10 @@ export default function ProductDetailClient({
                   aria-label="Enlarge image"
                 >
                   {mainImg && isCloud(mainImg) ? (
-                    <Image src={mainImg} alt={product.name} fill priority className="object-contain p-4 transition-transform duration-500 hover:scale-[1.03]" sizes="(max-width:1024px) 100vw, 50vw" />
+                    <Image src={mainImg} alt={product.name} fill priority className="object-contain transition-transform duration-500 hover:scale-[1.03]" sizes="(max-width:1024px) 100vw, 50vw" />
                   ) : mainImg ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={mainImg} alt={product.name} className="absolute inset-0 h-full w-full object-contain p-4 transition-transform duration-500 hover:scale-[1.03]" />
+                    <img src={mainImg} alt={product.name} className="absolute inset-0 h-full w-full object-contain transition-transform duration-500 hover:scale-[1.03]" />
                   ) : (
                     <div className="flex h-full items-center justify-center text-xs uppercase tracking-widest text-neutral-300">No image</div>
                   )}
