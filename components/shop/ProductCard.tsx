@@ -14,13 +14,6 @@ function cardPrice(product: IProduct) {
   return { hasDiscount, finalPrice, discountPercent };
 }
 
-function promoLabel(product: IProduct, _hasDiscount: boolean, _discountPercent: number): string {
-  // if (hasDiscount) return `Was ${formatPkr(product.price)}`;
-  if (product.isBestSeller) return "Best Seller";
-  if (product.isFeatured) return "Featured Pick";
-  if (product.brand) return product.brand;
-  return "";
-}
 
 const COLOR_MAP: Record<string, string> = {
   black: "#1a1a1a", white: "#f5f5f5", red: "#e4002b", blue: "#1d4ed8",
@@ -46,8 +39,6 @@ export default function ProductCard({
   const mainImage = activeVariant?.images?.[0] || product.images[0] || "";
   const { hasDiscount, finalPrice, discountPercent } = cardPrice(product);
   const cloudinary = mainImage.startsWith("https://res.cloudinary.com");
-  const promo = promoLabel(product, hasDiscount, discountPercent);
-
   const colorList = product.colorVariants.length > 0
     ? product.colorVariants.map((v) => v.color)
     : product.colors;
@@ -60,16 +51,6 @@ export default function ProductCard({
 
         {/* Image */}
         <div className="relative bg-zinc-50 overflow-hidden w-full h-[190px] sm:h-[316px]">
-          {promo && (
-            <span
-              className="absolute left-2 top-2 z-10 font-black uppercase tracking-wider leading-tight max-w-[80%] line-clamp-1
-                         text-[10px] max-[400px]:text-[8px]"
-              style={{ color: "rgb(218,170,88)" }}
-            >
-              {promo}
-            </span>
-          )}
-
           {mainImage ? (
             cloudinary ? (
               <Image
