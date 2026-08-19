@@ -59,7 +59,7 @@ export default function ProductCard({
       <article className="flex flex-col bg-white rounded-2xl border border-zinc-100 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden h-full">
 
         {/* Image */}
-        <div className="relative bg-zinc-50 overflow-hidden w-full" style={{ height: "286px" }}>
+        <div className="relative bg-zinc-50 overflow-hidden w-full" style={{ height: "316px" }}>
           {promo && (
             <span
               className="absolute left-2 top-2 z-10 font-black uppercase tracking-wider leading-tight max-w-[80%] line-clamp-1
