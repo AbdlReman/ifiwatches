@@ -59,7 +59,7 @@ export default function ProductCard({
       <article className="flex flex-col bg-white rounded-2xl border border-zinc-100 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden h-full">
 
         {/* Image */}
-        <div className="relative bg-zinc-50 aspect-square overflow-hidden">
+        <div className="relative bg-zinc-50 overflow-hidden w-full" style={{ height: "220px" }}>
           {promo && (
             <span
               className="absolute left-2 top-2 z-10 font-black uppercase tracking-wider leading-tight max-w-[80%] line-clamp-1
@@ -77,7 +77,7 @@ export default function ProductCard({
                 alt={product.name}
                 fill
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                className="object-contain p-3 transition-transform duration-500 group-hover:scale-105"
+                className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
                 priority={priority}
               />
             ) : (
@@ -85,7 +85,7 @@ export default function ProductCard({
               <img
                 src={mainImage}
                 alt={product.name}
-                className="absolute inset-0 h-full w-full object-contain p-3 transition-transform duration-500 group-hover:scale-105"
+                className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
               />
             )
           ) : (
