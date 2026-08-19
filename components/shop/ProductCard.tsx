@@ -114,13 +114,6 @@ export default function ProductCard({
             )}
           </div>
 
-          {/* Description — hide on mobile */}
-          {product.description && (
-            <p className="hidden sm:block text-[11px] text-zinc-500 leading-snug line-clamp-1">
-              {product.description}
-            </p>
-          )}
-
           {/* Color dots */}
           {colorList.length > 0 && (
             <div className="flex items-center gap-1">
