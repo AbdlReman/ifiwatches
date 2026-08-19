@@ -14,8 +14,8 @@ function cardPrice(product: IProduct) {
   return { hasDiscount, finalPrice, discountPercent };
 }
 
-function promoLabel(product: IProduct, hasDiscount: boolean, discountPercent: number): string {
-  if (hasDiscount) return `Was ${formatPkr(product.price)}`;
+function promoLabel(product: IProduct, _hasDiscount: boolean, _discountPercent: number): string {
+  // if (hasDiscount) return `Was ${formatPkr(product.price)}`;
   if (product.isBestSeller) return "Best Seller";
   if (product.isFeatured) return "Featured Pick";
   if (product.brand) return product.brand;
